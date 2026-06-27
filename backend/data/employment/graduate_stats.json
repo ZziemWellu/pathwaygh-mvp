@@ -1,0 +1,60 @@
+{
+  "employability_by_program": {
+    "Medical Doctor": {
+      "employment_rate_6months": 92,
+      "average_waiting_time": "3 months",
+      "top_employers": ["Ghana Health Service", "Private Hospitals", "NGOs"],
+      "starting_salary_ghc": 3500,
+      "career_progression": "House Officer → Medical Officer → Specialist → Consultant"
+    },
+    "Software Engineer": {
+      "employment_rate_6months": 88,
+      "average_waiting_time": "2 months",
+      "top_employers": ["Tech Startups", "Banks", "Telecoms", "Government"],
+      "starting_salary_ghc": 3000,
+      "career_progression": "Junior Developer → Software Engineer → Senior Engineer → Tech Lead"
+    },
+    "Nurse": {
+      "employment_rate_6months": 90,
+      "average_waiting_time": "4 months",
+      "top_employers": ["Ghana Health Service", "CHAG", "Private Clinics"],
+      "starting_salary_ghc": 2500,
+      "career_progression": "Staff Nurse → Senior Nurse → Nurse Manager → Nursing Director"
+    },
+    "Pharmacist": {
+      "employment_rate_6months": 85,
+      "average_waiting_time": "6 months",
+      "top_employers": ["Hospitals", "Pharmacy Chains", "Pharmaceutical Companies"],
+      "starting_salary_ghc": 4000,
+      "career_progression": "Intern Pharmacist → Pharmacist → Clinical Pharmacist → Pharmacy Manager"
+    },
+    "Lawyer": {
+      "employment_rate_6months": 75,
+      "average_waiting_time": "8 months",
+      "top_employers": ["Law Firms", "Corporate Legal Depts", "Government"],
+      "starting_salary_ghc": 4000,
+      "career_progression": "Pupil → Junior Associate → Associate → Partner"
+    },
+    "Accountant": {
+      "employment_rate_6months": 82,
+      "average_waiting_time": "5 months",
+      "top_employers": ["Audit Firms", "Banks", "Corporations", "Government"],
+      "starting_salary_ghc": 3000,
+      "career_progression": "Trainee → Junior Accountant → Senior Accountant → Finance Manager"
+    },
+    "Civil Engineer": {
+      "employment_rate_6months": 80,
+      "average_waiting_time": "6 months",
+      "top_employers": ["Construction Companies", "Government", "Consulting Firms"],
+      "starting_salary_ghc": 4000,
+      "career_progression": "Graduate Engineer → Project Engineer → Senior Engineer → Project Manager"
+    }
+  },
+  "university_employability_rankings": {
+    "UG": {"rate": 85, "average_salary": 4000},
+    "KNUST": {"rate": 84, "average_salary": 4200},
+    "Ashesi": {"rate": 92, "average_salary": 5000},
+    "UCC": {"rate": 78, "average_salary": 3500},
+    "UPSA": {"rate": 80, "average_salary": 3800}
+  }
+}

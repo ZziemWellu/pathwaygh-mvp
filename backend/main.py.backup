@@ -1,0 +1,496 @@
+"""
+PathwayGH Backend - Main Application
+FastAPI server with ML-based career guidance
+"""
+
+from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
+from typing import List, Optional, Dict
+import logging
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+# ============================================
+# FastAPI App
+# ============================================
+
+app = FastAPI(
+    title="PathwayGH API",
+    description="AI-Powered Career Guidance for Ghanaian Students",
+    version="2.0.0",
+    docs_url="/api/docs",
+    redoc_url="/api/redoc",
+)
+
+# CORS middleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# ============================================
+# In-Memory Career Data
+# ============================================
+
+CAREERS = [
+    {
+        "id": 1,
+        "slug": "medical-doctor",
+        "name": "Medical Doctor",
+        "field": "Healthcare",
+        "description": "Diagnoses and treats illnesses. Requires MBChB degree from UG, KNUST, or UHAS.",
+        "salary_range": "GH₵ 5,000 - 15,000",
+        "duration_years": 10,
+        "typical_aggregate": 12,
+        "required_subjects": ["Biology", "Chemistry", "Physics"],
+        "universities": ["University of Ghana", "KNUST", "UHAS"]
+    },
+    {
+        "id": 2,
+        "slug": "software-engineer",
+        "name": "Software Engineer",
+        "field": "Technology",
+        "description": "Designs and develops software applications. High demand in Ghana's growing tech sector.",
+        "salary_range": "GH₵ 3,000 - 12,000",
+        "duration_years": 4,
+        "typical_aggregate": 18,
+        "required_subjects": ["Elective Mathematics"],
+        "universities": ["University of Ghana", "KNUST", "Ashesi"]
+    },
+    {
+        "id": 3,
+        "slug": "civil-engineer",
+        "name": "Civil Engineer",
+        "field": "Engineering",
+        "description": "Designs infrastructure like roads, bridges, and buildings.",
+        "salary_range": "GH₵ 4,000 - 12,000",
+        "duration_years": 5,
+        "typical_aggregate": 16,
+        "required_subjects": ["Physics", "Chemistry", "Elective Mathematics"],
+        "universities": ["KNUST", "University of Ghana"]
+    },
+    {
+        "id": 4,
+        "slug": "lawyer",
+        "name": "Lawyer",
+        "field": "Legal",
+        "description": "Represents clients in legal matters. Requires LLB and Ghana Bar exams.",
+        "salary_range": "GH₵ 5,000 - 20,000",
+        "duration_years": 7,
+        "typical_aggregate": 12,
+        "required_subjects": ["Government", "Literature"],
+        "universities": ["University of Ghana", "KNUST", "Central University"]
+    },
+    {
+        "id": 5,
+        "slug": "accountant",
+        "name": "Accountant",
+        "field": "Business",
+        "description": "Manages financial records and audits. ICAG certification available.",
+        "salary_range": "GH₵ 3,000 - 15,000",
+        "duration_years": 4,
+        "typical_aggregate": 16,
+        "required_subjects": ["Financial Accounting", "Business Management"],
+        "universities": ["University of Ghana", "UPSA", "KNUST"]
+    },
+    {
+        "id": 6,
+        "slug": "architect",
+        "name": "Architect",
+        "field": "Creative Arts",
+        "description": "Designs buildings and structures. Requires portfolio for KNUST admission.",
+        "salary_range": "GH₵ 4,000 - 15,000",
+        "duration_years": 6,
+        "typical_aggregate": 14,
+        "required_subjects": ["General Knowledge in Art"],
+        "universities": ["KNUST", "University of Ghana"]
+    },
+    {
+        "id": 7,
+        "slug": "nurse",
+        "name": "Nurse",
+        "field": "Healthcare",
+        "description": "Provides patient care in hospitals and clinics across Ghana.",
+        "salary_range": "GH₵ 2,500 - 8,000",
+        "duration_years": 4,
+        "typical_aggregate": 18,
+        "required_subjects": ["Biology", "Chemistry"],
+        "universities": ["University of Ghana", "UHAS", "UCC"]
+    },
+    {
+        "id": 8,
+        "slug": "teacher",
+        "name": "Teacher",
+        "field": "Education",
+        "description": "Educates students at basic and senior high school levels.",
+        "salary_range": "GH₵ 1,500 - 5,000",
+        "duration_years": 4,
+        "typical_aggregate": 24,
+        "required_subjects": [],
+        "universities": ["University of Education", "UCC", "UEW"]
+    },
+    {
+        "id": 9,
+        "slug": "pharmacist",
+        "name": "Pharmacist",
+        "field": "Healthcare",
+        "description": "Dispenses medications and advises on drug safety.",
+        "salary_range": "GH₵ 4,000 - 10,000",
+        "duration_years": 6,
+        "typical_aggregate": 15,
+        "required_subjects": ["Biology", "Chemistry"],
+        "universities": ["KNUST", "University of Ghana", "UCC"]
+    },
+    {
+        "id": 10,
+        "slug": "agricultural-scientist",
+        "name": "Agricultural Scientist",
+        "field": "Agriculture",
+        "description": "Researches crop production and sustainable farming.",
+        "salary_range": "GH₵ 3,000 - 8,000",
+        "duration_years": 5,
+        "typical_aggregate": 20,
+        "required_subjects": ["Biology", "Chemistry"],
+        "universities": ["University of Ghana", "KNUST", "UDS"]
+    }
+]
+
+# ============================================
+# Health Check
+# ============================================
+
+@app.get("/")
+async def root():
+    return {"message": "PathwayGH API", "status": "operational", "version": "2.0", "docs": "/api/docs"}
+
+@app.get("/health")
+async def health_check():
+    return {"status": "healthy", "service": "pathwaygh-backend", "careers_count": len(CAREERS)}
+
+# ============================================
+# Careers Endpoints
+# ============================================
+
+@app.get("/api/careers")
+async def get_careers(search: Optional[str] = None):
+    if search:
+        results = [c for c in CAREERS if search.lower() in c["name"].lower()]
+        return results
+    return CAREERS
+
+@app.get("/api/careers/{slug}")
+async def get_career_by_slug(slug: str):
+    for career in CAREERS:
+        if career["slug"] == slug:
+            return career
+    raise HTTPException(status_code=404, detail="Career not found")
+
+# ============================================
+# Eligibility Checker
+# ============================================
+
+class GradeInput(BaseModel):
+    english: str
+    math: str
+    science: str
+    social: str
+    electives: Dict[str, str]
+
+@app.post("/api/eligibility/check")
+async def check_eligibility(grades: GradeInput):
+    grade_map = {"A1": 1, "B2": 2, "B3": 3, "C4": 4, "C5": 5, "C6": 6, "D7": 7, "E8": 8, "F9": 9}
+    
+    all_grades = [
+        grade_map.get(grades.english, 9),
+        grade_map.get(grades.math, 9),
+        grade_map.get(grades.science, 9),
+        grade_map.get(grades.social, 9),
+    ]
+    for grade in grades.electives.values():
+        all_grades.append(grade_map.get(grade, 9))
+    
+    all_grades.sort()
+    aggregate = sum(all_grades[:6])
+    
+    programmes = [
+        {"name": "Medicine (MBChB)", "cutoff": 12, "universities": ["UG", "KNUST", "UHAS"]},
+        {"name": "Engineering", "cutoff": 16, "universities": ["KNUST", "UG"]},
+        {"name": "Computer Science", "cutoff": 18, "universities": ["UG", "KNUST", "Ashesi"]},
+        {"name": "Law (LLB)", "cutoff": 12, "universities": ["UG", "KNUST"]},
+        {"name": "Business Administration", "cutoff": 20, "universities": ["UG", "UPSA", "KNUST"]},
+        {"name": "Nursing", "cutoff": 18, "universities": ["UG", "UHAS", "UCC"]},
+    ]
+    
+    eligible = [p for p in programmes if aggregate <= p["cutoff"]]
+    
+    return {
+        "aggregate": aggregate,
+        "eligible_programmes": eligible[:5],
+        "total_eligible": len(eligible)
+    }
+
+# ============================================
+# Quiz Endpoints
+# ============================================
+
+class QuizAnswers(BaseModel):
+    q1: str
+    q2: str
+    q3: str
+    q4: str
+    q5: str
+
+@app.get("/api/quiz/questions")
+async def get_quiz_questions():
+    return {
+        "questions": [
+            {"id": "q1", "text": "What interests you most?", "options": ["Helping people", "Technology", "Business", "Creative work", "Working outdoors"]},
+            {"id": "q2", "text": "What is your strongest subject?", "options": ["Science", "Mathematics", "Arts/Literature", "Business", "Technical"]},
+            {"id": "q3", "text": "How do you prefer to work?", "options": ["Office", "Hospital", "Remote", "Field/Outdoors"]},
+            {"id": "q4", "text": "What matters most in a career?", "options": ["High income", "Making impact", "Job security", "Creativity"]},
+            {"id": "q5", "text": "Your current stage?", "options": ["JHS", "SHS", "University", "TVET"]}
+        ]
+    }
+
+@app.post("/api/quiz/submit")
+async def submit_quiz(answers: QuizAnswers):
+    interest = answers.q1.lower()
+    strength = answers.q2.lower()
+    
+    if "helping" in interest or "science" in strength:
+        primary = CAREERS[0]
+    elif "technology" in interest or "math" in strength:
+        primary = CAREERS[1]
+    elif "business" in interest:
+        primary = CAREERS[4]
+    else:
+        primary = CAREERS[0]
+    
+    return {
+        "primary_career": {
+            "name": primary["name"],
+            "field": primary["field"],
+            "description": primary["description"],
+            "typical_aggregate": primary["typical_aggregate"]
+        },
+        "alternatives": [CAREERS[2], CAREERS[3], CAREERS[6]],
+        "confidence": "High",
+        "explanation": f"Your interest in {answers.q1} and strength in {answers.q2} aligns well with {primary['name']}."
+    }
+
+# ============================================
+# Chatbot Endpoint
+# ============================================
+
+class ChatMessage(BaseModel):
+    message: str
+    session_id: Optional[str] = None
+
+@app.post("/api/chatbot/chat")
+async def chat(message: ChatMessage):
+    msg_lower = message.message.lower()
+    
+    if "doctor" in msg_lower or "medicine" in msg_lower:
+        reply = "To become a doctor in Ghana: Choose General Science in SHS, take Biology/Chemistry/Physics, target aggregate ≤ 12, apply to UG/KNUST/UHAS, complete 6-year MBChB, pass Medical Council exams."
+    elif "engineer" in msg_lower:
+        reply = "To become an engineer: Choose General Science, take Physics/Chemistry/Elective Maths, target aggregate ≤ 16, apply to KNUST/UG, complete 4-year BSc, register with GhIE."
+    elif "lawyer" in msg_lower:
+        reply = "To become a lawyer: Choose General Arts, take Government/Literature, target aggregate ≤ 12, apply to UG/KNUST Law, complete LLB, pass Ghana Bar exams."
+    elif "aggregate" in msg_lower:
+        reply = "WASSCE aggregate is best 6 subjects (4 cores + 2 electives). A1=1, B2=2, B3=3, C4=4, etc. Lower is better! Medicine needs ≤12, Engineering ≤16."
+    else:
+        reply = "I can help you with career guidance! Ask me about becoming a Doctor, Engineer, Lawyer, or check WASSCE requirements. Try our Career Search or take the Quiz!"
+    
+    return {"reply": reply, "session_id": message.session_id or "new-session"}
+
+# ============================================
+# ML + GPT Career Recommendation Endpoint
+# ============================================
+
+class MLRecommendationRequest(BaseModel):
+    aggregate: int
+    subjects: Dict[str, int]
+    interests: Dict[str, int]
+
+@app.post("/api/ml/recommend")
+async def ml_recommend(request: MLRecommendationRequest):
+    """ML-based career recommendation with GPT enhancement"""
+    try:
+        from ml.predictor import predictor
+        results = predictor.predict(
+            aggregate=request.aggregate,
+            subject_scores=request.subjects,
+            interest_scores=request.interests
+        )
+        return results
+    except Exception as e:
+        logger.error(f"ML recommendation error: {e}")
+        return {
+            "error": str(e),
+            "predictions": [],
+            "gpt_guidance": None
+        }
+
+print("✅ PathwayGH API ready!")
+print("   - /api/careers - Browse careers")
+print("   - /api/quiz - Career quiz")
+print("   - /api/eligibility/check - WASSCE checker")
+print("   - /api/ml/recommend - AI career recommendations")
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run("main_clean:app", host="0.0.0.0", port=8001, reload=True)
+
+# ============================================
+# Smart Career Recommender Endpoint
+# ============================================
+
+@app.post("/api/smart/recommend")
+async def smart_recommend(request: MLRecommendationRequest):
+    """Smart career recommendation based on real Ghanaian career data"""
+    from ml.smart_recommender import recommender
+    
+    results = recommender.recommend(
+        aggregate=request.aggregate,
+        subjects=request.subjects,
+        interests=request.interests
+    )
+    
+    return results
+
+print("✅ Smart recommender endpoint added!")
+
+# ============================================
+# AI Career Copilot - RAG + GPT-4o-mini
+# ============================================
+
+class CopilotRequest(BaseModel):
+    aggregate: int
+    interests: List[str]
+    strong_subjects: List[str]
+    chat_message: Optional[str] = None
+
+
+@app.post("/api/copilot/advise")
+async def copilot_advise(request: CopilotRequest):
+    """AI Career Copilot - personalized guidance using RAG + GPT"""
+    from ml.career_copilot import copilot
+    from ml.smart_recommender import recommender
+    
+    # First get smart recommendations
+    subjects_dict = {s: 85 for s in request.strong_subjects}
+    interests_dict = {i: 8 for i in request.interests}
+    
+    recommendations = recommender.recommend(
+        aggregate=request.aggregate,
+        subjects=subjects_dict,
+        interests=interests_dict
+    )
+    
+    # Then get GPT-enhanced guidance
+    student_profile = {
+        "aggregate": request.aggregate,
+        "interests": request.interests,
+        "strong_subjects": request.strong_subjects
+    }
+    
+    guidance = copilot.get_guidance(student_profile, recommendations.get('predictions', []))
+    
+    return {
+        "recommendations": recommendations.get('predictions', [])[:3],
+        "guidance": guidance,
+        "student_profile": student_profile
+    }
+
+
+@app.post("/api/copilot/chat")
+async def copilot_chat(message: str, context: dict = None):
+    """Interactive chat with AI Career Copilot"""
+    from ml.career_copilot import copilot
+    
+    if not copilot.enabled:
+        return {"reply": "Please add your OpenAI API key to enable the AI Copilot. Contact admin for access.", "source": "offline"}
+    
+    try:
+        response = copilot.client.chat.completions.create(
+            model="gpt-4o-mini",
+            messages=[
+                {"role": "system", "content": "You are a career advisor for Ghanaian students. Be helpful, specific, and encouraging."},
+                {"role": "user", "content": message}
+            ],
+            max_tokens=200
+        )
+        return {"reply": response.choices[0].message.content.strip(), "source": "GPT-4o-mini"}
+    except Exception as e:
+        return {"reply": f"Sorry, I'm having trouble right now. Error: {str(e)}", "source": "error"}
+
+print("✅ AI Career Copilot endpoints ready!")
+
+# ============================================
+# REAL GHANAIAN DATA RECOMMENDER (COMPLETE)
+# ============================================
+
+from ml.real_recommender_engine import real_recommender
+
+class RealDataRequest(BaseModel):
+    aggregate: int
+    interests: List[str]
+    subjects: List[str]
+
+
+@app.post("/api/real-data/recommend")
+    recommendations = real_recommender.recommend(
+    
+    # Get detailed program requirements for each recommendation
+    for rec in recommendations:
+        program_data = real_data.get_program_requirements(rec["career"])
+        rec["career_description"] = program_data.get("career_description", "")
+        rec["licensing_body"] = program_data.get("licensing_body", "")
+    
+    return {
+        "student_profile": {
+            "aggregate": request.aggregate,
+            "interests": request.interests,
+            "subjects": request.subjects
+        },
+        "recommendations": recommendations,
+        "data_sources": real_data.get_data_sources(),
+        "methodology": "Recommendations based on actual university admission requirements, WASSCE grading from WAEC Ghana, and labor market data from Ghana Statistical Service"
+    }
+        "student_profile": {
+            "aggregate": request.aggregate,
+            "interests": request.interests,
+            "subjects": request.subjects
+        },
+        "recommendations": recommendations,
+        "data_sources": [
+            "University of Ghana",
+            "KNUST", 
+            "UHAS",
+            "WAEC Ghana",
+            "Ghana Statistical Service"
+        ]
+    }
+
+
+@app.get("/api/real-data/universities")
+async def get_all_universities():
+    """Get all Ghanaian universities data"""
+    from ml.real_data_loader import real_data
+    return list(real_data.universities.keys())
+
+
+@app.get("/api/real-data/wassce-info")
+async def get_wassce_info():
+    """Get WASSCE grading information"""
+    from ml.real_data_loader import real_data
+    return real_data.wassce_data
+
+print("✅ REAL GHANAIAN DATA SYSTEM READY!")
+print("   📚 Sources: UG, KNUST, UHAS, WAEC, GSS")
+print("   📊 Loaded with actual admission cutoffs")

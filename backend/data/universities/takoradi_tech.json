@@ -1,0 +1,35 @@
+{
+  "name": "Takoradi Technical University",
+  "abbreviation": "TTU",
+  "location": "Takoradi, Western Region",
+  "established": 1954,
+  "type": "Public Technical University",
+  "specialization": "Engineering and Technical Education",
+  "website": "https://www.ttu.edu.gh",
+  "programs": {
+    "Engineering": {
+      "program_name": "BSc Mechanical Engineering",
+      "cutoff_aggregate": 18,
+      "competitive_aggregate": 16,
+      "duration_years": 4,
+      "required_subjects": ["Physics", "Elective Mathematics"],
+      "recommended_subjects": ["Technical Drawing", "Chemistry"],
+      "wasse_requirements": "Minimum C6 in Physics and Maths",
+      "tuition_per_year": "GH₵ 2,500 - 4,000",
+      "faculty": "Faculty of Engineering",
+      "admission_notes": "HND progression pathways available"
+    },
+    "Hospitality": {
+      "program_name": "BSc Hospitality Management",
+      "cutoff_aggregate": 20,
+      "competitive_aggregate": 18,
+      "duration_years": 4,
+      "required_subjects": ["Management in Living"],
+      "recommended_subjects": ["Food and Nutrition", "Economics"],
+      "wasse_requirements": "Minimum C6 in Home Economics",
+      "tuition_per_year": "GH₵ 2,500 - 4,000",
+      "faculty": "Faculty of Applied Sciences",
+      "admission_notes": "Strong industry connections in Western Region"
+    }
+  }
+}

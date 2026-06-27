@@ -1,0 +1,543 @@
+{
+  "University of Ghana": {
+    "Medical Doctor": {
+      "cutoff": 8,
+      "duration": 6,
+      "subjects": [
+        "Biology",
+        "Chemistry",
+        "Physics"
+      ]
+    },
+    "Pharmacy": {
+      "cutoff": 11,
+      "duration": 6,
+      "subjects": [
+        "Biology",
+        "Chemistry"
+      ]
+    },
+    "Nursing": {
+      "cutoff": 14,
+      "duration": 4,
+      "subjects": [
+        "Biology",
+        "Chemistry"
+      ]
+    },
+    "Computer Science": {
+      "cutoff": 15,
+      "duration": 4,
+      "subjects": [
+        "Elective Mathematics"
+      ]
+    },
+    "Computer Engineering": {
+      "cutoff": 16,
+      "duration": 4,
+      "subjects": [
+        "Elective Mathematics",
+        "Physics"
+      ]
+    },
+    "Law": {
+      "cutoff": 8,
+      "duration": 4,
+      "subjects": [
+        "Government",
+        "Literature"
+      ]
+    },
+    "Economics": {
+      "cutoff": 12,
+      "duration": 4,
+      "subjects": [
+        "Economics",
+        "Mathematics"
+      ]
+    },
+    "Psychology": {
+      "cutoff": 16,
+      "duration": 4,
+      "subjects": [
+        "Social Studies"
+      ]
+    },
+    "Statistics": {
+      "cutoff": 14,
+      "duration": 4,
+      "subjects": [
+        "Elective Mathematics"
+      ]
+    },
+    "Biochemistry": {
+      "cutoff": 14,
+      "duration": 4,
+      "subjects": [
+        "Biology",
+        "Chemistry"
+      ]
+    },
+    "Biomedical Engineering": {
+      "cutoff": 18,
+      "duration": 4,
+      "subjects": [
+        "Biology",
+        "Chemistry",
+        "Physics"
+      ]
+    },
+    "Dentistry": {
+      "cutoff": 10,
+      "duration": 6,
+      "subjects": [
+        "Biology",
+        "Chemistry",
+        "Physics"
+      ]
+    },
+    "Medical Laboratory": {
+      "cutoff": 14,
+      "duration": 4,
+      "subjects": [
+        "Biology",
+        "Chemistry"
+      ]
+    },
+    "Physiotherapy": {
+      "cutoff": 16,
+      "duration": 4,
+      "subjects": [
+        "Biology",
+        "Physics"
+      ]
+    },
+    "Occupational Therapy": {
+      "cutoff": 18,
+      "duration": 4,
+      "subjects": [
+        "Biology"
+      ]
+    },
+    "Radiography": {
+      "cutoff": 15,
+      "duration": 4,
+      "subjects": [
+        "Biology",
+        "Physics"
+      ]
+    },
+    "Dietetics": {
+      "cutoff": 17,
+      "duration": 4,
+      "subjects": [
+        "Biology",
+        "Chemistry"
+      ]
+    },
+    "Public Health": {
+      "cutoff": 16,
+      "duration": 4,
+      "subjects": [
+        "Biology",
+        "Chemistry",
+        "Social Studies"
+      ]
+    }
+  },
+  "KNUST": {
+    "Medicine": {
+      "cutoff": 9,
+      "duration": 6,
+      "subjects": [
+        "Biology",
+        "Chemistry",
+        "Physics"
+      ]
+    },
+    "Pharmacy": {
+      "cutoff": 10,
+      "duration": 6,
+      "subjects": [
+        "Biology",
+        "Chemistry"
+      ]
+    },
+    "Engineering": {
+      "cutoff": 12,
+      "duration": 4,
+      "subjects": [
+        "Physics",
+        "Chemistry",
+        "Elective Mathematics"
+      ]
+    },
+    "Computer Science": {
+      "cutoff": 14,
+      "duration": 4,
+      "subjects": [
+        "Elective Mathematics"
+      ]
+    },
+    "Computer Engineering": {
+      "cutoff": 15,
+      "duration": 4,
+      "subjects": [
+        "Elective Mathematics",
+        "Physics"
+      ]
+    },
+    "Architecture": {
+      "cutoff": 10,
+      "duration": 4,
+      "subjects": [
+        "General Knowledge in Art"
+      ]
+    },
+    "Petroleum Engineering": {
+      "cutoff": 13,
+      "duration": 4,
+      "subjects": [
+        "Physics",
+        "Chemistry",
+        "Elective Mathematics"
+      ]
+    },
+    "Biomedical Engineering": {
+      "cutoff": 16,
+      "duration": 4,
+      "subjects": [
+        "Biology",
+        "Chemistry",
+        "Physics"
+      ]
+    },
+    "Law": {
+      "cutoff": 9,
+      "duration": 4,
+      "subjects": [
+        "Government",
+        "Literature"
+      ]
+    },
+    "Business Administration": {
+      "cutoff": 13,
+      "duration": 4,
+      "subjects": [
+        "Business Management"
+      ]
+    },
+    "Chemical Engineering": {
+      "cutoff": 14,
+      "duration": 4,
+      "subjects": [
+        "Physics",
+        "Chemistry",
+        "Elective Mathematics"
+      ]
+    },
+    "Mechanical Engineering": {
+      "cutoff": 14,
+      "duration": 4,
+      "subjects": [
+        "Physics",
+        "Chemistry",
+        "Elective Mathematics"
+      ]
+    },
+    "Electrical Engineering": {
+      "cutoff": 14,
+      "duration": 4,
+      "subjects": [
+        "Physics",
+        "Chemistry",
+        "Elective Mathematics"
+      ]
+    },
+    "Civil Engineering": {
+      "cutoff": 14,
+      "duration": 4,
+      "subjects": [
+        "Physics",
+        "Chemistry",
+        "Elective Mathematics"
+      ]
+    },
+    "Urban Planning": {
+      "cutoff": 12,
+      "duration": 4,
+      "subjects": [
+        "General Knowledge in Art"
+      ]
+    },
+    "Land Economy": {
+      "cutoff": 14,
+      "duration": 4,
+      "subjects": [
+        "General Knowledge in Art"
+      ]
+    }
+  },
+  "UHAS": {
+    "Medical Doctor": {
+      "cutoff": 10,
+      "duration": 6,
+      "subjects": [
+        "Biology",
+        "Chemistry",
+        "Physics"
+      ]
+    },
+    "Nursing": {
+      "cutoff": 12,
+      "duration": 4,
+      "subjects": [
+        "Biology",
+        "Chemistry"
+      ]
+    },
+    "Public Health": {
+      "cutoff": 14,
+      "duration": 4,
+      "subjects": [
+        "Biology",
+        "Chemistry",
+        "Social Studies"
+      ]
+    },
+    "Pharmacy": {
+      "cutoff": 12,
+      "duration": 6,
+      "subjects": [
+        "Biology",
+        "Chemistry"
+      ]
+    },
+    "Medical Laboratory": {
+      "cutoff": 13,
+      "duration": 4,
+      "subjects": [
+        "Biology",
+        "Chemistry"
+      ]
+    },
+    "Nutrition": {
+      "cutoff": 15,
+      "duration": 4,
+      "subjects": [
+        "Biology",
+        "Chemistry"
+      ]
+    },
+    "Dietetics": {
+      "cutoff": 16,
+      "duration": 4,
+      "subjects": [
+        "Biology",
+        "Chemistry"
+      ]
+    },
+    "Physiotherapy": {
+      "cutoff": 15,
+      "duration": 4,
+      "subjects": [
+        "Biology",
+        "Physics"
+      ]
+    },
+    "Occupational Therapy": {
+      "cutoff": 16,
+      "duration": 4,
+      "subjects": [
+        "Biology"
+      ]
+    },
+    "Radiography": {
+      "cutoff": 14,
+      "duration": 4,
+      "subjects": [
+        "Biology",
+        "Physics"
+      ]
+    }
+  },
+  "UCC": {
+    "Nursing": {
+      "cutoff": 13,
+      "duration": 4,
+      "subjects": [
+        "Biology",
+        "Chemistry"
+      ]
+    },
+    "Pharmacy": {
+      "cutoff": 12,
+      "duration": 4,
+      "subjects": [
+        "Biology",
+        "Chemistry"
+      ]
+    },
+    "Education": {
+      "cutoff": 20,
+      "duration": 4,
+      "subjects": [
+        "English",
+        "Mathematics"
+      ]
+    },
+    "Computer Science": {
+      "cutoff": 15,
+      "duration": 4,
+      "subjects": [
+        "Elective Mathematics"
+      ]
+    },
+    "Business Administration": {
+      "cutoff": 16,
+      "duration": 4,
+      "subjects": [
+        "Business Management"
+      ]
+    }
+  },
+  "Ashesi": {
+    "Computer Science": {
+      "cutoff": 12,
+      "duration": 4,
+      "subjects": [
+        "Elective Mathematics"
+      ]
+    },
+    "Business Administration": {
+      "cutoff": 14,
+      "duration": 4,
+      "subjects": [
+        "Business Management"
+      ]
+    },
+    "Engineering": {
+      "cutoff": 14,
+      "duration": 4,
+      "subjects": [
+        "Physics",
+        "Chemistry",
+        "Elective Mathematics"
+      ]
+    },
+    "Computer Engineering": {
+      "cutoff": 14,
+      "duration": 4,
+      "subjects": [
+        "Elective Mathematics",
+        "Physics"
+      ]
+    },
+    "Information Technology": {
+      "cutoff": 13,
+      "duration": 4,
+      "subjects": [
+        "Elective Mathematics",
+        "ICT"
+      ]
+    }
+  },
+  "UPSA": {
+    "Accounting": {
+      "cutoff": 14,
+      "duration": 4,
+      "subjects": [
+        "Accounting",
+        "Business Management"
+      ]
+    },
+    "Business Administration": {
+      "cutoff": 14,
+      "duration": 4,
+      "subjects": [
+        "Business Management"
+      ]
+    },
+    "Banking and Finance": {
+      "cutoff": 15,
+      "duration": 4,
+      "subjects": [
+        "Business Management",
+        "Economics"
+      ]
+    },
+    "Marketing": {
+      "cutoff": 16,
+      "duration": 4,
+      "subjects": [
+        "Business Management"
+      ]
+    }
+  },
+  "GIMPA": {
+    "Law": {
+      "cutoff": 10,
+      "duration": 4,
+      "subjects": [
+        "Government",
+        "Literature"
+      ]
+    },
+    "Business Administration": {
+      "cutoff": 15,
+      "duration": 4,
+      "subjects": [
+        "Business Management"
+      ]
+    },
+    "Public Administration": {
+      "cutoff": 18,
+      "duration": 4,
+      "subjects": [
+        "Government",
+        "Social Studies"
+      ]
+    },
+    "Accounting": {
+      "cutoff": 14,
+      "duration": 4,
+      "subjects": [
+        "Accounting",
+        "Business Management"
+      ]
+    }
+  },
+  "Central University": {
+    "Law": {
+      "cutoff": 12,
+      "duration": 4,
+      "subjects": [
+        "Government",
+        "Literature"
+      ]
+    },
+    "Pharmacy": {
+      "cutoff": 13,
+      "duration": 6,
+      "subjects": [
+        "Biology",
+        "Chemistry"
+      ]
+    },
+    "Nursing": {
+      "cutoff": 15,
+      "duration": 4,
+      "subjects": [
+        "Biology",
+        "Chemistry"
+      ]
+    },
+    "Computer Science": {
+      "cutoff": 16,
+      "duration": 4,
+      "subjects": [
+        "Elective Mathematics"
+      ]
+    }
+  }
+}

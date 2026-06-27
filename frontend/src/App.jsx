@@ -1,0 +1,137 @@
+import React, { useState, useEffect } from 'react'
+import axios from 'axios'
+import AIRecommendation from './AIRecommendation'
+import AICopilot from './AICopilot'
+
+const api = axios.create({
+  baseURL: 'http://localhost:8001',
+})
+
+function App() {
+  const [careers, setCareers] = useState([])
+  const [search, setSearch] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [selectedCareer, setSelectedCareer] = useState(null)
+  const [activeTab, setActiveTab] = useState('browse')
+
+  useEffect(() => {
+    fetchCareers()
+  }, [])
+
+  const fetchCareers = async () => {
+    setLoading(true)
+    try {
+      const response = await api.get('/api/careers')
+      setCareers(response.data)
+    } catch (error) {
+      console.error('Error fetching careers:', error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const searchCareers = async () => {
+    if (!search.trim()) {
+      fetchCareers()
+      return
+    }
+    setLoading(true)
+    try {
+      const response = await api.get(`/api/careers?search=${search}`)
+      setCareers(response.data)
+    } catch (error) {
+      console.error('Search error:', error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const viewCareerDetails = async (slug) => {
+    try {
+      const response = await api.get(`/api/careers/${slug}`)
+      setSelectedCareer(response.data)
+    } catch (error) {
+      console.error('Error fetching career details:', error)
+    }
+  }
+
+  return (
+    <div style={{ fontFamily: 'Arial, sans-serif', maxWidth: '1200px', margin: '0 auto', padding: '20px' }}>
+      <header style={{ textAlign: 'center', marginBottom: '30px' }}>
+        <h1 style={{ color: '#1a5f2b', fontSize: '48px', margin: '0' }}>🇬🇭 PathwayGH</h1>
+        <p style={{ fontSize: '18px', color: '#555' }}>AI-Powered Career Guidance for Ghanaian Students</p>
+        <p style={{ fontSize: '14px', color: '#888' }}>Powered by RAG + GPT-4o-mini</p>
+      </header>
+
+      {/* Tabs */}
+      <div style={{ display: 'flex', justifyContent: 'center', gap: '20px', marginBottom: '30px', borderBottom: '2px solid #e0e0e0', paddingBottom: '10px' }}>
+        <button onClick={() => setActiveTab('browse')} style={{ padding: '10px 24px', background: 'none', border: 'none', cursor: 'pointer', fontSize: '16px', fontWeight: activeTab === 'browse' ? 'bold' : 'normal', borderBottom: activeTab === 'browse' ? '3px solid #1a5f2b' : 'none', color: activeTab === 'browse' ? '#1a5f2b' : '#666' }}>🔍 Browse Careers</button>
+        <button onClick={() => setActiveTab('ai')} style={{ padding: '10px 24px', background: 'none', border: 'none', cursor: 'pointer', fontSize: '16px', fontWeight: activeTab === 'ai' ? 'bold' : 'normal', borderBottom: activeTab === 'ai' ? '3px solid #1a5f2b' : 'none', color: activeTab === 'ai' ? '#1a5f2b' : '#666' }}>🎯 Smart Match</button>
+        <button onClick={() => setActiveTab('copilot')} style={{ padding: '10px 24px', background: 'none', border: 'none', cursor: 'pointer', fontSize: '16px', fontWeight: activeTab === 'copilot' ? 'bold' : 'normal', borderBottom: activeTab === 'copilot' ? '3px solid #1a5f2b' : 'none', color: activeTab === 'copilot' ? '#1a5f2b' : '#666' }}>🤖 AI Copilot</button>
+      </div>
+
+      {activeTab === 'ai' && <AIRecommendation />}
+      {activeTab === 'copilot' && <AICopilot />}
+      
+      {activeTab === 'browse' && (
+        <>
+          {/* Search Bar */}
+          <div style={{ display: 'flex', gap: '10px', marginBottom: '30px', justifyContent: 'center' }}>
+            <input type="text" placeholder="Search a career... e.g., Doctor, Engineer, Lawyer" value={search} onChange={(e) => setSearch(e.target.value)} onKeyPress={(e) => e.key === 'Enter' && searchCareers()} style={{ padding: '14px', width: '400px', borderRadius: '8px', border: '1px solid #ccc', fontSize: '16px' }} />
+            <button onClick={searchCareers} style={{ padding: '14px 28px', background: '#1a5f2b', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer', fontSize: '16px' }}>Search</button>
+          </div>
+
+          {/* Quick Links */}
+          <div style={{ display: 'flex', gap: '15px', justifyContent: 'center', marginBottom: '40px', flexWrap: 'wrap' }}>
+            {['Doctor', 'Engineer', 'Lawyer', 'Accountant', 'Nurse'].map(career => (
+              <button key={career} onClick={() => { setSearch(career); setTimeout(searchCareers, 100) }} style={{ padding: '8px 16px', background: '#f0f0f0', border: 'none', borderRadius: '20px', cursor: 'pointer' }}>{career}</button>
+            ))}
+          </div>
+
+          {/* Career Details Modal */}
+          {selectedCareer && (
+            <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.5)', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 1000 }}>
+              <div style={{ background: 'white', padding: '30px', borderRadius: '12px', maxWidth: '600px', maxHeight: '80vh', overflow: 'auto' }}>
+                <h2 style={{ color: '#1a5f2b' }}>{selectedCareer.name}</h2>
+                <p><strong>Field:</strong> {selectedCareer.field}</p>
+                <p><strong>Description:</strong> {selectedCareer.description}</p>
+                <p><strong>Salary:</strong> {selectedCareer.salary_range}</p>
+                <p><strong>Duration:</strong> {selectedCareer.duration_years} years</p>
+                <p><strong>Typical Aggregate:</strong> ≤{selectedCareer.typical_aggregate}</p>
+                <p><strong>Universities:</strong> {selectedCareer.universities?.join(', ')}</p>
+                <button onClick={() => setSelectedCareer(null)} style={{ marginTop: '20px', padding: '10px 20px', background: '#1a5f2b', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer' }}>Close</button>
+              </div>
+            </div>
+          )}
+
+          {/* Career Cards */}
+          {loading ? <p style={{ textAlign: 'center' }}>Loading careers...</p> : (
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '20px' }}>
+              {careers.map((career) => (
+                <div key={career.id} onClick={() => viewCareerDetails(career.slug)} style={{ border: '1px solid #e0e0e0', borderRadius: '12px', padding: '20px', background: 'white', boxShadow: '0 2px 8px rgba(0,0,0,0.1)', cursor: 'pointer', transition: 'transform 0.2s' }}
+                  onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-4px)'}
+                  onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}>
+                  <h3 style={{ margin: '0 0 10px 0', color: '#1a5f2b' }}>{career.name}</h3>
+                  <span style={{ display: 'inline-block', padding: '4px 12px', background: '#e8f5e9', borderRadius: '16px', fontSize: '12px', marginBottom: '12px' }}>{career.field}</span>
+                  <p style={{ color: '#666', margin: '0 0 15px 0', fontSize: '14px' }}>{career.description}</p>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px', color: '#888' }}>
+                    <span>💰 {career.salary_range}</span>
+                    <span>🎓 {career.duration_years} years</span>
+                    <span>📊 Aggregate: {career.typical_aggregate || 'N/A'}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </>
+      )}
+
+      <footer style={{ textAlign: 'center', marginTop: '50px', padding: '20px', color: '#888', borderTop: '1px solid #eee' }}>
+        <p>© 2026 PathwayGH | Built for Ghana AI Innovation Challenge</p>
+        <p style={{ fontSize: '12px' }}>🤖 RAG + GPT-4o-mini | Smart Career Matching | Ghana Universities</p>
+      </footer>
+    </div>
+  )
+}
+
+export default App

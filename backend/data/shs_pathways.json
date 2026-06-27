@@ -1,0 +1,67 @@
+{
+  "General Science": {
+    "eligible_careers": [
+      "Medical Doctor", "Pharmacist", "Nurse", "Software Engineer",
+      "Civil Engineer", "Architect", "Computer Scientist", "Biomedical Scientist",
+      "Dentist", "Veterinarian", "Agricultural Scientist", "Geologist"
+    ],
+    "not_eligible_careers": ["Lawyer", "Journalist", "Economist (some universities)"],
+    "core_subjects": ["English", "Core Mathematics", "Integrated Science", "Social Studies"],
+    "elective_subjects": ["Biology", "Chemistry", "Physics", "Elective Mathematics", "ICT"]
+  },
+  "General Arts": {
+    "eligible_careers": [
+      "Lawyer", "Economist", "Sociologist", "Psychologist", "Journalist",
+      "Political Scientist", "Social Worker", "Public Administrator", "Historian",
+      "Geographer", "Linguist", "International Relations Officer"
+    ],
+    "not_eligible_careers": ["Medical Doctor", "Engineer", "Pharmacist", "Nurse"],
+    "core_subjects": ["English", "Core Mathematics", "Social Studies", "Literature in English"],
+    "elective_subjects": ["Government", "Literature", "History", "French", "Economics", "Geography", "Religious Studies"]
+  },
+  "Business": {
+    "eligible_careers": [
+      "Accountant", "Business Administrator", "Economist", "Marketing Professional",
+      "Human Resource Manager", "Banker", "Financial Analyst", "Auditor", "Tax Consultant"
+    ],
+    "not_eligible_careers": ["Medical Doctor", "Engineer", "Lawyer", "Pharmacist"],
+    "core_subjects": ["English", "Core Mathematics", "Social Studies", "Business Management"],
+    "elective_subjects": ["Accounting", "Economics", "Business Management", "Elective Mathematics"]
+  },
+  "Visual Arts": {
+    "eligible_careers": [
+      "Architect", "Graphic Designer", "Fine Artist", "Fashion Designer",
+      "Interior Designer", "Industrial Designer", "Art Teacher", "Animator"
+    ],
+    "not_eligible_careers": ["Medical Doctor", "Engineer", "Pharmacist", "Lawyer"],
+    "core_subjects": ["English", "Core Mathematics", "Social Studies"],
+    "elective_subjects": ["General Knowledge in Art", "Picture Making", "Sculpture", "Ceramics", "Leatherwork"]
+  },
+  "Home Economics": {
+    "eligible_careers": [
+      "Nutritionist", "Food Scientist", "Hospitality Manager", "Caterer",
+      "Home Economics Teacher", "Consumer Scientist", "Dietitian"
+    ],
+    "not_eligible_careers": ["Medical Doctor", "Engineer", "Lawyer", "Pharmacist"],
+    "core_subjects": ["English", "Core Mathematics", "Social Studies"],
+    "elective_subjects": ["Management in Living", "Food and Nutrition", "Clothing and Textiles", "Economics"]
+  },
+  "Agricultural Science": {
+    "eligible_careers": [
+      "Agricultural Scientist", "Agronomist", "Farm Manager", "Agricultural Engineer",
+      "Animal Scientist", "Food Scientist", "Natural Resources Manager"
+    ],
+    "not_eligible_careers": ["Medical Doctor", "Lawyer", "Software Engineer"],
+    "core_subjects": ["English", "Core Mathematics", "Integrated Science", "Social Studies"],
+    "elective_subjects": ["Biology", "Chemistry", "Agricultural Science", "Physics"]
+  },
+  "Technical": {
+    "eligible_careers": [
+      "Civil Engineer", "Mechanical Engineer", "Electrical Engineer",
+      "Building Technologist", "Quantity Surveyor", "Technical Teacher"
+    ],
+    "not_eligible_careers": ["Medical Doctor", "Lawyer", "Pharmacist"],
+    "core_subjects": ["English", "Core Mathematics", "Social Studies", "Technical Drawing"],
+    "elective_subjects": ["Technical Drawing", "Physics", "Elective Mathematics", "Engineering Science"]
+  }
+}

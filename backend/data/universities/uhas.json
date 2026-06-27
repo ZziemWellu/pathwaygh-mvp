@@ -1,0 +1,73 @@
+{
+  "name": "University of Health and Allied Sciences",
+  "abbreviation": "UHAS",
+  "location": "Ho, Volta Region",
+  "established": 2011,
+  "ranking_ghana": 5,
+  "specialization": "Health Sciences",
+  "programs": {
+    "Medical Doctor": {
+      "program_name": "MBChB Medicine and Surgery",
+      "cutoff_aggregate": 10,
+      "competitive_aggregate": 8,
+      "duration_years": 6,
+      "required_subjects": ["Biology", "Chemistry", "Physics"],
+      "recommended_subjects": ["Elective Mathematics"],
+      "wasse_requirements": "Minimum B3 in all sciences",
+      "tuition_per_year": "GH₵ 4,000 - 7,000",
+      "faculty": "School of Medicine",
+      "admission_notes": "Focus on community health and rural medicine"
+    },
+    "Nursing": {
+      "program_name": "BSc Nursing",
+      "cutoff_aggregate": 12,
+      "competitive_aggregate": 9,
+      "duration_years": 4,
+      "required_subjects": ["Biology", "Chemistry"],
+      "recommended_subjects": ["Physics"],
+      "wasse_requirements": "Minimum B3 in Biology and Chemistry",
+      "tuition_per_year": "GH₵ 3,000 - 5,000",
+      "faculty": "School of Nursing and Midwifery",
+      "admission_notes": "Clinical training in Volta Region hospitals"
+    },
+    "Public Health": {
+      "program_name": "BSc Public Health",
+      "cutoff_aggregate": 14,
+      "competitive_aggregate": 11,
+      "duration_years": 4,
+      "required_subjects": ["Biology", "Chemistry"],
+      "recommended_subjects": ["Social Studies"],
+      "wasse_requirements": "Minimum C6 in Biology and Chemistry",
+      "tuition_per_year": "GH₵ 3,000 - 5,000",
+      "faculty": "School of Public Health",
+      "admission_notes": "Focus on disease prevention and health promotion"
+    },
+    "Pharmacy": {
+      "program_name": "Doctor of Pharmacy",
+      "cutoff_aggregate": 12,
+      "competitive_aggregate": 10,
+      "duration_years": 6,
+      "required_subjects": ["Biology", "Chemistry"],
+      "recommended_subjects": ["Physics"],
+      "wasse_requirements": "Minimum B3 in Biology and Chemistry",
+      "tuition_per_year": "GH₵ 4,000 - 6,000",
+      "faculty": "School of Pharmacy",
+      "admission_notes": "Growing pharmacy program"
+    },
+    "Medical Laboratory": {
+      "program_name": "BSc Medical Laboratory Sciences",
+      "cutoff_aggregate": 13,
+      "competitive_aggregate": 10,
+      "duration_years": 4,
+      "required_subjects": ["Biology", "Chemistry"],
+      "recommended_subjects": ["Physics"],
+      "wasse_requirements": "Minimum B3 in Biology and Chemistry",
+      "tuition_per_year": "GH₵ 3,000 - 5,000",
+      "faculty": "School of Allied Health Sciences",
+      "admission_notes": "Essential for hospital diagnostics"
+    }
+  },
+  "total_students": 8000,
+  "undergraduate_programs": 30,
+  "website": "https://www.uhas.edu.gh"
+}

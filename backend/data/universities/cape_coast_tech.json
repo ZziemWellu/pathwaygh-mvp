@@ -1,0 +1,22 @@
+{
+  "name": "Cape Coast Technical University",
+  "abbreviation": "CCTU",
+  "location": "Cape Coast, Central Region",
+  "established": 1984,
+  "type": "Public Technical University",
+  "website": "https://www.cctu.edu.gh",
+  "programs": {
+    "Engineering": {
+      "program_name": "BSc Civil Engineering",
+      "cutoff_aggregate": 20,
+      "competitive_aggregate": 17,
+      "duration_years": 4,
+      "required_subjects": ["Physics", "Elective Mathematics"],
+      "recommended_subjects": ["Technical Drawing"],
+      "wasse_requirements": "Minimum C6 in Physics and Maths",
+      "tuition_per_year": "GH₵ 2,500 - 4,000",
+      "faculty": "Faculty of Engineering",
+      "admission_notes": "Practical engineering focus"
+    }
+  }
+}

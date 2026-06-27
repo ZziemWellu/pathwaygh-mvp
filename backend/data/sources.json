@@ -1,0 +1,95 @@
+{
+  "data_sources": [
+    {
+      "name": "University of Ghana",
+      "type": "University Admissions",
+      "url": "https://admission.ug.edu.gh",
+      "data_used": ["Program cutoffs", "Subject requirements", "Duration", "Tuition"],
+      "last_updated": "2024"
+    },
+    {
+      "name": "Kwame Nkrumah University of Science and Technology (KNUST)",
+      "type": "University Admissions",
+      "url": "https://www.knust.edu.gh",
+      "data_used": ["Program cutoffs", "Engineering requirements", "Architecture requirements"],
+      "last_updated": "2024"
+    },
+    {
+      "name": "University of Health and Allied Sciences (UHAS)",
+      "type": "University Admissions",
+      "url": "https://www.uhas.edu.gh",
+      "data_used": ["Medicine requirements", "Nursing requirements", "Public Health requirements"],
+      "last_updated": "2024"
+    },
+    {
+      "name": "University of Cape Coast (UCC)",
+      "type": "University Admissions",
+      "url": "https://www.ucc.edu.gh",
+      "data_used": ["Nursing requirements", "Pharmacy requirements", "Education requirements"],
+      "last_updated": "2024"
+    },
+    {
+      "name": "University of Education, Winneba (UEW)",
+      "type": "University Admissions",
+      "url": "https://www.uew.edu.gh",
+      "data_used": ["Education programs", "Teacher training requirements"],
+      "last_updated": "2024"
+    },
+    {
+      "name": "University of Professional Studies, Accra (UPSA)",
+      "type": "University Admissions",
+      "url": "https://www.upsa.edu.gh",
+      "data_used": ["Accounting requirements", "Business programs", "Finance programs"],
+      "last_updated": "2024"
+    },
+    {
+      "name": "Ashesi University",
+      "type": "University Admissions (Private)",
+      "url": "https://www.ashesi.edu.gh",
+      "data_used": ["Computer Science requirements", "Business Administration"],
+      "last_updated": "2024"
+    },
+    {
+      "name": "WAEC Ghana",
+      "type": "Examination Body",
+      "url": "https://waecgh.org",
+      "data_used": ["WASSCE grading system", "Aggregate calculation method"],
+      "last_updated": "2024"
+    },
+    {
+      "name": "Ghana Statistical Service",
+      "type": "Government Agency",
+      "url": "https://www.statsghana.gov.gh",
+      "data_used": ["Employment statistics", "Labor market data"],
+      "last_updated": "2024"
+    },
+    {
+      "name": "Ghana Health Service",
+      "type": "Government Agency",
+      "url": "https://www.ghs.gov.gh",
+      "data_used": ["Healthcare job demand", "Medical staffing needs"],
+      "last_updated": "2024"
+    },
+    {
+      "name": "Ghana Education Service",
+      "type": "Government Agency",
+      "url": "https://ges.gov.gh",
+      "data_used": ["SHS program structures", "Curriculum guidelines"],
+      "last_updated": "2024"
+    },
+    {
+      "name": "Jobberman Ghana",
+      "type": "Job Portal",
+      "url": "https://www.jobberman.com.gh",
+      "data_used": ["Salary ranges", "Job demand trends"],
+      "last_updated": "2024"
+    },
+    {
+      "name": "Payscale Ghana",
+      "type": "Salary Data",
+      "url": "https://www.payscale.com",
+      "data_used": ["Salary benchmarks by career", "Experience-based pay"],
+      "last_updated": "2024"
+    }
+  ]
+}

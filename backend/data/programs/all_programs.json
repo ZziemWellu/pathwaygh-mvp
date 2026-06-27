@@ -1,0 +1,134 @@
+{
+  "Medical Doctor": {
+    "required_subjects": ["Biology", "Chemistry", "Physics"],
+    "recommended_subjects": ["Elective Mathematics"],
+    "min_aggregate": 12,
+    "competitive_aggregate": 8,
+    "duration_years": 6,
+    "career_description": "Medical doctors diagnose and treat illnesses, prescribe medications, and perform medical procedures.",
+    "job_outlook": "Very High demand - Ghana needs more doctors, especially in rural areas",
+    "salary_range": "GH₵ 5,000 - 15,000",
+    "licensing_body": "Medical and Dental Council of Ghana"
+  },
+  "Pharmacist": {
+    "required_subjects": ["Biology", "Chemistry"],
+    "recommended_subjects": ["Physics", "Mathematics"],
+    "min_aggregate": 15,
+    "competitive_aggregate": 10,
+    "duration_years": 6,
+    "career_description": "Pharmacists dispense medications, counsel patients on drug use, and ensure pharmaceutical safety.",
+    "job_outlook": "High demand - essential in hospitals and community pharmacies",
+    "salary_range": "GH₵ 4,000 - 10,000",
+    "licensing_body": "Pharmacy Council of Ghana"
+  },
+  "Nurse": {
+    "required_subjects": ["Biology", "Chemistry"],
+    "recommended_subjects": ["Physics"],
+    "min_aggregate": 18,
+    "competitive_aggregate": 12,
+    "duration_years": 4,
+    "career_description": "Nurses provide patient care, administer medications, and support doctors in healthcare settings.",
+    "job_outlook": "Very High demand - critical shortage across Ghana",
+    "salary_range": "GH₵ 2,500 - 8,000",
+    "licensing_body": "Nursing and Midwifery Council"
+  },
+  "Software Engineer": {
+    "required_subjects": ["Elective Mathematics"],
+    "recommended_subjects": ["ICT", "Physics"],
+    "min_aggregate": 18,
+    "competitive_aggregate": 12,
+    "duration_years": 4,
+    "career_description": "Software engineers design, develop, and maintain software applications and systems.",
+    "job_outlook": "Very High demand - Ghana's tech sector growing rapidly",
+    "salary_range": "GH₵ 3,000 - 12,000",
+    "licensing_body": "Ghana Computer Society (optional)"
+  },
+  "Civil Engineer": {
+    "required_subjects": ["Physics", "Chemistry", "Elective Mathematics"],
+    "recommended_subjects": ["Technical Drawing"],
+    "min_aggregate": 16,
+    "competitive_aggregate": 12,
+    "duration_years": 4,
+    "career_description": "Civil engineers design and supervise construction of infrastructure projects.",
+    "job_outlook": "High demand - infrastructure development continues",
+    "salary_range": "GH₵ 4,000 - 12,000",
+    "licensing_body": "Ghana Institution of Engineers"
+  },
+  "Lawyer": {
+    "required_subjects": ["Government", "Literature in English"],
+    "recommended_subjects": ["History", "French"],
+    "min_aggregate": 12,
+    "competitive_aggregate": 8,
+    "duration_years": 7,
+    "career_description": "Lawyers represent clients, provide legal advice, and advocate for justice.",
+    "job_outlook": "High demand - corporate legal services needed",
+    "salary_range": "GH₵ 5,000 - 20,000",
+    "licensing_body": "Ghana Bar Association"
+  },
+  "Accountant": {
+    "required_subjects": ["Accounting", "Business Management"],
+    "recommended_subjects": ["Economics", "Elective Mathematics"],
+    "min_aggregate": 20,
+    "competitive_aggregate": 12,
+    "duration_years": 4,
+    "career_description": "Accountants prepare financial records, conduct audits, and provide financial advice.",
+    "job_outlook": "Stable demand - every organization needs accountants",
+    "salary_range": "GH₵ 3,000 - 15,000",
+    "licensing_body": "ICAG (Institute of Chartered Accountants)"
+  },
+  "Architect": {
+    "required_subjects": ["General Knowledge in Art"],
+    "recommended_subjects": ["Mathematics", "Physics"],
+    "min_aggregate": 14,
+    "competitive_aggregate": 10,
+    "duration_years": 6,
+    "career_description": "Architects design buildings and structures, creating blueprints and overseeing construction.",
+    "job_outlook": "Growing demand - construction boom in Ghana",
+    "salary_range": "GH₵ 4,000 - 15,000",
+    "licensing_body": "Ghana Institute of Architects"
+  },
+  "Teacher": {
+    "required_subjects": ["English", "Mathematics"],
+    "recommended_subjects": ["Teaching subject area"],
+    "min_aggregate": 24,
+    "competitive_aggregate": 16,
+    "duration_years": 4,
+    "career_description": "Teachers educate students at various levels, shaping young minds and futures.",
+    "job_outlook": "High demand - needed across all regions",
+    "salary_range": "GH₵ 1,500 - 5,000",
+    "licensing_body": "National Teaching Council"
+  },
+  "Business Analyst": {
+    "required_subjects": ["Business Management", "Economics"],
+    "recommended_subjects": ["Accounting", "Elective Mathematics"],
+    "min_aggregate": 18,
+    "competitive_aggregate": 14,
+    "duration_years": 4,
+    "career_description": "Business analysts analyze processes, identify improvements, and drive business efficiency.",
+    "job_outlook": "High demand - digital transformation across industries",
+    "salary_range": "GH₵ 4,000 - 12,000",
+    "licensing_body": "Professional certifications available"
+  },
+  "Public Health Officer": {
+    "required_subjects": ["Biology", "Chemistry"],
+    "recommended_subjects": ["Social Studies"],
+    "min_aggregate": 18,
+    "competitive_aggregate": 14,
+    "duration_years": 4,
+    "career_description": "Public health officers promote health, prevent disease, and manage community health programs.",
+    "job_outlook": "High demand - focus on disease prevention",
+    "salary_range": "GH₵ 3,000 - 8,000",
+    "licensing_body": "Public Health Officers Association"
+  },
+  "Computer Scientist": {
+    "required_subjects": ["Elective Mathematics"],
+    "recommended_subjects": ["ICT", "Physics"],
+    "min_aggregate": 18,
+    "competitive_aggregate": 12,
+    "duration_years": 4,
+    "career_description": "Computer scientists study computation, develop algorithms, and advance computing technology.",
+    "job_outlook": "Very High demand - tech sector growth",
+    "salary_range": "GH₵ 3,000 - 12,000",
+    "licensing_body": "Academic path to research or industry"
+  }
+}

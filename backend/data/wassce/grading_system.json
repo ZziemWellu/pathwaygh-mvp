@@ -1,0 +1,108 @@
+{
+  "official_waec_grading": {
+    "A1": {
+      "grade_points": 1,
+      "percentage_range": "80-100%",
+      "description": "Excellent",
+      "competitive_for": "Medicine, Law, Engineering at top universities"
+    },
+    "B2": {
+      "grade_points": 2,
+      "percentage_range": "70-79%",
+      "description": "Very Good",
+      "competitive_for": "Most university programs"
+    },
+    "B3": {
+      "grade_points": 3,
+      "percentage_range": "65-69%",
+      "description": "Good",
+      "competitive_for": "Many university programs"
+    },
+    "C4": {
+      "grade_points": 4,
+      "percentage_range": "60-64%",
+      "description": "Credit",
+      "competitive_for": "Some university programs"
+    },
+    "C5": {
+      "grade_points": 5,
+      "percentage_range": "55-59%",
+      "description": "Credit",
+      "competitive_for": "Limited programs"
+    },
+    "C6": {
+      "grade_points": 6,
+      "percentage_range": "50-54%",
+      "description": "Credit",
+      "competitive_for": "Minimum for most universities"
+    },
+    "D7": {
+      "grade_points": 7,
+      "percentage_range": "45-49%",
+      "description": "Pass",
+      "competitive_for": "TVET and some diploma programs"
+    },
+    "E8": {
+      "grade_points": 8,
+      "percentage_range": "40-44%",
+      "description": "Pass",
+      "competitive_for": "Access courses"
+    },
+    "F9": {
+      "grade_points": 9,
+      "percentage_range": "Below 40%",
+      "description": "Fail",
+      "competitive_for": "No direct admission"
+    }
+  },
+  "aggregate_calculator": {
+    "method": "Sum of best 6 subjects (4 cores + best 2 electives)",
+    "core_subjects": ["English Language", "Core Mathematics", "Integrated Science", "Social Studies"],
+    "interpretation": {
+      "6": "Exceptional - Competitive for all programs",
+      "7-10": "Excellent - Competitive for Medicine, Law",
+      "11-15": "Very Good - Competitive for most programs",
+      "16-20": "Good - Eligible for many programs",
+      "21-24": "Average - Eligible for some programs",
+      "25-30": "Below Average - Limited options",
+      "31-36": "Poor - Consider TVET or Access courses"
+    }
+  },
+  "shs_programmes_guide": {
+    "General Science": {
+      "eligible_for": ["Medicine", "Engineering", "Pharmacy", "Nursing", "Computer Science", "Biotechnology", "Agriculture"],
+      "not_eligible_for": ["Law", "Arts programs", "Language programs"],
+      "electives_available": ["Biology", "Chemistry", "Physics", "Elective Mathematics", "ICT"]
+    },
+    "General Arts": {
+      "eligible_for": ["Law", "Economics", "Sociology", "Psychology", "Political Science", "Journalism", "Social Work"],
+      "not_eligible_for": ["Medicine", "Engineering", "Pharmacy"],
+      "electives_available": ["Government", "Literature", "History", "French", "Economics", "Geography"]
+    },
+    "Business": {
+      "eligible_for": ["Accounting", "Business Administration", "Economics", "Marketing", "Finance", "Human Resources"],
+      "not_eligible_for": ["Medicine", "Engineering", "Law"],
+      "electives_available": ["Accounting", "Business Management", "Economics", "Elective Mathematics"]
+    },
+    "Visual Arts": {
+      "eligible_for": ["Architecture", "Fine Arts", "Graphic Design", "Fashion Design", "Industrial Art"],
+      "not_eligible_for": ["Medicine", "Engineering", "Law"],
+      "electives_available": ["General Knowledge in Art", "Picture Making", "Sculpture", "Ceramics"]
+    },
+    "Home Economics": {
+      "eligible_for": ["Home Economics Education", "Hospitality Management", "Nutrition", "Food Science", "Early Childhood Education"],
+      "not_eligible_for": ["Medicine", "Engineering", "Law"],
+      "electives_available": ["Management in Living", "Food and Nutrition", "Clothing and Textiles"]
+    },
+    "Agricultural Science": {
+      "eligible_for": ["Agriculture", "Agricultural Engineering", "Natural Resources Management", "Forestry", "Veterinary Medicine"],
+      "not_eligible_for": ["Medicine", "Law", "Engineering (limited)"],
+      "electives_available": ["Biology", "Chemistry", "Agricultural Science", "Physics"]
+    },
+    "Technical": {
+      "eligible_for": ["Engineering Technology", "HND Engineering", "Building Technology", "Electrical Technology", "Mechanical Technology"],
+      "not_eligible_for": ["Medicine", "Law", "Pharmacy"],
+      "electives_available": ["Technical Drawing", "Physics", "Elective Mathematics", "Engineering Science"]
+    }
+  }
+}

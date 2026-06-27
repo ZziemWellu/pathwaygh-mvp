@@ -1,0 +1,72 @@
+{
+  "name": "University of Cape Coast",
+  "abbreviation": "UCC",
+  "location": "Cape Coast, Central Region",
+  "established": 1962,
+  "ranking_ghana": 3,
+  "specialization": "Education and Humanities",
+  "programs": {
+    "Nursing": {
+      "program_name": "BSc Nursing",
+      "cutoff_aggregate": 13,
+      "competitive_aggregate": 10,
+      "duration_years": 4,
+      "required_subjects": ["Biology", "Chemistry"],
+      "recommended_subjects": ["Physics"],
+      "wasse_requirements": "Minimum B3 in Biology and Chemistry",
+      "tuition_per_year": "GH₵ 3,000 - 5,000",
+      "faculty": "School of Nursing",
+      "admission_notes": "One of the oldest nursing schools in Ghana"
+    },
+    "Pharmacy": {
+      "program_name": "BSc Pharmacy",
+      "cutoff_aggregate": 12,
+      "competitive_aggregate": 10,
+      "duration_years": 4,
+      "required_subjects": ["Biology", "Chemistry"],
+      "recommended_subjects": ["Physics", "Mathematics"],
+      "wasse_requirements": "Minimum B3 in Biology and Chemistry",
+      "tuition_per_year": "GH₵ 4,000 - 6,000",
+      "faculty": "School of Pharmacy",
+      "admission_notes": "Comprehensive pharmacy training"
+    },
+    "Education": {
+      "program_name": "BEd Basic Education",
+      "cutoff_aggregate": 20,
+      "competitive_aggregate": 16,
+      "duration_years": 4,
+      "required_subjects": ["English", "Mathematics"],
+      "recommended_subjects": [],
+      "wasse_requirements": "Minimum C6 in English and Maths",
+      "tuition_per_year": "GH₵ 2,000 - 3,000",
+      "faculty": "Faculty of Educational Foundations",
+      "admission_notes": "Teacher training for basic schools"
+    },
+    "Computer Science": {
+      "program_name": "BSc Computer Science",
+      "cutoff_aggregate": 15,
+      "competitive_aggregate": 12,
+      "duration_years": 4,
+      "required_subjects": ["Elective Mathematics"],
+      "recommended_subjects": ["ICT"],
+      "wasse_requirements": "Minimum C6 in Elective Maths",
+      "tuition_per_year": "GH₵ 3,000 - 5,000",
+      "faculty": "Faculty of Science and Technology Education",
+      "admission_notes": "Focus on educational technology"
+    },
+    "Economics": {
+      "program_name": "BSc Economics",
+      "cutoff_aggregate": 14,
+      "competitive_aggregate": 11,
+      "duration_years": 4,
+      "required_subjects": ["Economics"],
+      "recommended_subjects": ["Mathematics"],
+      "wasse_requirements": "Minimum B3 in Economics",
+      "tuition_per_year": "GH₵ 3,000 - 4,500",
+      "faculty": "School of Economics",
+      "admission_notes": "Strong quantitative focus"
+    }
+  },
+  "total_students": 35000,
+  "website": "https://ucc.edu.gh"
+}

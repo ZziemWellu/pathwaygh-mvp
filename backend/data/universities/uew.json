@@ -1,0 +1,59 @@
+{
+  "name": "University of Education, Winneba",
+  "abbreviation": "UEW",
+  "location": "Winneba, Central Region",
+  "established": 1992,
+  "specialization": "Teacher Education",
+  "programs": {
+    "Teacher": {
+      "program_name": "BEd Basic Education",
+      "cutoff_aggregate": 20,
+      "competitive_aggregate": 16,
+      "duration_years": 4,
+      "required_subjects": ["English", "Mathematics"],
+      "recommended_subjects": ["Social Studies"],
+      "wasse_requirements": "Minimum C6 in English and Maths",
+      "tuition_per_year": "GH₵ 2,000 - 3,000",
+      "faculty": "Faculty of Educational Studies",
+      "admission_notes": "Primary focus on teacher preparation"
+    },
+    "Early Childhood": {
+      "program_name": "BEd Early Childhood Education",
+      "cutoff_aggregate": 22,
+      "competitive_aggregate": 18,
+      "duration_years": 4,
+      "required_subjects": ["English"],
+      "recommended_subjects": ["Social Studies", "Literature"],
+      "wasse_requirements": "Minimum C6 in English",
+      "tuition_per_year": "GH₵ 2,000 - 3,000",
+      "faculty": "Faculty of Educational Studies",
+      "admission_notes": "Specialization in early years education"
+    },
+    "Mathematics Education": {
+      "program_name": "BEd Mathematics Education",
+      "cutoff_aggregate": 18,
+      "competitive_aggregate": 14,
+      "duration_years": 4,
+      "required_subjects": ["Elective Mathematics"],
+      "recommended_subjects": ["Core Mathematics"],
+      "wasse_requirements": "Minimum C6 in Elective Maths",
+      "tuition_per_year": "GH₵ 2,000 - 3,000",
+      "faculty": "Faculty of Science Education",
+      "admission_notes": "Train to become a math teacher"
+    },
+    "Science Education": {
+      "program_name": "BEd Science Education",
+      "cutoff_aggregate": 18,
+      "competitive_aggregate": 14,
+      "duration_years": 4,
+      "required_subjects": ["Biology", "Chemistry", "Physics"],
+      "recommended_subjects": ["Elective Mathematics"],
+      "wasse_requirements": "Minimum C6 in two sciences",
+      "tuition_per_year": "GH₵ 2,500 - 3,500",
+      "faculty": "Faculty of Science Education",
+      "admission_notes": "Train to become a science teacher"
+    }
+  },
+  "total_students": 25000,
+  "website": "https://www.uew.edu.gh"
+}

@@ -1,0 +1,59 @@
+{
+  "name": "University of Professional Studies, Accra",
+  "abbreviation": "UPSA",
+  "location": "Accra, Greater Accra Region",
+  "established": 1965,
+  "specialization": "Business and Professional Studies",
+  "programs": {
+    "Accounting": {
+      "program_name": "BSc Accounting",
+      "cutoff_aggregate": 14,
+      "competitive_aggregate": 10,
+      "duration_years": 4,
+      "required_subjects": ["Accounting", "Business Management"],
+      "recommended_subjects": ["Economics", "Elective Mathematics"],
+      "wasse_requirements": "Minimum B3 in Accounting",
+      "tuition_per_year": "GH₵ 3,500 - 5,000",
+      "faculty": "School of Accounting and Finance",
+      "admission_notes": "ICAG/ACCA accredited program"
+    },
+    "Business Administration": {
+      "program_name": "BSc Business Administration",
+      "cutoff_aggregate": 14,
+      "competitive_aggregate": 11,
+      "duration_years": 4,
+      "required_subjects": ["Business Management"],
+      "recommended_subjects": ["Economics", "Accounting"],
+      "wasse_requirements": "Minimum B3 in Business Management",
+      "tuition_per_year": "GH₵ 3,500 - 5,000",
+      "faculty": "School of Business",
+      "admission_notes": "Practical business training"
+    },
+    "Banking and Finance": {
+      "program_name": "BSc Banking and Finance",
+      "cutoff_aggregate": 15,
+      "competitive_aggregate": 12,
+      "duration_years": 4,
+      "required_subjects": ["Business Management", "Economics"],
+      "recommended_subjects": ["Accounting"],
+      "wasse_requirements": "Minimum B3 in Business Management",
+      "tuition_per_year": "GH₵ 3,500 - 5,000",
+      "faculty": "School of Accounting and Finance",
+      "admission_notes": "Prepares for banking careers"
+    },
+    "Marketing": {
+      "program_name": "BSc Marketing",
+      "cutoff_aggregate": 16,
+      "competitive_aggregate": 13,
+      "duration_years": 4,
+      "required_subjects": ["Business Management"],
+      "recommended_subjects": ["Economics"],
+      "wasse_requirements": "Minimum B3 in Business Management",
+      "tuition_per_year": "GH₵ 3,000 - 4,500",
+      "faculty": "School of Marketing and Communication",
+      "admission_notes": "Focus on digital marketing"
+    }
+  },
+  "total_students": 15000,
+  "website": "https://www.upsa.edu.gh"
+}

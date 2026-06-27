@@ -1,0 +1,101 @@
+{
+  "career_demand_data": {
+    "Medical Doctor": {
+      "demand_level": "Very High",
+      "demand_reason": "Doctor-to-patient ratio in Ghana is 1:10,000 in rural areas",
+      "current_vacancies": 200,
+      "growth_rate_annual": 8,
+      "top_employers": ["Ghana Health Service", "Ministry of Health", "Private Hospitals", "NGOs"],
+      "starting_salary": 3500,
+      "experienced_salary": 15000,
+      "salary_growth_rate": "10-15% per 5 years",
+      "skills_in_demand": ["Emergency Medicine", "Surgery", "Paediatrics", "Obstetrics"]
+    },
+    "Software Engineer": {
+      "demand_level": "Very High",
+      "demand_reason": "Digital transformation across all sectors in Ghana",
+      "current_vacancies": 500,
+      "growth_rate_annual": 20,
+      "top_employers": ["Tech Startups", "Banks", "Telecoms", "Government Digital Services"],
+      "starting_salary": 3000,
+      "experienced_salary": 12000,
+      "salary_growth_rate": "15-20% per 3 years",
+      "skills_in_demand": ["React", "Python", "Flutter", "Cloud Computing", "AI/ML"]
+    },
+    "Nurse": {
+      "demand_level": "Very High",
+      "demand_reason": "Nurse-to-patient ratio below WHO recommendations",
+      "current_vacancies": 1000,
+      "growth_rate_annual": 10,
+      "top_employers": ["Ghana Health Service", "Christian Health Association", "Private Clinics"],
+      "starting_salary": 2500,
+      "experienced_salary": 8000,
+      "salary_growth_rate": "8-10% per 5 years",
+      "skills_in_demand": ["Critical Care", "Community Health", "Mental Health Nursing"]
+    },
+    "Pharmacist": {
+      "demand_level": "High",
+      "demand_reason": "Growing pharmaceutical industry and community pharmacies",
+      "current_vacancies": 150,
+      "growth_rate_annual": 7,
+      "top_employers": ["Hospitals", "Pharmacy Chains", "Pharmaceutical Companies", "WHO"],
+      "starting_salary": 4000,
+      "experienced_salary": 10000,
+      "salary_growth_rate": "10% per 5 years",
+      "skills_in_demand": ["Clinical Pharmacy", "Pharmacovigilance", "Regulatory Affairs"]
+    },
+    "Lawyer": {
+      "demand_level": "High",
+      "demand_reason": "Corporate legal services and human rights advocacy",
+      "current_vacancies": 100,
+      "growth_rate_annual": 6,
+      "top_employers": ["Law Firms", "Corporate Legal Departments", "Government", "NGOs"],
+      "starting_salary": 4000,
+      "experienced_salary": 20000,
+      "salary_growth_rate": "12-15% per 7 years",
+      "skills_in_demand": ["Corporate Law", "Human Rights Law", "Alternative Dispute Resolution"]
+    },
+    "Civil Engineer": {
+      "demand_level": "High",
+      "demand_reason": "Infrastructure development projects across Ghana",
+      "current_vacancies": 200,
+      "growth_rate_annual": 8,
+      "top_employers": ["Ghana Highway Authority", "Construction Companies", "Ministry of Roads"],
+      "starting_salary": 4000,
+      "experienced_salary": 12000,
+      "salary_growth_rate": "10% per 5 years",
+      "skills_in_demand": ["Project Management", "Structural Design", "Construction Management"]
+    }
+  },
+  "wasse_grade_distribution": {
+    "A1": 5.2,
+    "B2": 8.5,
+    "B3": 12.3,
+    "C4": 15.6,
+    "C5": 18.2,
+    "C6": 20.1,
+    "D7": 12.5,
+    "E8": 5.6,
+    "F9": 2.0
+  },
+  "average_university_admission": {
+    "UG": {
+      "total_applications": 45000,
+      "admitted": 8500,
+      "admission_rate": 18.9,
+      "cutoff_range": "8-16"
+    },
+    "KNUST": {
+      "total_applications": 40000,
+      "admitted": 7500,
+      "admission_rate": 18.8,
+      "cutoff_range": "9-15"
+    },
+    "UHAS": {
+      "total_applications": 15000,
+      "admitted": 2500,
+      "admission_rate": 16.7,
+      "cutoff_range": "10-14"
+    }
+  }
+}

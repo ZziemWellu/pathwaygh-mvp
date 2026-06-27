@@ -1,0 +1,98 @@
+{
+  "name": "University of Ghana",
+  "abbreviation": "UG",
+  "location": "Legon, Accra",
+  "established": 1948,
+  "ranking_ghana": 1,
+  "ranking_africa": 10,
+  "programs": {
+    "Medical Doctor": {
+      "program_name": "MBChB Medicine and Surgery",
+      "cutoff_aggregate": 8,
+      "competitive_aggregate": 6,
+      "duration_years": 6,
+      "required_subjects": ["Biology", "Chemistry", "Physics"],
+      "recommended_subjects": ["Elective Mathematics"],
+      "wasse_requirements": "Minimum B3 in all sciences, A1/A2 in competitive admission",
+      "tuition_per_year": "GH₵ 5,000 - 8,000",
+      "faculty": "School of Medicine and Dentistry",
+      "admission_notes": "Highly competitive. Interview required."
+    },
+    "Law": {
+      "program_name": "LLB Law",
+      "cutoff_aggregate": 8,
+      "competitive_aggregate": 6,
+      "duration_years": 4,
+      "required_subjects": ["Government", "Literature in English"],
+      "recommended_subjects": ["History", "French"],
+      "wasse_requirements": "Minimum B3 in English and Government",
+      "tuition_per_year": "GH₵ 4,000 - 6,000",
+      "faculty": "School of Law",
+      "admission_notes": "University of Ghana Law is the oldest law faculty in Ghana"
+    },
+    "Computer Science": {
+      "program_name": "BSc Computer Science",
+      "cutoff_aggregate": 15,
+      "competitive_aggregate": 10,
+      "duration_years": 4,
+      "required_subjects": ["Elective Mathematics"],
+      "recommended_subjects": ["Physics", "ICT"],
+      "wasse_requirements": "Minimum C6 in Elective Maths",
+      "tuition_per_year": "GH₵ 3,000 - 5,000",
+      "faculty": "School of Physical and Mathematical Sciences",
+      "admission_notes": "Growing demand for graduates"
+    },
+    "Business Administration": {
+      "program_name": "BSc Business Administration",
+      "cutoff_aggregate": 12,
+      "competitive_aggregate": 9,
+      "duration_years": 4,
+      "required_subjects": ["Business Management"],
+      "recommended_subjects": ["Economics", "Accounting"],
+      "wasse_requirements": "Minimum B3 in Business Management",
+      "tuition_per_year": "GH₵ 4,000 - 6,000",
+      "faculty": "University of Ghana Business School",
+      "admission_notes": "UGBS is a premier business school in West Africa"
+    },
+    "Nursing": {
+      "program_name": "BSc Nursing",
+      "cutoff_aggregate": 14,
+      "competitive_aggregate": 10,
+      "duration_years": 4,
+      "required_subjects": ["Biology", "Chemistry"],
+      "recommended_subjects": ["Physics"],
+      "wasse_requirements": "Minimum B3 in Biology and Chemistry",
+      "tuition_per_year": "GH₵ 3,000 - 5,000",
+      "faculty": "School of Nursing",
+      "admission_notes": "Clinical placements in major hospitals"
+    },
+    "Pharmacy": {
+      "program_name": "Doctor of Pharmacy (PharmD)",
+      "cutoff_aggregate": 11,
+      "competitive_aggregate": 9,
+      "duration_years": 6,
+      "required_subjects": ["Biology", "Chemistry"],
+      "recommended_subjects": ["Physics", "Mathematics"],
+      "wasse_requirements": "Minimum B3 in Biology and Chemistry",
+      "tuition_per_year": "GH₵ 5,000 - 8,000",
+      "faculty": "School of Pharmacy",
+      "admission_notes": "Competitive with limited slots"
+    },
+    "Economics": {
+      "program_name": "BSc Economics",
+      "cutoff_aggregate": 12,
+      "competitive_aggregate": 9,
+      "duration_years": 4,
+      "required_subjects": ["Economics"],
+      "recommended_subjects": ["Mathematics", "Business Management"],
+      "wasse_requirements": "Minimum B3 in Economics",
+      "tuition_per_year": "GH₵ 3,000 - 5,000",
+      "faculty": "School of Social Sciences",
+      "admission_notes": "Strong analytical skills required"
+    }
+  },
+  "total_students": 45000,
+  "undergraduate_programs": 120,
+  "postgraduate_programs": 80,
+  "website": "https://www.ug.edu.gh"
+}

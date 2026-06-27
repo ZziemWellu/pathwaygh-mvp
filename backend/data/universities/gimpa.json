@@ -1,0 +1,47 @@
+{
+  "name": "Ghana Institute of Management and Public Administration",
+  "abbreviation": "GIMPA",
+  "location": "Greenhill, Accra",
+  "established": 1961,
+  "type": "Public",
+  "specialization": "Management, Law, Public Administration",
+  "website": "https://www.gimpa.edu.gh",
+  "programs": {
+    "Law": {
+      "program_name": "LLB Law",
+      "cutoff_aggregate": 10,
+      "competitive_aggregate": 8,
+      "duration_years": 4,
+      "required_subjects": ["Government", "Literature in English"],
+      "recommended_subjects": ["History", "French"],
+      "wasse_requirements": "Minimum B3 in English and Government",
+      "tuition_per_year": "GH₵ 6,000 - 10,000",
+      "faculty": "GIMPA Faculty of Law",
+      "admission_notes": "Part-time and full-time options available"
+    },
+    "Business Administration": {
+      "program_name": "BSc Business Administration",
+      "cutoff_aggregate": 15,
+      "competitive_aggregate": 12,
+      "duration_years": 4,
+      "required_subjects": ["Business Management"],
+      "recommended_subjects": ["Economics", "Accounting"],
+      "wasse_requirements": "Minimum B3 in Business Management",
+      "tuition_per_year": "GH₵ 4,000 - 7,000",
+      "faculty": "GIMPA Business School",
+      "admission_notes": "Professional certification pathways available"
+    },
+    "Public Administration": {
+      "program_name": "BA Public Administration",
+      "cutoff_aggregate": 18,
+      "competitive_aggregate": 14,
+      "duration_years": 4,
+      "required_subjects": ["Government", "Social Studies"],
+      "recommended_subjects": ["Economics"],
+      "wasse_requirements": "Minimum C6 in Government",
+      "tuition_per_year": "GH₵ 3,500 - 6,000",
+      "faculty": "School of Public Service and Governance",
+      "admission_notes": "Prepares for civil service careers"
+    }
+  }
+}

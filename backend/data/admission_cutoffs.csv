@@ -1,0 +1,32 @@
+career,university,aggregate_min,aggregate_competitive,program_duration
+Medicine,University of Ghana,8,6,6
+Medicine,KNUST,9,7,6
+Medicine,UHAS,10,8,6
+Medicine,UDS,11,9,6
+Pharmacy,KNUST,10,8,6
+Pharmacy,University of Ghana,11,9,6
+Pharmacy,UCC,12,10,4
+Nursing,UHAS,12,9,4
+Nursing,University of Ghana,14,10,4
+Nursing,UCC,13,10,4
+Law,University of Ghana,8,6,4
+Law,KNUST,9,7,4
+Law,Central University,12,9,4
+Engineering,KNUST,12,9,4
+Engineering,University of Ghana,14,10,4
+Engineering,All Nations University,16,12,4
+Computer Science,University of Ghana,15,10,4
+Computer Science,KNUST,14,10,4
+Computer Science,Ashesi University,12,9,4
+Accounting,University of Ghana,12,9,4
+Accounting,UPSA,14,10,4
+Accounting,KNUST,13,10,4
+Architecture,KNUST,10,8,4
+Architecture,University of Ghana,12,9,4
+Business Administration,University of Ghana,12,9,4
+Business Administration,UPSA,14,10,4
+Business Administration,KNUST,13,10,4
+Public Health,UHAS,14,11,4
+Public Health,University of Ghana,15,12,4
+Medical Laboratory,UHAS,13,10,4
+Medical Laboratory,KNUST,14,11,4

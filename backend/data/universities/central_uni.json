@@ -1,0 +1,46 @@
+{
+  "name": "Central University",
+  "abbreviation": "Central",
+  "location": "Miotso, Greater Accra",
+  "established": 1998,
+  "type": "Private",
+  "website": "https://www.central.edu.gh",
+  "programs": {
+    "Law": {
+      "program_name": "LLB Law",
+      "cutoff_aggregate": 12,
+      "competitive_aggregate": 10,
+      "duration_years": 4,
+      "required_subjects": ["Government", "Literature in English"],
+      "recommended_subjects": ["History"],
+      "wasse_requirements": "Minimum B3 in English and Government",
+      "tuition_per_year": "GH₵ 8,000 - 12,000",
+      "faculty": "Faculty of Law",
+      "admission_notes": "Approved by Ghana Bar Association"
+    },
+    "Pharmacy": {
+      "program_name": "Doctor of Pharmacy (PharmD)",
+      "cutoff_aggregate": 13,
+      "competitive_aggregate": 11,
+      "duration_years": 6,
+      "required_subjects": ["Biology", "Chemistry"],
+      "recommended_subjects": ["Physics"],
+      "wasse_requirements": "Minimum B3 in Biology and Chemistry",
+      "tuition_per_year": "GH₵ 8,000 - 12,000",
+      "faculty": "School of Pharmacy",
+      "admission_notes": "Accredited by Pharmacy Council"
+    },
+    "Nursing": {
+      "program_name": "BSc Nursing",
+      "cutoff_aggregate": 15,
+      "competitive_aggregate": 12,
+      "duration_years": 4,
+      "required_subjects": ["Biology", "Chemistry"],
+      "recommended_subjects": ["Physics"],
+      "wasse_requirements": "Minimum B3 in Biology and Chemistry",
+      "tuition_per_year": "GH₵ 7,000 - 10,000",
+      "faculty": "School of Nursing",
+      "admission_notes": "Clinical placements available"
+    }
+  }
+}

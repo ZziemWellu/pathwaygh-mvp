@@ -1,0 +1,35 @@
+{
+  "name": "Ghana Communication Technology University",
+  "abbreviation": "GCTU",
+  "location": "Tesano, Accra",
+  "established": 2005,
+  "type": "Public",
+  "specialization": "Technology and Communications",
+  "website": "https://www.gctu.edu.gh",
+  "programs": {
+    "Computer Science": {
+      "program_name": "BSc Computer Science",
+      "cutoff_aggregate": 16,
+      "competitive_aggregate": 14,
+      "duration_years": 4,
+      "required_subjects": ["Elective Mathematics"],
+      "recommended_subjects": ["ICT", "Physics"],
+      "wasse_requirements": "Minimum C6 in Elective Maths",
+      "tuition_per_year": "GH₵ 3,000 - 5,000",
+      "faculty": "Faculty of Computing",
+      "admission_notes": "Focus on telecommunications and networking"
+    },
+    "Information Technology": {
+      "program_name": "BSc Information Technology",
+      "cutoff_aggregate": 18,
+      "competitive_aggregate": 15,
+      "duration_years": 4,
+      "required_subjects": ["Elective Mathematics", "ICT"],
+      "recommended_subjects": ["Physics"],
+      "wasse_requirements": "Minimum C6 in Elective Maths",
+      "tuition_per_year": "GH₵ 3,000 - 5,000",
+      "faculty": "Faculty of Computing",
+      "admission_notes": "Practical IT skills focus"
+    }
+  }
+}
