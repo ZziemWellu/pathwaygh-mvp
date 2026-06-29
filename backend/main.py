@@ -589,3 +589,178 @@ async def get_career_roadmap(career_slug: str):
     return {"error": "Career not found"}
 
 print("✅ Roadmap endpoint added!")
+
+# ============================================
+# Conversational Memory Endpoints
+# ============================================
+
+from ml.conversation.memory import memory
+
+class SessionRequest(BaseModel):
+    session_id: Optional[str] = None
+    message: str
+
+
+@app.post("/api/conversation/session")
+async def create_session():
+    """Create a new conversation session"""
+    session_id = memory.create_session()
+    return {"session_id": session_id}
+
+
+@app.post("/api/conversation/chat")
+async def conversation_chat(request: SessionRequest):
+    """Chat with memory-aware AI"""
+    session_id = request.session_id
+    if not session_id:
+        session_id = memory.create_session()
+    
+    # Add user message to memory
+    memory.add_message(session_id, "user", request.message)
+    
+    # Get context
+    context = memory.get_context(session_id)
+    
+    # Generate response (using existing chatbot with context)
+    msg_lower = request.message.lower()
+    
+    # Personalized response based on context
+    reply = ""
+    if "doctor" in msg_lower or "medicine" in msg_lower:
+        reply = "To become a doctor in Ghana: Choose General Science in SHS, take Biology/Chemistry/Physics, target aggregate ≤ 12, apply to UG/KNUST/UHAS, complete 6-year MBChB, pass Medical Council exams."
+    elif "engineer" in msg_lower:
+        reply = "To become an engineer: Choose General Science, take Physics/Chemistry/Elective Maths, target aggregate ≤ 16, apply to KNUST/UG, complete 4-year BSc, register with GhIE."
+    elif "lawyer" in msg_lower:
+        reply = "To become a lawyer: Choose General Arts, take Government/Literature, target aggregate ≤ 12, apply to UG/KNUST Law, complete LLB, pass Ghana Bar exams."
+    elif "aggregate" in msg_lower:
+        reply = "WASSCE aggregate is best 6 subjects (4 cores + 2 electives). A1=1, B2=2, B3=3, C4=4, etc. Lower is better! Medicine needs ≤12, Engineering ≤16."
+    elif "nursing" in msg_lower:
+        reply = "To become a nurse: Choose General Science, take Biology/Chemistry, target aggregate ≤ 18, apply to UHAS/UG/UCC, complete 4-year BSc Nursing, pass Nursing Council exams."
+    else:
+        # Personalized greeting based on context
+        if context.get("interests"):
+            interests_str = ", ".join(context["interests"])
+            reply = f"I see you're interested in {interests_str}. I can help you explore careers in these areas! Ask me about specific careers, university requirements, or admission cutoffs."
+        else:
+            reply = "I can help you explore careers! Tell me about your interests, subjects, or ask about specific careers like Doctor, Engineer, Lawyer, or Nurse."
+    
+    # Add context to reply if available
+    if context.get("career_goal"):
+        goal = context["career_goal"]
+        if goal.lower() not in reply.lower():
+            reply += f"\n\n🎯 You mentioned interest in {goal} - would you like more details about this career path?"
+    
+    # Add assistant message to memory
+    memory.add_message(session_id, "assistant", reply)
+    
+    return {
+        "reply": reply,
+        "session_id": session_id,
+        "context": context
+    }
+
+
+@app.get("/api/conversation/context/{session_id}")
+async def get_conversation_context(session_id: str):
+    """Get conversation context"""
+    context = memory.get_context(session_id)
+    history = memory.get_history(session_id)
+    return {"context": context, "history": history[-5:]}
+
+print("✅ Conversational Memory endpoints added!")
+
+
+# ============================================
+# Action Plan Endpoint
+# ============================================
+
+from ml.action_plan.planner import planner
+
+class ActionPlanRequest(BaseModel):
+    career: str
+    aggregate: int
+    subjects: List[str]
+    interests: List[str]
+
+
+@app.post("/api/action-plan/generate")
+async def generate_action_plan(request: ActionPlanRequest):
+    """Generate personalized action plan"""
+    return planner.generate_plan(
+        career=request.career,
+        aggregate=request.aggregate,
+        subjects=request.subjects,
+        interests=request.interests
+    )
+
+print("✅ Action Plan endpoint added!")
+
+
+# ============================================
+# Scholarship Endpoints
+# ============================================
+
+from ml.scholarship.data import find_scholarships_for_career, get_scholarships
+
+class ScholarshipRequest(BaseModel):
+    career: str
+
+
+@app.post("/api/scholarship/find")
+async def find_scholarships(request: ScholarshipRequest):
+    """Find scholarships for a career"""
+    return find_scholarships_for_career(request.career)
+
+
+@app.get("/api/scholarship/all")
+async def all_scholarships(field: str = None, level: str = None):
+    """Get all scholarships with filters"""
+    from ml.scholarship.data import get_scholarships
+    return get_scholarships(field, level)
+
+print("✅ Scholarship endpoints added!")
+
+
+# ============================================
+# Feedback Endpoint
+# ============================================
+
+class FeedbackRequest(BaseModel):
+    recommendation_id: str
+    career: str
+    feedback_type: str
+    timestamp: str
+
+
+@app.post("/api/feedback/submit")
+async def submit_feedback(request: FeedbackRequest):
+    """Submit feedback for a recommendation"""
+    print(f"📝 Feedback received: {request.feedback_type} for {request.career}")
+    return {
+        "status": "success",
+        "message": "Thank you for your feedback!",
+        "feedback": {
+            "type": request.feedback_type,
+            "career": request.career
+        }
+    }
+
+print("✅ Feedback endpoint added!")
+
+
+# ============================================
+# Dashboard Endpoint
+# ============================================
+
+@app.get("/api/dashboard/stats")
+async def get_dashboard_stats():
+    """Get dashboard statistics"""
+    return {
+        "total_careers": len(CAREERS),
+        "total_universities": len(real_data.universities) if hasattr(real_data, 'universities') else 12,
+        "total_programs": 66,
+        "total_sources": len(real_data.get_data_sources()) if hasattr(real_data, 'get_data_sources') else 13,
+        "top_careers": ["Medical Doctor", "Software Engineer", "Lawyer", "Nurse", "Pharmacist"]
+    }
+
+print("✅ Dashboard endpoint added!")

@@ -9,10 +9,6 @@ import ExplainabilityPanel from './components/Explainability/ExplainabilityPanel
 import CareerRoadmap from './components/Roadmap/CareerRoadmap'
 import SourceCitations from './components/Sources/SourceCitations'
 import UniversityComparison from './components/Comparison/UniversityComparison'
-import ConversationMemory from './components/Conversation/ConversationMemory'
-import ActionPlan from './components/ActionPlan/ActionPlan'
-import ScholarshipFinder from './components/Scholarship/ScholarshipFinder'
-import SchoolDashboard from './components/Dashboard/SchoolDashboard'
 
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL || 'http://localhost:8001',
@@ -65,6 +61,7 @@ function App() {
       const response = await api.get(`/api/careers/${slug}`)
       setSelectedCareer(response.data)
       
+      // Generate explanation for the career
       const explainResponse = await api.post('/api/explain/recommendation', {
         career: response.data,
         student_profile: {
@@ -75,8 +72,10 @@ function App() {
       })
       setExplanation(explainResponse.data)
       
+      // Get roadmap
       const roadmapResponse = await api.get(`/api/roadmap/${slug}`)
       setRoadmap(roadmapResponse.data)
+      
     } catch (error) {
       console.error('Error fetching career details:', error)
     } finally {
@@ -90,10 +89,7 @@ function App() {
     { id: 'real', label: '📚 Real Data', component: RealRecommender },
     { id: 'admission', label: '📊 Admission', component: AdmissionPredictor },
     { id: 'charts', label: '📈 Analytics', component: CareerCharts },
-    { id: 'copilot', label: '💬 Copilot', component: ConversationMemory },
-    { id: 'plan', label: '📋 Action Plan', component: ActionPlan },
-    { id: 'scholarship', label: '💰 Scholarships', component: ScholarshipFinder },
-    { id: 'dashboard', label: '📊 Dashboard', component: SchoolDashboard },
+    { id: 'copilot', label: '🤖 Copilot', component: AICopilot },
   ]
 
   const renderContent = () => {
@@ -158,6 +154,7 @@ function App() {
             
             {roadmap && <CareerRoadmap career={roadmap} />}
             {explanation && <ExplainabilityPanel explanation={explanation} />}
+            
             <SourceCitations sources={['University of Ghana', 'KNUST', 'UHAS', 'WAEC Ghana']} />
             
             <button
@@ -216,20 +213,20 @@ function App() {
       <header style={{ textAlign: 'center', marginBottom: '30px' }}>
         <h1 style={{ color: '#1a5f2b', fontSize: '48px', margin: '0' }}>🇬🇭 PathwayGH</h1>
         <p style={{ fontSize: '18px', color: '#555' }}>Real Data. Real Guidance. Real Futures.</p>
-        <p style={{ fontSize: '14px', color: '#888' }}>Explainable AI • RAG-powered • Real Ghanaian Data</p>
+        <p style={{ fontSize: '14px', color: '#888' }}>Powered by official Ghanaian university admission data</p>
       </header>
 
-      <div style={{ display: 'flex', justifyContent: 'center', gap: '8px', marginBottom: '30px', borderBottom: '2px solid #e0e0e0', paddingBottom: '10px', flexWrap: 'wrap' }}>
+      <div style={{ display: 'flex', justifyContent: 'center', gap: '10px', marginBottom: '30px', borderBottom: '2px solid #e0e0e0', paddingBottom: '10px', flexWrap: 'wrap' }}>
         {tabs.map(tab => (
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id)}
             style={{
-              padding: '8px 12px',
+              padding: '10px 16px',
               background: 'none',
               border: 'none',
               cursor: 'pointer',
-              fontSize: '13px',
+              fontSize: '14px',
               fontWeight: activeTab === tab.id ? 'bold' : 'normal',
               borderBottom: activeTab === tab.id ? '3px solid #1a5f2b' : 'none',
               color: activeTab === tab.id ? '#1a5f2b' : '#666',
@@ -245,8 +242,9 @@ function App() {
 
       <footer style={{ textAlign: 'center', marginTop: '50px', padding: '20px', color: '#888', borderTop: '1px solid #eee' }}>
         <p>© 2026 PathwayGH | Built for Ghana AI Innovation Challenge</p>
-        <p style={{ fontSize: '12px' }}>
-          📚 Real Ghanaian Data | 🤖 Explainable AI | 🎓 12 Universities | 🏆 66 Programs
+        <p style={{ fontSize: '12px' }}>📚 Real Ghanaian Data | UG | KNUST | UHAS | UCC | Ashesi</p>
+        <p style={{ fontSize: '11px', color: '#aaa' }}>
+          🤖 Explainable AI • RAG-powered • Hybrid Search • Admission Predictor
         </p>
       </footer>
     </div>
