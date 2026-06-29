@@ -538,9 +538,9 @@ class AdmissionRequest(BaseModel):
 @app.post("/api/admission-chance")
 async def predict_admission(request: AdmissionRequest):
     """Predict admission probability for a career"""
-    from ml.admission_predictor import admission_predictor
+    from ml.simple_admission_predictor import predict_admission_chance
     
-    results = admission_predictor.predict_admission_chance(
+    results = predict_admission_chance(
         career=request.career,
         aggregate=request.aggregate,
         subjects=request.subjects,
