@@ -5,10 +5,6 @@ import AICopilot from './components/AICopilot'
 import RealRecommender from './components/RealRecommender'
 import AdmissionPredictor from './components/AdmissionPredictor'
 import CareerCharts from './components/CareerCharts'
-import ExplainabilityPanel from './components/Explainability/ExplainabilityPanel'
-import CareerRoadmap from './components/Roadmap/CareerRoadmap'
-import SourceCitations from './components/Sources/SourceCitations'
-import UniversityComparison from './components/Comparison/UniversityComparison'
 
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL || 'http://localhost:8001',
@@ -20,8 +16,6 @@ function App() {
   const [loading, setLoading] = useState(false)
   const [selectedCareer, setSelectedCareer] = useState(null)
   const [activeTab, setActiveTab] = useState('browse')
-  const [explanation, setExplanation] = useState(null)
-  const [roadmap, setRoadmap] = useState(null)
 
   useEffect(() => {
     fetchCareers()
@@ -60,22 +54,6 @@ function App() {
     try {
       const response = await api.get(`/api/careers/${slug}`)
       setSelectedCareer(response.data)
-      
-      // Generate explanation for the career
-      const explainResponse = await api.post('/api/explain/recommendation', {
-        career: response.data,
-        student_profile: {
-          aggregate: 12,
-          subjects: ['Biology', 'Chemistry', 'Physics'],
-          interests: ['healthcare', 'helping']
-        }
-      })
-      setExplanation(explainResponse.data)
-      
-      // Get roadmap
-      const roadmapResponse = await api.get(`/api/roadmap/${slug}`)
-      setRoadmap(roadmapResponse.data)
-      
     } catch (error) {
       console.error('Error fetching career details:', error)
     } finally {
@@ -87,9 +65,9 @@ function App() {
     { id: 'browse', label: '🔍 Browse Careers', component: null },
     { id: 'smart', label: '🎯 Smart Match', component: AIRecommendation },
     { id: 'real', label: '📚 Real Data', component: RealRecommender },
-    { id: 'admission', label: '📊 Admission', component: AdmissionPredictor },
+    { id: 'admission', label: '📊 Admission Predictor', component: AdmissionPredictor },
     { id: 'charts', label: '📈 Analytics', component: CareerCharts },
-    { id: 'copilot', label: '🤖 Copilot', component: AICopilot },
+    { id: 'copilot', label: '🤖 AI Copilot', component: AICopilot },
   ]
 
   const renderContent = () => {
@@ -134,35 +112,16 @@ function App() {
 
       {selectedCareer && (
         <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.5)', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 1000 }}>
-          <div style={{ background: 'white', padding: '30px', borderRadius: '12px', maxWidth: '700px', maxHeight: '90vh', overflow: 'auto' }}>
+          <div style={{ background: 'white', padding: '30px', borderRadius: '12px', maxWidth: '600px', maxHeight: '80vh', overflow: 'auto' }}>
             <h2 style={{ color: '#1a5f2b' }}>{selectedCareer.name}</h2>
             <p><strong>Field:</strong> {selectedCareer.field}</p>
             <p><strong>Description:</strong> {selectedCareer.description}</p>
             <p><strong>Salary:</strong> {selectedCareer.salary_range}</p>
             <p><strong>Duration:</strong> {selectedCareer.duration_years} years</p>
             <p><strong>Typical Aggregate:</strong> ≤{selectedCareer.typical_aggregate}</p>
-            
-            {selectedCareer.universities && (
-              <UniversityComparison universities={selectedCareer.universities.map(u => ({
-                university: u,
-                cutoff: selectedCareer.typical_aggregate,
-                duration: selectedCareer.duration_years,
-                admission_chance: 75,
-                status: 'Possible'
-              }))} />
-            )}
-            
-            {roadmap && <CareerRoadmap career={roadmap} />}
-            {explanation && <ExplainabilityPanel explanation={explanation} />}
-            
-            <SourceCitations sources={['University of Ghana', 'KNUST', 'UHAS', 'WAEC Ghana']} />
-            
+            <p><strong>Universities:</strong> {selectedCareer.universities?.join(', ')}</p>
             <button
-              onClick={() => {
-                setSelectedCareer(null)
-                setExplanation(null)
-                setRoadmap(null)
-              }}
+              onClick={() => setSelectedCareer(null)}
               style={{ marginTop: '20px', padding: '10px 20px', background: '#1a5f2b', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer' }}
             >
               Close
@@ -243,9 +202,6 @@ function App() {
       <footer style={{ textAlign: 'center', marginTop: '50px', padding: '20px', color: '#888', borderTop: '1px solid #eee' }}>
         <p>© 2026 PathwayGH | Built for Ghana AI Innovation Challenge</p>
         <p style={{ fontSize: '12px' }}>📚 Real Ghanaian Data | UG | KNUST | UHAS | UCC | Ashesi</p>
-        <p style={{ fontSize: '11px', color: '#aaa' }}>
-          🤖 Explainable AI • RAG-powered • Hybrid Search • Admission Predictor
-        </p>
       </footer>
     </div>
   )

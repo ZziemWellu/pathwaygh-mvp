@@ -550,3 +550,42 @@ async def predict_admission(request: AdmissionRequest):
     return results
 
 print("✅ Admission Predictor endpoint added!")
+
+# ============================================
+# Explainability Endpoint
+# ============================================
+
+from ml.explainability.explainer import explainer
+
+class ExplainRequest(BaseModel):
+    career: Dict
+    student_profile: Dict
+
+
+@app.post("/api/explain/recommendation")
+async def explain_recommendation(request: ExplainRequest):
+    """Get detailed explanation for a recommendation"""
+    return explainer.explain_recommendation(
+        career=request.career,
+        student_profile=request.student_profile
+    )
+
+print("✅ Explainability endpoint added!")
+
+# ============================================
+# Career Roadmap Endpoint
+# ============================================
+
+from ml.roadmap.roadmap_generator import roadmap_generator
+
+
+@app.get("/api/roadmap/{career_slug}")
+async def get_career_roadmap(career_slug: str):
+    """Get career roadmap for a specific career"""
+    # Find career by slug
+    for career in CAREERS:
+        if career["slug"] == career_slug:
+            return roadmap_generator.get_roadmap(career["name"])
+    return {"error": "Career not found"}
+
+print("✅ Roadmap endpoint added!")
