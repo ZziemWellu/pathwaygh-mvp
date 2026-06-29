@@ -921,3 +921,53 @@ def _generate_contextual_response(context: Dict, query: str) -> str:
     return base
 
 print("✅ AI Context Engine endpoints added!")
+
+# ============================================
+# Recommendation Graph Endpoint
+# ============================================
+
+from ml.recommendation_graph.graph_builder import graph_builder
+
+
+@app.get("/api/graph/{career}")
+async def get_career_graph(career: str):
+    """Get recommendation graph for a career"""
+    return graph_builder.get_graph(career)
+
+
+# ============================================
+# Decision Timeline Endpoint
+# ============================================
+
+from ml.decision_timeline.timeline import timeline_generator
+
+
+@app.post("/api/timeline/generate")
+async def generate_timeline(request: Dict):
+    """Generate decision timeline for a career"""
+    career = request.get("career", "Medical Doctor")
+    aggregate = request.get("aggregate")
+    return timeline_generator.generate_timeline(career, aggregate)
+
+
+# ============================================
+# Intelligence Dashboard Endpoint
+# ============================================
+
+from ml.dashboard.intelligence_dashboard import dashboard
+
+
+class DashboardRequest(BaseModel):
+    profile: Dict
+    recommendations: List[Dict]
+
+
+@app.post("/api/dashboard/intelligence")
+async def get_intelligence_dashboard(request: DashboardRequest):
+    """Get intelligence dashboard data"""
+    return dashboard.generate_dashboard(
+        profile=request.profile,
+        recommendations=request.recommendations
+    )
+
+print("✅ All new endpoints added!")
