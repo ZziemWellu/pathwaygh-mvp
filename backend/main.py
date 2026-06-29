@@ -523,3 +523,30 @@ async def rag_search(request: RAGRequest):
             "method": "RAG with Sentence Transformers",
             "status": "error"
         }
+
+# ============================================
+# Admission Probability Predictor
+# ============================================
+
+class AdmissionRequest(BaseModel):
+    career: str
+    aggregate: int
+    subjects: List[str]
+    preferred_university: Optional[str] = None
+
+
+@app.post("/api/admission-chance")
+async def predict_admission(request: AdmissionRequest):
+    """Predict admission probability for a career"""
+    from ml.admission_predictor import admission_predictor
+    
+    results = admission_predictor.predict_admission_chance(
+        career=request.career,
+        aggregate=request.aggregate,
+        subjects=request.subjects,
+        preferred_university=request.preferred_university
+    )
+    
+    return results
+
+print("✅ Admission Predictor endpoint added!")
