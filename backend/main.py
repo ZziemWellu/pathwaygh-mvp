@@ -764,3 +764,160 @@ async def get_dashboard_stats():
     }
 
 print("✅ Dashboard endpoint added!")
+
+# ============================================
+# AI Context Engine Endpoints
+# ============================================
+
+from ml.context_engine.engine import context_engine
+from ml.profile.profile_models import PathwayProfile, UserRole, EducationLevel, Region
+
+class ProfileRequest(BaseModel):
+    user_id: str
+    profile: Dict
+
+
+class ContextRequest(BaseModel):
+    user_id: str
+    query: str
+
+
+@app.post("/api/profile/create")
+async def create_profile(request: ProfileRequest):
+    """Create a user profile"""
+    profile = context_engine.create_profile(request.user_id, request.profile)
+    return {
+        "status": "success",
+        "profile": profile.to_dict()
+    }
+
+
+@app.post("/api/profile/update")
+async def update_profile(request: ProfileRequest):
+    """Update a user profile"""
+    profile = context_engine.update_profile(request.user_id, request.profile)
+    if not profile:
+        return {"status": "error", "message": "Profile not found"}
+    return {
+        "status": "success",
+        "profile": profile.to_dict()
+    }
+
+
+@app.get("/api/profile/{user_id}")
+async def get_profile(user_id: str):
+    """Get a user profile"""
+    profile = context_engine.get_profile(user_id)
+    if not profile:
+        return {"status": "error", "message": "Profile not found"}
+    return {
+        "status": "success",
+        "profile": profile.to_dict()
+    }
+
+
+@app.post("/api/context/query")
+async def context_query(request: ContextRequest):
+    """Process a query with full context"""
+    # Build context
+    context = context_engine.build_context(request.user_id, request.query)
+    
+    # Generate contextual prompt
+    prompt = context_engine.generate_contextual_prompt(context)
+    
+    # Get appropriate guidance
+    guidance = context.get("guidance", {})
+    
+    # Generate response based on context
+    response = _generate_contextual_response(context, request.query)
+    
+    return {
+        "context": context,
+        "prompt": prompt,
+        "response": response,
+        "guidance": guidance.get("resources", []),
+        "focus": guidance.get("focus", "Career guidance")
+    }
+
+
+@app.get("/api/profile/roles")
+async def get_roles():
+    """Get all available roles"""
+    return {
+        "roles": [
+            {"id": "student_basic", "name": "Basic School Student", "emoji": "🧒"},
+            {"id": "student_shs", "name": "SHS Student", "emoji": "🎓"},
+            {"id": "student_university", "name": "University Student", "emoji": "🏫"},
+            {"id": "student_tvet", "name": "TVET Student", "emoji": "🔧"},
+            {"id": "parent", "name": "Parent / Guardian", "emoji": "👨‍👩‍👧‍👦"},
+            {"id": "teacher", "name": "Teacher", "emoji": "👨‍🏫"},
+            {"id": "counsellor", "name": "School Counsellor", "emoji": "💼"},
+            {"id": "graduate", "name": "Graduate", "emoji": "🎓"},
+            {"id": "job_seeker", "name": "Job Seeker", "emoji": "💪"}
+        ]
+    }
+
+
+@app.get("/api/profile/regions")
+async def get_regions():
+    """Get all regions"""
+    return {
+        "regions": ["Greater Accra", "Ashanti", "Northern", "Volta", "Western", "Eastern", "Central", "Brong Ahafo", "Upper East", "Upper West"]
+    }
+
+
+def _generate_contextual_response(context: Dict, query: str) -> str:
+    """Generate a response based on context"""
+    profile = context.get("profile", {})
+    role = profile.get("role", "student")
+    
+    # Base response based on role
+    role_responses = {
+        "student_basic": "I'll help you explore careers in a simple way! Let's find out what you enjoy doing and what subjects you like.",
+        "student_shs": "I'll help you plan your future! Based on your subjects and interests, let's find the best university paths.",
+        "student_university": "Let's explore career opportunities and professional development for your future!",
+        "student_tvet": "🔧 Your skills are valuable! Let me help you find the best career opportunities for your training.",
+        "parent": "I'll help you support your child's educational journey with practical guidance and financial planning.",
+        "teacher": "I'll help you guide your students with the best career resources and teaching strategies.",
+        "counsellor": "Let me help you provide professional career guidance with data-driven insights.",
+        "graduate": "Let's explore your career options and professional certification pathways.",
+        "job_seeker": "I'll help you prepare for the job market with practical advice and resources."
+    }
+    
+    base = role_responses.get(role, "I'm here to help with your career and education questions.")
+    
+    # Add academic context if available
+    academic = context.get("academic_context", {})
+    if academic.get("aggregate"):
+        agg = academic["aggregate"]
+        base += f"\n\n📊 With your aggregate of {agg}, you have several options to explore."
+    
+    # Add career context if available
+    career = context.get("career_context", {})
+    if career.get("career_goal"):
+        goal = career["career_goal"]
+        base += f"\n\n🎯 You mentioned interest in {goal} - let's explore this path!"
+    
+    # Add financial context if available
+    financial = context.get("financial_context", {})
+    if financial.get("needs_scholarship"):
+        base += "\n\n💰 I'll prioritize scholarship opportunities in my recommendations."
+    
+    # Add regional context if available
+    regional = context.get("regional_context", {})
+    if regional:
+        base += f"\n\n📍 I'll consider opportunities in your region."
+    
+    # Add query-specific response
+    if "medicine" in query.lower() or "doctor" in query.lower():
+        base += "\n\nMedicine is a competitive but rewarding field. You'll need strong performance in Biology, Chemistry, and Physics."
+    elif "engineering" in query.lower():
+        base += "\n\nEngineering offers many opportunities. Civil, Mechanical, and Electrical engineering are in high demand."
+    elif "law" in query.lower():
+        base += "\n\nLaw is a respected profession. You'll need strong performance in Government and Literature."
+    elif "nursing" in query.lower():
+        base += "\n\nNursing is in very high demand across Ghana. It's a stable and rewarding career."
+    
+    return base
+
+print("✅ AI Context Engine endpoints added!")
