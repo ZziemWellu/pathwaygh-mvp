@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
+
+// ALL components already exist - imported safely
 import AIRecommendation from './components/AIRecommendation'
 import AICopilot from './components/AICopilot'
 import RealRecommender from './components/RealRecommender'
@@ -13,6 +15,11 @@ import ConversationMemory from './components/Conversation/ConversationMemory'
 import ActionPlan from './components/ActionPlan/ActionPlan'
 import ScholarshipFinder from './components/Scholarship/ScholarshipFinder'
 import SchoolDashboard from './components/Dashboard/SchoolDashboard'
+import IntelligenceDashboard from './components/Dashboard/IntelligenceDashboard'
+import ContextChat from './components/ContextEngine/ContextChat'
+import WhatIfSimulator from './components/Simulator/WhatIfSimulator'
+import FeedbackButtons from './components/Feedback/FeedbackButtons'
+import CompleteProfileSetup from './components/Profile/CompleteProfileSetup'
 
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL || 'http://localhost:8001',
@@ -84,16 +91,20 @@ function App() {
     }
   }
 
+  // ALL 12 TABS - Every component that exists
   const tabs = [
     { id: 'browse', label: '🔍 Browse Careers', component: null },
     { id: 'smart', label: '🎯 Smart Match', component: AIRecommendation },
     { id: 'real', label: '📚 Real Data', component: RealRecommender },
     { id: 'admission', label: '📊 Admission', component: AdmissionPredictor },
     { id: 'charts', label: '📈 Analytics', component: CareerCharts },
-    { id: 'copilot', label: '💬 Copilot', component: ConversationMemory },
+    { id: 'copilot', label: '💬 Memory Chat', component: ConversationMemory },
     { id: 'plan', label: '📋 Action Plan', component: ActionPlan },
     { id: 'scholarship', label: '💰 Scholarships', component: ScholarshipFinder },
-    { id: 'dashboard', label: '📊 Dashboard', component: SchoolDashboard },
+    { id: 'dashboard', label: '📊 School Dashboard', component: SchoolDashboard },
+    { id: 'intelligence', label: '🧠 Intelligence', component: IntelligenceDashboard },
+    { id: 'context', label: '🔮 Context AI', component: ContextChat },
+    { id: 'profile', label: '👤 Profile', component: CompleteProfileSetup },
   ]
 
   const renderContent = () => {
@@ -158,7 +169,10 @@ function App() {
             
             {roadmap && <CareerRoadmap career={roadmap} />}
             {explanation && <ExplainabilityPanel explanation={explanation} />}
+            
             <SourceCitations sources={['University of Ghana', 'KNUST', 'UHAS', 'WAEC Ghana']} />
+            <WhatIfSimulator career={selectedCareer.name} currentAggregate={12} />
+            <FeedbackButtons career={selectedCareer.name} />
             
             <button
               onClick={() => {
