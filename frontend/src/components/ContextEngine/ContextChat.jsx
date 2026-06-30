@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import ProfileSetup from '../Profile/ProfileSetup';
+import CompleteProfileSetup from '../Profile/CompleteProfileSetup';
 
 const API = axios.create({ baseURL: import.meta.env.VITE_API_URL || 'http://localhost:8001' });
 
@@ -12,28 +12,32 @@ function ContextChat() {
   const [loading, setLoading] = useState(false);
   const [userId, setUserId] = useState(null);
   const [context, setContext] = useState(null);
+  const [showProfile, setShowProfile] = useState(false);
 
   useEffect(() => {
     const savedUserId = localStorage.getItem('pathwaygh_user_id');
     const savedProfile = localStorage.getItem('pathwaygh_profile');
-    
+
     if (savedUserId && savedProfile) {
       setUserId(savedUserId);
       setUserProfile(JSON.parse(savedProfile));
       setHasProfile(true);
       setMessages([{
         role: 'assistant',
-        content: `👋 Welcome back! I have your profile ready. Ask me anything about careers, universities, or education.`
+        content: `👋 Welcome back! I have your profile ready. Ask me anything about careers, universities, or education in Ghana.`
       }]);
+    } else {
+      setShowProfile(true);
     }
   }, []);
 
   const handleProfileComplete = (profile) => {
     setUserProfile(profile);
     setHasProfile(true);
+    setShowProfile(false);
     setMessages([{
       role: 'assistant',
-      content: `✅ Profile complete! I now understand your context. Ask me anything about careers, universities, or education.`
+      content: `✅ Profile complete! I now understand your context. Ask me anything about careers, universities, or education in Ghana.`
     }]);
   };
 
@@ -51,28 +55,26 @@ function ContextChat() {
         query: input
       });
 
-      const contextData = response.data.context;
+      const contextData = response.data.context || {};
       setContext(contextData);
 
-      // Build response with context info
-      let responseText = response.data.response;
+      let responseText = response.data.response || 'I processed your query.';
       
-      // Add context summary if available
-      if (contextData.guidance) {
-        responseText += `\n\n🎯 Focus: ${contextData.guidance.focus || 'Career guidance'}`;
+      if (contextData.guidance && contextData.guidance.focus) {
+        responseText += `\n\n🎯 Focus: ${contextData.guidance.focus}`;
       }
 
       setMessages(prev => [...prev, {
         role: 'assistant',
         content: responseText,
         context: contextData,
-        resources: response.data.guidance || []
+        resources: response.data.guidance?.resources || []
       }]);
     } catch (error) {
       console.error('Error:', error);
       setMessages(prev => [...prev, {
         role: 'assistant',
-        content: 'Sorry, I had an error. Please try again.'
+        content: 'Sorry, I had an error. Please make sure the backend is running.'
       }]);
     } finally {
       setLoading(false);
@@ -86,32 +88,30 @@ function ContextChat() {
     }
   };
 
-  if (!hasProfile) {
-    return <ProfileSetup onComplete={handleProfileComplete} />;
-  }
-
-  // Show context summary
   const getContextSummary = () => {
-    if (!userProfile) return '';
+    if (!userProfile) return 'No profile';
     const profile = userProfile;
     const parts = [];
-    if (profile.role) parts.push(`👤 ${profile.role}`);
+    if (profile.role) parts.push(`👤 ${profile.role.replace(/_/g, ' ')}`);
     if (profile.education_level) parts.push(`📚 ${profile.education_level.toUpperCase()}`);
     if (profile.geographic?.region) parts.push(`📍 ${profile.geographic.region}`);
     if (profile.academic?.aggregate) parts.push(`📊 Aggregate: ${profile.academic.aggregate}`);
-    return parts.join(' | ');
+    return parts.join(' | ') || 'Profile ready';
   };
+
+  if (showProfile) {
+    return <CompleteProfileSetup onComplete={handleProfileComplete} />;
+  }
 
   return (
     <div style={{ maxWidth: '900px', margin: '0 auto', padding: '20px' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', flexWrap: 'wrap' }}>
         <h2 style={{ color: '#1a5f2b', margin: 0 }}>💬 Context-Aware Assistant</h2>
         <div style={{ fontSize: '13px', color: '#666', background: '#f5f5f5', padding: '8px 16px', borderRadius: '20px' }}>
-          {getContextSummary() || 'Profile setup complete'}
+          {getContextSummary()}
         </div>
       </div>
 
-      {/* Chat Messages */}
       <div style={{
         background: '#f9f9f9',
         borderRadius: '12px',
@@ -121,6 +121,12 @@ function ContextChat() {
         overflowY: 'auto',
         marginBottom: '15px'
       }}>
+        {messages.length === 0 && (
+          <div style={{ textAlign: 'center', color: '#888', padding: '40px' }}>
+            <p style={{ fontSize: '18px' }}>👋 Welcome to Context AI!</p>
+            <p>Your profile is ready. Ask me about careers, universities, or education.</p>
+          </div>
+        )}
         {messages.map((msg, idx) => (
           <div
             key={idx}
@@ -171,7 +177,6 @@ function ContextChat() {
         )}
       </div>
 
-      {/* Context Display */}
       {context && (
         <div style={{
           background: '#e8f5e9',
@@ -198,7 +203,6 @@ function ContextChat() {
         </div>
       )}
 
-      {/* Input Area */}
       <div style={{ display: 'flex', gap: '10px' }}>
         <textarea
           value={input}

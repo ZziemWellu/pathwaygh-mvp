@@ -9,33 +9,16 @@ function CompleteProfileSetup({ onComplete }) {
   const [roles, setRoles] = useState([]);
   const [regions, setRegions] = useState([]);
   const [profile, setProfile] = useState({
-    user_id: '',
-    name: '',
     role: '',
     education_level: '',
-    school_type: '',
-    school_name: '',
     region: '',
     district: '',
-    urban_rural: '',
     aggregate: '',
     subjects: [],
-    strong_subjects: [],
-    weak_subjects: [],
     interests: [],
     career_goal: '',
-    needs_scholarship: false,
-    can_pay_fees: true,
-    needs_accommodation: false,
-    can_relocate: false,
-    income_category: '',
-    preferred_learning_style: '',
-    constraints: []
+    needs_scholarship: false
   });
-
-  const subjectOptions = ['Biology', 'Chemistry', 'Physics', 'Elective Mathematics', 'Government', 'Literature in English', 'Accounting', 'Business Management', 'General Knowledge in Art', 'ICT'];
-  const interestOptions = ['healthcare', 'technology', 'business', 'creative', 'engineering', 'law', 'education'];
-  const constraintOptions = ['public_universities_only', 'needs_scholarship', 'prefers_short_programmes', 'wants_local_employment', 'prefers_technology', 'prefers_healthcare'];
 
   useEffect(() => {
     fetchRoles();
@@ -45,18 +28,29 @@ function CompleteProfileSetup({ onComplete }) {
   const fetchRoles = async () => {
     try {
       const response = await API.get('/api/profile/roles');
-      setRoles(response.data.roles);
+      setRoles(response.data.roles || []);
     } catch (error) {
       console.error('Error fetching roles:', error);
+      // Fallback roles
+      setRoles([
+        { id: 'student_shs', name: 'SHS Student', emoji: '🎓' },
+        { id: 'student_tvet', name: 'TVET Student', emoji: '🔧' },
+        { id: 'parent', name: 'Parent / Guardian', emoji: '👨‍👩‍👧‍👦' },
+        { id: 'teacher', name: 'Teacher', emoji: '👨‍🏫' },
+        { id: 'counsellor', name: 'Counsellor', emoji: '💼' },
+        { id: 'graduate', name: 'Graduate', emoji: '🎓' },
+        { id: 'student_university', name: 'University Student', emoji: '🏫' }
+      ]);
     }
   };
 
   const fetchRegions = async () => {
     try {
       const response = await API.get('/api/profile/regions');
-      setRegions(response.data.regions);
+      setRegions(response.data.regions || []);
     } catch (error) {
       console.error('Error fetching regions:', error);
+      setRegions(['Greater Accra', 'Ashanti', 'Northern', 'Volta', 'Western', 'Eastern', 'Central', 'Brong Ahafo', 'Upper East', 'Upper West']);
     }
   };
 
@@ -64,12 +58,11 @@ function CompleteProfileSetup({ onComplete }) {
     setProfile({ ...profile, [field]: value });
   };
 
-  const toggleSubject = (subject, field = 'subjects') => {
-    const list = profile[field] || [];
-    if (list.includes(subject)) {
-      setProfile({ ...profile, [field]: list.filter(s => s !== subject) });
+  const toggleSubject = (subject) => {
+    if (profile.subjects.includes(subject)) {
+      setProfile({ ...profile, subjects: profile.subjects.filter(s => s !== subject) });
     } else {
-      setProfile({ ...profile, [field]: [...list, subject] });
+      setProfile({ ...profile, subjects: [...profile.subjects, subject] });
     }
   };
 
@@ -81,91 +74,81 @@ function CompleteProfileSetup({ onComplete }) {
     }
   };
 
-  const toggleConstraint = (constraint) => {
-    if (profile.constraints.includes(constraint)) {
-      setProfile({ ...profile, constraints: profile.constraints.filter(c => c !== constraint) });
-    } else {
-      setProfile({ ...profile, constraints: [...profile.constraints, constraint] });
-    }
-  };
-
   const createProfile = async () => {
     setLoading(true);
     try {
-      const userId = profile.user_id || 'user_' + Date.now();
+      const userId = 'user_' + Date.now();
       localStorage.setItem('pathwaygh_user_id', userId);
 
-      const response = await API.post('/api/profile/unified/create', {
+      const payload = {
         user_id: userId,
         profile: {
-          user_id: userId,
-          name: profile.name,
           role: profile.role,
           education_level: profile.education_level,
-          school_type: profile.school_type,
-          school_name: profile.school_name,
-          geographic: {
-            region: profile.region,
-            district: profile.district,
-            urban_rural: profile.urban_rural,
-            can_relocate: profile.can_relocate
+          geographic: { 
+            region: profile.region, 
+            district: profile.district 
           },
-          academic: {
-            aggregate: profile.aggregate ? parseInt(profile.aggregate) : null,
-            subjects: profile.subjects,
-            strong_subjects: profile.strong_subjects,
-            weak_subjects: profile.weak_subjects
+          academic: { 
+            aggregate: profile.aggregate ? parseInt(profile.aggregate) : null, 
+            subjects: profile.subjects 
           },
-          career: {
-            interests: profile.interests,
-            career_goal: profile.career_goal
+          career: { 
+            interests: profile.interests, 
+            career_goal: profile.career_goal 
           },
-          financial: {
-            needs_scholarship: profile.needs_scholarship,
-            can_pay_fees: profile.can_pay_fees,
-            needs_accommodation: profile.needs_accommodation,
-            income_category: profile.income_category,
-            constraints: profile.constraints
-          },
-          learning: {
-            preferred_learning_style: profile.preferred_learning_style
+          financial: { 
+            needs_scholarship: profile.needs_scholarship 
           }
         }
-      });
+      };
 
+      const response = await API.post('/api/profile/unified/create', payload);
+      
       localStorage.setItem('pathwaygh_profile', JSON.stringify(response.data.profile));
-      onComplete && onComplete(response.data.profile);
+      
+      if (onComplete) {
+        onComplete(response.data.profile);
+      } else {
+        alert('✅ Profile created successfully! You can now use Context AI chat.');
+        // Reset to step 1
+        setStep(1);
+      }
     } catch (error) {
       console.error('Error creating profile:', error);
+      alert('❌ Error creating profile. Please make sure the backend is running.');
     } finally {
       setLoading(false);
     }
   };
+
+  const subjectOptions = ['Biology', 'Chemistry', 'Physics', 'Elective Mathematics', 'Government', 'Literature in English', 'Accounting', 'Business Management', 'General Knowledge in Art', 'ICT'];
+  const interestOptions = ['healthcare', 'technology', 'business', 'creative', 'engineering', 'law', 'education'];
 
   const renderStep = () => {
     switch(step) {
       case 1:
         return (
           <div>
-            <h3>Who are you?</h3>
-            <p style={{ color: '#666' }}>Select your role to get personalized guidance</p>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))', gap: '10px', marginTop: '15px' }}>
+            <h3 style={{ color: '#1a5f2b' }}>👤 Who are you?</h3>
+            <p style={{ color: '#666', fontSize: '14px' }}>Select your role to get personalized guidance</p>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', gap: '10px', marginTop: '15px' }}>
               {roles.map(role => (
                 <button
                   key={role.id}
                   onClick={() => { updateProfile('role', role.id); setStep(2); }}
                   style={{
-                    padding: '15px',
+                    padding: '15px 10px',
                     borderRadius: '12px',
                     border: profile.role === role.id ? '2px solid #1a5f2b' : '1px solid #e0e0e0',
                     background: profile.role === role.id ? '#e8f5e9' : 'white',
                     cursor: 'pointer',
                     textAlign: 'center',
-                    fontSize: '14px',
+                    fontSize: '13px',
                     transition: 'all 0.2s'
                   }}
                 >
-                  <div style={{ fontSize: '32px' }}>{role.emoji}</div>
+                  <div style={{ fontSize: '28px' }}>{role.emoji || '👤'}</div>
                   <div style={{ fontWeight: 'bold', marginTop: '5px' }}>{role.name}</div>
                 </button>
               ))}
@@ -176,8 +159,9 @@ function CompleteProfileSetup({ onComplete }) {
       case 2:
         return (
           <div>
-            <h3>📚 Education Level</h3>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', gap: '10px', marginTop: '15px' }}>
+            <h3 style={{ color: '#1a5f2b' }}>📚 Education Level</h3>
+            <p style={{ color: '#666', fontSize: '14px' }}>Select your current education level</p>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(120px, 1fr))', gap: '10px', marginTop: '15px' }}>
               {['basic', 'jhs', 'shs', 'tvet', 'university', 'graduate'].map(level => (
                 <button
                   key={level}
@@ -189,7 +173,7 @@ function CompleteProfileSetup({ onComplete }) {
                     background: profile.education_level === level ? '#e8f5e9' : 'white',
                     cursor: 'pointer',
                     textTransform: 'uppercase',
-                    fontSize: '14px',
+                    fontSize: '13px',
                     fontWeight: profile.education_level === level ? 'bold' : 'normal'
                   }}
                 >
@@ -197,7 +181,7 @@ function CompleteProfileSetup({ onComplete }) {
                 </button>
               ))}
             </div>
-            <button onClick={() => setStep(1)} style={{ marginTop: '15px', background: 'none', border: 'none', color: '#1a5f2b', cursor: 'pointer' }}>
+            <button onClick={() => setStep(1)} style={{ marginTop: '15px', background: 'none', border: 'none', color: '#1a5f2b', cursor: 'pointer', fontSize: '14px' }}>
               ← Back
             </button>
           </div>
@@ -206,13 +190,14 @@ function CompleteProfileSetup({ onComplete }) {
       case 3:
         return (
           <div>
-            <h3>📍 Your Location</h3>
+            <h3 style={{ color: '#1a5f2b' }}>📍 Your Location</h3>
+            <p style={{ color: '#666', fontSize: '14px' }}>Where are you located?</p>
             <div style={{ marginTop: '15px' }}>
-              <label>Region</label>
+              <label style={{ fontWeight: 'bold', fontSize: '14px' }}>Region</label>
               <select
                 value={profile.region}
                 onChange={(e) => updateProfile('region', e.target.value)}
-                style={{ width: '100%', padding: '10px', borderRadius: '8px', border: '1px solid #ccc', marginTop: '5px' }}
+                style={{ width: '100%', padding: '10px', borderRadius: '8px', border: '1px solid #ccc', marginTop: '5px', fontSize: '14px' }}
               >
                 <option value="">Select your region...</option>
                 {regions.map(r => (
@@ -220,42 +205,21 @@ function CompleteProfileSetup({ onComplete }) {
                 ))}
               </select>
             </div>
-            <div style={{ marginTop: '10px' }}>
-              <label>District (Optional)</label>
+            <div style={{ marginTop: '12px' }}>
+              <label style={{ fontWeight: 'bold', fontSize: '14px' }}>District (Optional)</label>
               <input
                 type="text"
                 value={profile.district}
                 onChange={(e) => updateProfile('district', e.target.value)}
                 placeholder="e.g., Kumasi Metro"
-                style={{ width: '100%', padding: '10px', borderRadius: '8px', border: '1px solid #ccc', marginTop: '5px' }}
+                style={{ width: '100%', padding: '10px', borderRadius: '8px', border: '1px solid #ccc', marginTop: '5px', fontSize: '14px' }}
               />
-            </div>
-            <div style={{ marginTop: '10px' }}>
-              <label>Area Type</label>
-              <select
-                value={profile.urban_rural}
-                onChange={(e) => updateProfile('urban_rural', e.target.value)}
-                style={{ width: '100%', padding: '10px', borderRadius: '8px', border: '1px solid #ccc', marginTop: '5px' }}
-              >
-                <option value="">Select...</option>
-                <option value="Urban">Urban</option>
-                <option value="Peri-urban">Peri-urban</option>
-                <option value="Rural">Rural</option>
-              </select>
-            </div>
-            <div style={{ marginTop: '10px' }}>
-              <label style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer' }}>
-                <input
-                  type="checkbox"
-                  checked={profile.can_relocate}
-                  onChange={(e) => updateProfile('can_relocate', e.target.checked)}
-                />
-                I can relocate for studies
-              </label>
             </div>
             <div style={{ display: 'flex', gap: '10px', marginTop: '15px' }}>
               <button onClick={() => setStep(2)} style={{ padding: '10px 20px', background: '#f0f0f0', border: 'none', borderRadius: '8px', cursor: 'pointer' }}>← Back</button>
-              <button onClick={() => setStep(4)} style={{ padding: '10px 20px', background: '#1a5f2b', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer' }} disabled={!profile.region}>Next →</button>
+              <button onClick={() => setStep(4)} style={{ padding: '10px 20px', background: profile.region ? '#1a5f2b' : '#ccc', color: 'white', border: 'none', borderRadius: '8px', cursor: profile.region ? 'pointer' : 'not-allowed' }} disabled={!profile.region}>
+                Next →
+              </button>
             </div>
           </div>
         );
@@ -263,9 +227,10 @@ function CompleteProfileSetup({ onComplete }) {
       case 4:
         return (
           <div>
-            <h3>📊 Academic Profile</h3>
+            <h3 style={{ color: '#1a5f2b' }}>📊 Academic Profile</h3>
+            <p style={{ color: '#666', fontSize: '14px' }}>Optional - skip if not applicable</p>
             <div style={{ marginTop: '15px' }}>
-              <label>WASSCE Aggregate</label>
+              <label style={{ fontWeight: 'bold', fontSize: '14px' }}>WASSCE Aggregate</label>
               <input
                 type="number"
                 min="6"
@@ -273,12 +238,12 @@ function CompleteProfileSetup({ onComplete }) {
                 value={profile.aggregate}
                 onChange={(e) => updateProfile('aggregate', e.target.value)}
                 placeholder="e.g., 12"
-                style={{ width: '100%', padding: '10px', borderRadius: '8px', border: '1px solid #ccc', marginTop: '5px' }}
+                style={{ width: '100%', padding: '10px', borderRadius: '8px', border: '1px solid #ccc', marginTop: '5px', fontSize: '14px' }}
               />
             </div>
-            <div style={{ marginTop: '10px' }}>
-              <label>Your Subjects</label>
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginTop: '5px' }}>
+            <div style={{ marginTop: '12px' }}>
+              <label style={{ fontWeight: 'bold', fontSize: '14px' }}>Your Subjects</label>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginTop: '8px' }}>
                 {subjectOptions.map(subject => (
                   <button
                     key={subject}
@@ -289,49 +254,8 @@ function CompleteProfileSetup({ onComplete }) {
                       border: profile.subjects.includes(subject) ? '2px solid #1a5f2b' : '1px solid #ccc',
                       background: profile.subjects.includes(subject) ? '#e8f5e9' : 'white',
                       cursor: 'pointer',
-                      fontSize: '12px'
-                    }}
-                  >
-                    {subject}
-                  </button>
-                ))}
-              </div>
-            </div>
-            <div style={{ marginTop: '10px' }}>
-              <label>Strong Subjects</label>
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginTop: '5px' }}>
-                {subjectOptions.map(subject => (
-                  <button
-                    key={subject}
-                    onClick={() => toggleSubject(subject, 'strong_subjects')}
-                    style={{
-                      padding: '6px 14px',
-                      borderRadius: '20px',
-                      border: profile.strong_subjects.includes(subject) ? '2px solid #1a5f2b' : '1px solid #ccc',
-                      background: profile.strong_subjects.includes(subject) ? '#e8f5e9' : 'white',
-                      cursor: 'pointer',
-                      fontSize: '12px'
-                    }}
-                  >
-                    {subject}
-                  </button>
-                ))}
-              </div>
-            </div>
-            <div style={{ marginTop: '10px' }}>
-              <label>Weak Subjects</label>
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginTop: '5px' }}>
-                {subjectOptions.map(subject => (
-                  <button
-                    key={subject}
-                    onClick={() => toggleSubject(subject, 'weak_subjects')}
-                    style={{
-                      padding: '6px 14px',
-                      borderRadius: '20px',
-                      border: profile.weak_subjects.includes(subject) ? '2px solid #1a5f2b' : '1px solid #ccc',
-                      background: profile.weak_subjects.includes(subject) ? '#ffebee' : 'white',
-                      cursor: 'pointer',
-                      fontSize: '12px'
+                      fontSize: '12px',
+                      transition: 'all 0.2s'
                     }}
                   >
                     {subject}
@@ -349,20 +273,21 @@ function CompleteProfileSetup({ onComplete }) {
       case 5:
         return (
           <div>
-            <h3>🎯 Career & Interests</h3>
+            <h3 style={{ color: '#1a5f2b' }}>🎯 Career & Interests</h3>
+            <p style={{ color: '#666', fontSize: '14px' }}>Tell us about your interests</p>
             <div style={{ marginTop: '15px' }}>
-              <label>Career Goal</label>
+              <label style={{ fontWeight: 'bold', fontSize: '14px' }}>Career Goal (Optional)</label>
               <input
                 type="text"
                 value={profile.career_goal}
                 onChange={(e) => updateProfile('career_goal', e.target.value)}
                 placeholder="e.g., Medical Doctor"
-                style={{ width: '100%', padding: '10px', borderRadius: '8px', border: '1px solid #ccc', marginTop: '5px' }}
+                style={{ width: '100%', padding: '10px', borderRadius: '8px', border: '1px solid #ccc', marginTop: '5px', fontSize: '14px' }}
               />
             </div>
-            <div style={{ marginTop: '10px' }}>
-              <label>Your Interests</label>
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginTop: '5px' }}>
+            <div style={{ marginTop: '12px' }}>
+              <label style={{ fontWeight: 'bold', fontSize: '14px' }}>Your Interests</label>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginTop: '8px' }}>
                 {interestOptions.map(interest => (
                   <button
                     key={interest}
@@ -381,34 +306,8 @@ function CompleteProfileSetup({ onComplete }) {
                 ))}
               </div>
             </div>
-            <div style={{ display: 'flex', gap: '10px', marginTop: '15px' }}>
-              <button onClick={() => setStep(4)} style={{ padding: '10px 20px', background: '#f0f0f0', border: 'none', borderRadius: '8px', cursor: 'pointer' }}>← Back</button>
-              <button onClick={() => setStep(6)} style={{ padding: '10px 20px', background: '#1a5f2b', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer' }}>Next →</button>
-            </div>
-          </div>
-        );
-
-      case 6:
-        return (
-          <div>
-            <h3>💰 Financial & Learning</h3>
-            <div style={{ marginTop: '15px' }}>
-              <label>Income Category</label>
-              <select
-                value={profile.income_category}
-                onChange={(e) => updateProfile('income_category', e.target.value)}
-                style={{ width: '100%', padding: '10px', borderRadius: '8px', border: '1px solid #ccc', marginTop: '5px' }}
-              >
-                <option value="">Select...</option>
-                <option value="low">Low</option>
-                <option value="lower_middle">Lower Middle</option>
-                <option value="middle">Middle</option>
-                <option value="upper_middle">Upper Middle</option>
-                <option value="high">High</option>
-              </select>
-            </div>
-            <div style={{ marginTop: '10px' }}>
-              <label style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer' }}>
+            <div style={{ marginTop: '12px' }}>
+              <label style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer', fontSize: '14px' }}>
                 <input
                   type="checkbox"
                   checked={profile.needs_scholarship}
@@ -417,52 +316,8 @@ function CompleteProfileSetup({ onComplete }) {
                 I need scholarship opportunities
               </label>
             </div>
-            <div style={{ marginTop: '10px' }}>
-              <label style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer' }}>
-                <input
-                  type="checkbox"
-                  checked={profile.needs_accommodation}
-                  onChange={(e) => updateProfile('needs_accommodation', e.target.checked)}
-                />
-                I need accommodation
-              </label>
-            </div>
-            <div style={{ marginTop: '10px' }}>
-              <label>Learning Style</label>
-              <select
-                value={profile.preferred_learning_style}
-                onChange={(e) => updateProfile('preferred_learning_style', e.target.value)}
-                style={{ width: '100%', padding: '10px', borderRadius: '8px', border: '1px solid #ccc', marginTop: '5px' }}
-              >
-                <option value="">Select...</option>
-                <option value="visual">Visual (learn by seeing)</option>
-                <option value="auditory">Auditory (learn by listening)</option>
-                <option value="kinesthetic">Kinesthetic (learn by doing)</option>
-              </select>
-            </div>
-            <div style={{ marginTop: '10px' }}>
-              <label>Other Constraints</label>
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginTop: '5px' }}>
-                {constraintOptions.map(constraint => (
-                  <button
-                    key={constraint}
-                    onClick={() => toggleConstraint(constraint)}
-                    style={{
-                      padding: '6px 14px',
-                      borderRadius: '20px',
-                      border: profile.constraints.includes(constraint) ? '2px solid #1a5f2b' : '1px solid #ccc',
-                      background: profile.constraints.includes(constraint) ? '#e8f5e9' : 'white',
-                      cursor: 'pointer',
-                      fontSize: '12px'
-                    }}
-                  >
-                    {constraint.replace(/_/g, ' ').toUpperCase()}
-                  </button>
-                ))}
-              </div>
-            </div>
             <div style={{ display: 'flex', gap: '10px', marginTop: '15px' }}>
-              <button onClick={() => setStep(5)} style={{ padding: '10px 20px', background: '#f0f0f0', border: 'none', borderRadius: '8px', cursor: 'pointer' }}>← Back</button>
+              <button onClick={() => setStep(4)} style={{ padding: '10px 20px', background: '#f0f0f0', border: 'none', borderRadius: '8px', cursor: 'pointer' }}>← Back</button>
               <button
                 onClick={createProfile}
                 disabled={loading}
@@ -473,7 +328,8 @@ function CompleteProfileSetup({ onComplete }) {
                   border: 'none',
                   borderRadius: '8px',
                   cursor: loading ? 'not-allowed' : 'pointer',
-                  opacity: loading ? 0.6 : 1
+                  opacity: loading ? 0.6 : 1,
+                  fontSize: '14px'
                 }}
               >
                 {loading ? 'Creating...' : '✅ Complete Profile'}
@@ -489,18 +345,18 @@ function CompleteProfileSetup({ onComplete }) {
 
   return (
     <div style={{
-      maxWidth: '600px',
-      margin: '40px auto',
+      maxWidth: '550px',
+      margin: '20px auto',
       padding: '30px',
       background: 'white',
       borderRadius: '16px',
       boxShadow: '0 4px 24px rgba(0,0,0,0.1)'
     }}>
-      <div style={{ textAlign: 'center', marginBottom: '30px' }}>
-        <h1 style={{ color: '#1a5f2b', margin: 0 }}>🇬🇭 PathwayGH</h1>
-        <p style={{ color: '#666' }}>Complete your profile for personalized guidance</p>
-        <div style={{ display: 'flex', justifyContent: 'center', gap: '8px', marginTop: '15px' }}>
-          {[1, 2, 3, 4, 5, 6].map(s => (
+      <div style={{ textAlign: 'center', marginBottom: '25px' }}>
+        <h2 style={{ color: '#1a5f2b', margin: 0, fontSize: '24px' }}>🇬🇭 PathwayGH Profile</h2>
+        <p style={{ color: '#888', fontSize: '14px', marginTop: '5px' }}>Complete your profile for personalized guidance</p>
+        <div style={{ display: 'flex', justifyContent: 'center', gap: '8px', marginTop: '12px' }}>
+          {[1, 2, 3, 4, 5].map(s => (
             <div
               key={s}
               style={{
@@ -513,8 +369,8 @@ function CompleteProfileSetup({ onComplete }) {
             />
           ))}
         </div>
-        <div style={{ fontSize: '12px', color: '#888', marginTop: '5px' }}>
-          Step {step} of 6
+        <div style={{ fontSize: '12px', color: '#aaa', marginTop: '4px' }}>
+          Step {step} of 5
         </div>
       </div>
       {renderStep()}
