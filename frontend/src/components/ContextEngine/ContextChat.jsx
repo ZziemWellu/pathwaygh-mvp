@@ -13,13 +13,18 @@ function ContextChat() {
   const [context, setContext] = useState(null);
 
   useEffect(() => {
+    checkProfile();
+  }, []);
+
+  const checkProfile = () => {
     const savedUserId = localStorage.getItem('pathwaygh_user_id');
     const savedProfile = localStorage.getItem('pathwaygh_profile');
 
     if (savedUserId && savedProfile) {
       setUserId(savedUserId);
       try {
-        setUserProfile(JSON.parse(savedProfile));
+        const profile = JSON.parse(savedProfile);
+        setUserProfile(profile);
         setHasProfile(true);
         setMessages([{
           role: 'assistant',
@@ -29,34 +34,36 @@ function ContextChat() {
         console.error('Error parsing profile:', e);
         setMessages([{
           role: 'assistant',
-          content: '⚠️ Your profile data is corrupted. Please recreate your profile by clicking the **Profile** tab above.'
+          content: '⚠️ Your profile data is corrupted. Please recreate your profile.'
         }]);
       }
     } else {
-      // Show welcome message with button to create profile
       setMessages([{
         role: 'assistant',
-        content: '👋 Welcome to Context AI! This is a personalized assistant that remembers your profile.\n\nTo get started, please create your profile first by clicking the **Profile** tab above.'
+        content: '👋 Welcome to Context AI!\n\nTo get started, please create your profile by clicking the **Profile** tab above.\n\nOnce you have a profile, I can give you personalized career guidance.'
       }]);
     }
-  }, []);
+  };
 
+  // Function to navigate to Profile tab
   const goToProfile = () => {
-    // Find and click the Profile tab
-    const allButtons = document.querySelectorAll('button');
-    for (const btn of allButtons) {
+    // Find all buttons in the page
+    const buttons = document.querySelectorAll('button');
+    for (const btn of buttons) {
+      // Look for the Profile tab button
       if (btn.textContent && btn.textContent.includes('👤 Profile')) {
         btn.click();
         return;
       }
     }
-    // Fallback
-    for (const btn of allButtons) {
+    // Fallback: try to find any button with "Profile" in text
+    for (const btn of buttons) {
       if (btn.textContent && btn.textContent.toLowerCase().includes('profile')) {
         btn.click();
         return;
       }
     }
+    // Last resort: show alert with instructions
     alert('Please click the "Profile" tab in the navigation bar above.');
   };
 
@@ -91,14 +98,14 @@ function ContextChat() {
       let responseText = response.data.response || 'I processed your query.';
       
       if (contextData.guidance && contextData.guidance.focus) {
-        responseText += `\n\n🎯 Focus: ${contextData.guidance.focus}`;
+        responseText = responseText + '\n\n🎯 Focus: ' + contextData.guidance.focus;
       }
 
       setMessages(prev => [...prev, {
         role: 'assistant',
         content: responseText,
         context: contextData,
-        resources: response.data.guidance || []
+        resources: response.data.guidance?.resources || []
       }]);
     } catch (error) {
       console.error('Error:', error);
@@ -122,10 +129,10 @@ function ContextChat() {
     if (!userProfile) return 'No profile';
     const profile = userProfile;
     const parts = [];
-    if (profile.role) parts.push(`👤 ${profile.role.replace(/_/g, ' ')}`);
-    if (profile.education_level) parts.push(`📚 ${profile.education_level.toUpperCase()}`);
-    if (profile.geographic?.region) parts.push(`📍 ${profile.geographic.region}`);
-    if (profile.academic?.aggregate) parts.push(`📊 Aggregate: ${profile.academic.aggregate}`);
+    if (profile.role) parts.push('👤 ' + profile.role.replace(/_/g, ' '));
+    if (profile.education_level) parts.push('📚 ' + profile.education_level.toUpperCase());
+    if (profile.geographic?.region) parts.push('📍 ' + profile.geographic.region);
+    if (profile.academic?.aggregate) parts.push('📊 Aggregate: ' + profile.academic.aggregate);
     return parts.join(' | ') || 'Profile ready';
   };
 
@@ -147,28 +154,27 @@ function ContextChat() {
       {!hasProfile && (
         <div style={{
           background: '#fff3e0',
-          padding: '25px',
+          padding: '20px',
           borderRadius: '12px',
           marginBottom: '20px',
           textAlign: 'center',
-          border: '2px solid #ffe0b2'
+          border: '1px solid #ffe0b2'
         }}>
-          <div style={{ fontSize: '48px', marginBottom: '10px' }}>👤</div>
-          <h3 style={{ margin: '0 0 10px 0', color: '#e65100' }}>Create Your Profile First</h3>
-          <p style={{ margin: '0 0 15px 0', fontSize: '16px', color: '#555' }}>
-            To use Context AI, you need to create your profile. This helps me provide personalized guidance.
+          <p style={{ margin: 0, fontSize: '16px' }}>
+            👤 To use Context AI, please create your profile first by clicking the 
+            <strong style={{ color: '#1a5f2b' }}> Profile</strong> tab above.
           </p>
           <button
             onClick={goToProfile}
             style={{
-              padding: '12px 32px',
+              marginTop: '12px',
+              padding: '10px 24px',
               background: '#1a5f2b',
               color: 'white',
               border: 'none',
               borderRadius: '8px',
               cursor: 'pointer',
-              fontSize: '16px',
-              fontWeight: 'bold'
+              fontSize: '14px'
             }}
           >
             🔗 Go to Profile Setup
@@ -282,15 +288,15 @@ function ContextChat() {
         />
         <button
           onClick={sendMessage}
-          disabled={loading || !input.trim() || !hasProfile}
+          disabled={loading || !input.trim()}
           style={{
             padding: '12px 24px',
             background: '#1a5f2b',
             color: 'white',
             border: 'none',
             borderRadius: '8px',
-            cursor: loading || !input.trim() || !hasProfile ? 'not-allowed' : 'pointer',
-            opacity: loading || !input.trim() || !hasProfile ? 0.6 : 1,
+            cursor: loading || !input.trim() ? 'not-allowed' : 'pointer',
+            opacity: loading || !input.trim() ? 0.6 : 1,
             alignSelf: 'flex-end',
             height: '60px'
           }}

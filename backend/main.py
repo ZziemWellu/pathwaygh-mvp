@@ -854,3 +854,113 @@ async def get_profile(user_id: str):
         "status": "success",
         "profile": profile.to_dict()
     }
+
+# ============================================
+# Context Query Endpoint
+# ============================================
+
+class ContextQueryRequest(BaseModel):
+    user_id: str
+    query: str
+
+
+@app.post("/api/context/query")
+async def context_query_endpoint(request: ContextQueryRequest):
+    """Process a query with context-aware AI"""
+    try:
+        # Get profile
+        profile = context_engine.get_profile(request.user_id)
+        
+        # Build response based on profile
+        if profile:
+            # Profile exists - generate personalized response
+            role = profile.role.value if profile.role else "student"
+            
+            # Base responses by role
+            role_intros = {
+                "student_basic": "I'll help you explore careers in a simple way!",
+                "student_jhs": "I'll help you prepare for SHS and explore career options!",
+                "student_shs": "I'll help you plan your future and find university paths!",
+                "student_tvet": "Your skills are valuable! Let me help you find career opportunities.",
+                "student_university": "Let's explore career opportunities and professional development!",
+                "graduate": "Let's explore your career options and certification pathways.",
+                "parent": "I'll help you support your child's educational journey.",
+                "teacher": "I'll help you guide your students with career resources.",
+                "counsellor": "Let me help you provide professional career guidance.",
+                "administrator": "I'll help you with school-wide career planning.",
+                "job_seeker": "I'll help you prepare for the job market."
+            }
+            
+            response = role_intros.get(role, "I'm here to help with your career questions.")
+            
+            # Add academic context
+            if profile.academic and profile.academic.aggregate:
+                response += f"\n\n📊 With your aggregate of {profile.academic.aggregate}, you have several options to explore."
+            
+            # Add career context
+            if profile.career and profile.career.career_goal:
+                response += f"\n\n🎯 You mentioned interest in {profile.career.career_goal}."
+            
+            # Add query-specific response
+            query_lower = request.query.lower()
+            if "medicine" in query_lower or "doctor" in query_lower:
+                response += """
+                
+🏥 Medicine is offered at:
+• University of Ghana (cutoff 8)
+• KNUST (cutoff 9)  
+• UHAS (cutoff 10)
+
+Required subjects: Biology, Chemistry, Physics
+Duration: 6 years MBChB"""
+            elif "engineering" in query_lower:
+                response += """
+                
+🔧 Engineering is offered at:
+• KNUST (cutoff 12)
+• University of Ghana (cutoff 14)
+
+Required subjects: Physics, Chemistry, Elective Mathematics
+Duration: 4 years BSc"""
+            elif "law" in query_lower:
+                response += """
+                
+⚖️ Law is offered at:
+• University of Ghana (cutoff 8)
+• KNUST (cutoff 9)
+
+Required subjects: Government, Literature in English
+Duration: 4 years LLB + 2 years Law School"""
+            elif "nursing" in query_lower:
+                response += """
+                
+💉 Nursing is offered at:
+• UHAS (cutoff 12)
+• University of Ghana (cutoff 14)
+• UCC (cutoff 13)
+
+Required subjects: Biology, Chemistry
+Duration: 4 years BSc Nursing"""
+            elif "university" in query_lower or "school" in query_lower:
+                response += "\n\n🎓 I can help you find universities. Which career are you interested in?"
+            else:
+                response += "\n\n💡 I can help you explore careers, check admission requirements, or find universities. What would you like to know?"
+        else:
+            # No profile
+            response = "I notice you don't have a profile set up yet. Please create your profile first by clicking the Profile tab above, then ask me again!"
+        
+        return {
+            "response": response,
+            "context": {"profile": profile.to_dict() if profile else None},
+            "guidance": ["Career guidance", "University information"],
+            "focus": "Career guidance"
+        }
+    except Exception as e:
+        return {
+            "response": f"Sorry, I encountered an error: {str(e)}. Please make sure the backend is running.",
+            "context": {},
+            "guidance": [],
+            "focus": "Error"
+        }
+
+print("✅ Context Query endpoint added!")
