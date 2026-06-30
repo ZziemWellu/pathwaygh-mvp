@@ -821,16 +821,18 @@ async def context_query(request: ContextRequest):
     """Process a query with full context"""
     # Build context
     context = context_engine.build_context(request.user_id, request.query)
-    
+
     # Generate contextual prompt
     prompt = context_engine.generate_contextual_prompt(context)
-    
-    # Get appropriate guidance
-    guidance = context.get("guidance", {})
-    
+
+    # Get appropriate guidance - handle None safely
+    guidance = context.get("guidance")
+    if guidance is None:
+        guidance = {}
+
     # Generate response based on context
     response = _generate_contextual_response(context, request.query)
-    
+
     return {
         "context": context,
         "prompt": prompt,
@@ -838,8 +840,6 @@ async def context_query(request: ContextRequest):
         "guidance": guidance.get("resources", []),
         "focus": guidance.get("focus", "Career guidance")
     }
-
-
 @app.get("/api/profile/roles")
 async def get_roles():
     """Get all available roles"""
@@ -868,7 +868,12 @@ async def get_regions():
 
 def _generate_contextual_response(context: Dict, query: str) -> str:
     """Generate a response based on context"""
-    profile = context.get("profile", {})
+    profile = context.get("profile")
+    
+    # Handle case where profile is None
+    if profile is None:
+        return "I notice you don't have a profile set up yet. Please create your profile first by clicking the Profile tab above, then ask me again!"
+    
     role = profile.get("role", "student")
     
     # Base response based on role
@@ -876,7 +881,7 @@ def _generate_contextual_response(context: Dict, query: str) -> str:
         "student_basic": "I'll help you explore careers in a simple way! Let's find out what you enjoy doing and what subjects you like.",
         "student_shs": "I'll help you plan your future! Based on your subjects and interests, let's find the best university paths.",
         "student_university": "Let's explore career opportunities and professional development for your future!",
-        "student_tvet": "🔧 Your skills are valuable! Let me help you find the best career opportunities for your training.",
+        "student_tvet": "Your skills are valuable! Let me help you find the best career opportunities for your training.",
         "parent": "I'll help you support your child's educational journey with practical guidance and financial planning.",
         "teacher": "I'll help you guide your students with the best career resources and teaching strategies.",
         "counsellor": "Let me help you provide professional career guidance with data-driven insights.",
@@ -888,505 +893,37 @@ def _generate_contextual_response(context: Dict, query: str) -> str:
     
     # Add academic context if available
     academic = context.get("academic_context", {})
-    if academic.get("aggregate"):
+    if academic and academic.get("aggregate"):
         agg = academic["aggregate"]
-        base += f"\n\n📊 With your aggregate of {agg}, you have several options to explore."
+        base = base + "\n\n📊 With your aggregate of " + str(agg) + ", you have several options to explore."
     
     # Add career context if available
     career = context.get("career_context", {})
-    if career.get("career_goal"):
+    if career and career.get("career_goal"):
         goal = career["career_goal"]
-        base += f"\n\n🎯 You mentioned interest in {goal} - let's explore this path!"
+        base = base + "\n\n🎯 You mentioned interest in " + goal + " - let's explore this path!"
     
     # Add financial context if available
     financial = context.get("financial_context", {})
-    if financial.get("needs_scholarship"):
-        base += "\n\n💰 I'll prioritize scholarship opportunities in my recommendations."
+    if financial and financial.get("needs_scholarship"):
+        base = base + "\n\n💰 I'll prioritize scholarship opportunities in my recommendations."
     
     # Add regional context if available
     regional = context.get("regional_context", {})
     if regional:
-        base += f"\n\n📍 I'll consider opportunities in your region."
+        base = base + "\n\n📍 I'll consider opportunities in your region."
     
     # Add query-specific response
-    if "medicine" in query.lower() or "doctor" in query.lower():
-        base += "\n\nMedicine is a competitive but rewarding field. You'll need strong performance in Biology, Chemistry, and Physics."
-    elif "engineering" in query.lower():
-        base += "\n\nEngineering offers many opportunities. Civil, Mechanical, and Electrical engineering are in high demand."
-    elif "law" in query.lower():
-        base += "\n\nLaw is a respected profession. You'll need strong performance in Government and Literature."
-    elif "nursing" in query.lower():
-        base += "\n\nNursing is in very high demand across Ghana. It's a stable and rewarding career."
+    query_lower = query.lower()
+    if "medicine" in query_lower or "doctor" in query_lower:
+        base = base + "\n\nMedicine is a competitive but rewarding field. You'll need strong performance in Biology, Chemistry, and Physics."
+    elif "engineering" in query_lower:
+        base = base + "\n\nEngineering offers many opportunities. Civil, Mechanical, and Electrical engineering are in high demand."
+    elif "law" in query_lower:
+        base = base + "\n\nLaw is a respected profession. You'll need strong performance in Government and Literature."
+    elif "nursing" in query_lower:
+        base = base + "\n\nNursing is in very high demand across Ghana. It's a stable and rewarding career."
+    elif "university" in query_lower or "school" in query_lower:
+        base = base + "\n\nI can help you find universities that match your profile. Which career are you interested in?"
     
     return base
-
-print("✅ AI Context Engine endpoints added!")
-
-# ============================================
-# Recommendation Graph Endpoint
-# ============================================
-
-from ml.recommendation_graph.graph_builder import graph_builder
-
-
-@app.get("/api/graph/{career}")
-async def get_career_graph(career: str):
-    """Get recommendation graph for a career"""
-    return graph_builder.get_graph(career)
-
-
-# ============================================
-# Decision Timeline Endpoint
-# ============================================
-
-from ml.decision_timeline.timeline import timeline_generator
-
-
-@app.post("/api/timeline/generate")
-async def generate_timeline(request: Dict):
-    """Generate decision timeline for a career"""
-    career = request.get("career", "Medical Doctor")
-    aggregate = request.get("aggregate")
-    return timeline_generator.generate_timeline(career, aggregate)
-
-
-# ============================================
-# Intelligence Dashboard Endpoint
-# ============================================
-
-from ml.dashboard.intelligence_dashboard import dashboard
-
-
-class DashboardRequest(BaseModel):
-    profile: Dict
-    recommendations: List[Dict]
-
-
-@app.post("/api/dashboard/intelligence")
-async def get_intelligence_dashboard(request: DashboardRequest):
-    """Get intelligence dashboard data"""
-    return dashboard.generate_dashboard(
-        profile=request.profile,
-        recommendations=request.recommendations
-    )
-
-print("✅ All new endpoints added!")
-
-# ============================================
-# Unified Profile Endpoints
-# ============================================
-
-from ml.profile.unified_profile import UnifiedProfile, Role, EducationLevel, Region
-
-class ProfileRequest(BaseModel):
-    user_id: str
-    profile: Dict
-
-
-@app.post("/api/profile/unified/create")
-async def create_unified_profile(request: ProfileRequest):
-    """Create a unified profile"""
-    profile = UnifiedProfile.from_dict(request.profile)
-    profile.user_id = request.user_id
-    # Store in context engine
-    from ml.context_engine.enhanced_engine import enhanced_context_engine
-    enhanced_context_engine.set_profile(request.user_id, profile)
-    return {
-        "status": "success",
-        "profile": profile.to_dict()
-    }
-
-
-@app.get("/api/profile/unified/{user_id}")
-async def get_unified_profile(user_id: str):
-    """Get unified profile"""
-    from ml.context_engine.enhanced_engine import enhanced_context_engine
-    profile = enhanced_context_engine.get_profile(user_id)
-    if not profile:
-        return {"status": "error", "message": "Profile not found"}
-    return {
-        "status": "success",
-        "profile": profile.to_dict()
-    }
-
-
-# ============================================
-# Geographic Intelligence Endpoint
-# ============================================
-
-from ml.geographic.geo_engine import geo_intelligence
-
-
-@app.post("/api/geo/recommend")
-async def geo_recommend(request: Dict):
-    """Get location-based recommendations"""
-    profile = request.get("profile", {})
-    return geo_intelligence.get_recommendations(profile)
-
-
-# ============================================
-# Financial Intelligence Endpoint
-# ============================================
-
-from ml.financial.financial_engine import financial_intelligence
-
-
-@app.post("/api/financial/advice")
-async def financial_advice(request: Dict):
-    """Get financial advice"""
-    profile = request.get("profile", {})
-    universities = request.get("universities", [])
-    return financial_intelligence.get_cost_advice(profile, universities)
-
-
-# ============================================
-# Decision Memory Endpoint
-# ============================================
-
-from ml.memory.decision_memory import decision_memory
-
-
-@app.post("/api/memory/decide")
-async def add_decision(request: Dict):
-    """Add a decision to memory"""
-    user_id = request.get("user_id")
-    decision = request.get("decision", {})
-    if user_id:
-        decision_memory.add_decision(user_id, decision)
-        return {"status": "success"}
-    return {"status": "error", "message": "No user_id provided"}
-
-
-@app.get("/api/memory/history/{user_id}")
-async def get_decision_history(user_id: str):
-    """Get decision history"""
-    return {
-        "history": decision_memory.get_decision_history(user_id),
-        "evolution": decision_memory.get_career_evolution(user_id)
-    }
-
-
-# ============================================
-# National Knowledge Graph Endpoints
-# ============================================
-
-from ml.knowledge_graph.national_graph import knowledge_graph
-
-
-@app.get("/api/graph/national/{node_id}")
-async def get_knowledge_graph_node(node_id: str):
-    """Get a node from the knowledge graph"""
-    node = knowledge_graph.get_node(node_id)
-    edges = knowledge_graph.get_edges(node_id)
-    return {
-        "node": node,
-        "edges": edges
-    }
-
-
-@app.get("/api/graph/pathway/{career_id}")
-async def get_career_pathway(career_id: str):
-    """Get career pathway from knowledge graph"""
-    return knowledge_graph.get_career_pathway(career_id)
-
-
-# ============================================
-# Unified Explainability Endpoint
-# ============================================
-
-from ml.explainability.unified_explainer import unified_explainer
-
-
-@app.post("/api/explain/unified")
-async def unified_explain(request: Dict):
-    """Get unified explanation"""
-    career = request.get("career", {})
-    profile = request.get("profile", {})
-    return unified_explainer.explain_recommendation(career, profile)
-
-
-# ============================================
-# Adaptive User Journey Endpoint
-# ============================================
-
-@app.post("/api/journey/recommend")
-async def get_journey_recommendation(request: Dict):
-    """Get adaptive journey recommendations"""
-    profile = request.get("profile", {})
-    role = profile.get("role")
-    
-    journeys = {
-        "student_shs": {
-            "steps": ["Career Match", "Universities", "Admission Predictor", "Action Plan"],
-            "recommendations": ["Find careers", "Check universities", "Predict admission"]
-        },
-        "student_tvet": {
-            "steps": ["Skills Assessment", "Career Pathways", "Apprenticeships", "Entrepreneurship"],
-            "recommendations": ["Assess skills", "Find pathways", "Explore apprenticeships"]
-        },
-        "parent": {
-            "steps": ["Child Progress", "Costs", "Scholarships", "Recommendations"],
-            "recommendations": ["Check progress", "See costs", "Find scholarships"]
-        },
-        "teacher": {
-            "steps": ["Class Analytics", "Risk Students", "Recommendations"],
-            "recommendations": ["View analytics", "Identify risk", "Get recommendations"]
-        },
-        "counsellor": {
-            "steps": ["School Dashboard", "Career Statistics", "Reports"],
-            "recommendations": ["View dashboard", "Get statistics", "Generate reports"]
-        }
-    }
-    
-    return journeys.get(role, {
-        "steps": ["Profile", "Explore", "Recommendations"],
-        "recommendations": ["Explore careers", "Get matched"]
-    })
-
-print("✅ All unified endpoints added!")
-
-# ============================================
-# Dynamic Persona Endpoints
-# ============================================
-
-from ml.persona_dynamic.persona_engine import persona_engine
-
-
-@app.get("/api/profile/roles")
-async def get_all_roles():
-    """Get all available roles/personas"""
-    personas = persona_engine.get_all_personas()
-    return {
-        "roles": [
-            {
-                "id": p["id"],
-                "name": p["name"],
-                "emoji": p.get("emoji", "👤"),
-                "description": p.get("description", "")
-            }
-            for p in personas
-        ]
-    }
-
-
-@app.get("/api/persona/{persona_id}")
-async def get_persona(persona_id: str):
-    """Get persona details"""
-    return persona_engine.get_persona(persona_id)
-
-
-@app.get("/api/persona/journey/{persona_id}")
-async def get_persona_journey(persona_id: str):
-    """Get journey for a persona"""
-    return {
-        "persona_id": persona_id,
-        "journey": persona_engine.get_persona_journey(persona_id)
-    }
-
-
-# ============================================
-# Geographic Intelligence Endpoint (Fix)
-# ============================================
-
-from ml.geographic.geo_engine import geo_intelligence
-
-
-@app.post("/api/geo/recommend")
-async def geo_recommend(request: Dict):
-    """Get location-based recommendations"""
-    profile = request.get("profile", {})
-    return geo_intelligence.get_recommendations(profile)
-
-
-# ============================================
-# Unified Explainability Endpoint (Fix)
-# ============================================
-
-from ml.explainability.unified_explainer import unified_explainer
-
-
-@app.post("/api/explain/unified")
-async def unified_explain(request: Dict):
-    """Get unified explanation"""
-    career = request.get("career", {})
-    profile = request.get("profile", {})
-    return unified_explainer.explain_recommendation(career, profile)
-
-
-# ============================================
-# Adaptive Journey Endpoint (Fix)
-# ============================================
-
-@app.post("/api/journey/recommend")
-async def get_journey_recommendation(request: Dict):
-    """Get adaptive journey recommendations"""
-    profile = request.get("profile", {})
-    role = profile.get("role", "student_shs")
-    
-    from ml.persona_dynamic.persona_engine import persona_engine
-    journey = persona_engine.get_persona_journey(role)
-    
-    return {
-        "persona_id": role,
-        "steps": journey,
-        "recommendations": journey
-    }
-
-
-# ============================================
-# Decision Timeline Endpoint (Fix)
-# ============================================
-
-from ml.decision_timeline.timeline import timeline_generator
-
-
-@app.post("/api/timeline/generate")
-async def generate_timeline(request: Dict):
-    """Generate decision timeline for a career"""
-    career = request.get("career", "Medical Doctor")
-    aggregate = request.get("aggregate")
-    return timeline_generator.generate_timeline(career, aggregate)
-
-print("✅ All missing endpoints added!")
-
-# ============================================
-# Smart Recommend Endpoint
-# ============================================
-
-class SmartRequest(BaseModel):
-    aggregate: int
-    subjects: Dict[str, int]
-    interests: Dict[str, int]
-
-
-@app.post("/api/smart/recommend")
-async def smart_recommend(request: SmartRequest):
-    """Smart career recommendation"""
-    from ml.smart_recommender import recommender
-    
-    results = recommender.recommend(
-        aggregate=request.aggregate,
-        subjects=request.subjects,
-        interests=request.interests
-    )
-    return results
-
-
-# ============================================
-# Real Data Recommend Endpoint
-# ============================================
-
-class RealDataRequest(BaseModel):
-    aggregate: int
-    interests: List[str]
-    subjects: List[str]
-
-
-@app.post("/api/real-data/recommend")
-async def real_data_recommend(request: RealDataRequest):
-    """Real Ghana data recommendations"""
-    from ml.real_recommender_engine import real_recommender
-    from ml.real_data_loader import real_data
-    
-    recommendations = real_recommender.recommend(
-        aggregate=request.aggregate,
-        interests=request.interests,
-        subjects=request.subjects
-    )
-    
-    return {
-        "student_profile": {
-            "aggregate": request.aggregate,
-            "interests": request.interests,
-            "subjects": request.subjects
-        },
-        "recommendations": recommendations,
-        "data_sources": real_data.get_data_sources(),
-        "methodology": "Recommendations based on actual university admission requirements, WASSCE grading from WAEC Ghana, and labor market data from Ghana Statistical Service"
-    }
-
-
-# ============================================
-# Explainability Endpoint (Fix)
-# ============================================
-
-class ExplainRequest(BaseModel):
-    career: Dict
-    student_profile: Dict
-
-
-@app.post("/api/explain/recommendation")
-async def explain_recommendation(request: ExplainRequest):
-    """Get detailed explanation for a recommendation"""
-    from ml.explainability.unified_explainer import unified_explainer
-    return unified_explainer.explain_recommendation(
-        career=request.career,
-        profile=request.student_profile
-    )
-
-
-# ============================================
-# Geographic Intelligence Endpoint (Fix)
-# ============================================
-
-from ml.geographic.geo_engine import geo_intelligence
-
-
-@app.post("/api/geo/recommend")
-async def geo_recommend(request: Dict):
-    """Get location-based recommendations"""
-    profile = request.get("profile", {})
-    return geo_intelligence.get_recommendations(profile)
-
-
-# ============================================
-# Unified Explainability Endpoint (Fix)
-# ============================================
-
-from ml.explainability.unified_explainer import unified_explainer
-
-
-@app.post("/api/explain/unified")
-async def unified_explain(request: Dict):
-    """Get unified explanation"""
-    career = request.get("career", {})
-    profile = request.get("profile", {})
-    return unified_explainer.explain_recommendation(career, profile)
-
-
-# ============================================
-# Adaptive Journey Endpoint (Fix)
-# ============================================
-
-@app.post("/api/journey/recommend")
-async def get_journey_recommendation(request: Dict):
-    """Get adaptive journey recommendations"""
-    profile = request.get("profile", {})
-    role = profile.get("role", "student_shs")
-    
-    from ml.persona_dynamic.persona_engine import persona_engine
-    journey = persona_engine.get_persona_journey(role)
-    
-    return {
-        "persona_id": role,
-        "steps": journey,
-        "recommendations": journey
-    }
-
-
-# ============================================
-# Decision Timeline Endpoint (Fix)
-# ============================================
-
-from ml.decision_timeline.timeline import timeline_generator
-
-
-@app.post("/api/timeline/generate")
-async def generate_timeline(request: Dict):
-    """Generate decision timeline for a career"""
-    career = request.get("career", "Medical Doctor")
-    aggregate = request.get("aggregate")
-    return timeline_generator.generate_timeline(career, aggregate)
-
-
-print("✅ All missing endpoints added!")
