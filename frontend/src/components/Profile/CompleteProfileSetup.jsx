@@ -28,21 +28,7 @@ function CompleteProfileSetup({ onComplete }) {
   const fetchRoles = async () => {
     try {
       const response = await API.get('/api/profile/roles');
-      if (response.data && response.data.roles) {
-        setRoles(response.data.roles);
-      } else {
-        // Fallback roles
-        setRoles([
-          { id: 'student_shs', name: 'SHS Student', emoji: '🎓' },
-          { id: 'student_tvet', name: 'TVET Student', emoji: '🔧' },
-          { id: 'parent', name: 'Parent / Guardian', emoji: '👨‍👩‍👧‍👦' },
-          { id: 'teacher', name: 'Teacher', emoji: '👨‍🏫' },
-          { id: 'counsellor', name: 'Counsellor', emoji: '💼' },
-          { id: 'graduate', name: 'Graduate', emoji: '🎓' },
-          { id: 'student_university', name: 'University Student', emoji: '🏫' },
-          { id: 'student_basic', name: 'Basic School Student', emoji: '🧒' }
-        ]);
-      }
+      setRoles(response.data.roles || []);
     } catch (error) {
       console.error('Error fetching roles:', error);
       setRoles([
@@ -58,11 +44,7 @@ function CompleteProfileSetup({ onComplete }) {
   const fetchRegions = async () => {
     try {
       const response = await API.get('/api/profile/regions');
-      if (response.data && response.data.regions) {
-        setRegions(response.data.regions);
-      } else {
-        setRegions(['Greater Accra', 'Ashanti', 'Northern', 'Volta', 'Western', 'Eastern', 'Central', 'Brong Ahafo', 'Upper East', 'Upper West']);
-      }
+      setRegions(response.data.regions || []);
     } catch (error) {
       console.error('Error fetching regions:', error);
       setRegions(['Greater Accra', 'Ashanti', 'Northern', 'Volta', 'Western', 'Eastern', 'Central', 'Brong Ahafo', 'Upper East', 'Upper West']);
@@ -95,30 +77,23 @@ function CompleteProfileSetup({ onComplete }) {
       const userId = 'user_' + Date.now();
       localStorage.setItem('pathwaygh_user_id', userId);
 
+      // Build payload for /api/profile/create endpoint
       const payload = {
         user_id: userId,
         profile: {
           role: profile.role,
           education_level: profile.education_level,
-          geographic: { 
-            region: profile.region, 
-            district: profile.district 
-          },
-          academic: { 
-            aggregate: profile.aggregate ? parseInt(profile.aggregate) : null, 
-            subjects: profile.subjects 
-          },
-          career: { 
-            interests: profile.interests, 
-            career_goal: profile.career_goal 
-          },
-          financial: { 
-            needs_scholarship: profile.needs_scholarship 
-          }
+          region: profile.region,
+          district: profile.district,
+          aggregate: profile.aggregate ? parseInt(profile.aggregate) : null,
+          subjects: profile.subjects,
+          interests: profile.interests,
+          career_goal: profile.career_goal,
+          needs_scholarship: profile.needs_scholarship
         }
       };
 
-      const response = await API.post('/api/profile/unified/create', payload);
+      const response = await API.post('/api/profile/create', payload);
       
       if (response.data && response.data.profile) {
         localStorage.setItem('pathwaygh_profile', JSON.stringify(response.data.profile));
@@ -127,7 +102,6 @@ function CompleteProfileSetup({ onComplete }) {
           onComplete(response.data.profile);
         } else {
           alert('✅ Profile created successfully! You can now use Context AI chat.');
-          // Reset to step 1
           setStep(1);
         }
       } else {
@@ -163,8 +137,7 @@ function CompleteProfileSetup({ onComplete }) {
                     background: profile.role === role.id ? '#e8f5e9' : 'white',
                     cursor: 'pointer',
                     textAlign: 'center',
-                    fontSize: '13px',
-                    transition: 'all 0.2s'
+                    fontSize: '13px'
                   }}
                 >
                   <div style={{ fontSize: '28px' }}>{role.emoji || '👤'}</div>
@@ -192,8 +165,7 @@ function CompleteProfileSetup({ onComplete }) {
                     background: profile.education_level === level ? '#e8f5e9' : 'white',
                     cursor: 'pointer',
                     textTransform: 'uppercase',
-                    fontSize: '13px',
-                    fontWeight: profile.education_level === level ? 'bold' : 'normal'
+                    fontSize: '13px'
                   }}
                 >
                   {level.toUpperCase()}
@@ -273,8 +245,7 @@ function CompleteProfileSetup({ onComplete }) {
                       border: profile.subjects.includes(subject) ? '2px solid #1a5f2b' : '1px solid #ccc',
                       background: profile.subjects.includes(subject) ? '#e8f5e9' : 'white',
                       cursor: 'pointer',
-                      fontSize: '12px',
-                      transition: 'all 0.2s'
+                      fontSize: '12px'
                     }}
                   >
                     {subject}
@@ -382,8 +353,7 @@ function CompleteProfileSetup({ onComplete }) {
                 width: '8px',
                 height: '8px',
                 borderRadius: '50%',
-                background: s === step ? '#1a5f2b' : s < step ? '#a5d6a7' : '#e0e0e0',
-                transition: 'all 0.3s'
+                background: s === step ? '#1a5f2b' : s < step ? '#a5d6a7' : '#e0e0e0'
               }}
             />
           ))}
