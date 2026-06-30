@@ -28,18 +28,29 @@ function CompleteProfileSetup({ onComplete }) {
   const fetchRoles = async () => {
     try {
       const response = await API.get('/api/profile/roles');
-      setRoles(response.data.roles || []);
+      if (response.data && response.data.roles) {
+        setRoles(response.data.roles);
+      } else {
+        // Fallback roles
+        setRoles([
+          { id: 'student_shs', name: 'SHS Student', emoji: '🎓' },
+          { id: 'student_tvet', name: 'TVET Student', emoji: '🔧' },
+          { id: 'parent', name: 'Parent / Guardian', emoji: '👨‍👩‍👧‍👦' },
+          { id: 'teacher', name: 'Teacher', emoji: '👨‍🏫' },
+          { id: 'counsellor', name: 'Counsellor', emoji: '💼' },
+          { id: 'graduate', name: 'Graduate', emoji: '🎓' },
+          { id: 'student_university', name: 'University Student', emoji: '🏫' },
+          { id: 'student_basic', name: 'Basic School Student', emoji: '🧒' }
+        ]);
+      }
     } catch (error) {
       console.error('Error fetching roles:', error);
-      // Fallback roles
       setRoles([
         { id: 'student_shs', name: 'SHS Student', emoji: '🎓' },
         { id: 'student_tvet', name: 'TVET Student', emoji: '🔧' },
         { id: 'parent', name: 'Parent / Guardian', emoji: '👨‍👩‍👧‍👦' },
         { id: 'teacher', name: 'Teacher', emoji: '👨‍🏫' },
-        { id: 'counsellor', name: 'Counsellor', emoji: '💼' },
-        { id: 'graduate', name: 'Graduate', emoji: '🎓' },
-        { id: 'student_university', name: 'University Student', emoji: '🏫' }
+        { id: 'counsellor', name: 'Counsellor', emoji: '💼' }
       ]);
     }
   };
@@ -47,7 +58,11 @@ function CompleteProfileSetup({ onComplete }) {
   const fetchRegions = async () => {
     try {
       const response = await API.get('/api/profile/regions');
-      setRegions(response.data.regions || []);
+      if (response.data && response.data.regions) {
+        setRegions(response.data.regions);
+      } else {
+        setRegions(['Greater Accra', 'Ashanti', 'Northern', 'Volta', 'Western', 'Eastern', 'Central', 'Brong Ahafo', 'Upper East', 'Upper West']);
+      }
     } catch (error) {
       console.error('Error fetching regions:', error);
       setRegions(['Greater Accra', 'Ashanti', 'Northern', 'Volta', 'Western', 'Eastern', 'Central', 'Brong Ahafo', 'Upper East', 'Upper West']);
@@ -105,14 +120,18 @@ function CompleteProfileSetup({ onComplete }) {
 
       const response = await API.post('/api/profile/unified/create', payload);
       
-      localStorage.setItem('pathwaygh_profile', JSON.stringify(response.data.profile));
-      
-      if (onComplete) {
-        onComplete(response.data.profile);
+      if (response.data && response.data.profile) {
+        localStorage.setItem('pathwaygh_profile', JSON.stringify(response.data.profile));
+        
+        if (onComplete) {
+          onComplete(response.data.profile);
+        } else {
+          alert('✅ Profile created successfully! You can now use Context AI chat.');
+          // Reset to step 1
+          setStep(1);
+        }
       } else {
-        alert('✅ Profile created successfully! You can now use Context AI chat.');
-        // Reset to step 1
-        setStep(1);
+        alert('❌ Error creating profile. Please try again.');
       }
     } catch (error) {
       console.error('Error creating profile:', error);

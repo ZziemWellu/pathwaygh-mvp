@@ -18,14 +18,21 @@ function ContextChat() {
 
     if (savedUserId && savedProfile) {
       setUserId(savedUserId);
-      setUserProfile(JSON.parse(savedProfile));
-      setHasProfile(true);
-      setMessages([{
-        role: 'assistant',
-        content: '👋 Welcome back! I have your profile ready. Ask me anything about careers, universities, or education in Ghana.'
-      }]);
+      try {
+        setUserProfile(JSON.parse(savedProfile));
+        setHasProfile(true);
+        setMessages([{
+          role: 'assistant',
+          content: '👋 Welcome back! I have your profile ready. Ask me anything about careers, universities, or education in Ghana.'
+        }]);
+      } catch (e) {
+        console.error('Error parsing profile:', e);
+        setMessages([{
+          role: 'assistant',
+          content: '⚠️ Your profile data is corrupted. Please recreate your profile by clicking the **Profile** tab above.'
+        }]);
+      }
     } else {
-      // No profile - show welcome message instead of profile setup
       setMessages([{
         role: 'assistant',
         content: '👋 Welcome to Context AI! This is a personalized assistant that remembers your profile.\n\nTo get started, please create your profile first by clicking the **Profile** tab above.'
@@ -33,8 +40,31 @@ function ContextChat() {
     }
   }, []);
 
+  // Function to navigate to Profile tab
+  const goToProfile = () => {
+    // Find and click the Profile tab
+    const tabs = document.querySelectorAll('button');
+    for (const tab of tabs) {
+      if (tab.textContent && tab.textContent.includes('👤 Profile')) {
+        tab.click();
+        return;
+      }
+    }
+    // Fallback: look for any tab with "Profile" in text
+    const allButtons = document.querySelectorAll('button');
+    for (const btn of allButtons) {
+      if (btn.textContent && btn.textContent.toLowerCase().includes('profile')) {
+        btn.click();
+        return;
+      }
+    }
+    alert('Please click the "Profile" tab in the navigation bar above.');
+  };
+
   const sendMessage = async () => {
-    if (!input.trim()) return;
+    if (!input.trim()) {
+      return;
+    }
 
     if (!hasProfile) {
       setMessages(prev => [...prev, {
@@ -106,8 +136,8 @@ function ContextChat() {
         <h2 style={{ color: '#1a5f2b', margin: 0 }}>💬 Context-Aware Assistant</h2>
         <div style={{ 
           fontSize: '13px', 
-          color: hasProfile ? '#2e7d32' : '#888', 
-          background: hasProfile ? '#e8f5e9' : '#f5f5f5', 
+          color: hasProfile ? '#2e7d32' : '#c62828', 
+          background: hasProfile ? '#e8f5e9' : '#ffebee', 
           padding: '8px 16px', 
           borderRadius: '20px'
         }}>
@@ -129,22 +159,19 @@ function ContextChat() {
             <strong style={{ color: '#1a5f2b' }}> Profile</strong> tab above.
           </p>
           <button
-            onClick={() => {
-              // Navigate to profile tab
-              const profileTab = document.querySelector('button[id*="profile"]');
-              if (profileTab) profileTab.click();
-            }}
+            onClick={goToProfile}
             style={{
-              marginTop: '10px',
-              padding: '8px 20px',
+              marginTop: '12px',
+              padding: '10px 24px',
               background: '#1a5f2b',
               color: 'white',
               border: 'none',
               borderRadius: '8px',
-              cursor: 'pointer'
+              cursor: 'pointer',
+              fontSize: '14px'
             }}
           >
-            Go to Profile Setup
+            🔗 Go to Profile Setup
           </button>
         </div>
       )}
