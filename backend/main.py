@@ -927,3 +927,30 @@ def _generate_contextual_response(context: Dict, query: str) -> str:
         base = base + "\n\nI can help you find universities that match your profile. Which career are you interested in?"
     
     return base
+
+# ============================================
+# Unified Profile Create Endpoint
+# ============================================
+
+@app.post("/api/profile/unified/create")
+async def create_unified_profile(request: ProfileRequest):
+    """Create a unified profile"""
+    try:
+        from ml.profile.unified_profile import UnifiedProfile
+        from ml.context_engine.enhanced_engine import enhanced_context_engine
+        
+        profile = UnifiedProfile.from_dict(request.profile)
+        profile.user_id = request.user_id
+        enhanced_context_engine.set_profile(request.user_id, profile)
+        return {
+            "status": "success",
+            "profile": profile.to_dict()
+        }
+    except Exception as e:
+        print(f"Error creating profile: {e}")
+        return {
+            "status": "error",
+            "message": str(e)
+        }
+
+print("✅ Unified Profile Create endpoint added!")

@@ -33,6 +33,7 @@ function ContextChat() {
         }]);
       }
     } else {
+      // Show welcome message with button to create profile
       setMessages([{
         role: 'assistant',
         content: '👋 Welcome to Context AI! This is a personalized assistant that remembers your profile.\n\nTo get started, please create your profile first by clicking the **Profile** tab above.'
@@ -40,18 +41,16 @@ function ContextChat() {
     }
   }, []);
 
-  // Function to navigate to Profile tab
   const goToProfile = () => {
     // Find and click the Profile tab
-    const tabs = document.querySelectorAll('button');
-    for (const tab of tabs) {
-      if (tab.textContent && tab.textContent.includes('👤 Profile')) {
-        tab.click();
+    const allButtons = document.querySelectorAll('button');
+    for (const btn of allButtons) {
+      if (btn.textContent && btn.textContent.includes('👤 Profile')) {
+        btn.click();
         return;
       }
     }
-    // Fallback: look for any tab with "Profile" in text
-    const allButtons = document.querySelectorAll('button');
+    // Fallback
     for (const btn of allButtons) {
       if (btn.textContent && btn.textContent.toLowerCase().includes('profile')) {
         btn.click();
@@ -99,7 +98,7 @@ function ContextChat() {
         role: 'assistant',
         content: responseText,
         context: contextData,
-        resources: response.data.guidance?.resources || []
+        resources: response.data.guidance || []
       }]);
     } catch (error) {
       console.error('Error:', error);
@@ -148,27 +147,28 @@ function ContextChat() {
       {!hasProfile && (
         <div style={{
           background: '#fff3e0',
-          padding: '20px',
+          padding: '25px',
           borderRadius: '12px',
           marginBottom: '20px',
           textAlign: 'center',
-          border: '1px solid #ffe0b2'
+          border: '2px solid #ffe0b2'
         }}>
-          <p style={{ margin: 0, fontSize: '16px' }}>
-            👤 To use Context AI, please create your profile first by clicking the 
-            <strong style={{ color: '#1a5f2b' }}> Profile</strong> tab above.
+          <div style={{ fontSize: '48px', marginBottom: '10px' }}>👤</div>
+          <h3 style={{ margin: '0 0 10px 0', color: '#e65100' }}>Create Your Profile First</h3>
+          <p style={{ margin: '0 0 15px 0', fontSize: '16px', color: '#555' }}>
+            To use Context AI, you need to create your profile. This helps me provide personalized guidance.
           </p>
           <button
             onClick={goToProfile}
             style={{
-              marginTop: '12px',
-              padding: '10px 24px',
+              padding: '12px 32px',
               background: '#1a5f2b',
               color: 'white',
               border: 'none',
               borderRadius: '8px',
               cursor: 'pointer',
-              fontSize: '14px'
+              fontSize: '16px',
+              fontWeight: 'bold'
             }}
           >
             🔗 Go to Profile Setup
@@ -282,15 +282,15 @@ function ContextChat() {
         />
         <button
           onClick={sendMessage}
-          disabled={loading || !input.trim()}
+          disabled={loading || !input.trim() || !hasProfile}
           style={{
             padding: '12px 24px',
             background: '#1a5f2b',
             color: 'white',
             border: 'none',
             borderRadius: '8px',
-            cursor: loading || !input.trim() ? 'not-allowed' : 'pointer',
-            opacity: loading || !input.trim() ? 0.6 : 1,
+            cursor: loading || !input.trim() || !hasProfile ? 'not-allowed' : 'pointer',
+            opacity: loading || !input.trim() || !hasProfile ? 0.6 : 1,
             alignSelf: 'flex-end',
             height: '60px'
           }}
