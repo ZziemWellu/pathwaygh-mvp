@@ -1144,3 +1144,249 @@ async def get_journey_recommendation(request: Dict):
     })
 
 print("✅ All unified endpoints added!")
+
+# ============================================
+# Dynamic Persona Endpoints
+# ============================================
+
+from ml.persona_dynamic.persona_engine import persona_engine
+
+
+@app.get("/api/profile/roles")
+async def get_all_roles():
+    """Get all available roles/personas"""
+    personas = persona_engine.get_all_personas()
+    return {
+        "roles": [
+            {
+                "id": p["id"],
+                "name": p["name"],
+                "emoji": p.get("emoji", "👤"),
+                "description": p.get("description", "")
+            }
+            for p in personas
+        ]
+    }
+
+
+@app.get("/api/persona/{persona_id}")
+async def get_persona(persona_id: str):
+    """Get persona details"""
+    return persona_engine.get_persona(persona_id)
+
+
+@app.get("/api/persona/journey/{persona_id}")
+async def get_persona_journey(persona_id: str):
+    """Get journey for a persona"""
+    return {
+        "persona_id": persona_id,
+        "journey": persona_engine.get_persona_journey(persona_id)
+    }
+
+
+# ============================================
+# Geographic Intelligence Endpoint (Fix)
+# ============================================
+
+from ml.geographic.geo_engine import geo_intelligence
+
+
+@app.post("/api/geo/recommend")
+async def geo_recommend(request: Dict):
+    """Get location-based recommendations"""
+    profile = request.get("profile", {})
+    return geo_intelligence.get_recommendations(profile)
+
+
+# ============================================
+# Unified Explainability Endpoint (Fix)
+# ============================================
+
+from ml.explainability.unified_explainer import unified_explainer
+
+
+@app.post("/api/explain/unified")
+async def unified_explain(request: Dict):
+    """Get unified explanation"""
+    career = request.get("career", {})
+    profile = request.get("profile", {})
+    return unified_explainer.explain_recommendation(career, profile)
+
+
+# ============================================
+# Adaptive Journey Endpoint (Fix)
+# ============================================
+
+@app.post("/api/journey/recommend")
+async def get_journey_recommendation(request: Dict):
+    """Get adaptive journey recommendations"""
+    profile = request.get("profile", {})
+    role = profile.get("role", "student_shs")
+    
+    from ml.persona_dynamic.persona_engine import persona_engine
+    journey = persona_engine.get_persona_journey(role)
+    
+    return {
+        "persona_id": role,
+        "steps": journey,
+        "recommendations": journey
+    }
+
+
+# ============================================
+# Decision Timeline Endpoint (Fix)
+# ============================================
+
+from ml.decision_timeline.timeline import timeline_generator
+
+
+@app.post("/api/timeline/generate")
+async def generate_timeline(request: Dict):
+    """Generate decision timeline for a career"""
+    career = request.get("career", "Medical Doctor")
+    aggregate = request.get("aggregate")
+    return timeline_generator.generate_timeline(career, aggregate)
+
+print("✅ All missing endpoints added!")
+
+# ============================================
+# Smart Recommend Endpoint
+# ============================================
+
+class SmartRequest(BaseModel):
+    aggregate: int
+    subjects: Dict[str, int]
+    interests: Dict[str, int]
+
+
+@app.post("/api/smart/recommend")
+async def smart_recommend(request: SmartRequest):
+    """Smart career recommendation"""
+    from ml.smart_recommender import recommender
+    
+    results = recommender.recommend(
+        aggregate=request.aggregate,
+        subjects=request.subjects,
+        interests=request.interests
+    )
+    return results
+
+
+# ============================================
+# Real Data Recommend Endpoint
+# ============================================
+
+class RealDataRequest(BaseModel):
+    aggregate: int
+    interests: List[str]
+    subjects: List[str]
+
+
+@app.post("/api/real-data/recommend")
+async def real_data_recommend(request: RealDataRequest):
+    """Real Ghana data recommendations"""
+    from ml.real_recommender_engine import real_recommender
+    from ml.real_data_loader import real_data
+    
+    recommendations = real_recommender.recommend(
+        aggregate=request.aggregate,
+        interests=request.interests,
+        subjects=request.subjects
+    )
+    
+    return {
+        "student_profile": {
+            "aggregate": request.aggregate,
+            "interests": request.interests,
+            "subjects": request.subjects
+        },
+        "recommendations": recommendations,
+        "data_sources": real_data.get_data_sources(),
+        "methodology": "Recommendations based on actual university admission requirements, WASSCE grading from WAEC Ghana, and labor market data from Ghana Statistical Service"
+    }
+
+
+# ============================================
+# Explainability Endpoint (Fix)
+# ============================================
+
+class ExplainRequest(BaseModel):
+    career: Dict
+    student_profile: Dict
+
+
+@app.post("/api/explain/recommendation")
+async def explain_recommendation(request: ExplainRequest):
+    """Get detailed explanation for a recommendation"""
+    from ml.explainability.unified_explainer import unified_explainer
+    return unified_explainer.explain_recommendation(
+        career=request.career,
+        profile=request.student_profile
+    )
+
+
+# ============================================
+# Geographic Intelligence Endpoint (Fix)
+# ============================================
+
+from ml.geographic.geo_engine import geo_intelligence
+
+
+@app.post("/api/geo/recommend")
+async def geo_recommend(request: Dict):
+    """Get location-based recommendations"""
+    profile = request.get("profile", {})
+    return geo_intelligence.get_recommendations(profile)
+
+
+# ============================================
+# Unified Explainability Endpoint (Fix)
+# ============================================
+
+from ml.explainability.unified_explainer import unified_explainer
+
+
+@app.post("/api/explain/unified")
+async def unified_explain(request: Dict):
+    """Get unified explanation"""
+    career = request.get("career", {})
+    profile = request.get("profile", {})
+    return unified_explainer.explain_recommendation(career, profile)
+
+
+# ============================================
+# Adaptive Journey Endpoint (Fix)
+# ============================================
+
+@app.post("/api/journey/recommend")
+async def get_journey_recommendation(request: Dict):
+    """Get adaptive journey recommendations"""
+    profile = request.get("profile", {})
+    role = profile.get("role", "student_shs")
+    
+    from ml.persona_dynamic.persona_engine import persona_engine
+    journey = persona_engine.get_persona_journey(role)
+    
+    return {
+        "persona_id": role,
+        "steps": journey,
+        "recommendations": journey
+    }
+
+
+# ============================================
+# Decision Timeline Endpoint (Fix)
+# ============================================
+
+from ml.decision_timeline.timeline import timeline_generator
+
+
+@app.post("/api/timeline/generate")
+async def generate_timeline(request: Dict):
+    """Generate decision timeline for a career"""
+    career = request.get("career", "Medical Doctor")
+    aggregate = request.get("aggregate")
+    return timeline_generator.generate_timeline(career, aggregate)
+
+
+print("✅ All missing endpoints added!")
