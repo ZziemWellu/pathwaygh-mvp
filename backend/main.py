@@ -782,6 +782,12 @@ class ContextRequest(BaseModel):
     query: str
 
 
+
+# ============================================
+# Profile Endpoints - CORRECT ORDER
+# STATIC ROUTES FIRST, DYNAMIC ROUTES LAST
+# ============================================
+
 @app.post("/api/profile/create")
 async def create_profile(request: ProfileRequest):
     """Create a user profile"""
@@ -804,55 +810,22 @@ async def update_profile(request: ProfileRequest):
     }
 
 
-@app.get("/api/profile/{user_id}")
-async def get_profile(user_id: str):
-    """Get a user profile"""
-    profile = context_engine.get_profile(user_id)
-    if not profile:
-        return {"status": "error", "message": "Profile not found"}
-    return {
-        "status": "success",
-        "profile": profile.to_dict()
-    }
-
-
-@app.post("/api/context/query")
-async def context_query(request: ContextRequest):
-    """Process a query with full context"""
-    # Build context
-    context = context_engine.build_context(request.user_id, request.query)
-
-    # Generate contextual prompt
-    prompt = context_engine.generate_contextual_prompt(context)
-
-    # Get appropriate guidance - handle None safely
-    guidance = context.get("guidance")
-    if guidance is None:
-        guidance = {}
-
-    # Generate response based on context
-    response = _generate_contextual_response(context, request.query)
-
-    return {
-        "context": context,
-        "prompt": prompt,
-        "response": response,
-        "guidance": guidance.get("resources", []),
-        "focus": guidance.get("focus", "Career guidance")
-    }
+# === STATIC ROUTES - Must come BEFORE dynamic /{user_id} ===
 @app.get("/api/profile/roles")
 async def get_roles():
     """Get all available roles"""
     return {
         "roles": [
             {"id": "student_basic", "name": "Basic School Student", "emoji": "🧒"},
+            {"id": "student_jhs", "name": "JHS Student", "emoji": "📚"},
             {"id": "student_shs", "name": "SHS Student", "emoji": "🎓"},
-            {"id": "student_university", "name": "University Student", "emoji": "🏫"},
             {"id": "student_tvet", "name": "TVET Student", "emoji": "🔧"},
+            {"id": "student_university", "name": "University Student", "emoji": "🏫"},
+            {"id": "graduate", "name": "Graduate", "emoji": "🎓"},
             {"id": "parent", "name": "Parent / Guardian", "emoji": "👨‍👩‍👧‍👦"},
             {"id": "teacher", "name": "Teacher", "emoji": "👨‍🏫"},
             {"id": "counsellor", "name": "School Counsellor", "emoji": "💼"},
-            {"id": "graduate", "name": "Graduate", "emoji": "🎓"},
+            {"id": "administrator", "name": "School Administrator", "emoji": "📊"},
             {"id": "job_seeker", "name": "Job Seeker", "emoji": "💪"}
         ]
     }
@@ -862,95 +835,22 @@ async def get_roles():
 async def get_regions():
     """Get all regions"""
     return {
-        "regions": ["Greater Accra", "Ashanti", "Northern", "Volta", "Western", "Eastern", "Central", "Brong Ahafo", "Upper East", "Upper West"]
+        "regions": [
+            "Greater Accra", "Ashanti", "Northern", "Volta", "Western", 
+            "Eastern", "Central", "Brong Ahafo", "Upper East", "Upper West",
+            "Oti", "Savannah", "North East", "Ahafo", "Bono", "Bono East"
+        ]
     }
 
 
-def _generate_contextual_response(context: Dict, query: str) -> str:
-    """Generate a response based on context"""
-    profile = context.get("profile")
-    
-    # Handle case where profile is None
-    if profile is None:
-        return "I notice you don't have a profile set up yet. Please create your profile first by clicking the Profile tab above, then ask me again!"
-    
-    role = profile.get("role", "student")
-    
-    # Base response based on role
-    role_responses = {
-        "student_basic": "I'll help you explore careers in a simple way! Let's find out what you enjoy doing and what subjects you like.",
-        "student_shs": "I'll help you plan your future! Based on your subjects and interests, let's find the best university paths.",
-        "student_university": "Let's explore career opportunities and professional development for your future!",
-        "student_tvet": "Your skills are valuable! Let me help you find the best career opportunities for your training.",
-        "parent": "I'll help you support your child's educational journey with practical guidance and financial planning.",
-        "teacher": "I'll help you guide your students with the best career resources and teaching strategies.",
-        "counsellor": "Let me help you provide professional career guidance with data-driven insights.",
-        "graduate": "Let's explore your career options and professional certification pathways.",
-        "job_seeker": "I'll help you prepare for the job market with practical advice and resources."
+# === DYNAMIC ROUTE - Must come LAST ===
+@app.get("/api/profile/{user_id}")
+async def get_profile(user_id: str):
+    """Get a user profile by ID (dynamic route - must be last)"""
+    profile = context_engine.get_profile(user_id)
+    if not profile:
+        return {"status": "error", "message": "Profile not found"}
+    return {
+        "status": "success",
+        "profile": profile.to_dict()
     }
-    
-    base = role_responses.get(role, "I'm here to help with your career and education questions.")
-    
-    # Add academic context if available
-    academic = context.get("academic_context", {})
-    if academic and academic.get("aggregate"):
-        agg = academic["aggregate"]
-        base = base + "\n\n📊 With your aggregate of " + str(agg) + ", you have several options to explore."
-    
-    # Add career context if available
-    career = context.get("career_context", {})
-    if career and career.get("career_goal"):
-        goal = career["career_goal"]
-        base = base + "\n\n🎯 You mentioned interest in " + goal + " - let's explore this path!"
-    
-    # Add financial context if available
-    financial = context.get("financial_context", {})
-    if financial and financial.get("needs_scholarship"):
-        base = base + "\n\n💰 I'll prioritize scholarship opportunities in my recommendations."
-    
-    # Add regional context if available
-    regional = context.get("regional_context", {})
-    if regional:
-        base = base + "\n\n📍 I'll consider opportunities in your region."
-    
-    # Add query-specific response
-    query_lower = query.lower()
-    if "medicine" in query_lower or "doctor" in query_lower:
-        base = base + "\n\nMedicine is a competitive but rewarding field. You'll need strong performance in Biology, Chemistry, and Physics."
-    elif "engineering" in query_lower:
-        base = base + "\n\nEngineering offers many opportunities. Civil, Mechanical, and Electrical engineering are in high demand."
-    elif "law" in query_lower:
-        base = base + "\n\nLaw is a respected profession. You'll need strong performance in Government and Literature."
-    elif "nursing" in query_lower:
-        base = base + "\n\nNursing is in very high demand across Ghana. It's a stable and rewarding career."
-    elif "university" in query_lower or "school" in query_lower:
-        base = base + "\n\nI can help you find universities that match your profile. Which career are you interested in?"
-    
-    return base
-
-# ============================================
-# Unified Profile Create Endpoint
-# ============================================
-
-@app.post("/api/profile/unified/create")
-async def create_unified_profile(request: ProfileRequest):
-    """Create a unified profile"""
-    try:
-        from ml.profile.unified_profile import UnifiedProfile
-        from ml.context_engine.enhanced_engine import enhanced_context_engine
-        
-        profile = UnifiedProfile.from_dict(request.profile)
-        profile.user_id = request.user_id
-        enhanced_context_engine.set_profile(request.user_id, profile)
-        return {
-            "status": "success",
-            "profile": profile.to_dict()
-        }
-    except Exception as e:
-        print(f"Error creating profile: {e}")
-        return {
-            "status": "error",
-            "message": str(e)
-        }
-
-print("✅ Unified Profile Create endpoint added!")
