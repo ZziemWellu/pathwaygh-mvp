@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import CompleteProfileSetup from '../Profile/CompleteProfileSetup';
 
 const API = axios.create({ baseURL: import.meta.env.VITE_API_URL || 'http://localhost:8001' });
 
@@ -12,7 +11,6 @@ function ContextChat() {
   const [loading, setLoading] = useState(false);
   const [userId, setUserId] = useState(null);
   const [context, setContext] = useState(null);
-  const [showProfile, setShowProfile] = useState(false);
 
   useEffect(() => {
     const savedUserId = localStorage.getItem('pathwaygh_user_id');
@@ -24,25 +22,28 @@ function ContextChat() {
       setHasProfile(true);
       setMessages([{
         role: 'assistant',
-        content: `👋 Welcome back! I have your profile ready. Ask me anything about careers, universities, or education in Ghana.`
+        content: '👋 Welcome back! I have your profile ready. Ask me anything about careers, universities, or education in Ghana.'
       }]);
     } else {
-      setShowProfile(true);
+      // No profile - show welcome message instead of profile setup
+      setMessages([{
+        role: 'assistant',
+        content: '👋 Welcome to Context AI! This is a personalized assistant that remembers your profile.\n\nTo get started, please create your profile first by clicking the **Profile** tab above.'
+      }]);
     }
   }, []);
 
-  const handleProfileComplete = (profile) => {
-    setUserProfile(profile);
-    setHasProfile(true);
-    setShowProfile(false);
-    setMessages([{
-      role: 'assistant',
-      content: `✅ Profile complete! I now understand your context. Ask me anything about careers, universities, or education in Ghana.`
-    }]);
-  };
-
   const sendMessage = async () => {
-    if (!input.trim() || !userId || !hasProfile) return;
+    if (!input.trim()) return;
+
+    if (!hasProfile) {
+      setMessages(prev => [...prev, {
+        role: 'assistant',
+        content: '⚠️ Please create your profile first by clicking the **Profile** tab above. Then come back here for personalized guidance.'
+      }]);
+      setInput('');
+      return;
+    }
 
     const userMessage = { role: 'user', content: input };
     setMessages([...messages, userMessage]);
@@ -99,18 +100,54 @@ function ContextChat() {
     return parts.join(' | ') || 'Profile ready';
   };
 
-  if (showProfile) {
-    return <CompleteProfileSetup onComplete={handleProfileComplete} />;
-  }
-
   return (
     <div style={{ maxWidth: '900px', margin: '0 auto', padding: '20px' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', flexWrap: 'wrap' }}>
         <h2 style={{ color: '#1a5f2b', margin: 0 }}>💬 Context-Aware Assistant</h2>
-        <div style={{ fontSize: '13px', color: '#666', background: '#f5f5f5', padding: '8px 16px', borderRadius: '20px' }}>
-          {getContextSummary()}
+        <div style={{ 
+          fontSize: '13px', 
+          color: hasProfile ? '#2e7d32' : '#888', 
+          background: hasProfile ? '#e8f5e9' : '#f5f5f5', 
+          padding: '8px 16px', 
+          borderRadius: '20px'
+        }}>
+          {hasProfile ? getContextSummary() : '⚠️ No profile'}
         </div>
       </div>
+
+      {!hasProfile && (
+        <div style={{
+          background: '#fff3e0',
+          padding: '20px',
+          borderRadius: '12px',
+          marginBottom: '20px',
+          textAlign: 'center',
+          border: '1px solid #ffe0b2'
+        }}>
+          <p style={{ margin: 0, fontSize: '16px' }}>
+            👤 To use Context AI, please create your profile first by clicking the 
+            <strong style={{ color: '#1a5f2b' }}> Profile</strong> tab above.
+          </p>
+          <button
+            onClick={() => {
+              // Navigate to profile tab
+              const profileTab = document.querySelector('button[id*="profile"]');
+              if (profileTab) profileTab.click();
+            }}
+            style={{
+              marginTop: '10px',
+              padding: '8px 20px',
+              background: '#1a5f2b',
+              color: 'white',
+              border: 'none',
+              borderRadius: '8px',
+              cursor: 'pointer'
+            }}
+          >
+            Go to Profile Setup
+          </button>
+        </div>
+      )}
 
       <div style={{
         background: '#f9f9f9',
@@ -121,12 +158,6 @@ function ContextChat() {
         overflowY: 'auto',
         marginBottom: '15px'
       }}>
-        {messages.length === 0 && (
-          <div style={{ textAlign: 'center', color: '#888', padding: '40px' }}>
-            <p style={{ fontSize: '18px' }}>👋 Welcome to Context AI!</p>
-            <p>Your profile is ready. Ask me about careers, universities, or education.</p>
-          </div>
-        )}
         {messages.map((msg, idx) => (
           <div
             key={idx}
@@ -177,7 +208,7 @@ function ContextChat() {
         )}
       </div>
 
-      {context && (
+      {context && hasProfile && (
         <div style={{
           background: '#e8f5e9',
           padding: '10px 15px',
@@ -208,7 +239,8 @@ function ContextChat() {
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyPress={handleKeyPress}
-          placeholder="Ask about careers, universities, or education..."
+          placeholder={hasProfile ? "Ask about careers, universities, or education..." : "Please create your profile first..."}
+          disabled={!hasProfile}
           style={{
             flex: 1,
             padding: '12px',
@@ -217,7 +249,8 @@ function ContextChat() {
             resize: 'vertical',
             minHeight: '60px',
             fontFamily: 'inherit',
-            fontSize: '14px'
+            fontSize: '14px',
+            opacity: hasProfile ? 1 : 0.6
           }}
         />
         <button
