@@ -971,3 +971,176 @@ async def get_intelligence_dashboard(request: DashboardRequest):
     )
 
 print("✅ All new endpoints added!")
+
+# ============================================
+# Unified Profile Endpoints
+# ============================================
+
+from ml.profile.unified_profile import UnifiedProfile, Role, EducationLevel, Region
+
+class ProfileRequest(BaseModel):
+    user_id: str
+    profile: Dict
+
+
+@app.post("/api/profile/unified/create")
+async def create_unified_profile(request: ProfileRequest):
+    """Create a unified profile"""
+    profile = UnifiedProfile.from_dict(request.profile)
+    profile.user_id = request.user_id
+    # Store in context engine
+    from ml.context_engine.enhanced_engine import enhanced_context_engine
+    enhanced_context_engine.set_profile(request.user_id, profile)
+    return {
+        "status": "success",
+        "profile": profile.to_dict()
+    }
+
+
+@app.get("/api/profile/unified/{user_id}")
+async def get_unified_profile(user_id: str):
+    """Get unified profile"""
+    from ml.context_engine.enhanced_engine import enhanced_context_engine
+    profile = enhanced_context_engine.get_profile(user_id)
+    if not profile:
+        return {"status": "error", "message": "Profile not found"}
+    return {
+        "status": "success",
+        "profile": profile.to_dict()
+    }
+
+
+# ============================================
+# Geographic Intelligence Endpoint
+# ============================================
+
+from ml.geographic.geo_engine import geo_intelligence
+
+
+@app.post("/api/geo/recommend")
+async def geo_recommend(request: Dict):
+    """Get location-based recommendations"""
+    profile = request.get("profile", {})
+    return geo_intelligence.get_recommendations(profile)
+
+
+# ============================================
+# Financial Intelligence Endpoint
+# ============================================
+
+from ml.financial.financial_engine import financial_intelligence
+
+
+@app.post("/api/financial/advice")
+async def financial_advice(request: Dict):
+    """Get financial advice"""
+    profile = request.get("profile", {})
+    universities = request.get("universities", [])
+    return financial_intelligence.get_cost_advice(profile, universities)
+
+
+# ============================================
+# Decision Memory Endpoint
+# ============================================
+
+from ml.memory.decision_memory import decision_memory
+
+
+@app.post("/api/memory/decide")
+async def add_decision(request: Dict):
+    """Add a decision to memory"""
+    user_id = request.get("user_id")
+    decision = request.get("decision", {})
+    if user_id:
+        decision_memory.add_decision(user_id, decision)
+        return {"status": "success"}
+    return {"status": "error", "message": "No user_id provided"}
+
+
+@app.get("/api/memory/history/{user_id}")
+async def get_decision_history(user_id: str):
+    """Get decision history"""
+    return {
+        "history": decision_memory.get_decision_history(user_id),
+        "evolution": decision_memory.get_career_evolution(user_id)
+    }
+
+
+# ============================================
+# National Knowledge Graph Endpoints
+# ============================================
+
+from ml.knowledge_graph.national_graph import knowledge_graph
+
+
+@app.get("/api/graph/national/{node_id}")
+async def get_knowledge_graph_node(node_id: str):
+    """Get a node from the knowledge graph"""
+    node = knowledge_graph.get_node(node_id)
+    edges = knowledge_graph.get_edges(node_id)
+    return {
+        "node": node,
+        "edges": edges
+    }
+
+
+@app.get("/api/graph/pathway/{career_id}")
+async def get_career_pathway(career_id: str):
+    """Get career pathway from knowledge graph"""
+    return knowledge_graph.get_career_pathway(career_id)
+
+
+# ============================================
+# Unified Explainability Endpoint
+# ============================================
+
+from ml.explainability.unified_explainer import unified_explainer
+
+
+@app.post("/api/explain/unified")
+async def unified_explain(request: Dict):
+    """Get unified explanation"""
+    career = request.get("career", {})
+    profile = request.get("profile", {})
+    return unified_explainer.explain_recommendation(career, profile)
+
+
+# ============================================
+# Adaptive User Journey Endpoint
+# ============================================
+
+@app.post("/api/journey/recommend")
+async def get_journey_recommendation(request: Dict):
+    """Get adaptive journey recommendations"""
+    profile = request.get("profile", {})
+    role = profile.get("role")
+    
+    journeys = {
+        "student_shs": {
+            "steps": ["Career Match", "Universities", "Admission Predictor", "Action Plan"],
+            "recommendations": ["Find careers", "Check universities", "Predict admission"]
+        },
+        "student_tvet": {
+            "steps": ["Skills Assessment", "Career Pathways", "Apprenticeships", "Entrepreneurship"],
+            "recommendations": ["Assess skills", "Find pathways", "Explore apprenticeships"]
+        },
+        "parent": {
+            "steps": ["Child Progress", "Costs", "Scholarships", "Recommendations"],
+            "recommendations": ["Check progress", "See costs", "Find scholarships"]
+        },
+        "teacher": {
+            "steps": ["Class Analytics", "Risk Students", "Recommendations"],
+            "recommendations": ["View analytics", "Identify risk", "Get recommendations"]
+        },
+        "counsellor": {
+            "steps": ["School Dashboard", "Career Statistics", "Reports"],
+            "recommendations": ["View dashboard", "Get statistics", "Generate reports"]
+        }
+    }
+    
+    return journeys.get(role, {
+        "steps": ["Profile", "Explore", "Recommendations"],
+        "recommendations": ["Explore careers", "Get matched"]
+    })
+
+print("✅ All unified endpoints added!")
