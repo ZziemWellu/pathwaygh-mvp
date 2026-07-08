@@ -21,6 +21,9 @@ import WhatIfSimulator from './components/Simulator/WhatIfSimulator'
 import FeedbackButtons from './components/Feedback/FeedbackButtons'
 import CompleteProfileSetup from './components/Profile/CompleteProfileSetup'
 
+// NEW: HuTAP Learning Module
+import LearnModule from './modules/learn/index.jsx'
+
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL || 'http://localhost:8001',
 })
@@ -91,13 +94,15 @@ function App() {
     }
   }
 
-  // ALL 12 TABS - Every component that exists
+  // ALL 13 TABS - Including new Learn tab
   const tabs = [
     { id: 'browse', label: '🔍 Browse Careers', component: null },
     { id: 'smart', label: '🎯 Smart Match', component: AIRecommendation },
     { id: 'real', label: '📚 Real Data', component: RealRecommender },
     { id: 'admission', label: '📊 Admission', component: AdmissionPredictor },
     { id: 'charts', label: '📈 Analytics', component: CareerCharts },
+    // NEW: Learn tab added here
+    { id: 'learn', label: '📖 Learn', component: LearnModule },
     { id: 'copilot', label: '💬 Memory Chat', component: ConversationMemory },
     { id: 'plan', label: '📋 Action Plan', component: ActionPlan },
     { id: 'scholarship', label: '💰 Scholarships', component: ScholarshipFinder },
@@ -261,6 +266,9 @@ function App() {
         <p>© 2026 PathwayGH | Built for Ghana AI Innovation Challenge</p>
         <p style={{ fontSize: '12px' }}>
           📚 Real Ghanaian Data | 🤖 Explainable AI | 🎓 12 Universities | 🏆 66 Programs
+        </p>
+        <p style={{ fontSize: '11px', color: '#aaa' }}>
+          🧠 Context Engine • RAG • Hybrid Search • Admission Predictor • Intelligence Dashboard • HuTAP Learning
         </p>
       </footer>
     </div>
