@@ -1,0 +1,121 @@
+import React, { useState, useEffect } from 'react'
+import axios from 'axios'
+import Login from './components/auth/Login'
+import EcosystemNavigation from './components/common/EcosystemNavigation'
+import HomeDashboard from './modules/home/HomeDashboard'
+import CourseCatalog from './modules/learn/CourseCatalog'
+import CompleteProfileSetup from './components/Profile/CompleteProfileSetup'
+
+const api = axios.create({
+  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:8001',
+})
+
+function App() {
+  const [user, setUser] = useState(null)
+  const [loading, setLoading] = useState(true)
+  const [activeModule, setActiveModule] = useState('home')
+
+  useEffect(() => {
+    checkAuth()
+  }, [])
+
+  const checkAuth = async () => {
+    const token = localStorage.getItem('pathway_token')
+    const savedUser = localStorage.getItem('pathway_user')
+    
+    if (token && savedUser) {
+      try {
+        setUser(JSON.parse(savedUser))
+        const response = await api.get(`/api/auth/me?token=${token}`)
+        if (response.data) {
+          setUser(response.data)
+        }
+      } catch (error) {
+        console.error('Auth check failed:', error)
+        localStorage.removeItem('pathway_token')
+        localStorage.removeItem('pathway_user')
+      }
+    }
+    setLoading(false)
+  }
+
+  const handleLogin = (userData) => {
+    setUser(userData)
+  }
+
+  const handleLogout = () => {
+    localStorage.removeItem('pathway_token')
+    localStorage.removeItem('pathway_user')
+    setUser(null)
+  }
+
+  if (loading) {
+    return <div style={{ textAlign: 'center', padding: '40px' }}>Loading...</div>
+  }
+
+  if (!user) {
+    return <Login onLogin={handleLogin} />
+  }
+
+  const renderModule = () => {
+    switch(activeModule) {
+      case 'home':
+        return <HomeDashboard user={user} />
+      case 'learn':
+        return <CourseCatalog user={user} />
+      case 'profile':
+        return <CompleteProfileSetup />
+      default:
+        return <HomeDashboard user={user} />
+    }
+  }
+
+  return (
+    <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '20px' }}>
+      <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
+        <div>
+          <h1 style={{ color: '#1a5f2b', fontSize: '28px', margin: 0 }}>
+            🇬🇭 Pathway AI
+          </h1>
+          <p style={{ fontSize: '12px', color: '#888', margin: 0 }}>
+            AI-Powered Education & Career Ecosystem
+          </p>
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+          <span style={{ fontSize: '14px', color: '#555' }}>
+            👤 {user?.full_name || 'Student'}
+          </span>
+          <button
+            onClick={handleLogout}
+            style={{
+              padding: '6px 16px',
+              background: '#f0f0f0',
+              border: 'none',
+              borderRadius: '8px',
+              cursor: 'pointer',
+              fontSize: '13px'
+            }}
+          >
+            Logout
+          </button>
+        </div>
+      </header>
+
+      <EcosystemNavigation 
+        activeModule={activeModule} 
+        setActiveModule={setActiveModule} 
+        user={user}
+      />
+
+      <main style={{ marginTop: '20px' }}>
+        {renderModule()}
+      </main>
+
+      <footer style={{ textAlign: 'center', marginTop: '40px', padding: '20px', color: '#888', borderTop: '1px solid #eee' }}>
+        <p>© 2026 Pathway AI | Built for Ghana</p>
+      </footer>
+    </div>
+  )
+}
+
+export default App

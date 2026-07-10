@@ -1,0 +1,61 @@
+=========================================
+  📋 PATHWAYGH COMPLETE INVESTIGATION
+  Wed Jul  8 01:12:46 UTC 2026
+=========================================
+
+📊 STATISTICS
+-----------------------------------------
+Total files: 143
+Total directories: 129
+Python files: 53
+JSX files: 23
+
+🐍 BACKEND
+-----------------------------------------
+Python files: 53
+ML modules: 46
+API endpoints: 34
+
+🎨 FRONTEND
+-----------------------------------------
+Components: 19
+Styles: 1
+
+📊 DATA
+-----------------------------------------
+Data files: 21
+Universities: 12
+
+📦 DEPENDENCIES
+-----------------------------------------
+Python packages: 23
+Node packages: 4
+
+🔗 ENDPOINTS
+-----------------------------------------
+167:@app.get("/")
+171:@app.get("/health")
+179:@app.get("/api/careers")
+186:@app.get("/api/careers/{slug}")
+204:@app.post("/api/eligibility/check")
+248:@app.get("/api/quiz/questions")
+260:@app.post("/api/quiz/submit")
+294:@app.post("/api/chatbot/chat")
+320:@app.post("/api/smart/recommend")
+346:@app.post("/api/real-data/recommend")
+374:@app.get("/api/real-data/sources")
+383:@app.get("/api/real-data/universities")
+388:@app.get("/api/real-data/wassce-info")
+404:    @app.post("/api/rag/search")
+426:    @app.post("/api/copilot/advise")
+487:@app.get("/health/detailed")
+507:@app.post("/api/rag/search")
+538:@app.post("/api/admission-chance")
+565:@app.post("/api/explain/recommendation")
+582:@app.get("/api/roadmap/{career_slug}")
+...
+Total: 34
+
+=========================================
+  ✅ INVESTIGATION COMPLETE
+=========================================

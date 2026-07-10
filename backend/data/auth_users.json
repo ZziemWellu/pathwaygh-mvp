@@ -1,0 +1,18 @@
+{
+  "user_1783651259": {
+    "id": "user_1783651259",
+    "email": "test_persist@example.com",
+    "full_name": "Persist User",
+    "password_hash": "1fa90148b6a8a4ed874f1118ac016451:e39b3e456c741e3be3f736f289f8a41d34e26caee67d15315787ca612d326471",
+    "role": "student",
+    "created_at": "2026-07-10T02:40:59.335091"
+  },
+  "user_1783651290": {
+    "id": "user_1783651290",
+    "email": "test_verify@example.com",
+    "full_name": "Test User",
+    "password_hash": "340a82372ad47d3fe95050c75da24ade:7e5898df86eada3c7840f2d1e68d42259b444325a6c94d10a3ab31438ac8587d",
+    "role": "student",
+    "created_at": "2026-07-10T02:41:30.856503"
+  }
+}

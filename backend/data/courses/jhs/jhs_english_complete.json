@@ -1,0 +1,102 @@
+{
+  "id": "jhs_english_complete",
+  "slug": "jhs-english-complete",
+  "title": "JHS English Language - Complete Course",
+  "level": "jhs",
+  "subject": "English",
+  "description": "Complete English Language course covering grammar, comprehension, writing, and literature for JHS students.",
+  "difficulty": "Beginner to Intermediate",
+  "duration_hours": 40,
+  "teacher": "Master Teacher",
+  "curriculum": "GES JHS English Syllabus",
+  "language": "English",
+  "is_published": true,
+  "enrollment_count": 0,
+  "rating": 4.5,
+  "thumbnail": "/images/courses/jhs_english.jpg",
+  "tags": ["grammar", "writing", "comprehension", "literature"],
+  "skills": ["reading", "writing", "speaking", "listening"],
+  "learning_outcomes": [
+    "Master English grammar rules",
+    "Improve reading comprehension",
+    "Develop writing skills",
+    "Prepare for BECE English"
+  ],
+  "certificate": true,
+  "modules": [
+    {
+      "id": "module_grammar",
+      "title": "Grammar Mastery",
+      "description": "Master English grammar rules and structures",
+      "order_index": 1,
+      "lessons": [
+        {
+          "id": "lesson_grammar_intro",
+          "title": "Introduction to Grammar",
+          "description": "Overview of English grammar fundamentals",
+          "lesson_type": "video",
+          "duration_minutes": 25,
+          "order_index": 1,
+          "is_free_preview": true,
+          "learning_objectives": [
+            "Identify parts of speech",
+            "Understand sentence structure"
+          ]
+        },
+        {
+          "id": "lesson_nouns_pronouns",
+          "title": "Nouns and Pronouns",
+          "description": "Understanding nouns, pronouns, and their usage",
+          "lesson_type": "video",
+          "duration_minutes": 30,
+          "order_index": 2,
+          "is_free_preview": false
+        },
+        {
+          "id": "lesson_verbs_tenses",
+          "title": "Verbs and Tenses",
+          "description": "Master verbs and all 12 tenses",
+          "lesson_type": "video",
+          "duration_minutes": 35,
+          "order_index": 3,
+          "is_free_preview": false
+        },
+        {
+          "id": "lesson_grammar_practice",
+          "title": "Grammar Practice",
+          "description": "Practice exercises for grammar mastery",
+          "lesson_type": "quiz",
+          "duration_minutes": 20,
+          "order_index": 4,
+          "is_free_preview": false
+        }
+      ]
+    },
+    {
+      "id": "module_comprehension",
+      "title": "Reading Comprehension",
+      "description": "Develop reading and comprehension skills",
+      "order_index": 2,
+      "lessons": [
+        {
+          "id": "lesson_reading_intro",
+          "title": "Introduction to Reading Comprehension",
+          "description": "Learn strategies for effective reading",
+          "lesson_type": "video",
+          "duration_minutes": 20,
+          "order_index": 1,
+          "is_free_preview": false
+        },
+        {
+          "id": "lesson_comprehension_passage",
+          "title": "Comprehension Passage Analysis",
+          "description": "Analyze and understand passages",
+          "lesson_type": "interactive",
+          "duration_minutes": 30,
+          "order_index": 2,
+          "is_free_preview": false
+        }
+      ]
+    }
+  ]
+}

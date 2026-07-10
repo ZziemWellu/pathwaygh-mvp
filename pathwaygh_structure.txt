@@ -1,0 +1,221 @@
+.
+├── README.md
+├── backend
+│   ├── data
+│   │   ├── admission_cutoffs.csv
+│   │   ├── employment
+│   │   │   ├── graduate_stats.json
+│   │   │   └── job_market.json
+│   │   ├── programs
+│   │   │   ├── all_programs.json
+│   │   │   ├── complete_requirements.json
+│   │   │   └── expanded_programs.json
+│   │   ├── shs_pathways.json
+│   │   ├── sources.json
+│   │   ├── universities
+│   │   │   ├── ashesi.json
+│   │   │   ├── cape_coast_tech.json
+│   │   │   ├── central_uni.json
+│   │   │   ├── gctu.json
+│   │   │   ├── gimpa.json
+│   │   │   ├── knust.json
+│   │   │   ├── takoradi_tech.json
+│   │   │   ├── ucc.json
+│   │   │   ├── uew.json
+│   │   │   ├── uhas.json
+│   │   │   ├── university_of_ghana.json
+│   │   │   └── upsa.json
+│   │   └── wassce
+│   │       └── grading_system.json
+│   ├── fix_indentation.py
+│   ├── main.py
+│   ├── main.py.backup
+│   ├── main.py.bak
+│   ├── main.py.old
+│   ├── main_complete.py
+│   ├── ml
+│   │   ├── action_plan
+│   │   │   └── planner.py
+│   │   ├── adaptive_journey
+│   │   ├── admission_predictor.py
+│   │   ├── career_copilot.py
+│   │   ├── career_model.pkl
+│   │   ├── chroma_db
+│   │   │   ├── 18977428-6d62-4fad-9fad-8e1aae125940
+│   │   │   └── chroma.sqlite3
+│   │   ├── complete_rag_system.py
+│   │   ├── context_engine
+│   │   │   ├── engine.py
+│   │   │   └── enhanced_engine.py
+│   │   ├── conversation
+│   │   │   └── memory.py
+│   │   ├── dashboard
+│   │   │   └── intelligence_dashboard.py
+│   │   ├── decision_timeline
+│   │   │   └── timeline.py
+│   │   ├── enhanced_copilot.py
+│   │   ├── explainability
+│   │   │   ├── explainer.py
+│   │   │   └── unified_explainer.py
+│   │   ├── feature_columns.json
+│   │   ├── feedback
+│   │   ├── financial
+│   │   │   └── financial_engine.py
+│   │   ├── generate_training_data.py
+│   │   ├── geographic
+│   │   │   └── geo_engine.py
+│   │   ├── gpt_enhancer.py
+│   │   ├── knowledge_graph
+│   │   │   └── national_graph.py
+│   │   ├── label_encoder.pkl
+│   │   ├── lazy_rag_system.py
+│   │   ├── memory
+│   │   │   └── decision_memory.py
+│   │   ├── persona_dynamic
+│   │   │   └── persona_engine.py
+│   │   ├── predictive
+│   │   ├── predictor.py
+│   │   ├── predictor_old.py
+│   │   ├── prestige_scores.json
+│   │   ├── profile
+│   │   │   ├── profile_models.py
+│   │   │   └── unified_profile.py
+│   │   ├── rag_career_system.py
+│   │   ├── rag_knowledge_base.py
+│   │   ├── real_data_loader.py
+│   │   ├── real_data_loader_old.py
+│   │   ├── real_recommender_engine.py
+│   │   ├── recommendation_graph
+│   │   │   └── graph_builder.py
+│   │   ├── roadmap
+│   │   │   └── roadmap_generator.py
+│   │   ├── scholarship
+│   │   │   └── data.py
+│   │   ├── semantic_search.py
+│   │   ├── shap_explainer.pkl
+│   │   ├── simple_admission_predictor.py
+│   │   ├── simulator
+│   │   ├── smart_recommender.py
+│   │   ├── test_sample.json
+│   │   ├── train_model.py
+│   │   └── training_data.csv
+│   ├── package-lock.json
+│   ├── requirements.txt
+│   ├── src
+│   │   ├── __init__.py
+│   │   ├── api
+│   │   │   ├── __init__.py
+│   │   │   └── routes
+│   │   ├── core
+│   │   │   ├── __init__.py
+│   │   │   ├── config.py
+│   │   │   └── database.py
+│   │   ├── domain
+│   │   │   ├── __init__.py
+│   │   │   ├── knowledge_graph
+│   │   │   ├── recommendation
+│   │   │   ├── shsmapper
+│   │   │   └── wassce
+│   │   ├── models
+│   │   │   ├── __init__.py
+│   │   │   └── career.py
+│   │   ├── path_config.py
+│   │   ├── schemas
+│   │   ├── services
+│   │   └── utils
+│   └── tests
+│       ├── e2e
+│       ├── integration
+│       └── unit
+├── data
+│   ├── mock
+│   └── seed
+├── database
+│   ├── migrations
+│   ├── schemas
+│   │   └── schema.sql
+│   └── seeds
+├── docs
+│   ├── api
+│   ├── architecture
+│   ├── development
+│   ├── operations
+│   └── product
+├── frontend
+│   ├── index.html
+│   ├── package-lock.json
+│   ├── package.json
+│   ├── public
+│   │   ├── _redirects
+│   │   ├── icons
+│   │   ├── manifest.json
+│   │   └── sw.js
+│   ├── src
+│   │   ├── AICopilot.jsx
+│   │   ├── AIRecommendation.jsx
+│   │   ├── App.jsx
+│   │   ├── App.jsx.backup2
+│   │   ├── App.jsx.bak
+│   │   ├── App.jsx.old
+│   │   ├── components
+│   │   │   ├── AICopilot.jsx
+│   │   │   ├── AIRecommendation.jsx
+│   │   │   ├── ActionPlan
+│   │   │   ├── Adaptive
+│   │   │   ├── AdmissionPredictor.jsx
+│   │   │   ├── CareerCharts.jsx
+│   │   │   ├── Comparison
+│   │   │   ├── ContextEngine
+│   │   │   ├── Conversation
+│   │   │   ├── Dashboard
+│   │   │   ├── Explainability
+│   │   │   ├── Feedback
+│   │   │   ├── Graph
+│   │   │   ├── Profile
+│   │   │   ├── RealRecommender.jsx
+│   │   │   ├── Roadmap
+│   │   │   ├── Scholarship
+│   │   │   ├── Simulator
+│   │   │   ├── Sources
+│   │   │   ├── Timeline
+│   │   │   └── Visualization
+│   │   ├── main.jsx
+│   │   ├── manifest.json
+│   │   ├── styles
+│   │   │   └── globals.css
+│   │   └── sw.js
+│   └── vite.config.js
+├── frontend_old
+│   ├── index.html
+│   ├── package.json
+│   ├── src
+│   │   ├── App.tsx
+│   │   ├── components
+│   │   │   ├── careers
+│   │   │   ├── chatbot
+│   │   │   ├── common
+│   │   │   ├── dashboard
+│   │   │   ├── eligibility
+│   │   │   ├── layout
+│   │   │   ├── quiz
+│   │   │   └── universities
+│   │   ├── hooks
+│   │   ├── main.tsx
+│   │   ├── pages
+│   │   ├── services
+│   │   ├── styles
+│   │   ├── types
+│   │   └── utils
+│   └── vite.config.ts
+├── infrastructure
+│   ├── kubernetes
+│   ├── monitoring
+│   ├── nginx
+│   └── terraform
+├── pathwaygh_structure.txt
+└── scripts
+    ├── verify_complete_system.sh
+    ├── verify_enhancements.sh
+    └── verify_working.sh
+
+104 directories, 115 files

@@ -1,0 +1,102 @@
+{
+  "id": "shs_math_001",
+  "slug": "shs-mathematics",
+  "title": "SHS Core Mathematics",
+  "level": "shs",
+  "subject": "Mathematics",
+  "description": "Complete Core Mathematics course for SHS students covering algebra, calculus, and statistics.",
+  "difficulty": "Intermediate",
+  "duration_hours": 50,
+  "teacher": "Master Teacher",
+  "curriculum": "GES SHS Mathematics Syllabus",
+  "language": "English",
+  "is_published": true,
+  "enrollment_count": 0,
+  "rating": 0,
+  "tags": ["algebra", "calculus", "statistics", "geometry"],
+  "skills": ["problem solving", "analytical thinking", "data analysis"],
+  "learning_outcomes": [
+    "Master algebraic expressions and equations",
+    "Understand calculus fundamentals",
+    "Apply statistical methods",
+    "Solve complex mathematical problems"
+  ],
+  "certificate": true,
+  "modules": [
+    {
+      "id": "shs_math_module_1",
+      "title": "Algebra",
+      "description": "Advanced algebra including quadratic equations, inequalities, and functions",
+      "order_index": 1,
+      "lessons": [
+        {
+          "id": "shs_math_alg_1",
+          "title": "Introduction to Advanced Algebra",
+          "description": "Review of algebraic foundations and introduction to advanced concepts",
+          "lesson_type": "video",
+          "duration_minutes": 35,
+          "order_index": 1,
+          "is_free_preview": true,
+          "learning_objectives": [
+            "Understand algebraic notation",
+            "Solve linear equations",
+            "Work with inequalities"
+          ]
+        },
+        {
+          "id": "shs_math_alg_2",
+          "title": "Quadratic Equations",
+          "description": "Methods for solving quadratic equations",
+          "lesson_type": "video",
+          "duration_minutes": 40,
+          "order_index": 2,
+          "is_free_preview": false
+        },
+        {
+          "id": "shs_math_alg_3",
+          "title": "Functions and Graphs",
+          "description": "Understanding functions and their graphical representations",
+          "lesson_type": "video",
+          "duration_minutes": 35,
+          "order_index": 3,
+          "is_free_preview": false
+        },
+        {
+          "id": "shs_math_alg_4",
+          "title": "Algebra Practice",
+          "description": "Practice problems for mastering algebra concepts",
+          "lesson_type": "quiz",
+          "duration_minutes": 25,
+          "order_index": 4,
+          "is_free_preview": false
+        }
+      ]
+    },
+    {
+      "id": "shs_math_module_2",
+      "title": "Calculus",
+      "description": "Introduction to differential and integral calculus",
+      "order_index": 2,
+      "lessons": [
+        {
+          "id": "shs_math_calc_1",
+          "title": "Limits and Continuity",
+          "description": "Understanding limits and continuity in calculus",
+          "lesson_type": "video",
+          "duration_minutes": 45,
+          "order_index": 1,
+          "is_free_preview": false
+        },
+        {
+          "id": "shs_math_calc_2",
+          "title": "Derivatives",
+          "description": "Introduction to derivatives and differentiation",
+          "lesson_type": "video",
+          "duration_minutes": 50,
+          "order_index": 2,
+          "is_free_preview": false
+        }
+      ]
+    }
+  ]
+}

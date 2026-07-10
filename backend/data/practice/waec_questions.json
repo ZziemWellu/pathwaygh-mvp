@@ -1,0 +1,54 @@
+{
+  "2020": {
+    "Mathematics": [
+      {
+        "id": "waec_2020_math_001",
+        "question": "If 2x + 5 = 13, what is the value of x?",
+        "options": ["3", "4", "5", "6"],
+        "correct_answer": 1,
+        "explanation": "2x = 13 - 5 = 8, so x = 4",
+        "difficulty": "easy"
+      },
+      {
+        "id": "waec_2020_math_002",
+        "question": "What is the value of log10(100)?",
+        "options": ["1", "2", "10", "100"],
+        "correct_answer": 1,
+        "explanation": "log10(100) = 2 because 10^2 = 100",
+        "difficulty": "medium"
+      }
+    ],
+    "English": [
+      {
+        "id": "waec_2020_eng_001",
+        "question": "Choose the correct word to complete the sentence: She ___ to school every day.",
+        "options": ["go", "goes", "going", "went"],
+        "correct_answer": 1,
+        "explanation": "The correct answer is 'goes' (third person singular)",
+        "difficulty": "easy"
+      }
+    ],
+    "Science": [
+      {
+        "id": "waec_2020_sci_001",
+        "question": "What is the pH of pure water?",
+        "options": ["5", "6", "7", "8"],
+        "correct_answer": 2,
+        "explanation": "Pure water has a pH of 7 (neutral)",
+        "difficulty": "easy"
+      }
+    ]
+  },
+  "2021": {
+    "Mathematics": [
+      {
+        "id": "waec_2021_math_001",
+        "question": "If sin(x) = 0.5, what is the value of x in degrees?",
+        "options": ["30", "45", "60", "90"],
+        "correct_answer": 0,
+        "explanation": "sin(30°) = 0.5",
+        "difficulty": "medium"
+      }
+    ]
+  }
+}

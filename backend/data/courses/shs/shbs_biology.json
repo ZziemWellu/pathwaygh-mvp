@@ -1,0 +1,58 @@
+{
+  "id": "shs_bio_001",
+  "slug": "shs-biology",
+  "title": "SHS Biology",
+  "level": "shs",
+  "subject": "Biology",
+  "description": "Complete Biology course for SHS students covering cell biology, genetics, and ecology.",
+  "difficulty": "Intermediate",
+  "duration_hours": 45,
+  "teacher": "Master Teacher",
+  "curriculum": "GES SHS Biology Syllabus",
+  "language": "English",
+  "is_published": true,
+  "enrollment_count": 0,
+  "rating": 0,
+  "tags": ["cells", "genetics", "ecology", "human biology"],
+  "skills": ["scientific inquiry", "observation", "analysis"],
+  "learning_outcomes": [
+    "Understand cell structure and function",
+    "Master genetics concepts",
+    "Explain ecological relationships",
+    "Understand human biology systems"
+  ],
+  "certificate": true,
+  "modules": [
+    {
+      "id": "shs_bio_module_1",
+      "title": "Cell Biology",
+      "description": "Structure and function of cells",
+      "order_index": 1,
+      "lessons": [
+        {
+          "id": "shs_bio_cell_1",
+          "title": "Cell Structure and Function",
+          "description": "Understanding the structure and function of cells",
+          "lesson_type": "video",
+          "duration_minutes": 40,
+          "order_index": 1,
+          "is_free_preview": true,
+          "learning_objectives": [
+            "Identify cell organelles",
+            "Explain cell functions",
+            "Differentiate between cell types"
+          ]
+        },
+        {
+          "id": "shs_bio_cell_2",
+          "title": "Cell Division",
+          "description": "Mitosis and meiosis cell division",
+          "lesson_type": "video",
+          "duration_minutes": 45,
+          "order_index": 2,
+          "is_free_preview": false
+        }
+      ]
+    }
+  ]
+}
