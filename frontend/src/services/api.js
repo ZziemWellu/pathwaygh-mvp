@@ -1,12 +1,11 @@
 /**
  * API Service - Centralized API Client
- * Handles all backend communication
  */
 
 import axios from 'axios';
 
-// Use environment variable or fallback to /api for Vite proxy
-const API_BASE_URL = import.meta.env.VITE_API_URL || '/api';
+// Use environment variable or fallback to production backend
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://pathwaygh-backend.onrender.com';
 
 console.log('🔗 API Base URL:', API_BASE_URL);
 
@@ -27,9 +26,7 @@ api.interceptors.request.use(
     }
     return config;
   },
-  (error) => {
-    return Promise.reject(error);
-  }
+  (error) => Promise.reject(error)
 );
 
 // Response interceptor - handle errors
@@ -46,20 +43,20 @@ api.interceptors.response.use(
 
 export default api;
 
-// Plan API specific functions
+// Plan API functions
 export const planApi = {
-  getStudyPlans: () => api.get('/plan/study-plans'),
-  getStudyPlan: (id) => api.get(`/plan/study-plans/${id}`),
-  createStudyPlan: (data) => api.post('/plan/study-plans/create', data),
-  updateStudyPlan: (id, data) => api.put(`/plan/study-plans/${id}`, data),
-  deleteStudyPlan: (id) => api.delete(`/plan/study-plans/${id}`),
-  updateProgress: (id, progress) => api.put(`/plan/study-plans/${id}/progress`, { progress }),
-  generateSchedule: (id, startDate) => api.get(`/plan/study-plans/${id}/schedule?start_date=${startDate}`),
-  getRoadmaps: () => api.get('/plan/roadmaps'),
-  getRoadmap: (id) => api.get(`/plan/roadmaps/${id}`),
-  getRoadmapByCareer: (career) => api.get(`/plan/roadmaps/by-career/${encodeURIComponent(career)}`),
-  createRoadmap: (data) => api.post('/plan/roadmaps/create', data),
-  logStudySession: (userId, data) => api.post(`/plan/study-sessions/log?user_id=${userId}`, data),
-  getStudySessions: (userId) => api.get(`/plan/study-sessions/${userId}`),
-  getTemplates: () => api.get('/plan/templates'),
+  getStudyPlans: () => api.get('/api/plan/study-plans'),
+  getStudyPlan: (id) => api.get(`/api/plan/study-plans/${id}`),
+  createStudyPlan: (data) => api.post('/api/plan/study-plans/create', data),
+  updateStudyPlan: (id, data) => api.put(`/api/plan/study-plans/${id}`, data),
+  deleteStudyPlan: (id) => api.delete(`/api/plan/study-plans/${id}`),
+  updateProgress: (id, progress) => api.put(`/api/plan/study-plans/${id}/progress`, { progress }),
+  generateSchedule: (id, startDate) => api.get(`/api/plan/study-plans/${id}/schedule?start_date=${startDate}`),
+  getRoadmaps: () => api.get('/api/plan/roadmaps'),
+  getRoadmap: (id) => api.get(`/api/plan/roadmaps/${id}`),
+  getRoadmapByCareer: (career) => api.get(`/api/plan/roadmaps/by-career/${encodeURIComponent(career)}`),
+  createRoadmap: (data) => api.post('/api/plan/roadmaps/create', data),
+  logStudySession: (userId, data) => api.post(`/api/plan/study-sessions/log?user_id=${userId}`, data),
+  getStudySessions: (userId) => api.get(`/api/plan/study-sessions/${userId}`),
+  getTemplates: () => api.get('/api/plan/templates'),
 };
