@@ -1,12 +1,12 @@
 /**
  * Plan Module - Complete Implementation
- * Connects to backend /api/plan endpoints using shared API client
+ * Uses centralized API service
  */
 
 import React, { useState, useEffect } from 'react';
-import API from '../../services/api';
+import { planApi } from '../../services/api';
 
-const PlanModule = ({ user }) => {
+const PlanModule = () => {
   const [plans, setPlans] = useState([]);
   const [roadmaps, setRoadmaps] = useState([]);
   const [templates, setTemplates] = useState([]);
@@ -19,7 +19,7 @@ const PlanModule = ({ user }) => {
     name: '',
     description: '',
     duration_months: 3,
-    subjects: [{ id: 'math', name: 'Mathematics', hours_per_week: 4 }]
+    subjects: [{ name: 'Mathematics', hours_per_week: 4 }]
   });
 
   useEffect(() => {
@@ -31,17 +31,17 @@ const PlanModule = ({ user }) => {
     setError(null);
     try {
       const [plansRes, roadmapsRes, templatesRes] = await Promise.all([
-        API.get('/api/plan/study-plans'),
-        API.get('/api/plan/roadmaps'),
-        API.get('/api/plan/templates'),
+        planApi.getStudyPlans(),
+        planApi.getRoadmaps(),
+        planApi.getTemplates(),
       ]);
 
       if (plansRes.data.success) setPlans(plansRes.data.data || []);
       if (roadmapsRes.data.success) setRoadmaps(roadmapsRes.data.data || []);
       if (templatesRes.data.success) setTemplates(templatesRes.data.data || []);
     } catch (err) {
-      setError('Failed to load plan data: ' + err.message);
-      console.error(err);
+      setError('Failed to load plan data: ' + (err.response?.data?.detail || err.message));
+      console.error('Error fetching plan data:', err);
     } finally {
       setLoading(false);
     }
@@ -50,22 +50,23 @@ const PlanModule = ({ user }) => {
   const handleCreatePlan = async (e) => {
     e.preventDefault();
     setLoading(true);
+    setError(null);
     try {
-      const response = await API.post('/api/plan/study-plans/create', newPlan);
+      const response = await planApi.createStudyPlan(newPlan);
       if (response.data.success) {
         setShowCreateForm(false);
         setNewPlan({
           name: '',
           description: '',
           duration_months: 3,
-          subjects: [{ id: 'math', name: 'Mathematics', hours_per_week: 4 }]
+          subjects: [{ name: 'Mathematics', hours_per_week: 4 }]
         });
         await fetchAllData();
       } else {
         setError('Failed to create plan: ' + response.data.message);
       }
     } catch (err) {
-      setError('Failed to create plan: ' + err.message);
+      setError('Failed to create plan: ' + (err.response?.data?.detail || err.message));
     } finally {
       setLoading(false);
     }
@@ -74,8 +75,9 @@ const PlanModule = ({ user }) => {
   const handleDeletePlan = async (planId) => {
     if (!window.confirm('Are you sure you want to delete this plan?')) return;
     setLoading(true);
+    setError(null);
     try {
-      const response = await API.delete(`/api/plan/study-plans/${planId}`);
+      const response = await planApi.deleteStudyPlan(planId);
       if (response.data.success) {
         setSelectedPlan(null);
         await fetchAllData();
@@ -83,7 +85,7 @@ const PlanModule = ({ user }) => {
         setError('Failed to delete plan: ' + response.data.message);
       }
     } catch (err) {
-      setError('Failed to delete plan: ' + err.message);
+      setError('Failed to delete plan: ' + (err.response?.data?.detail || err.message));
     } finally {
       setLoading(false);
     }
@@ -91,7 +93,7 @@ const PlanModule = ({ user }) => {
 
   const handleUpdateProgress = async (planId, progress) => {
     try {
-      const response = await API.put(`/api/plan/study-plans/${planId}/progress`, { progress });
+      const response = await planApi.updateProgress(planId, progress);
       if (response.data.success) {
         await fetchAllData();
         if (selectedPlan?.id === planId) {
@@ -99,64 +101,61 @@ const PlanModule = ({ user }) => {
         }
       }
     } catch (err) {
-      setError('Failed to update progress: ' + err.message);
+      setError('Failed to update progress: ' + (err.response?.data?.detail || err.message));
     }
   };
 
   const handleGenerateSchedule = async (planId) => {
     setLoading(true);
+    setError(null);
     try {
-      const response = await API.get(
-        `/api/plan/study-plans/${planId}/schedule?start_date=${new Date().toISOString().split('T')[0]}`
-      );
+      const startDate = new Date().toISOString().split('T')[0];
+      const response = await planApi.generateSchedule(planId, startDate);
       if (response.data.success) {
-        alert('Schedule generated! Check the plan details.');
+        alert('✅ Schedule generated successfully!');
         console.log('Schedule:', response.data.data);
       } else {
         setError('Failed to generate schedule: ' + response.data.message);
       }
     } catch (err) {
-      setError('Failed to generate schedule: ' + err.message);
+      setError('Failed to generate schedule: ' + (err.response?.data?.detail || err.message));
     } finally {
       setLoading(false);
     }
   };
 
-  // Render loading state
   if (loading && plans.length === 0) {
     return (
-      <div style={{ textAlign: 'center', padding: '40px' }}>
+      <div style={{ padding: '40px', textAlign: 'center' }}>
         <h2>📋 Loading your study plans...</h2>
         <p>Please wait...</p>
       </div>
     );
   }
 
-  // Render error state
   if (error) {
     return (
-      <div style={{ textAlign: 'center', padding: '40px', color: '#d32f2f' }}>
+      <div style={{ padding: '40px', textAlign: 'center', color: '#d32f2f' }}>
         <h2>❌ Error</h2>
         <p>{error}</p>
         <button onClick={fetchAllData} style={{ padding: '10px 20px', marginTop: '10px', cursor: 'pointer' }}>
-          Retry
+          🔄 Retry
         </button>
       </div>
     );
   }
 
-  // Render plan detail view
   if (selectedPlan) {
     return (
       <div style={{ padding: '20px', maxWidth: '900px', margin: '0 auto' }}>
         <button
           onClick={() => setSelectedPlan(null)}
-          style={{ padding: '8px 16px', marginBottom: '20px', cursor: 'pointer', background: '#f0f0f0', border: 'none', borderRadius: '4px' }}
+          style={{ padding: '8px 16px', marginBottom: '20px', cursor: 'pointer' }}
         >
           ← Back to Plans
         </button>
-        <h2 style={{ color: '#1a5f2b' }}>{selectedPlan.name}</h2>
-        <p style={{ color: '#666' }}>{selectedPlan.description}</p>
+        <h1>{selectedPlan.name}</h1>
+        <p>{selectedPlan.description}</p>
         <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap', margin: '15px 0' }}>
           <span>📅 {selectedPlan.duration_months} months</span>
           <span>📊 Progress: {selectedPlan.progress || 0}%</span>
@@ -164,7 +163,7 @@ const PlanModule = ({ user }) => {
         </div>
 
         <div style={{ margin: '20px 0', padding: '15px', background: '#f5f5f5', borderRadius: '8px' }}>
-          <h4 style={{ margin: '0 0 10px 0' }}>Update Progress</h4>
+          <h3>Update Progress</h3>
           <input
             type="range"
             min="0"
@@ -173,13 +172,13 @@ const PlanModule = ({ user }) => {
             onChange={(e) => handleUpdateProgress(selectedPlan.id, parseInt(e.target.value))}
             style={{ width: '200px' }}
           />
-          <span style={{ marginLeft: '10px', fontWeight: 'bold' }}>{selectedPlan.progress || 0}%</span>
+          <span style={{ marginLeft: '10px' }}>{selectedPlan.progress || 0}%</span>
         </div>
 
         <div style={{ margin: '20px 0' }}>
-          <h4>Subjects</h4>
-          {selectedPlan.subjects?.map((subject) => (
-            <div key={subject.id} style={{ padding: '10px', border: '1px solid #ddd', margin: '5px 0', borderRadius: '4px', background: '#fafafa' }}>
+          <h3>Subjects</h3>
+          {selectedPlan.subjects?.map((subject, idx) => (
+            <div key={idx} style={{ padding: '10px', border: '1px solid #ddd', margin: '5px 0', borderRadius: '4px' }}>
               <strong>{subject.name}</strong> - {subject.hours_per_week} hours/week
               {subject.topics && (
                 <div style={{ marginTop: '5px' }}>
@@ -196,25 +195,28 @@ const PlanModule = ({ user }) => {
 
         {selectedPlan.milestones?.length > 0 && (
           <div style={{ margin: '20px 0' }}>
-            <h4>Milestones</h4>
+            <h3>Milestones</h3>
             {selectedPlan.milestones.map((milestone, i) => (
-              <div key={i} style={{ padding: '8px', borderLeft: '3px solid #1a5f2b', margin: '5px 0', background: '#f9f9f9' }}>
+              <div key={i} style={{ padding: '8px', borderLeft: '3px solid #1a5f2b', margin: '5px 0' }}>
                 Week {milestone.week}: {milestone.goal}
               </div>
             ))}
           </div>
         )}
 
-        <div style={{ margin: '20px 0', display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+        <div style={{ margin: '20px 0' }}>
           <button
             onClick={() => handleGenerateSchedule(selectedPlan.id)}
             style={{ padding: '10px 20px', cursor: 'pointer', background: '#1a5f2b', color: 'white', border: 'none', borderRadius: '4px' }}
           >
             📅 Generate Schedule
           </button>
+        </div>
+
+        <div style={{ margin: '20px 0' }}>
           <button
             onClick={() => handleDeletePlan(selectedPlan.id)}
-            style={{ padding: '10px 20px', cursor: 'pointer', background: '#d32f2f', color: 'white', border: 'none', borderRadius: '4px' }}
+            style={{ padding: '10px 20px', background: '#d32f2f', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
           >
             🗑️ Delete Plan
           </button>
@@ -223,34 +225,33 @@ const PlanModule = ({ user }) => {
     );
   }
 
-  // Render create form
   if (showCreateForm) {
     return (
       <div style={{ padding: '20px', maxWidth: '600px', margin: '0 auto' }}>
-        <h2 style={{ color: '#1a5f2b' }}>📝 Create New Study Plan</h2>
+        <h2>📝 Create New Study Plan</h2>
         <form onSubmit={handleCreatePlan}>
           <div style={{ marginBottom: '15px' }}>
-            <label style={{ display: 'block', marginBottom: '5px', fontWeight: '500' }}>Plan Name *</label>
+            <label>Plan Name *</label>
             <input
               type="text"
               required
               value={newPlan.name}
               onChange={(e) => setNewPlan({ ...newPlan, name: e.target.value })}
-              style={{ width: '100%', padding: '8px', border: '1px solid #ddd', borderRadius: '4px' }}
+              style={{ width: '100%', padding: '8px', marginTop: '5px' }}
               placeholder="e.g., WASSCE Preparation"
             />
           </div>
           <div style={{ marginBottom: '15px' }}>
-            <label style={{ display: 'block', marginBottom: '5px', fontWeight: '500' }}>Description</label>
+            <label>Description</label>
             <textarea
               value={newPlan.description}
               onChange={(e) => setNewPlan({ ...newPlan, description: e.target.value })}
-              style={{ width: '100%', padding: '8px', border: '1px solid #ddd', borderRadius: '4px', minHeight: '80px' }}
+              style={{ width: '100%', padding: '8px', marginTop: '5px', minHeight: '80px' }}
               placeholder="Describe your study plan..."
             />
           </div>
           <div style={{ marginBottom: '15px' }}>
-            <label style={{ display: 'block', marginBottom: '5px', fontWeight: '500' }}>Duration (months) *</label>
+            <label>Duration (months) *</label>
             <input
               type="number"
               required
@@ -258,11 +259,11 @@ const PlanModule = ({ user }) => {
               max="24"
               value={newPlan.duration_months}
               onChange={(e) => setNewPlan({ ...newPlan, duration_months: parseInt(e.target.value) })}
-              style={{ width: '100%', padding: '8px', border: '1px solid #ddd', borderRadius: '4px' }}
+              style={{ width: '100%', padding: '8px', marginTop: '5px' }}
             />
           </div>
           <div style={{ marginBottom: '15px' }}>
-            <label style={{ display: 'block', marginBottom: '5px', fontWeight: '500' }}>Subjects</label>
+            <label>Subjects</label>
             {newPlan.subjects.map((subject, index) => (
               <div key={index} style={{ display: 'flex', gap: '10px', marginTop: '5px' }}>
                 <input
@@ -274,7 +275,7 @@ const PlanModule = ({ user }) => {
                     setNewPlan({ ...newPlan, subjects: newSubjects });
                   }}
                   placeholder="Subject name"
-                  style={{ flex: 1, padding: '8px', border: '1px solid #ddd', borderRadius: '4px' }}
+                  style={{ flex: 1, padding: '8px' }}
                 />
                 <input
                   type="number"
@@ -285,7 +286,7 @@ const PlanModule = ({ user }) => {
                     setNewPlan({ ...newPlan, subjects: newSubjects });
                   }}
                   placeholder="Hours/week"
-                  style={{ width: '100px', padding: '8px', border: '1px solid #ddd', borderRadius: '4px' }}
+                  style={{ width: '100px', padding: '8px' }}
                 />
                 <button
                   type="button"
@@ -304,10 +305,10 @@ const PlanModule = ({ user }) => {
               onClick={() => {
                 setNewPlan({
                   ...newPlan,
-                  subjects: [...newPlan.subjects, { id: `subject_${Date.now()}`, name: '', hours_per_week: 0 }]
+                  subjects: [...newPlan.subjects, { name: '', hours_per_week: 0 }]
                 });
               }}
-              style={{ marginTop: '10px', padding: '8px 16px', cursor: 'pointer', background: '#f0f0f0', border: 'none', borderRadius: '4px' }}
+              style={{ marginTop: '10px', padding: '8px 16px', cursor: 'pointer' }}
             >
               + Add Subject
             </button>
@@ -316,7 +317,7 @@ const PlanModule = ({ user }) => {
             <button type="submit" style={{ padding: '10px 20px', background: '#1a5f2b', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>
               Create Plan
             </button>
-            <button type="button" onClick={() => setShowCreateForm(false)} style={{ padding: '10px 20px', cursor: 'pointer', background: '#f0f0f0', border: 'none', borderRadius: '4px' }}>
+            <button type="button" onClick={() => setShowCreateForm(false)} style={{ padding: '10px 20px', cursor: 'pointer' }}>
               Cancel
             </button>
           </div>
@@ -325,11 +326,10 @@ const PlanModule = ({ user }) => {
     );
   }
 
-  // Main view
   return (
     <div style={{ padding: '20px', maxWidth: '1200px', margin: '0 auto' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', flexWrap: 'wrap' }}>
-        <h1 style={{ color: '#1a5f2b' }}>📋 Study Planner</h1>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+        <h1>📋 Study Planner</h1>
         <button
           onClick={() => setShowCreateForm(true)}
           style={{ padding: '10px 20px', background: '#1a5f2b', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer', fontSize: '16px' }}
@@ -338,7 +338,7 @@ const PlanModule = ({ user }) => {
         </button>
       </div>
 
-      <div style={{ display: 'flex', gap: '10px', marginBottom: '20px', borderBottom: '2px solid #e0e0e0', paddingBottom: '10px', flexWrap: 'wrap' }}>
+      <div style={{ display: 'flex', gap: '10px', marginBottom: '20px', borderBottom: '2px solid #e0e0e0', paddingBottom: '10px' }}>
         <button
           onClick={() => setActiveTab('plans')}
           style={{ padding: '8px 16px', background: activeTab === 'plans' ? '#1a5f2b' : 'none', color: activeTab === 'plans' ? 'white' : '#555', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
@@ -382,9 +382,9 @@ const PlanModule = ({ user }) => {
                   onMouseEnter={(e) => e.currentTarget.style.boxShadow = '0 4px 8px rgba(0,0,0,0.1)'}
                   onMouseLeave={(e) => e.currentTarget.style.boxShadow = 'none'}
                 >
-                  <h4 style={{ color: '#1a5f2b', margin: '0 0 10px 0' }}>{plan.name}</h4>
-                  <p style={{ color: '#666', fontSize: '14px', margin: '0 0 10px 0' }}>{plan.description}</p>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '14px' }}>
+                  <h3>{plan.name}</h3>
+                  <p style={{ color: '#666', fontSize: '14px' }}>{plan.description}</p>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '10px', fontSize: '14px' }}>
                     <span>📅 {plan.duration_months}m</span>
                     <span>📊 {plan.progress || 0}%</span>
                     <span style={{ color: plan.status === 'active' ? '#1a5f2b' : '#888' }}>{plan.status}</span>
@@ -395,8 +395,8 @@ const PlanModule = ({ user }) => {
                     </div>
                   </div>
                   <div style={{ marginTop: '10px', display: 'flex', flexWrap: 'wrap', gap: '5px' }}>
-                    {plan.subjects?.slice(0, 3).map((subject) => (
-                      <span key={subject.id} style={{ padding: '2px 8px', background: '#f0f0f0', borderRadius: '12px', fontSize: '12px' }}>
+                    {plan.subjects?.slice(0, 3).map((subject, idx) => (
+                      <span key={idx} style={{ padding: '2px 8px', background: '#f0f0f0', borderRadius: '12px', fontSize: '12px' }}>
                         {subject.name}
                       </span>
                     ))}
@@ -424,7 +424,7 @@ const PlanModule = ({ user }) => {
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '20px' }}>
               {roadmaps.map((roadmap) => (
                 <div key={roadmap.id} style={{ padding: '20px', border: '1px solid #e0e0e0', borderRadius: '8px', background: 'white' }}>
-                  <h4 style={{ color: '#1a5f2b', margin: '0 0 10px 0' }}>🗺️ {roadmap.name}</h4>
+                  <h3>🗺️ {roadmap.name}</h3>
                   <p><strong>Career:</strong> {roadmap.career}</p>
                   <p><strong>Duration:</strong> {roadmap.total_duration}</p>
                   <div style={{ marginTop: '10px' }}>
@@ -457,9 +457,9 @@ const PlanModule = ({ user }) => {
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '20px' }}>
               {templates.map((template) => (
                 <div key={template.id} style={{ padding: '20px', border: '1px solid #e0e0e0', borderRadius: '8px', background: 'white' }}>
-                  <h4 style={{ color: '#1a5f2b', margin: '0 0 10px 0' }}>📄 {template.name}</h4>
-                  <p style={{ fontSize: '14px' }}>{template.description}</p>
-                  <button style={{ marginTop: '10px', padding: '8px 16px', cursor: 'pointer', background: '#1a5f2b', color: 'white', border: 'none', borderRadius: '4px' }}>
+                  <h3>📄 {template.name}</h3>
+                  <p>{template.description}</p>
+                  <button style={{ marginTop: '10px', padding: '8px 16px', cursor: 'pointer' }}>
                     Use Template
                   </button>
                 </div>
@@ -472,7 +472,7 @@ const PlanModule = ({ user }) => {
       <div style={{ marginTop: '30px', textAlign: 'center' }}>
         <button
           onClick={fetchAllData}
-          style={{ padding: '8px 16px', cursor: 'pointer', fontSize: '14px', background: '#f0f0f0', border: 'none', borderRadius: '4px' }}
+          style={{ padding: '8px 16px', cursor: 'pointer', fontSize: '14px' }}
         >
           🔄 Refresh
         </button>
