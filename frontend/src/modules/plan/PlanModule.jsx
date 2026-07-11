@@ -1,3 +1,4 @@
+import "./PlanModule.css";
 /**
  * Plan Module - Complete Implementation
  * Uses centralized API service
