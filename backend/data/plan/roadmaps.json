@@ -5,94 +5,52 @@
       "name": "Medical Career Roadmap",
       "career": "Medical Doctor",
       "stages": [
-        {
-          "stage": 1,
-          "name": "High School",
-          "duration": "3 years",
-          "actions": [
-            "Focus on Science subjects",
-            "Excel in WASSCE",
-            "Score aggregate 8 or better"
-          ]
-        },
-        {
-          "stage": 2,
-          "name": "University - Medical School",
-          "duration": "6 years",
-          "actions": [
-            "Apply to medical schools",
-            "Complete MBChB program"
-          ]
-        },
-        {
-          "stage": 3,
-          "name": "Internship",
-          "duration": "1 year",
-          "actions": [
-            "Complete housemanship",
-            "Pass licensing exams"
-          ]
-        },
-        {
-          "stage": 4,
-          "name": "Residency/Specialization",
-          "duration": "3-5 years",
-          "actions": [
-            "Choose specialization",
-            "Complete residency program"
-          ]
-        }
+        {"stage": 1, "name": "High School", "duration": "3 years", "actions": ["Focus on Science subjects", "Excel in WASSCE", "Score aggregate 8 or better"]},
+        {"stage": 2, "name": "University - Medical School", "duration": "6 years", "actions": ["Apply to medical schools", "Complete MBChB program"]},
+        {"stage": 3, "name": "Internship", "duration": "1 year", "actions": ["Complete housemanship", "Pass licensing exams"]},
+        {"stage": 4, "name": "Residency/Specialization", "duration": "3-5 years", "actions": ["Choose specialization", "Complete residency program"]}
       ],
       "total_duration": "13-15 years",
-      "created_at": "2026-07-11T14:41:01.451484"
+      "created_at": "2026-07-11T16:18:11.451484"
     },
     {
       "id": "roadmap_002",
       "name": "Software Engineering Career Roadmap",
       "career": "Software Engineer",
       "stages": [
-        {
-          "stage": 1,
-          "name": "High School",
-          "duration": "3 years",
-          "actions": [
-            "Focus on Mathematics and ICT",
-            "Excel in WASSCE",
-            "Score aggregate 6 or better"
-          ]
-        },
-        {
-          "stage": 2,
-          "name": "University",
-          "duration": "4 years",
-          "actions": [
-            "BSc in Computer Science or Software Engineering",
-            "Learn programming languages",
-            "Build a portfolio"
-          ]
-        },
-        {
-          "stage": 3,
-          "name": "Early Career",
-          "duration": "2-3 years",
-          "actions": [
-            "Join a tech company",
-            "Work on real projects"
-          ]
-        },
-        {
-          "stage": 4,
-          "name": "Senior Career",
-          "duration": "3-5 years",
-          "actions": [
-            "Specialize in a field",
-            "Lead projects",
-            "Mentor others"
-          ]
-        }
+        {"stage": 1, "name": "High School", "duration": "3 years", "actions": ["Focus on Mathematics and ICT", "Excel in WASSCE", "Score aggregate 6 or better"]},
+        {"stage": 2, "name": "University", "duration": "4 years", "actions": ["BSc in Computer Science or Software Engineering", "Learn programming languages", "Build a portfolio"]},
+        {"stage": 3, "name": "Early Career", "duration": "2-3 years", "actions": ["Join a tech company", "Work on real projects"]},
+        {"stage": 4, "name": "Senior Career", "duration": "3-5 years", "actions": ["Specialize in a field", "Lead projects", "Mentor others"]}
       ],
       "total_duration": "12-15 years",
-      "created_at": "2026-07-11T14:41:01.451553"
+      "created_at": "2026-07-11T16:18:11.451553"
+    },
+    {
+      "id": "roadmap_003",
+      "name": "Nursing Career Roadmap",
+      "career": "Registered Nurse",
+      "stages": [
+        {"stage": 1, "name": "High School", "duration": "3 years", "actions": ["Focus on Science subjects", "Excel in WASSCE", "Score aggregate 10 or better"]},
+        {"stage": 2, "name": "University - Nursing School", "duration": "4 years", "actions": ["Apply to nursing schools", "Complete BSN program", "Pass licensing exams"]},
+        {"stage": 3, "name": "Early Career", "duration": "2 years", "actions": ["Join a hospital", "Gain clinical experience"]},
+        {"stage": 4, "name": "Specialization", "duration": "2-3 years", "actions": ["Choose a specialty", "Pursue advanced training"]}
+      ],
+      "total_duration": "11-14 years",
+      "created_at": "2026-07-11T18:00:00.000000"
+    },
+    {
+      "id": "roadmap_004",
+      "name": "Business/Entrepreneurship Roadmap",
+      "career": "Entrepreneur/Business Leader",
+      "stages": [
+        {"stage": 1, "name": "High School", "duration": "3 years", "actions": ["Focus on Business and Economics", "Excel in WASSCE", "Score aggregate 10 or better"]},
+        {"stage": 2, "name": "University", "duration": "4 years", "actions": ["BSc in Business Administration or Economics", "Learn business fundamentals", "Start networking"]},
+        {"stage": 3, "name": "Early Career", "duration": "2-3 years", "actions": ["Gain work experience", "Build professional network"]},
+        {"stage": 4, "name": "Entrepreneurship", "duration": "3-5 years", "actions": ["Start your own business", "Scale and grow", "Leadership development"]}
+      ],
+      "total_duration": "12-15 years",
+      "created_at": "2026-07-11T18:00:00.000000"
     }
   ]
 }
