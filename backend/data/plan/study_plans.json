@@ -1,0 +1,226 @@
+{
+  "study_plans": [
+    {
+      "id": "plan_001",
+      "name": "Updated Plan Name",
+      "description": "This plan has been updated",
+      "duration_months": 4,
+      "progress": 50,
+      "status": "active",
+      "subjects": [
+        {
+          "id": "math",
+          "name": "Mathematics",
+          "hours_per_week": 6,
+          "topics": [
+            "Algebra",
+            "Geometry",
+            "Statistics"
+          ]
+        },
+        {
+          "id": "english",
+          "name": "English Language",
+          "hours_per_week": 5,
+          "topics": [
+            "Grammar",
+            "Comprehension",
+            "Essay Writing"
+          ]
+        },
+        {
+          "id": "science",
+          "name": "Integrated Science",
+          "hours_per_week": 5,
+          "topics": [
+            "Biology",
+            "Chemistry",
+            "Physics"
+          ]
+        }
+      ],
+      "milestones": [
+        {
+          "week": 4,
+          "goal": "Complete first mock exam"
+        },
+        {
+          "week": 8,
+          "goal": "Complete all core subjects"
+        },
+        {
+          "week": 12,
+          "goal": "Complete second mock exam"
+        },
+        {
+          "week": 24,
+          "goal": "Ready for WASSCE"
+        }
+      ],
+      "created_at": "2026-07-11T14:41:01.449631",
+      "updated_at": "2026-07-11T15:03:29.277604"
+    },
+    {
+      "id": "plan_002",
+      "name": "University Entrance Preparation",
+      "description": "Prepare for university admissions",
+      "duration_months": 3,
+      "progress": 0,
+      "status": "active",
+      "subjects": [
+        {
+          "id": "math",
+          "name": "Mathematics",
+          "hours_per_week": 4,
+          "topics": [
+            "Core Mathematics",
+            "Elective Mathematics"
+          ]
+        },
+        {
+          "id": "english",
+          "name": "English Language",
+          "hours_per_week": 3,
+          "topics": [
+            "Reading",
+            "Writing"
+          ]
+        }
+      ],
+      "milestones": [
+        {
+          "week": 2,
+          "goal": "Complete application forms"
+        },
+        {
+          "week": 4,
+          "goal": "Submit applications"
+        },
+        {
+          "week": 8,
+          "goal": "Take entrance exams"
+        }
+      ],
+      "created_at": "2026-07-11T14:41:01.449654",
+      "updated_at": "2026-07-11T14:41:01.449657"
+    },
+    {
+      "name": "Test Plan",
+      "description": "Test",
+      "duration_months": 1,
+      "subjects": [
+        {
+          "id": "test",
+          "name": "Test",
+          "hours_per_week": 2
+        }
+      ],
+      "milestones": [],
+      "id": "plan_62d3bb75",
+      "created_at": "2026-07-11T15:01:03.145575",
+      "updated_at": "2026-07-11T15:01:03.145587",
+      "progress": 0,
+      "status": "active"
+    },
+    {
+      "name": "Test Study Plan",
+      "description": "A test study plan for API verification",
+      "duration_months": 3,
+      "subjects": [
+        {
+          "id": "test_math",
+          "name": "Test Mathematics",
+          "hours_per_week": 4
+        },
+        {
+          "id": "test_english",
+          "name": "Test English",
+          "hours_per_week": 3
+        }
+      ],
+      "milestones": [
+        {
+          "week": 2,
+          "goal": "Complete module 1"
+        },
+        {
+          "week": 4,
+          "goal": "Complete module 2"
+        }
+      ],
+      "id": "plan_c75e23d1",
+      "created_at": "2026-07-11T15:02:15.015156",
+      "updated_at": "2026-07-11T15:02:15.015163",
+      "progress": 0,
+      "status": "active"
+    }
+  ],
+  "study_sessions": [
+    {
+      "subject": "Mathematics",
+      "duration_minutes": 60,
+      "topics_covered": [
+        "Algebra",
+        "Geometry"
+      ],
+      "notes": "Reviewed quadratic equations",
+      "id": "session_54d66db7",
+      "user_id": "test_user",
+      "created_at": "2026-07-11T15:04:37.637088"
+    }
+  ],
+  "reminders": [],
+  "templates": [
+    {
+      "id": "template_001",
+      "name": "Daily Study Schedule",
+      "description": "Effective daily study routine",
+      "schedule": [
+        {
+          "time": "06:00",
+          "activity": "Wake up and review"
+        },
+        {
+          "time": "07:00",
+          "activity": "Study Session 1 (2 hours)"
+        },
+        {
+          "time": "09:00",
+          "activity": "Break"
+        },
+        {
+          "time": "10:00",
+          "activity": "Study Session 2 (2 hours)"
+        },
+        {
+          "time": "12:00",
+          "activity": "Lunch"
+        },
+        {
+          "time": "14:00",
+          "activity": "Study Session 3 (2 hours)"
+        },
+        {
+          "time": "16:00",
+          "activity": "Exercise"
+        },
+        {
+          "time": "18:00",
+          "activity": "Study Session 4 (1 hour)"
+        },
+        {
+          "time": "20:00",
+          "activity": "Dinner"
+        },
+        {
+          "time": "21:00",
+          "activity": "Review"
+        },
+        {
+          "time": "22:00",
+          "activity": "Sleep"
+        }
+      ]
+    }
+  ]
+}

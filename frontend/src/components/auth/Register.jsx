@@ -1,107 +1,118 @@
 import React, { useState } from 'react';
+import API from '../../services/api';
 
-function Register({ onSuccess }) {
-  const [form, setForm] = useState({ email: '', full_name: '', password: '', role: 'student' });
+const Register = ({ onSuccess }) => {
+  const [email, setEmail] = useState('');
+  const [fullName, setFullName] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [role, setRole] = useState('student');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
     setError('');
-    setSuccess('');
-    
+
+    if (password !== confirmPassword) {
+      setError('Passwords do not match');
+      return;
+    }
+
+    if (password.length < 6) {
+      setError('Password must be at least 6 characters');
+      return;
+    }
+
+    setLoading(true);
+
     try {
-      const response = await fetch('http://localhost:8001/api/auth/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form)
+      const response = await API.post('/api/auth/register', {
+        email,
+        full_name: fullName,
+        password,
+        role
       });
-      
-      const data = await response.json();
-      
-      if (data.success) {
-        setSuccess('Registration successful! Please login.');
-        setForm({ email: '', full_name: '', password: '', role: 'student' });
-        if (onSuccess) onSuccess(data);
+
+      if (response.data && response.data.success) {
+        alert('Registration successful! Please login.');
+        if (onSuccess) onSuccess();
       } else {
-        setError(data.message || 'Registration failed');
+        setError(response.data?.message || response.data?.detail || 'Registration failed');
       }
     } catch (err) {
-      setError('Connection error. Please try again.');
+      setError(err.response?.data?.detail || err.response?.data?.message || 'Network error. Please try again.');
+      console.error('Registration error:', err);
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div style={{ maxWidth: '400px', margin: '40px auto', padding: '30px', background: 'white', borderRadius: '12px', boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}>
-      <h2 style={{ color: '#1a5f2b', textAlign: 'center' }}>Register</h2>
-      
+    <div style={{ maxWidth: '400px', margin: '0 auto', padding: '20px' }}>
+      <h2 style={{ color: '#1a5f2b', textAlign: 'center' }}>Create Account</h2>
       {error && (
-        <div style={{ padding: '10px', background: '#ffebee', color: '#c62828', borderRadius: '8px', marginBottom: '15px' }}>
+        <div style={{ background: '#ffebee', color: '#c62828', padding: '10px', borderRadius: '4px', marginBottom: '15px' }}>
           {error}
         </div>
       )}
-      
-      {success && (
-        <div style={{ padding: '10px', background: '#e8f5e9', color: '#2e7d32', borderRadius: '8px', marginBottom: '15px' }}>
-          {success}
-        </div>
-      )}
-      
       <form onSubmit={handleSubmit}>
         <div style={{ marginBottom: '15px' }}>
-          <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>Full Name</label>
+          <label style={{ display: 'block', marginBottom: '5px', fontWeight: '500' }}>Full Name</label>
           <input
             type="text"
-            value={form.full_name}
-            onChange={(e) => setForm({ ...form, full_name: e.target.value })}
-            placeholder="Your Full Name"
+            value={fullName}
+            onChange={(e) => setFullName(e.target.value)}
             required
-            style={{ width: '100%', padding: '10px', borderRadius: '8px', border: '1px solid #ccc' }}
+            style={{ width: '100%', padding: '10px', borderRadius: '4px', border: '1px solid #ddd' }}
+            placeholder="Enter your full name"
           />
         </div>
-        
         <div style={{ marginBottom: '15px' }}>
-          <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>Email</label>
+          <label style={{ display: 'block', marginBottom: '5px', fontWeight: '500' }}>Email</label>
           <input
             type="email"
-            value={form.email}
-            onChange={(e) => setForm({ ...form, email: e.target.value })}
-            placeholder="your@email.com"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             required
-            style={{ width: '100%', padding: '10px', borderRadius: '8px', border: '1px solid #ccc' }}
+            style={{ width: '100%', padding: '10px', borderRadius: '4px', border: '1px solid #ddd' }}
+            placeholder="your@email.com"
           />
         </div>
-        
         <div style={{ marginBottom: '15px' }}>
-          <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>Password</label>
+          <label style={{ display: 'block', marginBottom: '5px', fontWeight: '500' }}>Password</label>
           <input
             type="password"
-            value={form.password}
-            onChange={(e) => setForm({ ...form, password: e.target.value })}
-            placeholder="••••••••"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
             required
-            minLength="6"
-            style={{ width: '100%', padding: '10px', borderRadius: '8px', border: '1px solid #ccc' }}
+            style={{ width: '100%', padding: '10px', borderRadius: '4px', border: '1px solid #ddd' }}
+            placeholder="Min 6 characters"
           />
         </div>
-        
+        <div style={{ marginBottom: '15px' }}>
+          <label style={{ display: 'block', marginBottom: '5px', fontWeight: '500' }}>Confirm Password</label>
+          <input
+            type="password"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            required
+            style={{ width: '100%', padding: '10px', borderRadius: '4px', border: '1px solid #ddd' }}
+            placeholder="Confirm your password"
+          />
+        </div>
         <div style={{ marginBottom: '20px' }}>
-          <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>Role</label>
+          <label style={{ display: 'block', marginBottom: '5px', fontWeight: '500' }}>Role</label>
           <select
-            value={form.role}
-            onChange={(e) => setForm({ ...form, role: e.target.value })}
-            style={{ width: '100%', padding: '10px', borderRadius: '8px', border: '1px solid #ccc' }}
+            value={role}
+            onChange={(e) => setRole(e.target.value)}
+            style={{ width: '100%', padding: '10px', borderRadius: '4px', border: '1px solid #ddd' }}
           >
             <option value="student">Student</option>
             <option value="parent">Parent</option>
             <option value="teacher">Teacher</option>
           </select>
         </div>
-        
         <button
           type="submit"
           disabled={loading}
@@ -111,21 +122,17 @@ function Register({ onSuccess }) {
             background: '#1a5f2b',
             color: 'white',
             border: 'none',
-            borderRadius: '8px',
+            borderRadius: '4px',
             fontSize: '16px',
             cursor: loading ? 'not-allowed' : 'pointer',
-            opacity: loading ? 0.6 : 1
+            opacity: loading ? 0.7 : 1
           }}
         >
-          {loading ? 'Registering...' : 'Register'}
+          {loading ? 'Creating Account...' : 'Register'}
         </button>
       </form>
-      
-      <p style={{ textAlign: 'center', marginTop: '15px', color: '#666' }}>
-        Already have an account? <a href="/login" style={{ color: '#1a5f2b' }}>Login</a>
-      </p>
     </div>
   );
-}
+};
 
 export default Register;

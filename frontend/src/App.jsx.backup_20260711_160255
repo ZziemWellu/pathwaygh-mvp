@@ -1,7 +1,7 @@
 /**
  * AUTHENTICATED VERSION OF APP
  * Test this separately before replacing App.jsx
- *
+ * 
  * To test: temporarily rename App.jsx to App.jsx.backup
  * and rename App.auth.jsx to App.jsx
  */
@@ -11,7 +11,6 @@ import Login from './components/auth/Login'
 import Register from './components/auth/Register'
 import HomeDashboard from './modules/home/HomeDashboard'
 import EcosystemNavigation from './components/common/EcosystemNavigation'
-import PlanModule from './modules/plan/PlanModule'  // ✅ ADDED
 
 // All other imports from your existing App.jsx
 import AIRecommendation from './components/AIRecommendation'
@@ -53,7 +52,7 @@ function App() {
     // Check for existing session
     const token = localStorage.getItem('pathwaygh_token');
     const savedUser = localStorage.getItem('pathwaygh_user');
-
+    
     if (token && savedUser) {
       try {
         setUser(JSON.parse(savedUser));
@@ -62,7 +61,7 @@ function App() {
         console.error('Error loading user:', e);
       }
     }
-
+    
     fetchCareers();
     setLoading(false);
   }, []);
@@ -80,7 +79,7 @@ function App() {
     try {
       const response = await API.get(`/api/careers/${slug}`);
       setSelectedCareer(response.data);
-
+      
       const explainResponse = await API.post('/api/explain/recommendation', {
         career: response.data,
         student_profile: {
@@ -90,7 +89,7 @@ function App() {
         }
       });
       setExplanation(explainResponse.data);
-
+      
       const roadmapResponse = await API.get(`/api/roadmap/${slug}`);
       setRoadmap(roadmapResponse.data);
     } catch (error) {
@@ -160,10 +159,8 @@ function App() {
         return <CourseCatalog user={user} />;
       case 'explore':
         return <ExploreModule careers={careers} onViewCareer={viewCareerDetails} selectedCareer={selectedCareer} explanation={explanation} roadmap={roadmap} onCloseCareer={() => { setSelectedCareer(null); setExplanation(null); setRoadmap(null); }} />;
-      case 'plan':  // ✅ ADDED - Renders Plan Module
-        return <PlanModule user={user} />;
       case 'profile':
-        return <CompleteProfileSetup user={user} />;
+        return <CompleteProfileSetup />;
       default:
         return <HomeDashboard user={user} careers={careers} onViewCareer={viewCareerDetails} />;
     }

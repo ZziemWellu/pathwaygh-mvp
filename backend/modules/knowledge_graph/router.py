@@ -1,9 +1,23 @@
+"""
+Knowledge Graph Module Router
+"""
+
 from fastapi import APIRouter
 
-router = APIRouter(prefix="/api/knowledge-graph", tags=["Knowledge Graph"])
+router = APIRouter(tags=["knowledge_graph"])
 
 @router.get("/")
-async def get_knowledge_graph_info():
-    return {"module": "Knowledge Graph", "status": "active"}
+async def kg_root():
+    return {"module": "knowledge_graph", "status": "active"}
 
-print("✅ Knowledge Graph module loaded")
+@router.get("/subject/{subject}")
+async def get_subject_kg(subject: str):
+    return {
+        "success": True,
+        "subject": subject,
+        "knowledge_graph": {
+            "nodes": [
+                {"id": "1", "label": subject, "type": "subject"}
+            ]
+        }
+    }

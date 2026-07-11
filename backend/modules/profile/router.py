@@ -1,10 +1,23 @@
+"""
+Profile Module Router
+"""
+
 from fastapi import APIRouter
-router = APIRouter(prefix="/api/profile", tags=["Profile"])
+
+router = APIRouter(tags=["profile"])
 
 @router.get("/")
-async def get_profile():
-    return {"profile": {"name": "Test User", "role": "student", "progress": 66}}
+async def profile_root():
+    return {"module": "profile", "status": "active"}
 
-@router.put("/")
-async def update_profile(data: dict):
-    return {"success": True, "message": "Profile updated"}
+@router.get("/{user_id}")
+async def get_profile(user_id: str):
+    return {
+        "success": True,
+        "profile": {
+            "id": user_id,
+            "name": "User Name",
+            "email": "user@example.com",
+            "role": "student"
+        }
+    }

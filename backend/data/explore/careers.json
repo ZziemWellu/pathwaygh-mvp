@@ -1,0 +1,14 @@
+{
+  "careers": [
+    {
+      "id": "medical_doctor",
+      "title": "Medical Doctor",
+      "category": "Healthcare"
+    },
+    {
+      "id": "software_engineer",
+      "title": "Software Engineer",
+      "category": "Technology"
+    }
+  ]
+}

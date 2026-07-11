@@ -1,9 +1,18 @@
+"""
+AI Tutor Module Router
+"""
+
 from fastapi import APIRouter
 
-router = APIRouter(prefix="/api/tutor", tags=["AI Tutor"])
+router = APIRouter(tags=["tutor"])
 
 @router.get("/")
-async def get_tutor_info():
-    return {"module": "AI Tutor", "status": "active"}
+async def tutor_root():
+    return {"module": "tutor", "status": "active"}
 
-print("✅ AI Tutor module loaded")
+@router.post("/chat")
+async def chat():
+    return {
+        "success": True,
+        "response": "I'm your AI tutor! How can I help you today?"
+    }

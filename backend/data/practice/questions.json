@@ -1,77 +1,24 @@
-[
-  {
-    "id": "q001",
-    "question": "What is the chemical symbol for water?",
-    "options": [
-      "H2O",
-      "CO2",
-      "NaCl",
-      "HCl"
-    ],
-    "correct_answer": 0,
-    "explanation": "Water is composed of two hydrogen atoms and one oxygen atom.",
-    "difficulty": "easy",
-    "subject": "Chemistry",
-    "topic": "Chemical Symbols"
-  },
-  {
-    "id": "q002",
-    "question": "What is the square root of 144?",
-    "options": [
-      "10",
-      "11",
-      "12",
-      "13"
-    ],
-    "correct_answer": 2,
-    "explanation": "12 \u00d7 12 = 144",
-    "difficulty": "easy",
-    "subject": "Mathematics",
-    "topic": "Arithmetic"
-  },
-  {
-    "id": "q003",
-    "question": "Which organ pumps blood throughout the human body?",
-    "options": [
-      "Brain",
-      "Liver",
-      "Heart",
-      "Lungs"
-    ],
-    "correct_answer": 2,
-    "explanation": "The heart is the muscular organ that pumps blood.",
-    "difficulty": "easy",
-    "subject": "Biology",
-    "topic": "Human Body"
-  },
-  {
-    "id": "q004",
-    "question": "What is the largest planet in our solar system?",
-    "options": [
-      "Earth",
-      "Mars",
-      "Jupiter",
-      "Saturn"
-    ],
-    "correct_answer": 2,
-    "explanation": "Jupiter is the largest planet in our solar system.",
-    "difficulty": "medium",
-    "subject": "Science",
-    "topic": "Solar System"
-  },
-  {
-    "id": "q005",
-    "question": "What is the past tense of 'run'?",
-    "options": [
-      "ran",
-      "runned",
-      "run",
-      "running"
-    ],
-    "correct_answer": 0,
-    "explanation": "The past tense of 'run' is 'ran'.",
-    "difficulty": "easy",
-    "subject": "English",
-    "topic": "Grammar"
-  }
-]
+{
+  "subjects": [
+    {
+      "id": "mathematics",
+      "name": "Mathematics",
+      "icon": "📐",
+      "topics": [
+        {
+          "id": "algebra",
+          "name": "Algebra",
+          "questions": [
+            {
+              "id": "math_001",
+              "question": "What is 2 + 2?",
+              "options": ["3", "4", "5", "6"],
+              "correct": "4",
+              "difficulty": "Easy"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,286 @@
+INFO:     Will watch for changes in these directories: ['/home/nfcc/projects/pathwaygh-mvp']
+INFO:     Uvicorn running on http://0.0.0.0:8001 (Press CTRL+C to quit)
+INFO:     Started reloader process [51505] using WatchFiles
+INFO:     Started server process [51508]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+============================================================
+🚀 PATHWAY AI - Loading Modules
+============================================================
+  ✅ Auth loaded at /api/auth
+✅ Learn module loaded with root endpoint
+  ✅ Learn loaded at /api/learn
+  ✅ Practice loaded at /api/practice
+  ✅ Explore loaded at /api/explore
+  ✅ Plan loaded at /api/plan
+  ✅ Community loaded at /api/community
+  ✅ Profile loaded at /api/profile
+  ✅ Parent loaded at /api/parent
+  ✅ Teacher loaded at /api/teacher
+  ✅ School loaded at /api/school
+  ✅ Payment loaded at /api/payment
+  ✅ Live loaded at /api/live
+  ✅ Dashboard loaded at /api/dashboard
+  ✅ Activity loaded at /api/activity
+  ✅ Analytics loaded at /api/analytics
+  ✅ Tutor loaded at /api/tutor
+  ✅ Paths loaded at /api/paths
+  ✅ Recommendations loaded at /api/recommendations
+  ✅ Knowledge_graph loaded at /api/knowledge_graph
+============================================================
+📊 MODULE LOADING SUMMARY
+============================================================
+  ✅ Loaded: auth, learn, practice, explore, plan, community, profile, parent, teacher, school, payment, live, dashboard, activity, analytics, tutor, paths, recommendations, knowledge_graph
+============================================================
+🌐 Server running on http://localhost:8001
+📚 API Docs: http://localhost:8001/api/docs
+============================================================
+INFO:     127.0.0.1:34348 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34362 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34364 - "GET /api/auth/ HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34366 - "GET /api/learn/ HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34382 - "GET /api/practice/ HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34396 - "GET /api/explore/ HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34410 - "GET /api/plan/ HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34414 - "GET /api/community/ HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34418 - "GET /api/profile/ HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34428 - "GET /api/parent/ HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34436 - "GET /api/teacher/ HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34438 - "GET /api/school/ HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34444 - "GET /api/payment/ HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34460 - "GET /api/live/ HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34468 - "GET /api/dashboard/ HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34476 - "GET /api/activity/ HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34480 - "GET /api/analytics/ HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34484 - "GET /api/tutor/ HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34496 - "GET /api/paths/ HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34512 - "GET /api/recommendations/ HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34522 - "GET /api/knowledge_graph/ HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42142 - "GET /api/plan/study-plans HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:41920 - "GET /api/community/forums HTTP/1.1" 200 OK
+WARNING:  WatchFiles detected changes in 'backend/backend/data/courses/jhs/__init__.py', 'backend/backend/data/courses/shs/__init__.py', 'backend/backend/data/courses/skills/__init__.py', 'backend/backend/data/__init__.py', 'backend/backend/main.py', 'backend/backend/__init__.py', 'backend/backend/data/courses/__init__.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [51508]
+INFO:     Started server process [52213]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'backend/modules/plan/router.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [52213]
+INFO:modules.plan.router:Created default study plans data
+INFO:modules.plan.router:Created default roadmaps data
+INFO:     Started server process [52234]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+============================================================
+🚀 PATHWAY AI - Loading Modules
+============================================================
+  ✅ Auth loaded at /api/auth
+✅ Learn module loaded with root endpoint
+  ✅ Learn loaded at /api/learn
+  ✅ Practice loaded at /api/practice
+  ✅ Explore loaded at /api/explore
+  ✅ Plan loaded at /api/plan
+  ✅ Community loaded at /api/community
+  ✅ Profile loaded at /api/profile
+  ✅ Parent loaded at /api/parent
+  ✅ Teacher loaded at /api/teacher
+  ✅ School loaded at /api/school
+  ✅ Payment loaded at /api/payment
+  ✅ Live loaded at /api/live
+  ✅ Dashboard loaded at /api/dashboard
+  ✅ Activity loaded at /api/activity
+  ✅ Analytics loaded at /api/analytics
+  ✅ Tutor loaded at /api/tutor
+  ✅ Paths loaded at /api/paths
+  ✅ Recommendations loaded at /api/recommendations
+  ✅ Knowledge_graph loaded at /api/knowledge_graph
+============================================================
+📊 MODULE LOADING SUMMARY
+============================================================
+  ✅ Loaded: auth, learn, practice, explore, plan, community, profile, parent, teacher, school, payment, live, dashboard, activity, analytics, tutor, paths, recommendations, knowledge_graph
+============================================================
+🌐 Server running on http://localhost:8001
+📚 API Docs: http://localhost:8001/api/docs
+============================================================
+INFO:     127.0.0.1:58586 - "GET /api/plan/study-plans HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:58588 - "GET /api/plan/roadmaps HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:58594 - "GET /api/plan/templates HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:58610 - "GET /api/plan/study-plans/plan_001 HTTP/1.1" 404 Not Found
+WARNING:  WatchFiles detected changes in 'backend/modules/plan/router.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [52234]
+INFO:     Started server process [52401]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+============================================================
+🚀 PATHWAY AI - Loading Modules
+============================================================
+  ✅ Auth loaded at /api/auth
+✅ Learn module loaded with root endpoint
+  ✅ Learn loaded at /api/learn
+  ✅ Practice loaded at /api/practice
+  ✅ Explore loaded at /api/explore
+  ✅ Plan loaded at /api/plan
+  ✅ Community loaded at /api/community
+  ✅ Profile loaded at /api/profile
+  ✅ Parent loaded at /api/parent
+  ✅ Teacher loaded at /api/teacher
+  ✅ School loaded at /api/school
+  ✅ Payment loaded at /api/payment
+  ✅ Live loaded at /api/live
+  ✅ Dashboard loaded at /api/dashboard
+  ✅ Activity loaded at /api/activity
+  ✅ Analytics loaded at /api/analytics
+  ✅ Tutor loaded at /api/tutor
+  ✅ Paths loaded at /api/paths
+  ✅ Recommendations loaded at /api/recommendations
+  ✅ Knowledge_graph loaded at /api/knowledge_graph
+============================================================
+📊 MODULE LOADING SUMMARY
+============================================================
+  ✅ Loaded: auth, learn, practice, explore, plan, community, profile, parent, teacher, school, payment, live, dashboard, activity, analytics, tutor, paths, recommendations, knowledge_graph
+============================================================
+🌐 Server running on http://localhost:8001
+📚 API Docs: http://localhost:8001/api/docs
+============================================================
+INFO:     127.0.0.1:49918 - "GET /api/plan/study-plans HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:49934 - "GET /api/plan/roadmaps HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:49942 - "GET /api/plan/templates HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:49946 - "GET /api/plan/study-plans/plan_001 HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:37364 - "GET /api/plan/ HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:58940 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40320 - "GET /api/docs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41868 - "GET /openapi.json HTTP/1.1" 200 OK
+WARNING:  WatchFiles detected changes in 'backend/modules/plan/router.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [52401]
+INFO:     Started server process [52684]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+============================================================
+🚀 PATHWAY AI - Loading Modules
+============================================================
+  ✅ Auth loaded at /api/auth
+✅ Learn module loaded with root endpoint
+  ✅ Learn loaded at /api/learn
+  ✅ Practice loaded at /api/practice
+  ✅ Explore loaded at /api/explore
+  ✅ Plan loaded at /api/plan
+  ✅ Community loaded at /api/community
+  ✅ Profile loaded at /api/profile
+  ✅ Parent loaded at /api/parent
+  ✅ Teacher loaded at /api/teacher
+  ✅ School loaded at /api/school
+  ✅ Payment loaded at /api/payment
+  ✅ Live loaded at /api/live
+  ✅ Dashboard loaded at /api/dashboard
+  ✅ Activity loaded at /api/activity
+  ✅ Analytics loaded at /api/analytics
+  ✅ Tutor loaded at /api/tutor
+  ✅ Paths loaded at /api/paths
+  ✅ Recommendations loaded at /api/recommendations
+  ✅ Knowledge_graph loaded at /api/knowledge_graph
+============================================================
+📊 MODULE LOADING SUMMARY
+============================================================
+  ✅ Loaded: auth, learn, practice, explore, plan, community, profile, parent, teacher, school, payment, live, dashboard, activity, analytics, tutor, paths, recommendations, knowledge_graph
+============================================================
+🌐 Server running on http://localhost:8001
+📚 API Docs: http://localhost:8001/api/docs
+============================================================
+INFO:     127.0.0.1:59780 - "GET /api/plan/ HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59788 - "GET /api/plan/study-plans HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59800 - "GET /api/plan/roadmaps HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59816 - "GET /api/plan/templates HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59820 - "GET /api/plan/study-plans/plan_001 HTTP/1.1" 200 OK
+INFO:modules.plan.router:Created study plan: plan_62d3bb75
+INFO:     127.0.0.1:46870 - "POST /api/plan/study-plans/create HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51582 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:modules.plan.router:Created study plan: plan_c75e23d1
+INFO:     127.0.0.1:55454 - "POST /api/plan/study-plans/create HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42264 - "GET /api/plan/study-plans HTTP/1.1" 200 OK
+INFO:modules.plan.router:Updated study plan: plan_001
+INFO:     127.0.0.1:48206 - "PUT /api/plan/study-plans/plan_001 HTTP/1.1" 200 OK
+INFO:modules.plan.router:Updated progress for plan plan_001: 50%
+INFO:     127.0.0.1:41090 - "PUT /api/plan/study-plans/plan_001/progress HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45352 - "GET /api/plan/study-plans/plan_001/schedule?start_date=2026-07-11 HTTP/1.1" 200 OK
+INFO:modules.plan.router:Created study plan: plan_08c8fcb2
+INFO:     127.0.0.1:54422 - "POST /api/plan/study-plans/create HTTP/1.1" 200 OK
+INFO:modules.plan.router:Deleted study plan: plan_08c8fcb2
+INFO:     127.0.0.1:44814 - "DELETE /api/plan/study-plans/plan_08c8fcb2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41316 - "GET /api/plan/roadmaps/by-career/Medical%20Doctor HTTP/1.1" 200 OK
+INFO:modules.plan.router:Logged study session for user test_user
+INFO:     127.0.0.1:50610 - "POST /api/plan/study-sessions/log?user_id=test_user HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38216 - "GET /api/learn/courses HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38220 - "GET /api/learn/courses HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38230 - "OPTIONS /api/careers HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38244 - "OPTIONS /api/careers HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38230 - "GET /api/careers HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38244 - "GET /api/careers HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38256 - "GET /api/careers HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38256 - "GET /api/careers HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49522 - "GET /api/learn/courses HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49528 - "GET /api/learn/courses HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49540 - "GET /api/careers HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49540 - "GET /api/careers HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48464 - "GET /api/learn/courses HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48470 - "GET /api/learn/courses HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49540 - "GET /api/careers HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48460 - "GET /api/careers HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48482 - "GET /api/learn/courses HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48494 - "GET /api/learn/courses HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45554 - "GET /api/learn/courses HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45562 - "GET /api/learn/courses HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45570 - "OPTIONS /api/careers HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45586 - "OPTIONS /api/careers HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45570 - "GET /api/careers HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45586 - "GET /api/careers HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45588 - "GET /api/careers HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45588 - "GET /api/careers HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46424 - "GET /api/learn/courses HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46440 - "GET /api/learn/courses HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46430 - "GET /api/careers HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46430 - "GET /api/careers HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46456 - "GET /api/learn/courses HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46470 - "GET /api/learn/courses HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46430 - "GET /api/careers HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46452 - "GET /api/careers HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46484 - "GET /api/learn/courses HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46500 - "GET /api/learn/courses HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51464 - "OPTIONS /api/auth/login HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51464 - "POST /api/auth/login HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:51480 - "POST /api/auth/login HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:33630 - "POST /api/auth/login HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:38180 - "GET /api/learn/courses HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38186 - "GET /api/learn/courses HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38192 - "OPTIONS /api/careers HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38202 - "OPTIONS /api/careers HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38202 - "GET /api/careers HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38192 - "GET /api/careers HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38204 - "OPTIONS /api/careers HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38204 - "OPTIONS /api/careers HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38204 - "GET /api/careers HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38204 - "GET /api/careers HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54572 - "GET /api/learn/courses HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54576 - "GET /api/learn/courses HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38204 - "GET /api/careers HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54592 - "GET /api/careers HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54626 - "GET /api/learn/courses HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54632 - "GET /api/learn/courses HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42786 - "OPTIONS /api/auth/login HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42786 - "POST /api/auth/login HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:57626 - "OPTIONS /api/careers HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57630 - "OPTIONS /api/careers HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57646 - "OPTIONS /api/careers HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57646 - "GET /api/careers HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57630 - "GET /api/careers HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57646 - "GET /api/careers HTTP/1.1" 200 OK

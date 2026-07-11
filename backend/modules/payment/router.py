@@ -1,11 +1,19 @@
+"""
+Payment Module Router
+"""
+
 from fastapi import APIRouter
 
-router = APIRouter()
+router = APIRouter(tags=["payment"])
 
 @router.get("/")
-async def home():
-    return {"message": "Module working", "status": "active"}
+async def payment_root():
+    return {"module": "payment", "status": "active"}
 
-@router.get("/test")
-async def test():
-    return {"module": "working", "status": "ok"}
+@router.post("/initialize")
+async def initialize_payment():
+    return {
+        "success": True,
+        "message": "Payment initialized",
+        "reference": f"pay_{uuid.uuid4().hex[:8]}"
+    }
