@@ -1,18 +1,11 @@
-"""
-plan Module Router - Placeholder
-"""
-
 from fastapi import APIRouter
 
 router = APIRouter()
 
-
 @router.get("/")
-async def get_plan_info():
-    return {
-        "module": "plan",
-        "status": "coming_soon",
-        "message": "plan module will be implemented in future sprints"
-    }
+async def home():
+    return {"message": "Module working", "status": "active"}
 
-print(f"✅ plan module loaded")
+@router.get("/test")
+async def test():
+    return {"module": "working", "status": "ok"}

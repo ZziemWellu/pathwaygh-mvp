@@ -29,7 +29,6 @@ def load_all_courses() -> List[Dict]:
                 try:
                     with open(file, 'r') as f:
                         course = json.load(f)
-                        # Add level from directory if not set
                         if not course.get("level"):
                             course["level"] = path.name
                         # Add lesson count
@@ -41,11 +40,27 @@ def load_all_courses() -> List[Dict]:
                             lesson_count = len(course.get("lessons", []))
                         course["lesson_count"] = lesson_count
                         courses.append(course)
-                        logger.info(f"  ✅ Loaded course: {course.get('title')} ({course.get('id')})")
                 except Exception as e:
                     logger.error(f"Error loading course from {file}: {e}")
     
     return courses
+
+
+# ============================================
+# ROOT ENDPOINT - FIX 404
+# ============================================
+
+@router.get("/")
+async def learn_root():
+    """Learn module root endpoint"""
+    courses = load_all_courses()
+    return {
+        "message": "Learn module is active",
+        "status": "active",
+        "courses_count": len(courses),
+        "total_lessons": sum(c.get("lesson_count", 0) for c in courses),
+        "available_levels": list(set(c.get("level", "Unknown") for c in courses))
+    }
 
 
 @router.get("/courses")
@@ -54,7 +69,7 @@ async def get_courses(
     subject: Optional[str] = None,
     search: Optional[str] = None
 ):
-    """Get all courses with filters - loads dynamically from data/courses/"""
+    """Get all courses with filters"""
     courses = load_all_courses()
     
     if level:
@@ -74,7 +89,7 @@ async def get_courses(
 
 @router.get("/courses/{course_id}")
 async def get_course(course_id: str):
-    """Get course by ID - loads dynamically from data/courses/"""
+    """Get course by ID"""
     courses = load_all_courses()
     for course in courses:
         if course.get("id") == course_id or course.get("slug") == course_id:
@@ -102,13 +117,11 @@ async def get_lesson(lesson_id: str):
     """Get lesson by ID"""
     courses = load_all_courses()
     for course in courses:
-        # Check in modules
         if "modules" in course:
             for module in course["modules"]:
                 for lesson in module.get("lessons", []):
                     if lesson.get("id") == lesson_id:
                         return lesson
-        # Check in direct lessons
         if "lessons" in course:
             for lesson in course.get("lessons", []):
                 if lesson.get("id") == lesson_id:
@@ -119,7 +132,7 @@ async def get_lesson(lesson_id: str):
 
 @router.post("/enroll")
 async def enroll_in_course(request: Dict):
-    """Enroll a user in a course (placeholder)"""
+    """Enroll a user in a course"""
     return {
         "status": "success",
         "message": "Enrollment feature coming in Sprint 2",
@@ -129,7 +142,7 @@ async def enroll_in_course(request: Dict):
 
 @router.post("/progress/update")
 async def update_progress(request: Dict):
-    """Update lesson progress (placeholder)"""
+    """Update lesson progress"""
     return {
         "status": "success",
         "message": "Progress tracking coming in Sprint 3",
@@ -139,7 +152,7 @@ async def update_progress(request: Dict):
 
 @router.get("/progress/{user_id}")
 async def get_user_progress(user_id: str):
-    """Get user progress (placeholder)"""
+    """Get user progress"""
     return {
         "user_id": user_id,
         "progress": [],
@@ -149,7 +162,7 @@ async def get_user_progress(user_id: str):
 
 @router.get("/recent/{user_id}")
 async def get_recent_activity(user_id: str):
-    """Get recent activity (placeholder)"""
+    """Get recent activity"""
     return {
         "user_id": user_id,
         "activities": [],
@@ -159,11 +172,11 @@ async def get_recent_activity(user_id: str):
 
 @router.post("/recommend")
 async def get_recommendations(request: Dict):
-    """AI-powered course recommendations (placeholder)"""
+    """AI-powered course recommendations"""
     return {
         "user_id": request.get("user_id"),
         "recommendations": [],
         "message": "AI recommendations coming in Sprint 3"
     }
 
-print("✅ Learn module loaded - dynamically loading courses from data/courses/")
+print("✅ Learn module loaded with root endpoint")

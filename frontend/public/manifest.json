@@ -1,27 +1,93 @@
 {
-  "name": "PathwayGH - Career Guidance for Ghanaian Students",
-  "short_name": "PathwayGH",
-  "description": "AI-powered career guidance platform for Ghanaian students",
+  "name": "Pathway AI - Education & Career Ecosystem",
+  "short_name": "Pathway AI",
+  "description": "AI-powered education and career guidance for Ghanaian students",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#1a5f2b",
   "orientation": "portrait",
+  "background_color": "#1a5f2b",
+  "theme_color": "#1a5f2b",
+  "categories": ["education", "career", "learning"],
+  "scope": "/",
+  "lang": "en",
+  "dir": "ltr",
   "icons": [
     {
-      "src": "/icons/icon-192.png",
+      "src": "/icons/icon-72x72.png",
+      "sizes": "72x72",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-96x96.png",
+      "sizes": "96x96",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-128x128.png",
+      "sizes": "128x128",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-144x144.png",
+      "sizes": "144x144",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-152x152.png",
+      "sizes": "152x152",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-192x192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "/icons/icon-512.png",
+      "src": "/icons/icon-384x384.png",
+      "sizes": "384x384",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-512x512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
     }
   ],
-  "categories": ["education", "career", "productivity"],
-  "lang": "en",
-  "dir": "ltr"
+  "screenshots": [
+    {
+      "src": "/screenshots/dashboard.png",
+      "sizes": "1080x1920",
+      "type": "image/png"
+    },
+    {
+      "src": "/screenshots/learn.png",
+      "sizes": "1080x1920",
+      "type": "image/png"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Dashboard",
+      "url": "/",
+      "description": "Go to your dashboard"
+    },
+    {
+      "name": "Learn",
+      "url": "/learn",
+      "description": "Continue learning"
+    },
+    {
+      "name": "Explore",
+      "url": "/explore",
+      "description": "Explore careers"
+    }
+  ]
 }

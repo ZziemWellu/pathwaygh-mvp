@@ -1,0 +1,44 @@
+{
+  "user_id": "test_user",
+  "subject": "Biology",
+  "goal": "mastery",
+  "current_level": "beginner",
+  "target_level": "expert",
+  "steps": [
+    {
+      "step": 1,
+      "topic": "Cell Biology",
+      "description": "Master Cell Biology",
+      "estimated_hours": 2,
+      "resources": [],
+      "completed": false
+    },
+    {
+      "step": 2,
+      "topic": "Genetics",
+      "description": "Master Genetics",
+      "estimated_hours": 3,
+      "resources": [],
+      "completed": false
+    },
+    {
+      "step": 3,
+      "topic": "Ecology",
+      "description": "Master Ecology",
+      "estimated_hours": 4,
+      "resources": [],
+      "completed": false
+    },
+    {
+      "step": 4,
+      "topic": "Human Anatomy",
+      "description": "Master Human Anatomy",
+      "estimated_hours": 5,
+      "resources": [],
+      "completed": false
+    }
+  ],
+  "created_at": "2026-07-10T03:50:28.728845",
+  "updated_at": "2026-07-10T03:50:28.728861",
+  "progress": 0
+}

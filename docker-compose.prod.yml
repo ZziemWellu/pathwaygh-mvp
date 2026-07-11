@@ -1,0 +1,57 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: pathway-postgres
+    environment:
+      POSTGRES_USER: pathway_user
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: pathway_ai
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./database/schemas:/docker-entrypoint-initdb.d
+    ports:
+      - "5432:5432"
+    networks:
+      - pathway-network
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    container_name: pathway-redis
+    ports:
+      - "6379:6379"
+    networks:
+      - pathway-network
+    restart: unless-stopped
+
+  app:
+    build: .
+    container_name: pathway-app
+    environment:
+      DATABASE_URL: postgresql+asyncpg://pathway_user:${DB_PASSWORD}@postgres:5432/pathway_ai
+      REDIS_URL: redis://redis:6379
+      SECRET_KEY: ${SECRET_KEY}
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+      PAYSTACK_SECRET_KEY: ${PAYSTACK_SECRET_KEY}
+      ENVIRONMENT: production
+    ports:
+      - "80:80"
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - pathway-network
+    restart: unless-stopped
+    volumes:
+      - ./backend/data:/app/backend/data
+      - ./backend/logs:/app/backend/logs
+
+volumes:
+  postgres_data:
+    driver: local
+
+networks:
+  pathway-network:
+    driver: bridge

@@ -1,0 +1,26 @@
+{
+  "user_id": "test_user",
+  "created_at": "2026-07-10T03:50:28.645372",
+  "updated_at": "2026-07-10T03:50:28.647264",
+  "conversation": [
+    {
+      "timestamp": "2026-07-10T03:50:28.647255",
+      "query": "Explain photosynthesis",
+      "response": "I'm here to help! Please tell me which subject or topic you'd like to learn about, and I'll provide a personalized explanation.",
+      "metadata": {}
+    }
+  ],
+  "knowledge": {
+    "subjects": {},
+    "skills": {},
+    "weak_areas": [],
+    "strong_areas": [],
+    "progress": {}
+  },
+  "context": {
+    "current_subject": null,
+    "current_topic": null,
+    "difficulty_level": "medium",
+    "learning_style": "mixed"
+  }
+}

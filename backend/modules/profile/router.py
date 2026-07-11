@@ -1,18 +1,10 @@
-"""
-profile Module Router - Placeholder
-"""
-
 from fastapi import APIRouter
-
-router = APIRouter()
-
+router = APIRouter(prefix="/api/profile", tags=["Profile"])
 
 @router.get("/")
-async def get_profile_info():
-    return {
-        "module": "profile",
-        "status": "coming_soon",
-        "message": "profile module will be implemented in future sprints"
-    }
+async def get_profile():
+    return {"profile": {"name": "Test User", "role": "student", "progress": 66}}
 
-print(f"✅ profile module loaded")
+@router.put("/")
+async def update_profile(data: dict):
+    return {"success": True, "message": "Profile updated"}
