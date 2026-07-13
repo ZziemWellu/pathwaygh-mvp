@@ -1,1 +1,7 @@
 @import './styles/globals.css';
+
+/* AI Chat Pulse Animation */
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}

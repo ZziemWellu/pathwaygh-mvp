@@ -88,5 +88,25 @@
     "status": "active",
     "user_id": "user_0e5c4734ab18",
     "created_at": "2026-07-13T00:30:22.114085"
+  },
+  {
+    "id": "plan_e587223d",
+    "name": "Wassce preparation",
+    "description": "Pass the exam",
+    "duration_months": 3,
+    "duration": "3 months",
+    "progress": 0,
+    "subjects": [
+      "Mathematics",
+      "Chemistry",
+      "Biology",
+      "Physics"
+    ],
+    "goal": "exam preparation",
+    "target_exam": null,
+    "priority": "medium",
+    "status": "active",
+    "user_id": "test_user",
+    "created_at": "2026-07-13T23:04:15.348406"
   }
 ]

@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
 import { getUser, isAuthenticated, login as authLogin, logout as authLogout } from './constants/auth';
-import { ThemeProvider } from './contexts/ThemeContext';
-import { NotificationProvider } from './contexts/NotificationContext';
 import DashboardModule from './modules/dashboard/DashboardModule';
 import LearnModule from './modules/learn/LearnModule';
 import ExploreModule from './modules/explore/ExploreModule';
@@ -13,8 +11,9 @@ import CommunityModule from './modules/community/CommunityModule';
 import EcosystemNavigation from './components/common/EcosystemNavigation';
 import Login from './components/auth/Login';
 import Register from './components/auth/Register';
+import AIChat from './components/ai/AIChat';
 
-const AppContent = () => {
+const App = () => {
   const [user, setUser] = useState(null);
   const [isAuth, setIsAuth] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -128,17 +127,10 @@ const AppContent = () => {
       }}>
         <p>© 2026 Pathway AI | Built for Ghana</p>
       </footer>
-    </div>
-  );
-};
 
-const App = () => {
-  return (
-    <ThemeProvider>
-      <NotificationProvider>
-        <AppContent />
-      </NotificationProvider>
-    </ThemeProvider>
+      {/* AI Chat - Floating */}
+      <AIChat user={user} />
+    </div>
   );
 };
 

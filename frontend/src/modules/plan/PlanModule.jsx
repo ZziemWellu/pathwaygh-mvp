@@ -1,14 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import api from '../../services/api';
-import PlanModal from './components/PlanModal';
-import { getUser } from '../../constants/auth';
 
 const PlanModule = () => {
   const [plans, setPlans] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const user = getUser();
+  const [showModal, setShowModal] = useState(false);
+  const [step, setStep] = useState(1);
+  const [formData, setFormData] = useState({
+    name: '',
+    description: '',
+    duration_months: 3,
+    subjects: [],
+    goal: '',
+  });
+  const [saving, setSaving] = useState(false);
+
+  // Subject options
+  const subjectOptions = [
+    'Mathematics', 'English Language', 'Integrated Science', 
+    'Biology', 'Chemistry', 'Physics', 'Social Studies',
+    'History', 'Geography', 'French', 'ICT'
+  ];
 
   useEffect(() => {
     fetchPlans();
@@ -36,19 +49,71 @@ const PlanModule = () => {
     }
   };
 
-  const handlePlanCreated = (newPlan) => {
-    setPlans(prev => [newPlan, ...prev]);
+  const handleOpenModal = () => {
+    setFormData({
+      name: '',
+      description: '',
+      duration_months: 3,
+      subjects: [],
+      goal: '',
+    });
+    setStep(1);
+    setShowModal(true);
   };
 
-  const handleDeletePlan = async (planId) => {
-    if (!confirm('Are you sure you want to delete this plan?')) return;
-    
+  const handleCloseModal = () => {
+    setShowModal(false);
+    setStep(1);
+  };
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
+  };
+
+  const handleSubjectToggle = (subject) => {
+    setFormData(prev => {
+      const subjects = prev.subjects.includes(subject)
+        ? prev.subjects.filter(s => s !== subject)
+        : [...prev.subjects, subject];
+      return { ...prev, subjects };
+    });
+  };
+
+  const handleNext = () => {
+    setStep(2);
+  };
+
+  const handleBack = () => {
+    setStep(1);
+  };
+
+  const handleSave = async () => {
+    setSaving(true);
     try {
-      await api.delete(`/api/plan/study-plans/${planId}`);
-      setPlans(prev => prev.filter(p => p.id !== planId));
+      const payload = {
+        name: formData.name,
+        description: formData.description,
+        duration_months: parseInt(formData.duration_months),
+        subjects: formData.subjects,
+        goal: formData.goal,
+        progress: 0,
+        status: 'active'
+      };
+      
+      const response = await api.post('/api/plan/study-plans/create', payload);
+      console.log('📋 Plan created:', response.data);
+      
+      // Refresh plans
+      await fetchPlans();
+      handleCloseModal();
     } catch (err) {
-      console.error('❌ Delete error:', err);
-      alert('Failed to delete plan');
+      console.error('❌ Create plan error:', err);
+      alert('Failed to create plan. Please try again.');
+    } finally {
+      setSaving(false);
     }
   };
 
@@ -76,7 +141,7 @@ const PlanModule = () => {
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
         <h2>📋 Study Planner</h2>
         <button
-          onClick={() => setIsModalOpen(true)}
+          onClick={handleOpenModal}
           style={{
             padding: '10px 20px',
             background: '#1a5f2b',
@@ -86,10 +151,10 @@ const PlanModule = () => {
             cursor: 'pointer',
             fontSize: '14px',
             fontWeight: 'bold',
-            transition: 'background 0.2s',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px'
           }}
-          onMouseEnter={(e) => e.currentTarget.style.background = '#144d21'}
-          onMouseLeave={(e) => e.currentTarget.style.background = '#1a5f2b'}
         >
           + Create Plan
         </button>
@@ -97,25 +162,10 @@ const PlanModule = () => {
 
       {plans.length === 0 ? (
         <div style={{ textAlign: 'center', padding: '60px 20px', color: '#888' }}>
-          <p style={{ fontSize: '16px' }}>No study plans yet. Create your first plan!</p>
-          <button
-            onClick={() => setIsModalOpen(true)}
-            style={{
-              marginTop: '16px',
-              padding: '10px 24px',
-              background: '#1a5f2b',
-              color: 'white',
-              border: 'none',
-              borderRadius: '8px',
-              cursor: 'pointer',
-              fontSize: '14px',
-            }}
-          >
-            + Create Plan
-          </button>
+          <p>No study plans yet. Create your first plan!</p>
         </div>
       ) : (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '20px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '20px' }}>
           {plans.map((plan) => (
             <div
               key={plan.id}
@@ -128,39 +178,38 @@ const PlanModule = () => {
                 transition: 'all 0.2s ease',
               }}
             >
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start' }}>
-                <h3 style={{ color: '#1a5f2b', margin: '0 0 8px 0', fontSize: '17px' }}>
-                  {plan.name}
-                </h3>
+              <div style={{ position: 'absolute', top: '12px', right: '12px' }}>
                 <button
-                  onClick={() => handleDeletePlan(plan.id)}
-                  style={{
-                    background: 'none',
-                    border: 'none',
-                    color: '#888',
-                    cursor: 'pointer',
-                    fontSize: '16px',
-                    padding: '0 4px',
-                  }}
-                  onMouseEnter={(e) => e.currentTarget.style.color = '#d32f2f'}
-                  onMouseLeave={(e) => e.currentTarget.style.color = '#888'}
+                  style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#888', fontSize: '16px' }}
+                  onClick={() => {/* Delete plan */}}
                 >
                   ✕
                 </button>
               </div>
-              
-              <p style={{ color: '#666', fontSize: '14px', margin: '0 0 12px 0' }}>
+              <h3 style={{ color: '#1a5f2b', margin: '0 0 8px 0', paddingRight: '24px' }}>
+                {plan.name}
+              </h3>
+              <p style={{ color: '#666', fontSize: '14px', margin: '0 0 8px 0' }}>
                 {plan.description}
               </p>
-              
               <div style={{ display: 'flex', gap: '12px', fontSize: '12px', color: '#888', flexWrap: 'wrap' }}>
                 <span>📅 {plan.duration_months || plan.duration || 'N/A'} months</span>
                 <span>📊 {plan.progress || 0}% complete</span>
-                {plan.subjects && plan.subjects.length > 0 && (
-                  <span>📚 {plan.subjects.join(', ')}</span>
-                )}
               </div>
-              
+              {plan.subjects && plan.subjects.length > 0 && (
+                <div style={{ marginTop: '8px', display: 'flex', flexWrap: 'wrap', gap: '4px' }}>
+                  {plan.subjects.map((subject, i) => (
+                    <span key={i} style={{ background: '#f0f0f0', padding: '2px 8px', borderRadius: '4px', fontSize: '11px', color: '#555' }}>
+                      {subject}
+                    </span>
+                  ))}
+                </div>
+              )}
+              {plan.goal && (
+                <div style={{ marginTop: '8px', fontSize: '11px', color: '#888' }}>
+                  🎯 {plan.goal}
+                </div>
+              )}
               <div style={{ marginTop: '12px', height: '6px', background: '#f0f0f0', borderRadius: '3px' }}>
                 <div
                   style={{
@@ -168,28 +217,234 @@ const PlanModule = () => {
                     height: '100%',
                     background: '#1a5f2b',
                     borderRadius: '3px',
-                    transition: 'width 0.5s ease',
                   }}
                 />
               </div>
-
-              {plan.goal && (
-                <div style={{ marginTop: '8px', fontSize: '11px', color: '#888' }}>
-                  🎯 {plan.goal.replace('_', ' ')}
-                </div>
-              )}
             </div>
           ))}
         </div>
       )}
 
-      {/* Plan Modal */}
-      <PlanModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        onPlanCreated={handlePlanCreated}
-        user={user}
-      />
+      {/* Create Plan Modal */}
+      {showModal && (
+        <div
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            background: 'rgba(0,0,0,0.6)',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            zIndex: 1000,
+            padding: '20px',
+          }}
+          onClick={handleCloseModal}
+        >
+          <div
+            style={{
+              background: 'white',
+              padding: '30px',
+              borderRadius: '16px',
+              maxWidth: '600px',
+              width: '100%',
+              maxHeight: '90vh',
+              overflow: 'auto',
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+              <h2 style={{ color: '#1a5f2b', margin: 0 }}>📋 Create Study Plan</h2>
+              <button
+                onClick={handleCloseModal}
+                style={{ background: 'none', border: 'none', fontSize: '24px', cursor: 'pointer', color: '#888' }}
+              >
+                ✕
+              </button>
+            </div>
+
+            {step === 1 && (
+              <div>
+                <div style={{ marginBottom: '16px' }}>
+                  <label style={{ display: 'block', fontWeight: 'bold', marginBottom: '4px' }}>
+                    Plan Name <span style={{ color: 'red' }}>*</span>
+                  </label>
+                  <input
+                    name="name"
+                    value={formData.name}
+                    onChange={handleChange}
+                    placeholder="e.g., WASSCE Preparation Plan"
+                    style={{
+                      width: '100%',
+                      padding: '10px',
+                      border: '1px solid #e0e0e0',
+                      borderRadius: '8px',
+                      fontSize: '14px',
+                    }}
+                    required
+                  />
+                </div>
+
+                <div style={{ marginBottom: '16px' }}>
+                  <label style={{ display: 'block', fontWeight: 'bold', marginBottom: '4px' }}>
+                    Description
+                  </label>
+                  <textarea
+                    name="description"
+                    value={formData.description}
+                    onChange={handleChange}
+                    placeholder="What do you want to achieve with this plan?"
+                    rows="3"
+                    style={{
+                      width: '100%',
+                      padding: '10px',
+                      border: '1px solid #e0e0e0',
+                      borderRadius: '8px',
+                      fontSize: '14px',
+                      resize: 'vertical',
+                    }}
+                  />
+                </div>
+
+                <div style={{ marginBottom: '16px' }}>
+                  <label style={{ display: 'block', fontWeight: 'bold', marginBottom: '4px' }}>
+                    Duration (months)
+                  </label>
+                  <input
+                    type="number"
+                    name="duration_months"
+                    value={formData.duration_months}
+                    onChange={handleChange}
+                    min="1"
+                    max="36"
+                    style={{
+                      width: '100%',
+                      padding: '10px',
+                      border: '1px solid #e0e0e0',
+                      borderRadius: '8px',
+                      fontSize: '14px',
+                    }}
+                  />
+                </div>
+
+                <div style={{ marginBottom: '20px' }}>
+                  <label style={{ display: 'block', fontWeight: 'bold', marginBottom: '4px' }}>
+                    Goal
+                  </label>
+                  <select
+                    name="goal"
+                    value={formData.goal}
+                    onChange={handleChange}
+                    style={{
+                      width: '100%',
+                      padding: '10px',
+                      border: '1px solid #e0e0e0',
+                      borderRadius: '8px',
+                      fontSize: '14px',
+                    }}
+                  >
+                    <option value="">Select a goal</option>
+                    <option value="exam preparation">📝 Exam Preparation</option>
+                    <option value="university admission">🎓 University Admission</option>
+                    <option value="career readiness">💼 Career Readiness</option>
+                    <option value="skill development">🔧 Skill Development</option>
+                    <option value="personal growth">🌱 Personal Growth</option>
+                  </select>
+                </div>
+
+                <button
+                  onClick={handleNext}
+                  disabled={!formData.name}
+                  style={{
+                    width: '100%',
+                    padding: '12px',
+                    background: formData.name ? '#1a5f2b' : '#ccc',
+                    color: 'white',
+                    border: 'none',
+                    borderRadius: '8px',
+                    cursor: formData.name ? 'pointer' : 'not-allowed',
+                    fontSize: '16px',
+                    fontWeight: 'bold',
+                  }}
+                >
+                  Next →
+                </button>
+              </div>
+            )}
+
+            {step === 2 && (
+              <div>
+                <div style={{ marginBottom: '16px' }}>
+                  <label style={{ display: 'block', fontWeight: 'bold', marginBottom: '8px' }}>
+                    Select Subjects
+                  </label>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
+                    {subjectOptions.map((subject) => (
+                      <label
+                        key={subject}
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '8px',
+                          padding: '8px 12px',
+                          background: formData.subjects.includes(subject) ? '#e8f5e9' : '#f8f9fa',
+                          borderRadius: '6px',
+                          cursor: 'pointer',
+                          border: formData.subjects.includes(subject) ? '1px solid #1a5f2b' : '1px solid #e0e0e0',
+                        }}
+                      >
+                        <input
+                          type="checkbox"
+                          checked={formData.subjects.includes(subject)}
+                          onChange={() => handleSubjectToggle(subject)}
+                          style={{ accentColor: '#1a5f2b' }}
+                        />
+                        {subject}
+                      </label>
+                    ))}
+                  </div>
+                </div>
+
+                <div style={{ display: 'flex', gap: '12px' }}>
+                  <button
+                    onClick={handleBack}
+                    style={{
+                      flex: 1,
+                      padding: '12px',
+                      background: '#f0f0f0',
+                      border: 'none',
+                      borderRadius: '8px',
+                      cursor: 'pointer',
+                      fontSize: '16px',
+                    }}
+                  >
+                    ← Back
+                  </button>
+                  <button
+                    onClick={handleSave}
+                    disabled={saving}
+                    style={{
+                      flex: 2,
+                      padding: '12px',
+                      background: saving ? '#ccc' : '#1a5f2b',
+                      color: 'white',
+                      border: 'none',
+                      borderRadius: '8px',
+                      cursor: saving ? 'not-allowed' : 'pointer',
+                      fontSize: '16px',
+                      fontWeight: 'bold',
+                    }}
+                  >
+                    {saving ? 'Creating...' : '✨ Create Plan'}
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 };
