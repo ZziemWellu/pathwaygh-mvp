@@ -123,3 +123,24 @@ export const profileApi = {
   getSavedCareers: (id) => api.get(`/api/profile/${id}/saved-careers`).catch(() => ({ data: [] })),
   getSavedUniversities: (id) => api.get(`/api/profile/${id}/saved-universities`).catch(() => ({ data: [] })),
 };
+
+// Add avatar upload helper
+export const uploadAvatar = async (userId, file, onProgress) => {
+  const formData = new FormData();
+  formData.append('user_id', userId);
+  formData.append('avatar', file);
+  
+  return api.post('/api/profile/avatar', formData, {
+    headers: { 'Content-Type': 'multipart/form-data' },
+    onUploadProgress: (progressEvent) => {
+      if (onProgress) {
+        const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+        onProgress(percentCompleted);
+      }
+    }
+  });
+};
+
+export const deleteAvatar = async (userId) => {
+  return api.delete('/api/profile/avatar', { params: { user_id: userId } });
+};

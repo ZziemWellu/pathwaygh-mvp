@@ -169,3 +169,15 @@ if __name__ == "__main__":
         port=8001,
         reload=True
     )
+
+# ============================================================
+# Serve Uploaded Files
+# ============================================================
+from fastapi.staticfiles import StaticFiles
+import os
+
+# Mount uploads directory for serving
+uploads_path = os.path.join(os.path.dirname(__file__), "uploads")
+if os.path.exists(uploads_path):
+    app.mount("/uploads", StaticFiles(directory=uploads_path), name="uploads")
+    print("✅ Uploads directory mounted at /uploads")
