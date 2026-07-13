@@ -1,31 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import api from '../../services/api';
-import PracticeHome from './components/PracticeHome';
-import QuizPlayer from './components/QuizPlayer';
-import ResultsView from './components/ResultsView';
-import WeakAreas from './components/WeakAreas';
+import api, { extractData } from '../../services/api';
 
 const PracticeModule = () => {
   const [subjects, setSubjects] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [view, setView] = useState('home');
-  const [selectedSubject, setSelectedSubject] = useState(null);
-  const [selectedTopic, setSelectedTopic] = useState(null);
-  const [difficulty, setDifficulty] = useState('medium');
   const [quiz, setQuiz] = useState(null);
-  const [results, setResults] = useState(null);
-  const [weakAreas, setWeakAreas] = useState([]);
-  const [isTimed, setIsTimed] = useState(false);
-  const [timeLimit, setTimeLimit] = useState(300);
+  const [quizAnswers, setQuizAnswers] = useState({});
+  const [quizResults, setQuizResults] = useState(null);
+  const [currentQuestion, setCurrentQuestion] = useState(0);
   const [quizHistory, setQuizHistory] = useState([]);
-  const [statistics, setStatistics] = useState(null);
+  const [showHistory, setShowHistory] = useState(false);
 
   useEffect(() => {
     fetchSubjects();
-    fetchWeakAreas();
     fetchQuizHistory();
-    fetchStatistics();
   }, []);
 
   const fetchSubjects = async () => {
@@ -33,12 +22,8 @@ const PracticeModule = () => {
     setError(null);
     try {
       const response = await api.get('/api/practice/subjects');
-      const data = response.data;
-      let subjectData = [];
-      if (Array.isArray(data)) subjectData = data;
-      else if (data.subjects) subjectData = data.subjects;
-      else if (data.data) subjectData = data.data;
-      setSubjects(subjectData);
+      const data = extractData(response);
+      setSubjects(Array.isArray(data) ? data : []);
     } catch (err) {
       console.error('Practice error:', err);
       setError(err.message || 'Failed to load subjects');
@@ -47,127 +32,87 @@ const PracticeModule = () => {
     }
   };
 
-  const fetchWeakAreas = async () => {
-    try {
-      const userId = localStorage.getItem('pathwaygh_user') ? 
-        JSON.parse(localStorage.getItem('pathwaygh_user'))?.id : 'test_user';
-      const response = await api.get(`/api/practice/weak-areas/${userId}`).catch(() => ({ data: { weak_areas: [] } }));
-      setWeakAreas(response.data?.weak_areas || []);
-    } catch (err) {
-      console.warn('Weak areas not available:', err);
-    }
-  };
-
   const fetchQuizHistory = async () => {
     try {
-      const userId = localStorage.getItem('pathwaygh_user') ? 
-        JSON.parse(localStorage.getItem('pathwaygh_user'))?.id : 'test_user';
-      const response = await api.get(`/api/practice/history/${userId}`).catch(() => ({ data: { quizzes: [] } }));
-      setQuizHistory(response.data?.quizzes || []);
+      const response = await api.get('/api/practice/quiz/history').catch(() => ({ data: [] }));
+      const data = extractData(response);
+      setQuizHistory(Array.isArray(data) ? data : []);
     } catch (err) {
-      console.warn('Quiz history not available:', err);
+      console.error('Quiz history error:', err);
     }
   };
 
-  const fetchStatistics = async () => {
+  const startQuiz = async (subjectId) => {
+    setQuiz(null);
+    setQuizResults(null);
+    setQuizAnswers({});
+    setCurrentQuestion(0);
     try {
-      const userId = localStorage.getItem('pathwaygh_user') ? 
-        JSON.parse(localStorage.getItem('pathwaygh_user'))?.id : 'test_user';
-      const response = await api.get(`/api/practice/statistics/${userId}`).catch(() => ({ data: { statistics: {} } }));
-      setStatistics(response.data?.statistics || {});
-    } catch (err) {
-      console.warn('Statistics not available:', err);
-    }
-  };
-
-  const startQuiz = async (subjectId, topicId = null, difficultyLevel = 'medium', timed = false, time = 300) => {
-    setLoading(true);
-    setError(null);
-    try {
-      const userId = localStorage.getItem('pathwaygh_user') ? 
-        JSON.parse(localStorage.getItem('pathwaygh_user'))?.id : 'test_user';
-      
       const response = await api.post('/api/practice/quiz/start', {
         subject_id: subjectId,
-        topic_id: topicId,
-        difficulty: difficultyLevel,
-        timed: timed,
-        time_limit: time,
-        user_id: userId,
+        user_id: 'test_user',
       });
-      
-      if (response.data?.success) {
-        setQuiz(response.data.data);
-        setView('quiz');
-        setDifficulty(difficultyLevel);
-        setIsTimed(timed);
-        setTimeLimit(time);
-      } else {
-        setError('Failed to start quiz');
-      }
+      setQuiz(response.data);
     } catch (err) {
-      console.error('Failed to start quiz:', err);
-      setError(err.response?.data?.detail || err.message || 'Failed to start quiz');
-    } finally {
-      setLoading(false);
+      console.error('Quiz start error:', err);
+      setError(err.message || 'Failed to start quiz');
     }
   };
 
-  const submitQuiz = async (answers) => {
-    setLoading(true);
+  const submitQuiz = async () => {
     try {
-      const userId = localStorage.getItem('pathwaygh_user') ? 
-        JSON.parse(localStorage.getItem('pathwaygh_user'))?.id : 'test_user';
-      
       const response = await api.post('/api/practice/quiz/submit', {
         quiz_id: quiz?.id,
-        answers: answers,
-        user_id: userId,
+        answers: quizAnswers,
+        user_id: 'test_user',
       });
-      
-      if (response.data?.success) {
-        setResults(response.data.data);
-        setView('results');
-        // Refresh data after quiz
-        fetchWeakAreas();
-        fetchQuizHistory();
-        fetchStatistics();
-      } else {
-        setError('Failed to submit quiz');
-      }
+      setQuizResults(response.data);
+      await fetchQuizHistory(); // Refresh history
     } catch (err) {
-      console.error('Failed to submit quiz:', err);
-      setError(err.response?.data?.detail || err.message || 'Failed to submit quiz');
-    } finally {
-      setLoading(false);
+      console.error('Quiz submit error:', err);
+      setError(err.message || 'Failed to submit quiz');
     }
   };
 
-  const goHome = () => {
-    setView('home');
+  const handleAnswer = (questionIndex, answer) => {
+    setQuizAnswers(prev => ({ ...prev, [questionIndex]: answer }));
+  };
+
+  const resetQuiz = () => {
     setQuiz(null);
-    setResults(null);
-    setSelectedSubject(null);
-    setSelectedTopic(null);
+    setQuizResults(null);
+    setQuizAnswers({});
+    setCurrentQuestion(0);
   };
 
-  const retryQuiz = () => {
-    setResults(null);
-    setView('home');
+  // Get score color based on percentage
+  const getScoreColor = (score) => {
+    if (score >= 80) return '#1a5f2b';
+    if (score >= 60) return '#f9a825';
+    if (score >= 40) return '#ff6f00';
+    return '#d32f2f';
   };
 
-  if (loading && view === 'home') {
+  // Get score emoji
+  const getScoreEmoji = (score) => {
+    if (score >= 80) return '🌟';
+    if (score >= 60) return '👍';
+    if (score >= 40) return '📚';
+    return '💪';
+  };
+
+  if (loading) {
     return (
-      <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '20px' }}>
+      <div style={{ textAlign: 'center', padding: '40px' }}>
         <h2>✍️ Practice</h2>
-        <p>Loading practice subjects...</p>
+        <p>Loading subjects...</p>
       </div>
     );
   }
 
-  if (error && !quiz) {
+  if (error) {
     return (
-      <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '20px' }}>
+      <div style={{ textAlign: 'center', padding: '40px' }}>
         <h2>✍️ Practice</h2>
         <p style={{ color: 'red' }}>⚠️ {error}</p>
         <button onClick={fetchSubjects} style={{ padding: '8px 16px', background: '#1a5f2b', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer' }}>Retry</button>
@@ -175,46 +120,308 @@ const PracticeModule = () => {
     );
   }
 
+  // Quiz Active View
+  if (quiz) {
+    const questions = quiz.questions || [];
+    const totalQuestions = questions.length;
+    const currentQ = questions[currentQuestion];
+
+    if (quizResults) {
+      const score = quizResults.score || 0;
+      const scoreColor = getScoreColor(score);
+      const emoji = getScoreEmoji(score);
+
+      return (
+        <div style={{ maxWidth: '800px', margin: '0 auto', padding: '20px' }}>
+          <h2>📊 Quiz Results</h2>
+          <div style={{
+            background: 'white',
+            padding: '30px',
+            borderRadius: '16px',
+            border: '1px solid #e0e0e0',
+            textAlign: 'center',
+          }}>
+            <div style={{ fontSize: '64px', marginBottom: '12px' }}>{emoji}</div>
+            <div style={{ fontSize: '48px', fontWeight: 'bold', color: scoreColor }}>
+              {score}%
+            </div>
+            <div style={{ fontSize: '16px', color: '#888', marginBottom: '8px' }}>
+              {quizResults.correct || 0} correct out of {totalQuestions}
+            </div>
+            <div style={{
+              width: '100%',
+              height: '12px',
+              background: '#f0f0f0',
+              borderRadius: '6px',
+              overflow: 'hidden',
+              margin: '16px 0',
+            }}>
+              <div style={{
+                width: `${score}%`,
+                height: '100%',
+                background: scoreColor,
+                borderRadius: '6px',
+                transition: 'width 1s ease',
+              }} />
+            </div>
+            <div style={{ display: 'flex', gap: '16px', justifyContent: 'center', flexWrap: 'wrap' }}>
+              <div style={{ padding: '12px 20px', background: '#f8f9fa', borderRadius: '8px' }}>
+                <div style={{ fontSize: '12px', color: '#888' }}>⏱️ Time</div>
+                <div style={{ fontSize: '18px', fontWeight: 'bold' }}>{quizResults.time_spent || 0}s</div>
+              </div>
+              <div style={{ padding: '12px 20px', background: '#f8f9fa', borderRadius: '8px' }}>
+                <div style={{ fontSize: '12px', color: '#888' }}>📝 Questions</div>
+                <div style={{ fontSize: '18px', fontWeight: 'bold' }}>{totalQuestions}</div>
+              </div>
+              <div style={{ padding: '12px 20px', background: '#f8f9fa', borderRadius: '8px' }}>
+                <div style={{ fontSize: '12px', color: '#888' }}>✅ Correct</div>
+                <div style={{ fontSize: '18px', fontWeight: 'bold', color: '#1a5f2b' }}>
+                  {quizResults.correct || 0}
+                </div>
+              </div>
+            </div>
+            <button
+              onClick={resetQuiz}
+              style={{
+                marginTop: '20px',
+                padding: '12px 24px',
+                background: '#1a5f2b',
+                color: 'white',
+                border: 'none',
+                borderRadius: '8px',
+                cursor: 'pointer',
+                fontSize: '16px',
+                fontWeight: 'bold',
+              }}
+            >
+              🚀 Try Another Quiz
+            </button>
+          </div>
+        </div>
+      );
+    }
+
+    return (
+      <div style={{ maxWidth: '800px', margin: '0 auto', padding: '20px' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+          <h2>📝 Quiz</h2>
+          <button
+            onClick={resetQuiz}
+            style={{ padding: '8px 16px', background: '#f0f0f0', border: 'none', borderRadius: '8px', cursor: 'pointer' }}
+          >
+            ✕ Close
+          </button>
+        </div>
+
+        <div style={{ marginBottom: '16px' }}>
+          <span>Question {currentQuestion + 1} of {totalQuestions}</span>
+          <div style={{ height: '6px', background: '#f0f0f0', borderRadius: '3px', marginTop: '8px' }}>
+            <div style={{
+              width: `${((currentQuestion + 1) / totalQuestions) * 100}%`,
+              height: '100%',
+              background: '#1a5f2b',
+              borderRadius: '3px',
+              transition: 'width 0.5s ease',
+            }} />
+          </div>
+        </div>
+
+        {currentQ && (
+          <div style={{ background: 'white', padding: '24px', borderRadius: '12px', border: '1px solid #e0e0e0' }}>
+            <h3>{currentQ.question}</h3>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '16px' }}>
+              {currentQ.options?.map((option, i) => (
+                <button
+                  key={i}
+                  onClick={() => handleAnswer(currentQuestion, option)}
+                  style={{
+                    padding: '12px 16px',
+                    background: quizAnswers[currentQuestion] === option ? '#e8f5e9' : '#f5f5f5',
+                    border: quizAnswers[currentQuestion] === option ? '2px solid #1a5f2b' : '1px solid #e0e0e0',
+                    borderRadius: '8px',
+                    cursor: 'pointer',
+                    textAlign: 'left',
+                    transition: 'all 0.2s ease',
+                  }}
+                >
+                  {option}
+                </button>
+              ))}
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '20px' }}>
+              <button
+                onClick={() => setCurrentQuestion(prev => Math.max(0, prev - 1))}
+                disabled={currentQuestion === 0}
+                style={{
+                  padding: '10px 20px',
+                  background: currentQuestion === 0 ? '#f0f0f0' : '#1a5f2b',
+                  color: currentQuestion === 0 ? '#888' : 'white',
+                  border: 'none',
+                  borderRadius: '8px',
+                  cursor: currentQuestion === 0 ? 'not-allowed' : 'pointer',
+                }}
+              >
+                ← Previous
+              </button>
+              {currentQuestion === totalQuestions - 1 ? (
+                <button
+                  onClick={submitQuiz}
+                  style={{ padding: '10px 20px', background: '#1a5f2b', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer' }}
+                >
+                  Submit Quiz ✓
+                </button>
+              ) : (
+                <button
+                  onClick={() => setCurrentQuestion(prev => Math.min(totalQuestions - 1, prev + 1))}
+                  style={{ padding: '10px 20px', background: '#1a5f2b', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer' }}
+                >
+                  Next →
+                </button>
+              )}
+            </div>
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  // Subject Selection View
   return (
     <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '20px' }}>
-      {view === 'home' && (
-        <PracticeHome
-          subjects={subjects}
-          weakAreas={weakAreas}
-          statistics={statistics}
-          quizHistory={quizHistory}
-          onStartQuiz={startQuiz}
-          onSelectSubject={setSelectedSubject}
-          onSelectTopic={setSelectedTopic}
-          setDifficulty={setDifficulty}
-          setIsTimed={setIsTimed}
-          setTimeLimit={setTimeLimit}
-          selectedSubject={selectedSubject}
-        />
-      )}
-      {view === 'quiz' && (
-        <QuizPlayer
-          quiz={quiz}
-          onSubmit={submitQuiz}
-          onQuit={goHome}
-          timeLimit={timeLimit}
-          isTimed={isTimed}
-        />
-      )}
-      {view === 'results' && (
-        <ResultsView
-          results={results}
-          onRetry={retryQuiz}
-          onHome={goHome}
-          onViewWeakAreas={() => setView('weak-areas')}
-        />
-      )}
-      {view === 'weak-areas' && (
-        <WeakAreas
-          weakAreas={weakAreas}
-          onBack={() => setView('results')}
-          onPractice={startQuiz}
-        />
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+        <h2>✍️ Practice</h2>
+        <div style={{ display: 'flex', gap: '12px' }}>
+          <button
+            onClick={() => setShowHistory(!showHistory)}
+            style={{
+              padding: '8px 16px',
+              background: showHistory ? '#1a5f2b' : '#f0f0f0',
+              color: showHistory ? 'white' : '#333',
+              border: 'none',
+              borderRadius: '8px',
+              cursor: 'pointer',
+            }}
+          >
+            📊 History
+          </button>
+          <span style={{ color: '#888', fontSize: '14px', alignSelf: 'center' }}>
+            {subjects.length} subjects
+          </span>
+        </div>
+      </div>
+
+      {showHistory ? (
+        <div style={{ background: 'white', borderRadius: '12px', border: '1px solid #e0e0e0', padding: '24px' }}>
+          <h3 style={{ color: '#1a5f2b', marginBottom: '16px' }}>📊 Quiz History</h3>
+          {quizHistory.length === 0 ? (
+            <p style={{ color: '#888' }}>No quiz attempts yet. Start your first quiz!</p>
+          ) : (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+              {quizHistory.slice(0, 10).map((attempt, i) => (
+                <div
+                  key={i}
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    padding: '12px 16px',
+                    background: '#f8f9fa',
+                    borderRadius: '8px',
+                    border: '1px solid #e0e0e0',
+                  }}
+                >
+                  <div>
+                    <div style={{ fontWeight: 'bold', fontSize: '14px' }}>{attempt.subject || 'Quiz'}</div>
+                    <div style={{ fontSize: '12px', color: '#888' }}>
+                      {attempt.date ? new Date(attempt.date).toLocaleDateString() : 'Recently'}
+                    </div>
+                  </div>
+                  <div style={{ textAlign: 'right' }}>
+                    <div style={{ fontSize: '20px', fontWeight: 'bold', color: getScoreColor(attempt.score || 0) }}>
+                      {attempt.score || 0}%
+                    </div>
+                    <div style={{ fontSize: '12px', color: '#888' }}>
+                      {attempt.correct || 0}/{attempt.total || 0} correct
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+          <button
+            onClick={() => setShowHistory(false)}
+            style={{
+              marginTop: '16px',
+              padding: '8px 16px',
+              background: '#f0f0f0',
+              border: 'none',
+              borderRadius: '8px',
+              cursor: 'pointer',
+            }}
+          >
+            ← Back to Subjects
+          </button>
+        </div>
+      ) : (
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: '20px' }}>
+          {subjects.length === 0 ? (
+            <p style={{ gridColumn: '1 / -1', textAlign: 'center', padding: '40px', color: '#888' }}>
+              No practice subjects available.
+            </p>
+          ) : (
+            subjects.map((subject) => (
+              <div
+                key={subject.id}
+                style={{
+                  border: '1px solid #e0e0e0',
+                  borderRadius: '12px',
+                  padding: '24px',
+                  background: 'white',
+                  textAlign: 'center',
+                  transition: 'all 0.2s ease',
+                  boxShadow: '0 2px 4px rgba(0,0,0,0.04)',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.boxShadow = '0 4px 16px rgba(0,0,0,0.1)';
+                  e.currentTarget.style.transform = 'translateY(-2px)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.boxShadow = '0 2px 4px rgba(0,0,0,0.04)';
+                  e.currentTarget.style.transform = 'translateY(0)';
+                }}
+              >
+                <div style={{ fontSize: '48px' }}>{subject.icon || '📚'}</div>
+                <h3 style={{ color: '#1a5f2b', margin: '12px 0' }}>{subject.name}</h3>
+                {subject.topics && subject.topics.length > 0 && (
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', justifyContent: 'center', marginBottom: '16px' }}>
+                    {subject.topics.slice(0, 3).map((topic, i) => (
+                      <span key={i} style={{ background: '#f0f0f0', padding: '4px 10px', borderRadius: '12px', fontSize: '11px' }}>
+                        {topic}
+                      </span>
+                    ))}
+                  </div>
+                )}
+                <button
+                  onClick={() => startQuiz(subject.id)}
+                  style={{
+                    padding: '10px 24px',
+                    background: '#1a5f2b',
+                    color: 'white',
+                    border: 'none',
+                    borderRadius: '8px',
+                    cursor: 'pointer',
+                    transition: 'background 0.2s ease',
+                    fontWeight: 'bold',
+                  }}
+                  onMouseEnter={(e) => e.currentTarget.style.background = '#144d21'}
+                  onMouseLeave={(e) => e.currentTarget.style.background = '#1a5f2b'}
+                >
+                  🚀 Start Quiz
+                </button>
+              </div>
+            ))
+          )}
+        </div>
       )}
     </div>
   );
