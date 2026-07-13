@@ -1,0 +1,92 @@
+[
+  {
+    "id": "plan_001",
+    "name": "WASSCE Preparation Plan",
+    "description": "Comprehensive 6-month study plan for WASSCE",
+    "duration_months": 6,
+    "duration": "6 months",
+    "progress": 0,
+    "subjects": [
+      "Mathematics",
+      "English Language",
+      "Integrated Science"
+    ],
+    "goal": "exam_preparation",
+    "target_exam": "WASSCE",
+    "priority": "high",
+    "status": "active",
+    "created_at": "2026-07-13T00:26:01.135975"
+  },
+  {
+    "id": "plan_002",
+    "name": "University Entrance Preparation",
+    "description": "Prepare for university admissions",
+    "duration_months": 3,
+    "duration": "3 months",
+    "progress": 0,
+    "subjects": [
+      "Mathematics",
+      "English Language"
+    ],
+    "goal": "university_admission",
+    "target_exam": "University Entrance",
+    "priority": "high",
+    "status": "active",
+    "created_at": "2026-07-13T00:26:01.136178"
+  },
+  {
+    "id": "plan_003",
+    "name": "SHS Science Student Roadmap",
+    "description": "3-year roadmap for science students from SHS 1 to 3",
+    "duration_months": 36,
+    "duration": "36 months",
+    "progress": 0,
+    "subjects": [
+      "Biology",
+      "Chemistry",
+      "Physics",
+      "Mathematics"
+    ],
+    "goal": "career_readiness",
+    "target_exam": "WASSCE",
+    "priority": "high",
+    "status": "active",
+    "created_at": "2026-07-13T00:26:01.136186"
+  },
+  {
+    "id": "plan_004",
+    "name": "Intensive 3-Month WAEC Prep",
+    "description": "Intensive 3-month preparation for WAEC exams",
+    "duration_months": 3,
+    "duration": "3 months",
+    "progress": 0,
+    "subjects": [
+      "Mathematics",
+      "English",
+      "Science",
+      "Social Studies"
+    ],
+    "goal": "exam_preparation",
+    "target_exam": "WAEC",
+    "priority": "high",
+    "status": "active",
+    "created_at": "2026-07-13T00:26:01.136191"
+  },
+  {
+    "id": "plan_2619065c",
+    "name": "My WASSCE Preparation Plan",
+    "description": "Comprehensive 3-month study plan covering all core subjects for WASSCE",
+    "duration_months": 3,
+    "duration": "3 months",
+    "progress": 0,
+    "subjects": [
+      "Mathematics  English Language  Integrated Science  Social Studies"
+    ],
+    "goal": "exam_preparation",
+    "target_exam": "WASSCE",
+    "priority": "medium",
+    "status": "active",
+    "user_id": "user_0e5c4734ab18",
+    "created_at": "2026-07-13T00:30:22.114085"
+  }
+]

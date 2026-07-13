@@ -1,0 +1,285 @@
+/* Explore Module Styles */
+.container {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.header h2 {
+  color: #1a5f2b;
+  margin: 0;
+}
+
+.count {
+  color: #888;
+  font-size: 14px;
+}
+
+.searchContainer {
+  margin-bottom: 20px;
+}
+
+.searchInput {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 14px;
+  transition: border-color 0.2s ease;
+}
+
+.searchInput:focus {
+  outline: none;
+  border-color: #1a5f2b;
+  box-shadow: 0 0 0 3px rgba(26, 95, 43, 0.1);
+}
+
+/* Tabs */
+.tabs {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #e0e0e0;
+  padding-bottom: 10px;
+  flex-wrap: wrap;
+}
+
+.tab {
+  padding: 8px 20px;
+  background: transparent;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  color: #333;
+  transition: all 0.2s ease;
+}
+
+.tab:hover {
+  background: #f5f5f5;
+}
+
+.activeTab {
+  background: #1a5f2b;
+  color: white;
+}
+
+.activeTab:hover {
+  background: #1a5f2b;
+}
+
+/* Grid */
+.gridContainer {
+  min-height: 200px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+/* Cards */
+.card {
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 20px;
+  background: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+.cardTitle {
+  color: #1a5f2b;
+  margin: 0 0 8px 0;
+  font-size: 18px;
+}
+
+.categoryTag {
+  display: inline-block;
+  padding: 2px 10px;
+  background: #e8f5e9;
+  border-radius: 12px;
+  font-size: 12px;
+  color: #1a5f2b;
+  margin-bottom: 8px;
+}
+
+.cardDescription {
+  font-size: 14px;
+  color: #555;
+  margin: 8px 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.cardFooter {
+  margin-top: 12px;
+  padding: 6px 12px;
+  background: #f5f5f5;
+  border-radius: 8px;
+  font-size: 12px;
+  color: #1a5f2b;
+  text-align: center;
+}
+
+.location,
+.cutoff,
+.ranking,
+.provider,
+.amount,
+.deadline {
+  font-size: 13px;
+  color: #666;
+  margin: 4px 0;
+}
+
+/* Empty State */
+.empty {
+  text-align: center;
+  padding: 40px;
+  color: #888;
+}
+
+/* Loading & Error States */
+.loading,
+.error {
+  text-align: center;
+  padding: 40px;
+}
+
+.spinner {
+  color: #888;
+  margin-top: 12px;
+}
+
+.errorMessage {
+  color: #d32f2f;
+  margin: 12px 0;
+}
+
+.retryButton {
+  padding: 8px 20px;
+  background: #1a5f2b;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.retryButton:hover {
+  background: #144d21;
+}
+
+/* Modal */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.modal {
+  background: white;
+  padding: 30px;
+  border-radius: 16px;
+  max-width: 600px;
+  max-height: 90vh;
+  overflow: auto;
+  width: 100%;
+  position: relative;
+}
+
+.modalClose {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #888;
+}
+
+.modalClose:hover {
+  color: #333;
+}
+
+.modalTitle {
+  color: #1a5f2b;
+  margin: 0 0 12px 0;
+}
+
+.modalDescription {
+  color: #555;
+  line-height: 1.6;
+  margin: 12px 0;
+}
+
+.modalDetail {
+  margin: 8px 0;
+  color: #555;
+}
+
+.modalButton {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background: #1a5f2b;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  width: 100%;
+  font-size: 16px;
+}
+
+.modalButton:hover {
+  background: #144d21;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .container {
+    padding: 10px;
+  }
+
+  .tabs {
+    flex-direction: column;
+  }
+
+  .tab {
+    width: 100%;
+    text-align: center;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .modal {
+    padding: 20px;
+    margin: 10px;
+  }
+}

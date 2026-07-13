@@ -1,5 +1,6 @@
 """
 Learn Module Router - Dynamically loads courses from data/courses/
+FIXED: Correct file paths
 """
 
 from fastapi import APIRouter, HTTPException
@@ -11,27 +12,31 @@ import logging
 router = APIRouter()
 logger = logging.getLogger(__name__)
 
+# Get the project root directory
+PROJECT_ROOT = Path(__file__).parent.parent.parent
 
 def load_all_courses() -> List[Dict]:
     """Load all courses from data/courses/ directory dynamically"""
     courses = []
-    course_dirs = [
-        "data/courses/jhs",
-        "data/courses/shs",
-        "data/courses/tvet",
-        "data/courses/skills"
-    ]
     
-    for dir_path in course_dirs:
-        path = Path(dir_path)
-        if path.exists():
-            for file in path.glob("*.json"):
+    # FIX: Use absolute path from project root
+    base_path = PROJECT_ROOT / "data" / "courses"
+    
+    if not base_path.exists():
+        logger.warning(f"Course directory not found: {base_path}")
+        return courses
+    
+    # Walk through all subdirectories
+    for level_dir in base_path.iterdir():
+        if level_dir.is_dir():
+            for file in level_dir.glob("*.json"):
                 try:
                     with open(file, 'r') as f:
                         course = json.load(f)
+                        # Ensure level is set
                         if not course.get("level"):
-                            course["level"] = path.name
-                        # Add lesson count
+                            course["level"] = level_dir.name
+                        # Calculate lesson count
                         lesson_count = 0
                         if "modules" in course:
                             for module in course.get("modules", []):
@@ -40,15 +45,13 @@ def load_all_courses() -> List[Dict]:
                             lesson_count = len(course.get("lessons", []))
                         course["lesson_count"] = lesson_count
                         courses.append(course)
+                        logger.info(f"✅ Loaded course: {course.get('title', file.name)}")
                 except Exception as e:
                     logger.error(f"Error loading course from {file}: {e}")
     
+    logger.info(f"📚 Total courses loaded: {len(courses)}")
     return courses
 
-
-# ============================================
-# ROOT ENDPOINT - FIX 404
-# ============================================
 
 @router.get("/")
 async def learn_root():
@@ -71,7 +74,7 @@ async def get_courses(
 ):
     """Get all courses with filters"""
     courses = load_all_courses()
-    
+
     if level:
         courses = [c for c in courses if c.get("level") == level]
     if subject:
@@ -79,11 +82,11 @@ async def get_courses(
     if search:
         search_lower = search.lower()
         courses = [
-            c for c in courses 
-            if search_lower in c.get("title", "").lower() 
+            c for c in courses
+            if search_lower in c.get("title", "").lower()
             or search_lower in c.get("description", "").lower()
         ]
-    
+
     return courses
 
 
@@ -101,14 +104,14 @@ async def get_course(course_id: str):
 async def get_course_lessons(course_id: str):
     """Get all lessons for a course"""
     course = await get_course(course_id)
-    
+
     lessons = []
     if "modules" in course:
         for module in course["modules"]:
             lessons.extend(module.get("lessons", []))
     elif "lessons" in course:
         lessons = course["lessons"]
-    
+
     return sorted(lessons, key=lambda x: x.get("order_index", 0))
 
 
@@ -126,7 +129,7 @@ async def get_lesson(lesson_id: str):
             for lesson in course.get("lessons", []):
                 if lesson.get("id") == lesson_id:
                     return lesson
-    
+
     raise HTTPException(status_code=404, detail="Lesson not found")
 
 
@@ -135,7 +138,7 @@ async def enroll_in_course(request: Dict):
     """Enroll a user in a course"""
     return {
         "status": "success",
-        "message": "Enrollment feature coming in Sprint 2",
+        "message": "Enrollment feature coming soon",
         "data": request
     }
 
@@ -145,7 +148,7 @@ async def update_progress(request: Dict):
     """Update lesson progress"""
     return {
         "status": "success",
-        "message": "Progress tracking coming in Sprint 3",
+        "message": "Progress tracking coming soon",
         "data": request
     }
 
@@ -156,7 +159,7 @@ async def get_user_progress(user_id: str):
     return {
         "user_id": user_id,
         "progress": [],
-        "message": "Progress tracking coming in Sprint 3"
+        "message": "Progress tracking coming soon"
     }
 
 
@@ -166,7 +169,7 @@ async def get_recent_activity(user_id: str):
     return {
         "user_id": user_id,
         "activities": [],
-        "message": "Recent activity coming in Sprint 3"
+        "message": "Recent activity coming soon"
     }
 
 
@@ -176,7 +179,7 @@ async def get_recommendations(request: Dict):
     return {
         "user_id": request.get("user_id"),
         "recommendations": [],
-        "message": "AI recommendations coming in Sprint 3"
+        "message": "AI recommendations coming soon"
     }
 
 print("✅ Learn module loaded with root endpoint")

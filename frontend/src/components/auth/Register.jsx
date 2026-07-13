@@ -1,134 +1,222 @@
 import React, { useState } from 'react';
-import API from '../../services/api';
+import api from '../../services/api';
 
 const Register = ({ onSuccess }) => {
-  const [email, setEmail] = useState('');
-  const [fullName, setFullName] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [role, setRole] = useState('student');
+  const [formData, setFormData] = useState({
+    full_name: '',
+    email: '',
+    password: '',
+    confirm_password: ''
+  });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState(false);
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
-
-    if (password !== confirmPassword) {
+    
+    // Validate passwords match
+    if (formData.password !== formData.confirm_password) {
       setError('Passwords do not match');
       return;
     }
-
-    if (password.length < 6) {
+    
+    // Validate password length
+    if (formData.password.length < 6) {
       setError('Password must be at least 6 characters');
       return;
     }
 
     setLoading(true);
+    setError('');
+    setSuccess(false);
 
     try {
-      const response = await API.post('/api/auth/register', {
-        email,
-        full_name: fullName,
-        password,
-        role
-      });
+      // The backend expects: email, full_name, password
+      const payload = {
+        email: formData.email,
+        full_name: formData.full_name,  // ← CORRECT field name!
+        password: formData.password
+      };
 
-      if (response.data && response.data.success) {
-        alert('Registration successful! Please login.');
-        if (onSuccess) onSuccess();
+      console.log('📤 Registering with:', payload);
+
+      const response = await api.post('/api/auth/register', payload);
+      console.log('📥 Response:', response.data);
+
+      if (response.data?.success) {
+        setSuccess(true);
+        // Wait 1.5 seconds then switch to login
+        setTimeout(() => onSuccess(), 1500);
       } else {
-        setError(response.data?.message || response.data?.detail || 'Registration failed');
+        setError(response.data?.message || 'Registration failed');
       }
     } catch (err) {
-      setError(err.response?.data?.detail || err.response?.data?.message || 'Network error. Please try again.');
-      console.error('Registration error:', err);
+      console.error('❌ Registration error:', err);
+      
+      // Handle different error formats
+      let errorMsg = 'Registration failed. Please try again.';
+      if (err.response?.data?.detail) {
+        errorMsg = err.response.data.detail;
+      } else if (err.response?.data?.message) {
+        errorMsg = err.response.data.message;
+      }
+      setError(errorMsg);
     } finally {
       setLoading(false);
     }
   };
 
+  // Success state
+  if (success) {
+    return (
+      <div style={{ maxWidth: '400px', margin: '0 auto', textAlign: 'center' }}>
+        <h2 style={{ color: '#1a5f2b' }}>✅ Registration Successful!</h2>
+        <p>Your account has been created. Redirecting to login...</p>
+        <button
+          onClick={onSuccess}
+          style={{
+            padding: '10px 24px',
+            background: '#1a5f2b',
+            color: 'white',
+            border: 'none',
+            borderRadius: '8px',
+            cursor: 'pointer',
+            marginTop: '16px'
+          }}
+        >
+          Go to Login Now
+        </button>
+      </div>
+    );
+  }
+
   return (
-    <div style={{ maxWidth: '400px', margin: '0 auto', padding: '20px' }}>
+    <div style={{ maxWidth: '400px', margin: '0 auto' }}>
       <h2 style={{ color: '#1a5f2b', textAlign: 'center' }}>Create Account</h2>
+      
       {error && (
-        <div style={{ background: '#ffebee', color: '#c62828', padding: '10px', borderRadius: '4px', marginBottom: '15px' }}>
+        <div style={{ 
+          background: '#ffebee', 
+          color: '#c62828', 
+          padding: '12px', 
+          borderRadius: '8px', 
+          marginBottom: '16px',
+          fontSize: '14px',
+          wordWrap: 'break-word'
+        }}>
           {error}
         </div>
       )}
+
       <form onSubmit={handleSubmit}>
-        <div style={{ marginBottom: '15px' }}>
-          <label style={{ display: 'block', marginBottom: '5px', fontWeight: '500' }}>Full Name</label>
+        <div style={{ marginBottom: '16px' }}>
+          <label style={{ display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>Full Name</label>
           <input
             type="text"
-            value={fullName}
-            onChange={(e) => setFullName(e.target.value)}
+            name="full_name"
+            value={formData.full_name}
+            onChange={handleChange}
             required
-            style={{ width: '100%', padding: '10px', borderRadius: '4px', border: '1px solid #ddd' }}
-            placeholder="Enter your full name"
+            style={{ 
+              width: '100%', 
+              padding: '10px', 
+              border: '1px solid #e0e0e0', 
+              borderRadius: '8px',
+              fontSize: '14px'
+            }}
+            placeholder="Your Full Name"
           />
         </div>
-        <div style={{ marginBottom: '15px' }}>
-          <label style={{ display: 'block', marginBottom: '5px', fontWeight: '500' }}>Email</label>
+
+        <div style={{ marginBottom: '16px' }}>
+          <label style={{ display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>Email</label>
           <input
             type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
             required
-            style={{ width: '100%', padding: '10px', borderRadius: '4px', border: '1px solid #ddd' }}
+            style={{ 
+              width: '100%', 
+              padding: '10px', 
+              border: '1px solid #e0e0e0', 
+              borderRadius: '8px',
+              fontSize: '14px'
+            }}
             placeholder="your@email.com"
           />
         </div>
-        <div style={{ marginBottom: '15px' }}>
-          <label style={{ display: 'block', marginBottom: '5px', fontWeight: '500' }}>Password</label>
+
+        <div style={{ marginBottom: '16px' }}>
+          <label style={{ display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>Password</label>
           <input
             type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            name="password"
+            value={formData.password}
+            onChange={handleChange}
             required
-            style={{ width: '100%', padding: '10px', borderRadius: '4px', border: '1px solid #ddd' }}
-            placeholder="Min 6 characters"
+            minLength="6"
+            style={{ 
+              width: '100%', 
+              padding: '10px', 
+              border: '1px solid #e0e0e0', 
+              borderRadius: '8px',
+              fontSize: '14px'
+            }}
+            placeholder="•••••••• (min 6 characters)"
           />
         </div>
-        <div style={{ marginBottom: '15px' }}>
-          <label style={{ display: 'block', marginBottom: '5px', fontWeight: '500' }}>Confirm Password</label>
+
+        <div style={{ marginBottom: '16px' }}>
+          <label style={{ display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>Confirm Password</label>
           <input
             type="password"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
+            name="confirm_password"
+            value={formData.confirm_password}
+            onChange={handleChange}
             required
-            style={{ width: '100%', padding: '10px', borderRadius: '4px', border: '1px solid #ddd' }}
+            style={{ 
+              width: '100%', 
+              padding: '10px', 
+              border: '1px solid #e0e0e0', 
+              borderRadius: '8px',
+              fontSize: '14px'
+            }}
             placeholder="Confirm your password"
           />
         </div>
-        <div style={{ marginBottom: '20px' }}>
-          <label style={{ display: 'block', marginBottom: '5px', fontWeight: '500' }}>Role</label>
-          <select
-            value={role}
-            onChange={(e) => setRole(e.target.value)}
-            style={{ width: '100%', padding: '10px', borderRadius: '4px', border: '1px solid #ddd' }}
-          >
-            <option value="student">Student</option>
-            <option value="parent">Parent</option>
-            <option value="teacher">Teacher</option>
-          </select>
-        </div>
+
         <button
           type="submit"
           disabled={loading}
           style={{
             width: '100%',
             padding: '12px',
-            background: '#1a5f2b',
+            background: loading ? '#ccc' : '#1a5f2b',
             color: 'white',
             border: 'none',
-            borderRadius: '4px',
+            borderRadius: '8px',
             fontSize: '16px',
+            fontWeight: 'bold',
             cursor: loading ? 'not-allowed' : 'pointer',
-            opacity: loading ? 0.7 : 1
+            transition: 'background 0.2s ease'
+          }}
+          onMouseEnter={(e) => {
+            if (!loading) e.currentTarget.style.background = '#144d21';
+          }}
+          onMouseLeave={(e) => {
+            if (!loading) e.currentTarget.style.background = '#1a5f2b';
           }}
         >
-          {loading ? 'Creating Account...' : 'Register'}
+          {loading ? 'Creating account...' : 'Register'}
         </button>
       </form>
     </div>

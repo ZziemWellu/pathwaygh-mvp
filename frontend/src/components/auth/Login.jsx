@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import API from '../../services/api';
+import api from '../../services/api';
 
 const Login = ({ onSuccess }) => {
   const [email, setEmail] = useState('');
@@ -9,58 +9,46 @@ const Login = ({ onSuccess }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
     setLoading(true);
-
+    setError('');
     try {
-      const response = await API.post('/api/auth/login', {
-        email,
-        password
-      });
-
-      if (response.data && response.data.success) {
-        localStorage.setItem('pathwaygh_token', response.data.token);
-        localStorage.setItem('pathwaygh_user', JSON.stringify(response.data.user));
-        if (onSuccess) onSuccess(response.data.user);
+      const response = await api.post('/api/auth/login', { email, password });
+      if (response.data?.success) {
+        onSuccess(response.data.user, response.data.token);
       } else {
-        setError(response.data?.message || response.data?.detail || 'Login failed');
+        setError(response.data?.message || 'Login failed');
       }
     } catch (err) {
-      setError(err.response?.data?.detail || err.response?.data?.message || 'Network error. Please try again.');
-      console.error('Login error:', err);
+      setError(err.response?.data?.message || 'Login failed. Please try again.');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div style={{ maxWidth: '400px', margin: '0 auto', padding: '20px' }}>
-      <h2 style={{ color: '#1a5f2b', textAlign: 'center' }}>Login</h2>
-      {error && (
-        <div style={{ background: '#ffebee', color: '#c62828', padding: '10px', borderRadius: '4px', marginBottom: '15px' }}>
-          {error}
-        </div>
-      )}
+    <div style={{ maxWidth: '400px', margin: '0 auto' }}>
+      <h2 style={{ color: '#1a5f2b', textAlign: 'center' }}>Welcome Back</h2>
+      {error && <p style={{ color: 'red', textAlign: 'center' }}>{error}</p>}
       <form onSubmit={handleSubmit}>
-        <div style={{ marginBottom: '15px' }}>
-          <label style={{ display: 'block', marginBottom: '5px', fontWeight: '500' }}>Email</label>
+        <div style={{ marginBottom: '16px' }}>
+          <label style={{ display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>Email</label>
           <input
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
-            style={{ width: '100%', padding: '10px', borderRadius: '4px', border: '1px solid #ddd' }}
+            style={{ width: '100%', padding: '10px', border: '1px solid #e0e0e0', borderRadius: '8px' }}
             placeholder="your@email.com"
           />
         </div>
-        <div style={{ marginBottom: '15px' }}>
-          <label style={{ display: 'block', marginBottom: '5px', fontWeight: '500' }}>Password</label>
+        <div style={{ marginBottom: '16px' }}>
+          <label style={{ display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>Password</label>
           <input
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
-            style={{ width: '100%', padding: '10px', borderRadius: '4px', border: '1px solid #ddd' }}
+            style={{ width: '100%', padding: '10px', border: '1px solid #e0e0e0', borderRadius: '8px' }}
             placeholder="••••••••"
           />
         </div>
@@ -73,10 +61,9 @@ const Login = ({ onSuccess }) => {
             background: '#1a5f2b',
             color: 'white',
             border: 'none',
-            borderRadius: '4px',
+            borderRadius: '8px',
             fontSize: '16px',
-            cursor: loading ? 'not-allowed' : 'pointer',
-            opacity: loading ? 0.7 : 1
+            cursor: 'pointer',
           }}
         >
           {loading ? 'Logging in...' : 'Login'}

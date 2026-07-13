@@ -1,10 +1,10 @@
 /**
- * API Service - Centralized API Client
+ * API SERVICE - SINGLE SOURCE OF TRUTH
  */
 
 import axios from 'axios';
+import { getToken, setToken, clearSession } from '../constants/auth';
 
-// Use environment variable or fallback to production backend
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://pathwaygh-backend.onrender.com';
 
 console.log('🔗 API Base URL:', API_BASE_URL);
@@ -13,14 +13,14 @@ const api = axios.create({
   baseURL: API_BASE_URL,
   headers: {
     'Content-Type': 'application/json',
+    Accept: 'application/json',
   },
   timeout: 30000,
 });
 
-// Request interceptor - add auth token
 api.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('auth_token');
+    const token = getToken();
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -29,34 +29,97 @@ api.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-// Response interceptor - handle errors
 api.interceptors.response.use(
   (response) => response,
-  (error) => {
-    if (error.response?.status === 401) {
-      localStorage.removeItem('auth_token');
-      window.location.href = '/login';
+  async (error) => {
+    const originalRequest = error.config;
+    if (error.response?.status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true;
+      try {
+        const refreshToken = localStorage.getItem('pathwaygh_refresh_token');
+        if (refreshToken) {
+          const response = await axios.post(`${API_BASE_URL}/api/auth/refresh`, {
+            refresh_token: refreshToken,
+          });
+          if (response.data?.token) {
+            setToken(response.data.token);
+            originalRequest.headers.Authorization = `Bearer ${response.data.token}`;
+            return api(originalRequest);
+          }
+        }
+      } catch {
+        clearSession();
+        if (typeof window !== 'undefined') {
+          window.location.href = '/login';
+        }
+      }
     }
     return Promise.reject(error);
   }
 );
 
+export const extractData = (response) => {
+  const data = response.data;
+  if (Array.isArray(data)) return data;
+  if (data?.data) return data.data;
+  if (data?.results) return data.results;
+  if (data?.items) return data.items;
+  return data;
+};
+
+export const ENDPOINTS = {
+  AUTH: {
+    LOGIN: '/api/auth/login',
+    REGISTER: '/api/auth/register',
+    LOGOUT: '/api/auth/logout',
+    ME: '/api/auth/me',
+    REFRESH: '/api/auth/refresh',
+  },
+  LEARN: {
+    COURSES: '/api/learn/courses',
+    COURSE: (id) => `/api/learn/courses/${id}`,
+    PROGRESS: '/api/learn/progress',
+  },
+  EXPLORE: {
+    CAREERS: '/api/explore/careers',
+    CAREER: (id) => `/api/explore/career/${id}`,
+    UNIVERSITIES: '/api/explore/universities',
+    SCHOLARSHIPS: '/api/explore/scholarships',
+  },
+  PRACTICE: {
+    SUBJECTS: '/api/practice/subjects',
+    SUBJECT: (id) => `/api/practice/subject/${id}`,
+    QUIZ_START: '/api/practice/quiz/start',
+    QUIZ_SUBMIT: '/api/practice/quiz/submit',
+  },
+  PLAN: {
+    STUDY_PLANS: '/api/plan/study-plans',
+    PLAN: (id) => `/api/plan/study-plans/${id}`,
+    CREATE: '/api/plan/study-plans/create',
+    UPDATE: (id) => `/api/plan/study-plans/${id}`,
+    DELETE: (id) => `/api/plan/study-plans/${id}`,
+    PROGRESS: (id) => `/api/plan/study-plans/${id}/progress`,
+    ROADMAPS: '/api/plan/roadmaps',
+  },
+  DASHBOARD: {
+    DATA: (id) => `/api/dashboard/${id}`,
+    PROGRESS: '/api/dashboard/progress',
+    RECOMMENDATIONS: '/api/dashboard/recommendations',
+    ACTIVITY: '/api/dashboard/activity',
+    INSIGHTS: '/api/dashboard/insights',
+  },
+  PROFILE: {
+    GET: (id) => `/api/profile/${id}`,
+    UPDATE: (id) => `/api/profile/${id}`,
+  },
+};
+
 export default api;
 
-// Plan API functions
-export const planApi = {
-  getStudyPlans: () => api.get('/api/plan/study-plans'),
-  getStudyPlan: (id) => api.get(`/api/plan/study-plans/${id}`),
-  createStudyPlan: (data) => api.post('/api/plan/study-plans/create', data),
-  updateStudyPlan: (id, data) => api.put(`/api/plan/study-plans/${id}`, data),
-  deleteStudyPlan: (id) => api.delete(`/api/plan/study-plans/${id}`),
-  updateProgress: (id, progress) => api.put(`/api/plan/study-plans/${id}/progress`, { progress }),
-  generateSchedule: (id, startDate) => api.get(`/api/plan/study-plans/${id}/schedule?start_date=${startDate}`),
-  getRoadmaps: () => api.get('/api/plan/roadmaps'),
-  getRoadmap: (id) => api.get(`/api/plan/roadmaps/${id}`),
-  getRoadmapByCareer: (career) => api.get(`/api/plan/roadmaps/by-career/${encodeURIComponent(career)}`),
-  createRoadmap: (data) => api.post('/api/plan/roadmaps/create', data),
-  logStudySession: (userId, data) => api.post(`/api/plan/study-sessions/log?user_id=${userId}`, data),
-  getStudySessions: (userId) => api.get(`/api/plan/study-sessions/${userId}`),
-  getTemplates: () => api.get('/api/plan/templates'),
+// Profile API functions
+export const profileApi = {
+  getProfile: (id) => api.get(`/api/profile/${id}`),
+  updateProfile: (id, data) => api.put(`/api/profile/${id}`, data),
+  getSavedCareers: (id) => api.get(`/api/profile/${id}/saved-careers`).catch(() => ({ data: [] })),
+  getSavedUniversities: (id) => api.get(`/api/profile/${id}/saved-universities`).catch(() => ({ data: [] })),
 };

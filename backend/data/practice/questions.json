@@ -14,7 +14,168 @@
               "question": "What is 2 + 2?",
               "options": ["3", "4", "5", "6"],
               "correct": "4",
-              "difficulty": "Easy"
+              "difficulty": "easy",
+              "explanation": "2 + 2 equals 4"
+            },
+            {
+              "id": "math_002",
+              "question": "What is 3 × 3?",
+              "options": ["6", "8", "9", "12"],
+              "correct": "9",
+              "difficulty": "easy",
+              "explanation": "3 × 3 equals 9"
+            },
+            {
+              "id": "math_003",
+              "question": "What is the square root of 16?",
+              "options": ["2", "3", "4", "5"],
+              "correct": "4",
+              "difficulty": "medium",
+              "explanation": "4 × 4 = 16"
+            },
+            {
+              "id": "math_004",
+              "question": "What is 10 × 10?",
+              "options": ["50", "100", "150", "200"],
+              "correct": "100",
+              "difficulty": "easy",
+              "explanation": "10 × 10 = 100"
+            },
+            {
+              "id": "math_005",
+              "question": "What is 15 - 7?",
+              "options": ["6", "7", "8", "9"],
+              "correct": "8",
+              "difficulty": "easy",
+              "explanation": "15 - 7 = 8"
+            },
+            {
+              "id": "math_006",
+              "question": "What is 4 × 8?",
+              "options": ["28", "30", "32", "34"],
+              "correct": "32",
+              "difficulty": "medium",
+              "explanation": "4 × 8 = 32"
+            },
+            {
+              "id": "math_007",
+              "question": "What is 144 ÷ 12?",
+              "options": ["10", "11", "12", "13"],
+              "correct": "12",
+              "difficulty": "medium",
+              "explanation": "144 ÷ 12 = 12"
+            },
+            {
+              "id": "math_008",
+              "question": "What is 7 × 7?",
+              "options": ["42", "47", "49", "51"],
+              "correct": "49",
+              "difficulty": "easy",
+              "explanation": "7 × 7 = 49"
+            },
+            {
+              "id": "math_009",
+              "question": "What is 20% of 50?",
+              "options": ["5", "10", "15", "20"],
+              "correct": "10",
+              "difficulty": "hard",
+              "explanation": "20% of 50 = 10"
+            },
+            {
+              "id": "math_010",
+              "question": "What is 5 × 5?",
+              "options": ["20", "25", "30", "35"],
+              "correct": "25",
+              "difficulty": "easy",
+              "explanation": "5 × 5 = 25"
+            }
+          ]
+        },
+        {
+          "id": "geometry",
+          "name": "Geometry",
+          "questions": [
+            {
+              "id": "math_011",
+              "question": "How many sides does a triangle have?",
+              "options": ["2", "3", "4", "5"],
+              "correct": "3",
+              "difficulty": "easy",
+              "explanation": "A triangle has 3 sides"
+            },
+            {
+              "id": "math_012",
+              "question": "What is the area of a square with side length 4?",
+              "options": ["8", "12", "16", "20"],
+              "correct": "16",
+              "difficulty": "medium",
+              "explanation": "Area = 4 × 4 = 16"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "english",
+      "name": "English Language",
+      "icon": "📝",
+      "topics": [
+        {
+          "id": "grammar",
+          "name": "Grammar",
+          "questions": [
+            {
+              "id": "eng_001",
+              "question": "What is a noun?",
+              "options": ["Action word", "Person, place, or thing", "Describing word", "Connecting word"],
+              "correct": "Person, place, or thing",
+              "difficulty": "easy",
+              "explanation": "A noun is a person, place, or thing"
+            },
+            {
+              "id": "eng_002",
+              "question": "What is a verb?",
+              "options": ["Action word", "Person, place, or thing", "Describing word", "Connecting word"],
+              "correct": "Action word",
+              "difficulty": "easy",
+              "explanation": "A verb is an action word"
+            },
+            {
+              "id": "eng_003",
+              "question": "What is an adjective?",
+              "options": ["Action word", "Person, place, or thing", "Describing word", "Connecting word"],
+              "correct": "Describing word",
+              "difficulty": "medium",
+              "explanation": "An adjective describes a noun"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "science",
+      "name": "Science",
+      "icon": "🔬",
+      "topics": [
+        {
+          "id": "biology",
+          "name": "Biology",
+          "questions": [
+            {
+              "id": "sci_001",
+              "question": "What is the powerhouse of the cell?",
+              "options": ["Nucleus", "Mitochondria", "Ribosome", "Golgi"],
+              "correct": "Mitochondria",
+              "difficulty": "medium",
+              "explanation": "Mitochondria are the powerhouse of the cell"
+            },
+            {
+              "id": "sci_002",
+              "question": "What is the largest organ in the human body?",
+              "options": ["Heart", "Liver", "Skin", "Brain"],
+              "correct": "Skin",
+              "difficulty": "medium",
+              "explanation": "The skin is the largest organ"
             }
           ]
         }

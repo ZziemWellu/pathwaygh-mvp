@@ -1,0 +1,280 @@
+================================================================
+🔍 PATHWAY AI - INVESTIGATION REPORT
+Generated: Sun Jul 12 17:25:51 UTC 2026
+================================================================
+
+📋 INVESTIGATION STEP 1: ENVIRONMENT CHECK
+================================================================
+✅ Project directory found: /home/nfcc/projects/pathwaygh-mvp
+✅ Frontend directory found: /home/nfcc/projects/pathwaygh-mvp/frontend
+✅ Backend directory found: /home/nfcc/projects/pathwaygh-mvp/backend
+
+📋 INVESTIGATION STEP 2: ENVIRONMENT VARIABLES
+================================================================
+Checking .env files in frontend...
+✅ .env files found:
+-rw-r--r-- 1 nfcc nfcc 52 Jul 11 17:58 /home/nfcc/projects/pathwaygh-mvp/frontend/.env.production
+
+Checking VITE_API_URL values...
+  .env.production:
+VITE_API_URL=https://pathwaygh-backend.onrender.com
+
+Checking vite.config.js...
+✅ vite.config.js found
+Proxy configuration:
+    proxy: {
+      '/api': {
+        target: process.env.VITE_API_URL || 'http://localhost:8001',
+        changeOrigin: true,
+        secure: false,
+      },
+    },
+  },
+  build: {
+    outDir: 'dist',
+    sourcemap: true,
+
+📋 INVESTIGATION STEP 3: API SERVICE
+================================================================
+✅ API service found: /home/nfcc/projects/pathwaygh-mvp/frontend/src/services/api.js
+
+API Service Content (key sections):
+----------------------------------------
+/**
+ * API Service - Centralized API Client
+ */
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://pathwaygh-backend.onrender.com';
+console.log('🔗 API Base URL:', API_BASE_URL);
+const api = axios.create({
+  baseURL: API_BASE_URL,
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  timeout: 30000,
+});
+api.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem('auth_token');
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401) {
+      localStorage.removeItem('auth_token');
+      window.location.href = '/login';
+    }
+    return Promise.reject(error);
+  }
+);
+  getStudyPlans: () => api.get('/api/plan/study-plans'),
+  getStudyPlan: (id) => api.get(`/api/plan/study-plans/${id}`),
+  createStudyPlan: (data) => api.post('/api/plan/study-plans/create', data),
+  updateStudyPlan: (id, data) => api.put(`/api/plan/study-plans/${id}`, data),
+  deleteStudyPlan: (id) => api.delete(`/api/plan/study-plans/${id}`),
+  updateProgress: (id, progress) => api.put(`/api/plan/study-plans/${id}/progress`, { progress }),
+  generateSchedule: (id, startDate) => api.get(`/api/plan/study-plans/${id}/schedule?start_date=${startDate}`),
+  getRoadmaps: () => api.get('/api/plan/roadmaps'),
+  getRoadmap: (id) => api.get(`/api/plan/roadmaps/${id}`),
+  getRoadmapByCareer: (career) => api.get(`/api/plan/roadmaps/by-career/${encodeURIComponent(career)}`),
+  createRoadmap: (data) => api.post('/api/plan/roadmaps/create', data),
+  logStudySession: (userId, data) => api.post(`/api/plan/study-sessions/log?user_id=${userId}`, data),
+  getStudySessions: (userId) => api.get(`/api/plan/study-sessions/${userId}`),
+  getTemplates: () => api.get('/api/plan/templates'),
+};
+
+Checking API service patterns:
+  - axios instance: 1 instances
+  - baseURL: 1 references
+  - Authorization header: 5 references
+  - interceptor: 2 references
+
+📋 INVESTIGATION STEP 4: BACKEND STATUS
+================================================================
+Checking local backend (http://localhost:8001)...
+✅ Local backend is running (HTTP 200)
+
+Testing local endpoints:
+  ✅ /api/learn/courses - Working (returns data)
+     Preview: []...
+  ✅ /api/explore/careers - Working (returns data)
+     Preview: {"success":true,"careers":[{"id":"medical_doctor","title":"Medical Doctor","category":"Healthcare"},{"id":"software_engineer","title":"Software Engineer","category":"Technology"}]}...
+  ✅ /api/practice/subjects - Working (returns data)
+     Preview: {"success":true,"subjects":[{"id":"mathematics","name":"Mathematics","icon":"📐","topics":["Algebra"]}]}...
+  ✅ /api/dashboard - Working (returns data)
+
+Checking Render backend (https://pathwaygh-backend.onrender.com)...
+✅ Render backend is running (HTTP 200)
+
+📋 INVESTIGATION STEP 5: FRONTEND MODULES
+================================================================
+
+Checking home module:
+  ✅ Module directory exists
+  ❌ index.jsx not found
+  ❌ Main module file not found
+     Searched for: HomeModule.jsx, home.jsx
+
+Checking learn module:
+  ✅ Module directory exists
+  ✅ index.jsx found
+  ✅ Has default export
+  ❌ Main module file not found
+     Searched for: LearnModule.jsx, learn.jsx
+
+Checking explore module:
+  ✅ Module directory exists
+  ✅ index.jsx found
+  ✅ Has default export
+  ✅ Main module file found: ExploreModule.jsx
+  Checking for API calls:
+    - API calls: 0
+    - useEffect hooks: 0
+    - useState hooks: 0
+    - Loading state: ✅
+    - Error state: ❌
+    - Conditional rendering: ❌
+
+Checking practice module:
+  ✅ Module directory exists
+  ✅ index.jsx found
+  ✅ Has default export
+  ✅ Main module file found: PracticeModule.jsx
+  Checking for API calls:
+    - API calls: 0
+    - useEffect hooks: 0
+    - useState hooks: 0
+    - Loading state: ❌
+    - Error state: ❌
+    - Conditional rendering: ❌
+
+Checking plan module:
+  ✅ Module directory exists
+  ❌ index.jsx not found
+  ✅ Main module file found: PlanModule.jsx
+  Checking for API calls:
+    - API calls: 8
+    - useEffect hooks: 2
+    - useState hooks: 10
+    - Loading state: ✅
+    - Error state: ✅
+    - Conditional rendering: ✅
+
+Checking profile module:
+  ✅ Module directory exists
+  ❌ index.jsx not found
+  ✅ Main module file found: ProfileModule.jsx
+  Checking for API calls:
+    - API calls: 0
+    - useEffect hooks: 0
+    - useState hooks: 0
+    - Loading state: ❌
+    - Error state: ❌
+    - Conditional rendering: ❌
+
+📋 INVESTIGATION STEP 6: ROUTING
+================================================================
+✅ App.jsx found
+
+Checking routes in App.jsx:
+----------------------------------------
+
+Checking imports in App.jsx:
+----------------------------------------
+import HomeDashboard from './modules/home/HomeDashboard'
+import PlanModule from './modules/plan/PlanModule'  // ✅ ADDED
+import CourseCatalog from './modules/learn/CourseCatalog'
+import CourseDetail from './modules/learn/CourseDetail'
+import LessonPlayer from './modules/learn/LessonPlayer'
+
+Checking navigation in App.jsx:
+----------------------------------------
+
+Checking navigation component...
+✅ Navigation component found: /home/nfcc/projects/pathwaygh-mvp/frontend/src/components/common/EcosystemNavigation.jsx
+
+Navigation links:
+
+📋 INVESTIGATION STEP 7: AUTHENTICATION
+================================================================
+Checking authentication implementation...
+✅ Auth service found: /home/nfcc/projects/pathwaygh-mvp/frontend/src/services/auth.js
+
+Checking for localStorage usage (token storage):
+/home/nfcc/projects/pathwaygh-mvp/frontend/src/App.auth.jsx:    const token = localStorage.getItem('pathwaygh_token');
+/home/nfcc/projects/pathwaygh-mvp/frontend/src/App.auth.jsx:    const savedUser = localStorage.getItem('pathwaygh_user');
+/home/nfcc/projects/pathwaygh-mvp/frontend/src/App.auth.jsx:    localStorage.removeItem('pathwaygh_token');
+/home/nfcc/projects/pathwaygh-mvp/frontend/src/App.auth.jsx:    localStorage.removeItem('pathwaygh_user');
+/home/nfcc/projects/pathwaygh-mvp/frontend/src/services/api.js:    const token = localStorage.getItem('auth_token');
+/home/nfcc/projects/pathwaygh-mvp/frontend/src/services/api.js:      localStorage.removeItem('auth_token');
+/home/nfcc/projects/pathwaygh-mvp/frontend/src/services/auth.js:    localStorage.removeItem('auth_token');
+/home/nfcc/projects/pathwaygh-mvp/frontend/src/services/auth.js:    localStorage.removeItem('user');
+/home/nfcc/projects/pathwaygh-mvp/frontend/src/services/auth.js:    const user = localStorage.getItem('user');
+/home/nfcc/projects/pathwaygh-mvp/frontend/src/services/auth.js:    localStorage.setItem('auth_token', token);
+
+📋 INVESTIGATION STEP 8: RENDER CONDITIONS
+================================================================
+Checking for potential rendering issues:
+----------------------------------------
+
+Module: explore
+
+Module: practice
+
+Module: plan
+
+Module: profile
+
+📋 INVESTIGATION STEP 9: DATA FILES
+================================================================
+Checking backend data files:
+  ✅ Courses directory found: /home/nfcc/projects/pathwaygh-mvp/backend/data/courses
+     Course files: 3
+/home/nfcc/projects/pathwaygh-mvp/backend/data/courses/jhs/jhs_english_complete.json
+/home/nfcc/projects/pathwaygh-mvp/backend/data/courses/shs/shs_mathematics.json
+/home/nfcc/projects/pathwaygh-mvp/backend/data/courses/shs/shbs_biology.json
+  ✅ Practice data found: /home/nfcc/projects/pathwaygh-mvp/backend/data/practice
+     Practice files: 2
+  ✅ Explore data found: /home/nfcc/projects/pathwaygh-mvp/backend/data/explore
+     Explore files: 1
+  ❌ Universities file not found
+  ❌ Cutoffs file not found
+
+📋 INVESTIGATION STEP 10: BACKEND ROUTERS
+================================================================
+✅ main.py found
+
+Router imports in main.py:
+        module = __import__(import_path, fromlist=["router"])
+
+Router registrations in main.py:
+        app.include_router(router, prefix=prefix, tags=[module_name.capitalize()])
+
+📋 INVESTIGATION STEP 11: SUMMARY
+================================================================
+✅ INVESTIGATION COMPLETE
+================================================================
+Report saved to: investigation_report_20260712_172551.txt
+================================================================
+
+📊 QUICK STATUS SUMMARY:
+================================================================
+✅ Local Backend: Running
+✅ Render Backend: Running
+
+🔍 MANUAL CHECKS REQUIRED:
+================================================================
+1. Open browser DevTools (F12)
+2. Go to Console tab - look for errors
+3. Go to Network tab - look for API requests
+4. Install React DevTools if not installed
+5. Inspect components in React DevTools
+6. Check props and state of each module
+7. Test each tab (Learn, Explore, Practice, Plan, Profile)
+8. Take screenshots of Console and Network tabs
+================================================================

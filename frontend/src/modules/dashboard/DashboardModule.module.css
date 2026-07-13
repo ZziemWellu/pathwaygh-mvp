@@ -1,0 +1,314 @@
+/* Dashboard Module Styles */
+.container {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Welcome Section */
+.welcomeSection {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  padding: 24px 30px;
+  background: linear-gradient(135deg, #1a5f2b 0%, #2d8a4e 100%);
+  border-radius: 16px;
+  color: white;
+}
+
+.greeting {
+  font-size: 28px;
+  margin: 0 0 8px 0;
+}
+
+.subtitle {
+  font-size: 14px;
+  opacity: 0.9;
+  margin: 0;
+}
+
+.refreshButton {
+  padding: 8px 16px;
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 13px;
+  transition: background 0.2s ease;
+}
+
+.refreshButton:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* Sections */
+.section {
+  margin-bottom: 30px;
+}
+
+.section h2 {
+  color: #1a5f2b;
+  margin-bottom: 16px;
+  font-size: 20px;
+}
+
+/* Continue Learning */
+.courseList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.continueCard {
+  padding: 16px;
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+}
+
+.continueInfo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.continueInfo h4 {
+  margin: 0;
+  color: #333;
+}
+
+.courseLevel {
+  font-size: 11px;
+  color: #1a5f2b;
+  background: #e8f5e9;
+  padding: 2px 10px;
+  border-radius: 12px;
+}
+
+.progressContainer {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.progressBar {
+  flex: 1;
+  height: 6px;
+  background: #f0f0f0;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  background: #1a5f2b;
+  border-radius: 3px;
+  transition: width 0.5s ease;
+}
+
+.progressText {
+  font-size: 12px;
+  color: #888;
+  min-width: 60px;
+}
+
+/* Empty State */
+.emptyState {
+  padding: 20px;
+  background: #f8f9fa;
+  border-radius: 12px;
+  text-align: center;
+  color: #888;
+}
+
+/* Recommendation Card */
+.recommendationCard {
+  padding: 24px;
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+}
+
+.recommendationCard h3 {
+  color: #1a5f2b;
+  margin: 0 0 8px 0;
+}
+
+.recommendationCard p {
+  color: #666;
+  margin: 0 0 12px 0;
+}
+
+.confidence {
+  display: inline-block;
+  padding: 4px 12px;
+  background: #e8f5e9;
+  border-radius: 12px;
+  font-size: 13px;
+  color: #1a5f2b;
+  margin-bottom: 12px;
+}
+
+.viewButton {
+  padding: 8px 16px;
+  background: #1a5f2b;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.viewButton:hover {
+  background: #144d21;
+}
+
+/* Quick Navigation */
+.quickNav {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 12px;
+}
+
+.navItem {
+  padding: 16px;
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: #333;
+}
+
+.navItem:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+/* Activity List */
+.activityList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.activityItem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+}
+
+.activityIcon {
+  font-size: 20px;
+}
+
+.activityContent {
+  flex: 1;
+}
+
+.activityTitle {
+  color: #333;
+}
+
+.activityTime {
+  font-size: 12px;
+  color: #888;
+}
+
+/* Insights Grid */
+.insightsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+.insightCard {
+  padding: 16px;
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+}
+
+.insightLabel {
+  display: block;
+  font-size: 12px;
+  color: #888;
+  margin-bottom: 4px;
+}
+
+.insightValue {
+  font-size: 18px;
+  font-weight: bold;
+  color: #1a5f2b;
+}
+
+/* Loading & Error States */
+.loading,
+.error {
+  text-align: center;
+  padding: 40px;
+}
+
+.spinner {
+  color: #888;
+}
+
+.retryButton {
+  padding: 8px 20px;
+  background: #1a5f2b;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 12px;
+}
+
+.retryButton:hover {
+  background: #144d21;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .container {
+    padding: 10px;
+  }
+
+  .welcomeSection {
+    flex-direction: column;
+    text-align: center;
+    padding: 20px;
+  }
+
+  .greeting {
+    font-size: 22px;
+  }
+
+  .refreshButton {
+    margin-top: 12px;
+  }
+
+  .quickNav {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .insightsGrid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .quickNav {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .insightsGrid {
+    grid-template-columns: 1fr;
+  }
+}
