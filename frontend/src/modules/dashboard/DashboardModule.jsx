@@ -49,7 +49,7 @@ const DashboardModule = ({ setActiveModule }) => {
     return 'Good Evening';
   };
 
-  // Updated navigation - EACH BUTTON GOES TO A UNIQUE DESTINATION
+  // Quick Navigation - Each goes to unique NEW Explore destination
   const navItems = [
     { 
       icon: '📚', 
@@ -84,10 +84,7 @@ const DashboardModule = ({ setActiveModule }) => {
   ];
 
   const navigateTo = (path) => {
-    console.log('🔍 Navigating to:', path);
-    // If using React Router inside App, use navigate
-    navigate(path);
-    // Also update activeModule for the navigation highlight
+    // Update active module for highlighting
     if (setActiveModule) {
       if (path.startsWith('/explore')) {
         setActiveModule('explore');
@@ -99,25 +96,24 @@ const DashboardModule = ({ setActiveModule }) => {
         setActiveModule('home');
       }
     }
+    navigate(path);
   };
 
   if (loading) {
     return (
-      <div className="flex flex-center" style={{ minHeight: '300px' }}>
-        <div className="text-center">
-          <div className="spinner" />
-          <p className="text-muted mt-md">Loading your dashboard...</p>
-        </div>
+      <div style={{ textAlign: 'center', padding: '40px' }}>
+        <h2>📊 Dashboard</h2>
+        <p>Loading your dashboard...</p>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="text-center" style={{ padding: '40px' }}>
+      <div style={{ textAlign: 'center', padding: '40px' }}>
         <h2>📊 Dashboard</h2>
-        <p className="text-danger">⚠️ {error}</p>
-        <button onClick={fetchDashboardData} className="btn btn-primary">Retry</button>
+        <p style={{ color: 'red' }}>⚠️ {error}</p>
+        <button onClick={fetchDashboardData}>Retry</button>
       </div>
     );
   }
@@ -194,7 +190,7 @@ const DashboardModule = ({ setActiveModule }) => {
         </div>
       )}
 
-      {/* Quick Navigation - FIXED: Each button goes to UNIQUE destination */}
+      {/* Quick Navigation - FIXED: Each button goes to NEW Explore destination */}
       <div style={{ marginBottom: '30px' }}>
         <h2>🚀 Quick Navigation</h2>
         <div style={{ 

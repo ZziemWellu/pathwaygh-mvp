@@ -1,4 +1,3 @@
-export { default } from './ExploreModule';
 export { default as ExploreLanding } from './landing/ExploreLanding';
 export { default as CareersPage } from './pages/CareersPage';
 export { default as UniversitiesPage } from './pages/UniversitiesPage';
