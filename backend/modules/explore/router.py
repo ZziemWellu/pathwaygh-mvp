@@ -1,29 +1,32 @@
 """
 Explore Module Router
-FIXED: Added universities endpoint
 """
 
 from fastapi import APIRouter, HTTPException
+from typing import Optional  # ← THIS WAS MISSING!
 import json
-import os
 from pathlib import Path
 
 router = APIRouter(tags=["explore"])
 
-PROJECT_ROOT = Path(__file__).parent.parent.parent
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
 CAREERS_FILE = PROJECT_ROOT / "data" / "explore" / "careers.json"
 UNIVERSITIES_FILE = PROJECT_ROOT / "data" / "explore" / "universities.json"
+SCHOLARSHIPS_FILE = PROJECT_ROOT / "data" / "explore" / "scholarships.json"
+
+# ============================================================
+# Load Functions
+# ============================================================
 
 def load_careers():
     try:
-        with open(CAREERS_FILE, 'r') as f:
-            data = json.load(f)
-            return data.get("careers", [])
-    except:
-        return [
-            {"id": "medical_doctor", "title": "Medical Doctor", "category": "Healthcare"},
-            {"id": "software_engineer", "title": "Software Engineer", "category": "Technology"}
-        ]
+        if CAREERS_FILE.exists():
+            with open(CAREERS_FILE, 'r') as f:
+                data = json.load(f)
+                return data.get("careers", [])
+    except Exception as e:
+        print(f"Error loading careers: {e}")
+    return []
 
 def load_universities():
     try:
@@ -31,18 +34,39 @@ def load_universities():
             with open(UNIVERSITIES_FILE, 'r') as f:
                 data = json.load(f)
                 return data.get("universities", [])
-    except:
-        pass
-    # Fallback data
-    return [
-        {"id": "knust", "name": "KNUST", "location": "Kumasi", "cutoff": "12"},
-        {"id": "ug", "name": "University of Ghana", "location": "Accra", "cutoff": "14"},
-        {"id": "umat", "name": "UMaT", "location": "Tarkwa", "cutoff": "16"}
-    ]
+    except Exception as e:
+        print(f"Error loading universities: {e}")
+    return []
+
+def load_scholarships():
+    try:
+        if SCHOLARSHIPS_FILE.exists():
+            with open(SCHOLARSHIPS_FILE, 'r') as f:
+                data = json.load(f)
+                return data.get("scholarships", [])
+    except Exception as e:
+        print(f"Error loading scholarships: {e}")
+    return []
+
+# ============================================================
+# Root Endpoint
+# ============================================================
 
 @router.get("/")
 async def explore_root():
-    return {"module": "explore", "status": "active"}
+    return {
+        "module": "explore",
+        "status": "active",
+        "endpoints": {
+            "careers": "/api/explore/careers",
+            "universities": "/api/explore/universities",
+            "scholarships": "/api/explore/scholarships"
+        }
+    }
+
+# ============================================================
+# Careers Endpoints
+# ============================================================
 
 @router.get("/careers")
 async def get_careers():
@@ -56,9 +80,12 @@ async def get_career(career_id: str):
             return {"success": True, "career": c}
     raise HTTPException(status_code=404, detail=f"Career '{career_id}' not found")
 
+# ============================================================
+# Universities Endpoints
+# ============================================================
+
 @router.get("/universities")
 async def get_universities():
-    """Get all universities - FIXED: Returns data instead of 404"""
     return {"success": True, "universities": load_universities()}
 
 @router.get("/university/{university_id}")
@@ -70,20 +97,8 @@ async def get_university(university_id: str):
     raise HTTPException(status_code=404, detail=f"University '{university_id}' not found")
 
 # ============================================================
-# Scholarships Endpoint
+# Scholarships Endpoints
 # ============================================================
-
-SCHOLARSHIPS_FILE = PROJECT_ROOT / "data" / "explore" / "scholarships.json"
-
-def load_scholarships():
-    try:
-        if SCHOLARSHIPS_FILE.exists():
-            with open(SCHOLARSHIPS_FILE, 'r') as f:
-                data = json.load(f)
-                return data.get("scholarships", [])
-    except Exception as e:
-        print(f"Error loading scholarships: {e}")
-    return []
 
 @router.get("/scholarships")
 async def get_scholarships(
@@ -108,3 +123,11 @@ async def get_scholarships(
         ]
     
     return {"success": True, "scholarships": scholarships, "total": len(scholarships)}
+
+@router.get("/scholarship/{scholarship_id}")
+async def get_scholarship(scholarship_id: str):
+    scholarships = load_scholarships()
+    for s in scholarships:
+        if s.get("id") == scholarship_id:
+            return {"success": True, "scholarship": s}
+    raise HTTPException(status_code=404, detail=f"Scholarship '{scholarship_id}' not found")
