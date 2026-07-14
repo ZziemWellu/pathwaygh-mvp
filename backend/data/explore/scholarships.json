@@ -1,0 +1,82 @@
+{
+  "scholarships": [
+    {
+      "id": "gov_001",
+      "title": "Ghana Government Scholarship",
+      "sponsor": "Government of Ghana",
+      "type": "government",
+      "status": "open",
+      "eligibility": "Ghanaian citizens with WASSCE aggregate 8 or better",
+      "coverage": "Full tuition, accommodation, and stipend",
+      "deadline": "2026-12-31",
+      "amount": "GHS 15,000",
+      "description": "Full scholarship for undergraduate studies in Ghanaian public universities",
+      "website": "https://www.scholarships.gov.gh"
+    },
+    {
+      "id": "gov_002",
+      "title": "President's STEM Scholarship",
+      "sponsor": "Ministry of Education",
+      "type": "government",
+      "status": "open",
+      "eligibility": "STEM-focused students with WASSCE Aggregate 10 or better",
+      "coverage": "Full tuition and research support",
+      "deadline": "2026-11-15",
+      "amount": "GHS 20,000",
+      "description": "Supporting students pursuing Science, Technology, Engineering, and Mathematics",
+      "website": "https://www.moe.gov.gh/stem-scholarship"
+    },
+    {
+      "id": "private_001",
+      "title": "Mastercard Foundation Scholars Program",
+      "sponsor": "Mastercard Foundation",
+      "type": "private",
+      "status": "open",
+      "eligibility": "Academically talented students with leadership potential",
+      "coverage": "Full tuition, mentorship, and leadership development",
+      "deadline": "2027-01-15",
+      "amount": "Full tuition + living expenses",
+      "description": "Empowering the next generation of African leaders",
+      "website": "https://www.mastercardfoundation.org/scholars"
+    },
+    {
+      "id": "private_002",
+      "title": "Kofi Annan Excellence Scholarship",
+      "sponsor": "Kofi Annan Foundation",
+      "type": "private",
+      "status": "open",
+      "eligibility": "Students committed to peace and sustainable development",
+      "coverage": "Full tuition and research funding",
+      "deadline": "2026-10-30",
+      "amount": "GHS 25,000",
+      "description": "Honoring Kofi Annan's legacy of excellence and service",
+      "website": "https://www.kofiannanfoundation.org/scholarship"
+    },
+    {
+      "id": "international_001",
+      "title": "Chevening Scholarships - Ghana",
+      "sponsor": "UK Government",
+      "type": "international",
+      "status": "open",
+      "eligibility": "Graduates with leadership potential and minimum GPA of 3.5",
+      "coverage": "Full tuition, living expenses, and travel to UK",
+      "deadline": "2026-09-01",
+      "amount": "Full tuition + £18,000 living expenses",
+      "description": "UK government's international awards program for future leaders",
+      "website": "https://www.chevening.org"
+    },
+    {
+      "id": "international_002",
+      "title": "DAAD Ghana Scholarship",
+      "sponsor": "DAAD (German Academic Exchange Service)",
+      "type": "international",
+      "status": "open",
+      "eligibility": "Students with strong academic record and research potential",
+      "coverage": "Full tuition, living expenses, and travel to Germany",
+      "deadline": "2026-11-01",
+      "amount": "Full tuition + €1,200/month living allowance",
+      "description": "Supporting academic and research collaboration with Germany",
+      "website": "https://www.daad.ghana.org"
+    }
+  ]
+}

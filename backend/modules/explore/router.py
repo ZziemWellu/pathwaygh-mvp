@@ -68,3 +68,43 @@ async def get_university(university_id: str):
         if u.get("id") == university_id:
             return {"success": True, "university": u}
     raise HTTPException(status_code=404, detail=f"University '{university_id}' not found")
+
+# ============================================================
+# Scholarships Endpoint
+# ============================================================
+
+SCHOLARSHIPS_FILE = PROJECT_ROOT / "data" / "explore" / "scholarships.json"
+
+def load_scholarships():
+    try:
+        if SCHOLARSHIPS_FILE.exists():
+            with open(SCHOLARSHIPS_FILE, 'r') as f:
+                data = json.load(f)
+                return data.get("scholarships", [])
+    except Exception as e:
+        print(f"Error loading scholarships: {e}")
+    return []
+
+@router.get("/scholarships")
+async def get_scholarships(
+    type: Optional[str] = None,
+    status: Optional[str] = None,
+    search: Optional[str] = None
+):
+    """Get all scholarships with filters"""
+    scholarships = load_scholarships()
+    
+    if type:
+        scholarships = [s for s in scholarships if s.get("type") == type]
+    if status:
+        scholarships = [s for s in scholarships if s.get("status") == status]
+    if search:
+        search_lower = search.lower()
+        scholarships = [
+            s for s in scholarships
+            if search_lower in s.get("title", "").lower()
+            or search_lower in s.get("sponsor", "").lower()
+            or search_lower in s.get("description", "").lower()
+        ]
+    
+    return {"success": True, "scholarships": scholarships, "total": len(scholarships)}
