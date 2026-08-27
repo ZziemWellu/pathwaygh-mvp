@@ -40,25 +40,22 @@ const ProfileModule = () => {
   const fetchProfileData = async () => {
     setLoading(true);
     try {
-      const userId = user?.id || 'test';
-      const profileRes = await api.get(`/api/profile/${userId}`).catch(() => ({ data: null }));
+      const profileRes = await api.get('/api/profile/me').catch(() => ({ data: null }));
       const profileData = profileRes.data || {};
       setProfile(profileData);
       setFormData(profileData);
 
-      const statsRes = await api.get('/api/dashboard/statistics', { 
-        params: { user_id: userId } 
-      }).catch(() => ({ data: {} }));
+      const statsRes = await api.get('/api/dashboard/statistics').catch(() => ({ data: {} }));
       setStats(prev => ({ ...prev, ...statsRes.data }));
 
       const [careersRes, uniRes, schRes] = await Promise.all([
-        api.get('/api/profile/saved/careers').catch(() => ({ data: [] })),
-        api.get('/api/profile/saved/universities').catch(() => ({ data: [] })),
-        api.get('/api/profile/saved/scholarships').catch(() => ({ data: [] })),
+        api.get('/api/profile/saved/careers').catch(() => ({ data: { careers: [] } })),
+        api.get('/api/profile/saved/universities').catch(() => ({ data: { universities: [] } })),
+        api.get('/api/profile/saved/scholarships').catch(() => ({ data: { scholarships: [] } })),
       ]);
-      setSavedCareers(careersRes.data || []);
-      setSavedUniversities(uniRes.data || []);
-      setSavedScholarships(schRes.data || []);
+      setSavedCareers(careersRes.data?.careers || []);
+      setSavedUniversities(uniRes.data?.universities || []);
+      setSavedScholarships(schRes.data?.scholarships || []);
     } catch (err) {
       console.error('Profile error:', err);
     } finally {
@@ -100,7 +97,6 @@ const ProfileModule = () => {
 
     const formData = new FormData();
     formData.append('avatar', file);
-    formData.append('user_id', user?.id || 'test');
 
     try {
       const response = await api.post('/api/profile/avatar', formData, {
@@ -134,7 +130,7 @@ const ProfileModule = () => {
   const handleRemoveAvatar = async () => {
     if (!confirm('Remove your profile photo?')) return;
     try {
-      await api.delete('/api/profile/avatar', { params: { user_id: user?.id || 'test' } });
+      await api.delete('/api/profile/avatar');
       setProfile(prev => ({ ...prev, avatar_url: null }));
       const updatedUser = { ...user, avatar_url: null };
       setUser(updatedUser);
@@ -160,8 +156,8 @@ const ProfileModule = () => {
   const handleSave = async () => {
     setSaving(true);
     try {
-      const response = await api.put(`/api/profile/${user?.id || 'test'}`, formData);
-      setProfile(response.data);
+      const response = await api.put('/api/profile/me', formData);
+      setProfile(response.data.profile);
       const updatedUser = { ...user, ...formData };
       setUser(updatedUser);
       setUserState(updatedUser);

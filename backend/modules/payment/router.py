@@ -2,6 +2,8 @@
 Payment Module Router
 """
 
+import uuid
+
 from fastapi import APIRouter
 
 router = APIRouter(tags=["payment"])

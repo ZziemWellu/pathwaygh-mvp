@@ -2,51 +2,65 @@
 Authentication Module Router
 """
 
-from fastapi import APIRouter, HTTPException
-from pydantic import BaseModel
-import uuid
-import datetime
+from fastapi import APIRouter, Depends, HTTPException
+from pydantic import BaseModel, EmailStr
+from sqlalchemy.orm import Session
+
+from core.database import get_db
+from core.security import create_access_token, get_current_user, hash_password, verify_password
+from models.user import User
 
 router = APIRouter(tags=["auth"])
 
+
 class RegisterRequest(BaseModel):
-    email: str
+    email: EmailStr
     full_name: str
     password: str
 
+
 class LoginRequest(BaseModel):
-    email: str
+    email: EmailStr
     password: str
 
-users = {}
+
+def _user_out(user: User) -> dict:
+    return {"id": user.id, "email": user.email, "full_name": user.full_name}
+
 
 @router.get("/")
 async def auth_root():
     return {"module": "auth", "status": "active"}
 
+
 @router.post("/register")
-async def register(request: RegisterRequest):
-    if request.email in users:
+async def register(request: RegisterRequest, db: Session = Depends(get_db)):
+    if db.query(User).filter(User.email == request.email).first():
         raise HTTPException(status_code=400, detail="Email already registered")
-    user_id = f"user_{uuid.uuid4().hex[:12]}"
-    users[request.email] = {
-        "id": user_id,
-        "email": request.email,
-        "full_name": request.full_name,
-        "password": request.password,
-        "created_at": datetime.datetime.now().isoformat()
-    }
-    return {"success": True, "user_id": user_id, "email": request.email}
+
+    user = User(
+        email=request.email,
+        full_name=request.full_name,
+        password_hash=hash_password(request.password),
+    )
+    db.add(user)
+    db.commit()
+    db.refresh(user)
+
+    token = create_access_token(user.id)
+    return {"success": True, "token": token, "user": _user_out(user)}
+
 
 @router.post("/login")
-async def login(request: LoginRequest):
-    if request.email not in users:
+async def login(request: LoginRequest, db: Session = Depends(get_db)):
+    user = db.query(User).filter(User.email == request.email).first()
+    if not user or not verify_password(request.password, user.password_hash):
         raise HTTPException(status_code=401, detail="Invalid credentials")
-    user = users[request.email]
-    if user["password"] != request.password:
-        raise HTTPException(status_code=401, detail="Invalid credentials")
-    return {
-        "success": True,
-        "token": f"token_{uuid.uuid4().hex[:32]}",
-        "user": {"id": user["id"], "email": user["email"], "full_name": user["full_name"]}
-    }
+
+    token = create_access_token(user.id)
+    return {"success": True, "token": token, "user": _user_out(user)}
+
+
+@router.get("/me")
+async def me(current_user: User = Depends(get_current_user)):
+    return {"success": True, "user": _user_out(current_user)}

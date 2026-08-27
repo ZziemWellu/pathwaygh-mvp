@@ -3,7 +3,9 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import './App.css';
 import { getUser, isAuthenticated, login as authLogin, logout as authLogout } from './constants/auth';
 import DashboardModule from './modules/dashboard/DashboardModule';
-import LearnModule from './modules/learn/LearnModule';
+import CourseGrid from './modules/learn/CourseGrid';
+import CourseDetail from './modules/learn/CourseDetail';
+import LessonView from './modules/learn/LessonView';
 // OLD Explore (keep for now)
 import ExploreModule from './modules/explore/ExploreModule';
 // NEW Explore pages
@@ -110,7 +112,9 @@ const App = () => {
           <Routes>
             <Route path="/" element={<DashboardModule setActiveModule={setActiveModule} />} />
             <Route path="/home" element={<DashboardModule setActiveModule={setActiveModule} />} />
-            <Route path="/learn" element={<LearnModule />} />
+            <Route path="/learn" element={<CourseGrid />} />
+            <Route path="/learn/:courseId" element={<CourseDetail />} />
+            <Route path="/learn/:courseId/lessons/:lessonId" element={<LessonView />} />
             
             {/* NEW Explore Routes */}
             <Route path="/explore" element={<ExploreLanding />} />

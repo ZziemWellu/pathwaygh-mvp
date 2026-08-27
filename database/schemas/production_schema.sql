@@ -1,1 +1,0 @@
-# [Full schema from above]

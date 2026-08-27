@@ -51,8 +51,7 @@ const PracticeModule = () => {
 
   const fetchQuizHistory = async () => {
     try {
-      const userId = user?.id || 'test_user';
-      const response = await api.get(`/api/practice/history/${userId}`).catch(() => ({ data: { history: [] } }));
+      const response = await api.get('/api/practice/history').catch(() => ({ data: { history: [] } }));
       setQuizHistory(response.data?.history || []);
     } catch (err) {
       console.error('Quiz history error:', err);
@@ -61,8 +60,7 @@ const PracticeModule = () => {
 
   const fetchStatistics = async () => {
     try {
-      const userId = user?.id || 'test_user';
-      const response = await api.get(`/api/practice/statistics/${userId}`).catch(() => ({ data: {} }));
+      const response = await api.get('/api/practice/statistics').catch(() => ({ data: {} }));
       setStatistics(response.data);
     } catch (err) {
       console.error('Statistics error:', err);

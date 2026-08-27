@@ -1,185 +1,172 @@
 """
-Learn Module Router - Dynamically loads courses from data/courses/
-FIXED: Correct file paths
+Learn Module Router - Courses and video lessons, backed by Postgres.
 """
 
-from fastapi import APIRouter, HTTPException
-from typing import Optional, List, Dict
-from pathlib import Path
-import json
-import logging
+from datetime import datetime, timezone
+from typing import Optional
+
+from fastapi import APIRouter, Depends, HTTPException
+from pydantic import BaseModel
+from sqlalchemy.orm import Session
+
+from core.database import get_db
+from core.security import get_current_user, get_current_user_optional
+from models.course import Course, Lesson
+from models.enrollment import Enrollment
+from models.progress import LessonProgress
+from models.user import User
 
 router = APIRouter()
-logger = logging.getLogger(__name__)
 
-# Get the project root directory
-PROJECT_ROOT = Path(__file__).parent.parent.parent
 
-def load_all_courses() -> List[Dict]:
-    """Load all courses from data/courses/ directory dynamically"""
-    courses = []
-    
-    # FIX: Use absolute path from project root
-    base_path = PROJECT_ROOT / "data" / "courses"
-    
-    if not base_path.exists():
-        logger.warning(f"Course directory not found: {base_path}")
-        return courses
-    
-    # Walk through all subdirectories
-    for level_dir in base_path.iterdir():
-        if level_dir.is_dir():
-            for file in level_dir.glob("*.json"):
-                try:
-                    with open(file, 'r') as f:
-                        course = json.load(f)
-                        # Ensure level is set
-                        if not course.get("level"):
-                            course["level"] = level_dir.name
-                        # Calculate lesson count
-                        lesson_count = 0
-                        if "modules" in course:
-                            for module in course.get("modules", []):
-                                lesson_count += len(module.get("lessons", []))
-                        elif "lessons" in course:
-                            lesson_count = len(course.get("lessons", []))
-                        course["lesson_count"] = lesson_count
-                        courses.append(course)
-                        logger.info(f"✅ Loaded course: {course.get('title', file.name)}")
-                except Exception as e:
-                    logger.error(f"Error loading course from {file}: {e}")
-    
-    logger.info(f"📚 Total courses loaded: {len(courses)}")
-    return courses
+def _lesson_out(lesson: Lesson, watched_lesson_ids: set) -> dict:
+    return {
+        "id": lesson.slug,
+        "title": lesson.title,
+        "description": lesson.description,
+        "lesson_type": lesson.lesson_type,
+        "order_index": lesson.order_index,
+        "is_free_preview": lesson.is_free_preview,
+        "duration_minutes": lesson.duration_minutes,
+        "video_url": lesson.video_url,
+        "video_provider": lesson.video_provider,
+        "watched": lesson.id in watched_lesson_ids,
+    }
+
+
+def _course_out(course: Course, enrolled_ids: set) -> dict:
+    return {
+        "id": course.slug,
+        "title": course.title,
+        "description": course.description,
+        "level": course.level,
+        "lesson_count": len(course.lessons),
+        "enrolled": course.id in enrolled_ids,
+    }
+
+
+def _watched_lesson_ids(db: Session, user: Optional[User]) -> set:
+    if not user:
+        return set()
+    rows = db.query(LessonProgress.lesson_id).filter(LessonProgress.user_id == user.id, LessonProgress.watched.is_(True)).all()
+    return {r[0] for r in rows}
+
+
+def _enrolled_course_ids(db: Session, user: Optional[User]) -> set:
+    if not user:
+        return set()
+    rows = db.query(Enrollment.course_id).filter(Enrollment.user_id == user.id).all()
+    return {r[0] for r in rows}
 
 
 @router.get("/")
-async def learn_root():
-    """Learn module root endpoint"""
-    courses = load_all_courses()
+async def learn_root(db: Session = Depends(get_db)):
+    courses = db.query(Course).all()
     return {
         "message": "Learn module is active",
         "status": "active",
         "courses_count": len(courses),
-        "total_lessons": sum(c.get("lesson_count", 0) for c in courses),
-        "available_levels": list(set(c.get("level", "Unknown") for c in courses))
+        "total_lessons": sum(len(c.lessons) for c in courses),
+        "available_levels": sorted({c.level for c in courses}),
     }
 
 
 @router.get("/courses")
 async def get_courses(
     level: Optional[str] = None,
-    subject: Optional[str] = None,
-    search: Optional[str] = None
+    search: Optional[str] = None,
+    db: Session = Depends(get_db),
+    current_user: Optional[User] = Depends(get_current_user_optional),
 ):
-    """Get all courses with filters"""
-    courses = load_all_courses()
-
+    query = db.query(Course)
     if level:
-        courses = [c for c in courses if c.get("level") == level]
-    if subject:
-        courses = [c for c in courses if c.get("subject") == subject]
+        query = query.filter(Course.level == level)
     if search:
-        search_lower = search.lower()
-        courses = [
-            c for c in courses
-            if search_lower in c.get("title", "").lower()
-            or search_lower in c.get("description", "").lower()
-        ]
+        like = f"%{search.lower()}%"
+        query = query.filter(Course.title.ilike(like))
 
-    return courses
+    enrolled_ids = _enrolled_course_ids(db, current_user)
+    return [_course_out(c, enrolled_ids) for c in query.all()]
 
 
-@router.get("/courses/{course_id}")
-async def get_course(course_id: str):
-    """Get course by ID"""
-    courses = load_all_courses()
-    for course in courses:
-        if course.get("id") == course_id or course.get("slug") == course_id:
-            return course
-    raise HTTPException(status_code=404, detail="Course not found")
+@router.get("/enrolled")
+async def get_enrolled_courses(db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
+    enrolled_ids = _enrolled_course_ids(db, current_user)
+    courses = db.query(Course).filter(Course.id.in_(enrolled_ids)).all() if enrolled_ids else []
+    return [_course_out(c, enrolled_ids) for c in courses]
 
 
-@router.get("/courses/{course_id}/lessons")
-async def get_course_lessons(course_id: str):
-    """Get all lessons for a course"""
-    course = await get_course(course_id)
+@router.get("/courses/{course_slug}")
+async def get_course(
+    course_slug: str,
+    db: Session = Depends(get_db),
+    current_user: Optional[User] = Depends(get_current_user_optional),
+):
+    course = db.query(Course).filter(Course.slug == course_slug).first()
+    if not course:
+        raise HTTPException(status_code=404, detail="Course not found")
 
-    lessons = []
-    if "modules" in course:
-        for module in course["modules"]:
-            lessons.extend(module.get("lessons", []))
-    elif "lessons" in course:
-        lessons = course["lessons"]
-
-    return sorted(lessons, key=lambda x: x.get("order_index", 0))
-
-
-@router.get("/lessons/{lesson_id}")
-async def get_lesson(lesson_id: str):
-    """Get lesson by ID"""
-    courses = load_all_courses()
-    for course in courses:
-        if "modules" in course:
-            for module in course["modules"]:
-                for lesson in module.get("lessons", []):
-                    if lesson.get("id") == lesson_id:
-                        return lesson
-        if "lessons" in course:
-            for lesson in course.get("lessons", []):
-                if lesson.get("id") == lesson_id:
-                    return lesson
-
-    raise HTTPException(status_code=404, detail="Lesson not found")
-
-
-@router.post("/enroll")
-async def enroll_in_course(request: Dict):
-    """Enroll a user in a course"""
+    watched_ids = _watched_lesson_ids(db, current_user)
+    enrolled_ids = _enrolled_course_ids(db, current_user)
     return {
-        "status": "success",
-        "message": "Enrollment feature coming soon",
-        "data": request
+        **_course_out(course, enrolled_ids),
+        "lessons": [_lesson_out(lesson, watched_ids) for lesson in course.lessons],
     }
 
 
-@router.post("/progress/update")
-async def update_progress(request: Dict):
-    """Update lesson progress"""
-    return {
-        "status": "success",
-        "message": "Progress tracking coming soon",
-        "data": request
-    }
+@router.post("/courses/{course_slug}/enroll")
+async def enroll_in_course(course_slug: str, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
+    course = db.query(Course).filter(Course.slug == course_slug).first()
+    if not course:
+        raise HTTPException(status_code=404, detail="Course not found")
+
+    existing = db.query(Enrollment).filter(Enrollment.user_id == current_user.id, Enrollment.course_id == course.id).first()
+    if not existing:
+        db.add(Enrollment(user_id=current_user.id, course_id=course.id))
+        db.commit()
+
+    return {"success": True, "message": "Enrolled successfully"}
 
 
-@router.get("/progress/{user_id}")
-async def get_user_progress(user_id: str):
-    """Get user progress"""
-    return {
-        "user_id": user_id,
-        "progress": [],
-        "message": "Progress tracking coming soon"
-    }
+@router.get("/lessons/{lesson_slug}")
+async def get_lesson(
+    lesson_slug: str,
+    db: Session = Depends(get_db),
+    current_user: Optional[User] = Depends(get_current_user_optional),
+):
+    lesson = db.query(Lesson).filter(Lesson.slug == lesson_slug).first()
+    if not lesson:
+        raise HTTPException(status_code=404, detail="Lesson not found")
+    watched_ids = _watched_lesson_ids(db, current_user)
+    return _lesson_out(lesson, watched_ids)
 
 
-@router.get("/recent/{user_id}")
-async def get_recent_activity(user_id: str):
-    """Get recent activity"""
-    return {
-        "user_id": user_id,
-        "activities": [],
-        "message": "Recent activity coming soon"
-    }
+class ProgressUpdate(BaseModel):
+    watched: bool = True
 
 
-@router.post("/recommend")
-async def get_recommendations(request: Dict):
-    """AI-powered course recommendations"""
-    return {
-        "user_id": request.get("user_id"),
-        "recommendations": [],
-        "message": "AI recommendations coming soon"
-    }
+@router.post("/lessons/{lesson_slug}/progress")
+async def update_lesson_progress(
+    lesson_slug: str,
+    payload: ProgressUpdate,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    lesson = db.query(Lesson).filter(Lesson.slug == lesson_slug).first()
+    if not lesson:
+        raise HTTPException(status_code=404, detail="Lesson not found")
 
-print("✅ Learn module loaded with root endpoint")
+    progress = (
+        db.query(LessonProgress)
+        .filter(LessonProgress.user_id == current_user.id, LessonProgress.lesson_id == lesson.id)
+        .first()
+    )
+    if not progress:
+        progress = LessonProgress(user_id=current_user.id, lesson_id=lesson.id)
+        db.add(progress)
+
+    progress.watched = payload.watched
+    progress.watched_at = datetime.now(timezone.utc) if payload.watched else None
+    db.commit()
+
+    return {"success": True, "watched": progress.watched}

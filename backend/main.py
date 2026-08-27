@@ -6,8 +6,18 @@ Version: 3.0.0 - Fixed Import Paths
 import sys
 import os
 
+# Windows' default console codepage (cp1252) can't encode the emoji used in
+# startup logging below; force UTF-8 so this runs the same on Windows/Linux.
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8")
+    sys.stderr.reconfigure(encoding="utf-8")
+
 # Add the current directory to Python path so "modules" can be found
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+
+from dotenv import load_dotenv
+
+load_dotenv()
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -27,9 +37,12 @@ app = FastAPI(
 )
 
 # CORS Configuration
+FRONTEND_URL = os.getenv("FRONTEND_URL", "https://pathwaygh-frontend.onrender.com")
+ALLOWED_ORIGINS = [FRONTEND_URL, "http://localhost:5173"]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=ALLOWED_ORIGINS,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
