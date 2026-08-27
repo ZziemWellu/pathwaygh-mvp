@@ -186,6 +186,7 @@ async def submit_quiz(
         QuizAttempt(
             user_id=current_user.id,
             quiz_id=request.quiz_id,
+            subject_id=quiz.get("subject_id"),
             score=score,
             total_questions=total,
             answers={str(k): v for k, v in request.answers.items()},
@@ -240,6 +241,13 @@ async def get_quiz_statistics(current_user: User = Depends(get_current_user), db
 
     total_questions = sum(a.total_questions for a in attempts)
     correct_answers = sum(round(a.score / 100 * a.total_questions) for a in attempts)
+
+    by_subject: Dict[str, list] = {}
+    for a in attempts:
+        if a.subject_id:
+            by_subject.setdefault(a.subject_id, []).append(a.score)
+    subject_averages = {subject: round(sum(scores) / len(scores)) for subject, scores in by_subject.items()}
+
     return {
         "success": True,
         "total_quizzes": len(attempts),
@@ -247,4 +255,5 @@ async def get_quiz_statistics(current_user: User = Depends(get_current_user), db
         "best_score": max(a.score for a in attempts),
         "total_questions": total_questions,
         "accuracy": round((correct_answers / total_questions) * 100) if total_questions else 0,
+        "subject_averages": subject_averages,
     }

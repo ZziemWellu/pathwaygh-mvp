@@ -12,6 +12,7 @@ class QuizAttempt(Base):
     id = Column(Integer, primary_key=True)
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
     quiz_id = Column(String(100), nullable=False)
+    subject_id = Column(String(100), nullable=True)
     score = Column(Integer, nullable=False)
     total_questions = Column(Integer, nullable=False)
     answers = Column(JSON, nullable=True)

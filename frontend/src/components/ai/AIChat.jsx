@@ -1,5 +1,17 @@
 import React, { useState, useRef, useEffect } from 'react';
+import ReactMarkdown from 'react-markdown';
 import api from '../../services/api';
+
+const markdownComponents = {
+  p: ({ children }) => <p style={{ margin: '0 0 8px' }}>{children}</p>,
+  ul: ({ children }) => <ul style={{ margin: '0 0 8px', paddingLeft: '18px' }}>{children}</ul>,
+  ol: ({ children }) => <ol style={{ margin: '0 0 8px', paddingLeft: '18px' }}>{children}</ol>,
+  h1: ({ children }) => <div style={{ fontWeight: 'bold', fontSize: '15px', margin: '4px 0' }}>{children}</div>,
+  h2: ({ children }) => <div style={{ fontWeight: 'bold', fontSize: '14px', margin: '4px 0' }}>{children}</div>,
+  h3: ({ children }) => <div style={{ fontWeight: 'bold', fontSize: '14px', margin: '4px 0' }}>{children}</div>,
+  hr: () => <hr style={{ border: 'none', borderTop: '1px solid #e0e0e0', margin: '8px 0' }} />,
+  code: ({ children }) => <code style={{ background: '#f0f0f0', padding: '1px 4px', borderRadius: '4px', fontSize: '13px' }}>{children}</code>,
+};
 
 const AIChat = ({ user }) => {
   const [messages, setMessages] = useState([
@@ -150,7 +162,11 @@ const AIChat = ({ user }) => {
                 boxShadow: '0 1px 4px rgba(0,0,0,0.06)',
               }}
             >
-              {msg.content}
+              {msg.role === 'assistant' ? (
+                <ReactMarkdown components={markdownComponents}>{msg.content}</ReactMarkdown>
+              ) : (
+                msg.content
+              )}
             </div>
           </div>
         ))}
