@@ -1,8 +1,8 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Home, BookOpen, Search, PencilLine, ListChecks, User, Users } from 'lucide-react';
+import { Home, BookOpen, Search, PencilLine, ListChecks, User, Users, Shield } from 'lucide-react';
 
-const EcosystemNavigation = ({ activeModule, setActiveModule }) => {
+const EcosystemNavigation = ({ activeModule, setActiveModule, user }) => {
   const navigate = useNavigate();
 
   const modules = [
@@ -13,6 +13,7 @@ const EcosystemNavigation = ({ activeModule, setActiveModule }) => {
     { id: 'plan', icon: ListChecks, label: 'Plan', path: '/plan' },
     { id: 'profile', icon: User, label: 'Profile', path: '/profile' },
     { id: 'community', icon: Users, label: 'Community', path: '/community' },
+    ...(user?.is_admin ? [{ id: 'admin', icon: Shield, label: 'Admin', path: '/admin' }] : []),
   ];
 
   const handleNavigate = (module) => {

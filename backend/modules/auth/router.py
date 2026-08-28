@@ -25,7 +25,7 @@ class LoginRequest(BaseModel):
 
 
 def _user_out(user: User) -> dict:
-    return {"id": user.id, "email": user.email, "full_name": user.full_name}
+    return {"id": user.id, "email": user.email, "full_name": user.full_name, "is_admin": user.is_admin}
 
 
 @router.get("/")

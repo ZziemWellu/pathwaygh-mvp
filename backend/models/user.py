@@ -1,6 +1,6 @@
 from datetime import datetime, timezone
 
-from sqlalchemy import JSON, Column, DateTime, Integer, String, Text
+from sqlalchemy import JSON, Boolean, Column, DateTime, Integer, String, Text
 from sqlalchemy.orm import relationship
 
 from core.database import Base
@@ -14,6 +14,7 @@ class User(Base):
     full_name = Column(String(255), nullable=False)
     password_hash = Column(String(255), nullable=False)
     avatar_filename = Column(String(255), nullable=True)
+    is_admin = Column(Boolean, nullable=False, default=False)
     created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
 
     # Profile fields

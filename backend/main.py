@@ -79,7 +79,8 @@ async def root():
             "tutor": "/api/tutor",
             "paths": "/api/paths",
             "recommendations": "/api/recommendations",
-            "knowledge_graph": "/api/knowledge_graph"
+            "knowledge_graph": "/api/knowledge_graph",
+            "admin": "/api/admin"
         }
     }
 
@@ -120,6 +121,7 @@ modules = [
     ("paths", "modules.paths.router", "/api/paths"),
     ("recommendations", "modules.recommendations.router", "/api/recommendations"),
     ("knowledge_graph", "modules.knowledge_graph.router", "/api/knowledge_graph"),
+    ("admin", "modules.admin.router", "/api/admin"),
 ]
 
 loaded = []

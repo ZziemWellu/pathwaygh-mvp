@@ -14,6 +14,9 @@ import PracticeModule from './modules/practice/PracticeModule';
 import PlanModule from './modules/plan/PlanModule';
 import ProfileModule from './modules/profile/ProfileModule';
 import CommunityModule from './modules/community/CommunityModule';
+import AdminCourseList from './modules/admin/AdminCourseList';
+import AdminCourseEditor from './modules/admin/AdminCourseEditor';
+import AdminLessonEditor from './modules/admin/AdminLessonEditor';
 import EcosystemNavigation from './components/common/EcosystemNavigation';
 import GhanaFlag from './components/common/GhanaFlag';
 import { User, LogOut } from 'lucide-react';
@@ -99,6 +102,11 @@ const App = () => {
             <span style={{ color: '#555', fontSize: '13px', display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
               <User size={14} /> {user?.full_name || user?.name || 'Student'}
             </span>
+            {user?.is_admin && (
+              <span style={{ fontSize: '11px', fontWeight: 'bold', color: '#1a5f2b', background: '#e8f5e9', border: '1px solid #a5d6a7', borderRadius: '999px', padding: '3px 10px' }}>
+                Admin
+              </span>
+            )}
             <button onClick={handleLogout} style={{
               display: 'inline-flex',
               alignItems: 'center',
@@ -137,6 +145,13 @@ const App = () => {
             <Route path="/plan" element={<PlanModule />} />
             <Route path="/profile" element={<ProfileModule />} />
             <Route path="/community" element={<CommunityModule />} />
+
+            {/* Admin (content authoring) — client-side check is UX only, real
+                enforcement is server-side via require_admin on every /api/admin/* route */}
+            <Route path="/admin" element={user?.is_admin ? <AdminCourseList /> : <Navigate to="/" />} />
+            <Route path="/admin/courses/:courseId" element={user?.is_admin ? <AdminCourseEditor /> : <Navigate to="/" />} />
+            <Route path="/admin/lessons/:lessonId" element={user?.is_admin ? <AdminLessonEditor /> : <Navigate to="/" />} />
+
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>
         </main>
