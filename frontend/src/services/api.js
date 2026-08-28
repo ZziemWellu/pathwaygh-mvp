@@ -48,9 +48,13 @@ api.interceptors.response.use(
           }
         }
       } catch {
+        // No dedicated /login route exists - the app shows the login form
+        // at "/" whenever isAuthenticated() is false, so just clear the
+        // session and reload the current page rather than navigating to a
+        // path that was never real (this used to 404 on Render).
         clearSession();
         if (typeof window !== 'undefined') {
-          window.location.href = '/login';
+          window.location.reload();
         }
       }
     }

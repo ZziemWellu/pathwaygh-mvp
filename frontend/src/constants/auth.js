@@ -49,9 +49,6 @@ export const login = (userData, token, refreshToken) => {
 
 export const logout = () => {
   clearSession();
-  if (typeof window !== 'undefined') {
-    window.location.href = '/login';
-  }
   return true;
 };
 
