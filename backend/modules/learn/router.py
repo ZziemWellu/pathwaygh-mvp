@@ -3,7 +3,7 @@ Learn Module Router - Courses and video lessons, backed by Postgres.
 """
 
 from datetime import datetime, timezone
-from typing import Optional
+from typing import Dict, Optional
 
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel
@@ -11,8 +11,9 @@ from sqlalchemy.orm import Session
 
 from core.database import get_db
 from core.security import get_current_user, get_current_user_optional
-from models.course import Course, Lesson
+from models.course import Course, Exercise, Lesson
 from models.enrollment import Enrollment
+from models.exercise_result import ExerciseResult
 from models.progress import LessonProgress
 from models.user import User
 
@@ -30,8 +31,15 @@ def _lesson_out(lesson: Lesson, watched_lesson_ids: set) -> dict:
         "duration_minutes": lesson.duration_minutes,
         "video_url": lesson.video_url,
         "video_provider": lesson.video_provider,
+        "content": lesson.content,
+        "has_exercises": len(lesson.exercises) > 0,
         "watched": lesson.id in watched_lesson_ids,
     }
+
+
+def _exercise_out(exercise: Exercise) -> dict:
+    # correct_index is deliberately omitted so the client can't read answers
+    return {"id": exercise.id, "question": exercise.question, "options": exercise.options}
 
 
 def _course_out(course: Course, enrolled_ids: set) -> dict:
@@ -138,7 +146,71 @@ async def get_lesson(
     if not lesson:
         raise HTTPException(status_code=404, detail="Lesson not found")
     watched_ids = _watched_lesson_ids(db, current_user)
-    return _lesson_out(lesson, watched_ids)
+    out = _lesson_out(lesson, watched_ids)
+
+    if lesson.exercises:
+        out["exercises"] = [_exercise_out(e) for e in lesson.exercises]
+        best_result = None
+        if current_user:
+            best_result = (
+                db.query(ExerciseResult)
+                .filter(ExerciseResult.user_id == current_user.id, ExerciseResult.lesson_id == lesson.id)
+                .order_by(ExerciseResult.score.desc())
+                .first()
+            )
+        out["best_score"] = best_result.score if best_result else None
+
+    return out
+
+
+class ExerciseSubmitRequest(BaseModel):
+    answers: Dict[int, int]  # exercise_id -> selected option index
+
+
+@router.post("/lessons/{lesson_slug}/exercises/submit")
+async def submit_exercises(
+    lesson_slug: str,
+    request: ExerciseSubmitRequest,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    lesson = db.query(Lesson).filter(Lesson.slug == lesson_slug).first()
+    if not lesson or not lesson.exercises:
+        raise HTTPException(status_code=404, detail="Lesson or exercises not found")
+
+    exercises_by_id = {e.id: e for e in lesson.exercises}
+    correct_count = 0
+    results = []
+    for exercise in lesson.exercises:
+        selected = request.answers.get(exercise.id)
+        is_correct = selected == exercise.correct_index
+        if is_correct:
+            correct_count += 1
+        results.append(
+            {
+                "exercise_id": exercise.id,
+                "selected": selected,
+                "correct_index": exercise.correct_index,
+                "is_correct": is_correct,
+                "explanation": exercise.explanation,
+            }
+        )
+
+    total = len(lesson.exercises)
+    score = round((correct_count / total) * 100) if total else 0
+
+    db.add(
+        ExerciseResult(
+            user_id=current_user.id,
+            lesson_id=lesson.id,
+            score=score,
+            correct_count=correct_count,
+            total_questions=total,
+        )
+    )
+    db.commit()
+
+    return {"success": True, "score": score, "correct_count": correct_count, "total_questions": total, "results": results}
 
 
 class ProgressUpdate(BaseModel):

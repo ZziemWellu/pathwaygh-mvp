@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import ReactPlayer from 'react-player';
+import ReactMarkdown from 'react-markdown';
 import api from '../../services/api';
+import ExerciseSection from './ExerciseSection';
 
 const LessonView = () => {
   const { courseId, lessonId } = useParams();
@@ -75,6 +77,10 @@ const LessonView = () => {
             🎬 Video coming soon for this lesson.
           </div>
         )
+      ) : lesson.lesson_type === 'text' ? (
+        <div style={{ padding: '24px', background: 'white', border: '1px solid #e0e0e0', borderRadius: '12px', lineHeight: 1.7 }}>
+          <ReactMarkdown>{lesson.content || 'Content coming soon for this lesson.'}</ReactMarkdown>
+        </div>
       ) : (
         <div style={{ padding: '40px 20px', textAlign: 'center', background: '#fff3e0', borderRadius: '12px' }}>
           <p style={{ margin: 0, color: '#e65100' }}>📝 This is a practice/quiz lesson.</p>
@@ -88,17 +94,21 @@ const LessonView = () => {
 
       <div style={{ marginTop: '20px', display: 'flex', alignItems: 'center', gap: '12px' }}>
         {lesson.watched ? (
-          <span style={{ color: '#1a5f2b', fontWeight: 'bold' }}>✅ Watched</span>
+          <span style={{ color: '#1a5f2b', fontWeight: 'bold' }}>✅ {lesson.lesson_type === 'text' ? 'Completed' : 'Watched'}</span>
         ) : (
           <button
             onClick={markWatched}
             disabled={marking}
             style={{ padding: '10px 20px', background: marking ? '#ccc' : '#1a5f2b', color: 'white', border: 'none', borderRadius: '8px', cursor: marking ? 'not-allowed' : 'pointer' }}
           >
-            {marking ? 'Marking...' : 'Mark as watched'}
+            {marking ? 'Marking...' : lesson.lesson_type === 'text' ? 'Mark as read' : 'Mark as watched'}
           </button>
         )}
       </div>
+
+      {lesson.has_exercises && (
+        <ExerciseSection lessonId={lessonId} exercises={lesson.exercises} bestScore={lesson.best_score} />
+      )}
     </div>
   );
 };

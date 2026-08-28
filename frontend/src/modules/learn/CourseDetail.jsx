@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams, Link } from 'react-router-dom';
 import api from '../../services/api';
 
-const LESSON_ICON = { video: '🎬', quiz: '📝' };
+const LESSON_ICON = { video: '🎬', quiz: '📝', text: '📖' };
 
 const CourseDetail = () => {
   const { courseId } = useParams();
