@@ -15,6 +15,8 @@ import PlanModule from './modules/plan/PlanModule';
 import ProfileModule from './modules/profile/ProfileModule';
 import CommunityModule from './modules/community/CommunityModule';
 import EcosystemNavigation from './components/common/EcosystemNavigation';
+import GhanaFlag from './components/common/GhanaFlag';
+import { User, LogOut } from 'lucide-react';
 import Login from './components/auth/Login';
 import Register from './components/auth/Register';
 import AIChat from './components/ai/AIChat';
@@ -55,7 +57,7 @@ const App = () => {
     return (
       <div style={{ maxWidth: '400px', margin: '40px auto', padding: '20px' }}>
         <header style={{ textAlign: 'center', marginBottom: '30px' }}>
-          <h1 style={{ color: '#1a5f2b' }}>🇬🇭 Pathway AI</h1>
+          <h1 style={{ color: '#1a5f2b', display: 'flex', alignItems: 'center', gap: '8px', justifyContent: 'center' }}><GhanaFlag size={24} /> Pathway AI</h1>
           <p style={{ color: '#888' }}>AI-Powered Education & Career Ecosystem • Ghana</p>
         </header>
         {showLogin ? <Login onSuccess={handleLogin} /> : <Register onSuccess={() => setShowLogin(true)} />}
@@ -90,19 +92,24 @@ const App = () => {
           gap: '8px' 
         }}>
           <div>
-            <h1 style={{ color: '#1a5f2b', fontSize: '22px', margin: 0 }}>🇬🇭 Pathway AI</h1>
+            <h1 style={{ color: '#1a5f2b', fontSize: '22px', margin: 0, display: 'flex', alignItems: 'center', gap: '8px' }}><GhanaFlag size={22} /> Pathway AI</h1>
             <span style={{ fontSize: '11px', color: '#888' }}>AI-Powered Education & Career Ecosystem • Ghana</span>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-            <span style={{ color: '#555', fontSize: '13px' }}>👤 {user?.full_name || user?.name || 'Student'}</span>
-            <button onClick={handleLogout} style={{ 
-              padding: '5px 14px', 
-              background: '#f0f0f0', 
-              border: 'none', 
-              borderRadius: '6px', 
-              cursor: 'pointer', 
-              fontSize: '13px' 
-            }}>Logout 👋</button>
+            <span style={{ color: '#555', fontSize: '13px', display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+              <User size={14} /> {user?.full_name || user?.name || 'Student'}
+            </span>
+            <button onClick={handleLogout} style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '6px',
+              padding: '5px 14px',
+              background: '#f0f0f0',
+              border: 'none',
+              borderRadius: '6px',
+              cursor: 'pointer',
+              fontSize: '13px'
+            }}><LogOut size={14} /> Logout</button>
           </div>
         </header>
 
