@@ -1,12 +1,24 @@
-# The practice router falls back to a small built-in question bank when
-# data/practice/questions.json doesn't exist (see modules/practice/router.py).
-# Correct answers for that fallback bank, used to build deterministic test
-# submissions regardless of the random sampling order.
-KNOWN_ANSWERS = {
-    "math_001": "4",  # What is 2 + 2?
-    "math_002": "9",  # What is 3 x 3?
-    "math_003": "4",  # What is the square root of 16?
-}
+import json
+from pathlib import Path
+
+QUESTIONS_FILE = Path(__file__).parent.parent / "data" / "practice" / "questions.json"
+
+
+def _known_answers():
+    """Build a real id -> correct-answer map from the actual question bank
+    the server reads, instead of guessing which questions random.sample()
+    will pick."""
+    with open(QUESTIONS_FILE, "r", encoding="utf-8") as f:
+        data = json.load(f)
+    answers = {}
+    for subject in data["subjects"]:
+        for topic in subject["topics"]:
+            for q in topic["questions"]:
+                answers[q["id"]] = q["correct"]
+    return answers
+
+
+KNOWN_ANSWERS = _known_answers()
 
 
 def test_quiz_start_requires_auth(client):
