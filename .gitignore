@@ -9,6 +9,9 @@ venv/
 # Logs
 *.log
 
+# Local SQLite test/dev artifacts
+*.db
+
 # Node
 node_modules/
 dist/
