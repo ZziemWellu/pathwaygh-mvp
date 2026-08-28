@@ -1,13 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { RadialBar, RadialBarChart, PolarAngleAxis } from 'recharts';
+import {
+  BookOpen, Target, Landmark, Coins, Users, ArrowRight, GraduationCap,
+  ListChecks, HelpCircle, Sparkles, CheckCircle2, PencilLine, Compass,
+} from 'lucide-react';
 import api from '../../services/api';
 import { getUser } from '../../constants/auth';
+import './DashboardModule.css';
 
-const BRAND = '#1a5f2b';
-const BRAND_LIGHT = '#e8f5e9';
-
-const card = { background: 'white', border: '1px solid #e0e0e0', borderRadius: '14px', padding: '20px' };
+const navItems = [
+  { icon: BookOpen, label: 'Learn', path: '/learn', description: 'Browse courses', bg: '#e8f5e9', fg: '#1a5f2b' },
+  { icon: Target, label: 'Career Match', path: '/explore/career-match', description: 'Find your path', bg: '#e3f2fd', fg: '#1565c0' },
+  { icon: Landmark, label: 'Universities', path: '/explore/universities', description: 'Explore schools', bg: '#fce4ec', fg: '#ad1457' },
+  { icon: Coins, label: 'Scholarships', path: '/explore/scholarships', description: 'Find funding', bg: '#fef6e0', fg: '#a06c00' },
+  { icon: Users, label: 'Community', path: '/community', description: 'Connect', bg: '#ede7f6', fg: '#5e35b1' },
+];
 
 const DashboardModule = ({ setActiveModule }) => {
   const navigate = useNavigate();
@@ -41,14 +49,6 @@ const DashboardModule = ({ setActiveModule }) => {
     return 'Good Evening';
   };
 
-  const navItems = [
-    { icon: '📚', label: 'Learn', path: '/learn', description: 'Browse courses' },
-    { icon: '🎯', label: 'Career Match', path: '/explore/career-match', description: 'Find your perfect career' },
-    { icon: '🏛️', label: 'Universities', path: '/explore/universities', description: 'Explore universities' },
-    { icon: '💰', label: 'Scholarships', path: '/explore/scholarships', description: 'Find funding opportunities' },
-    { icon: '🤝', label: 'Community', path: '/community', description: 'Connect with others' },
-  ];
-
   const navigateTo = (path) => {
     if (setActiveModule) {
       if (path.startsWith('/explore')) setActiveModule('explore');
@@ -61,21 +61,20 @@ const DashboardModule = ({ setActiveModule }) => {
 
   if (loading) {
     return (
-      <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '20px' }}>
-        <div style={{ ...card, height: '100px', marginBottom: '24px', background: '#f0f0f0', border: 'none' }} />
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', gap: '12px', marginBottom: '24px' }}>
-          {[1, 2, 3, 4].map((i) => <div key={i} style={{ ...card, height: '80px', background: '#f5f5f5', border: 'none' }} />)}
-        </div>
+      <div className="dash">
+        <div className="dash-skeleton" style={{ height: '132px', marginBottom: '28px' }} />
+        <div className="dash-skeleton" style={{ height: '150px', marginBottom: '20px' }} />
+        <div className="dash-skeleton" style={{ height: '90px', marginBottom: '20px' }} />
       </div>
     );
   }
 
   if (error) {
     return (
-      <div style={{ textAlign: 'center', padding: '40px' }}>
-        <h2>📊 Dashboard</h2>
-        <p style={{ color: 'red' }}>⚠️ {error}</p>
-        <button onClick={fetchSummary} style={{ padding: '8px 16px', background: BRAND, color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer' }}>Retry</button>
+      <div className="dash" style={{ textAlign: 'center' }}>
+        <h2>Dashboard</h2>
+        <p style={{ color: '#c62828' }}>{error}</p>
+        <button className="dash-btn" onClick={fetchSummary}>Retry</button>
       </div>
     );
   }
@@ -85,92 +84,85 @@ const DashboardModule = ({ setActiveModule }) => {
   const hasCourses = overview.courses_enrolled > 0;
 
   return (
-    <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '20px' }}>
-      {/* Welcome */}
-      <div style={{
-        background: `linear-gradient(135deg, ${BRAND}, #2d8a4e)`,
-        color: 'white', padding: '24px 30px', borderRadius: '16px', marginBottom: '24px',
-      }}>
-        <h1 style={{ margin: 0 }}>👋 {getGreeting()}, {user?.full_name || 'Student'}!</h1>
-        <p style={{ opacity: 0.9, margin: '8px 0 0' }}>Your education and career journey continues.</p>
+    <div className="dash">
+      {/* Hero */}
+      <div className="dash-hero">
+        <p className="dash-hero-eyebrow">Your learning journey</p>
+        <h1>{getGreeting()}, {user?.full_name?.split(' ')[0] || 'Student'}</h1>
+        <p>Pick up where you left off, or explore something new today.</p>
+        <div className="dash-hero-pattern" />
       </div>
 
       {!hasCourses ? (
-        <div style={{ ...card, textAlign: 'center', padding: '48px 24px', marginBottom: '24px' }}>
-          <div style={{ fontSize: '40px', marginBottom: '8px' }}>📚</div>
+        <div className="dash-card dash-empty" style={{ marginBottom: '24px' }}>
+          <div className="dash-empty-icon"><GraduationCap size={34} /></div>
           <h2 style={{ margin: '0 0 8px' }}>You haven't enrolled in a course yet</h2>
-          <p style={{ color: '#666', margin: '0 0 20px' }}>Browse the course catalog to start learning.</p>
-          <button
-            onClick={() => navigateTo('/learn')}
-            style={{ padding: '12px 28px', background: BRAND, color: 'white', border: 'none', borderRadius: '10px', fontWeight: 'bold', cursor: 'pointer' }}
-          >
-            Browse Courses →
+          <p style={{ color: 'var(--gray-600)', margin: '0 0 22px' }}>Browse the course catalog to start learning.</p>
+          <button className="dash-btn" onClick={() => navigateTo('/learn')} style={{ margin: '0 auto' }}>
+            Browse Courses <ArrowRight size={16} />
           </button>
         </div>
       ) : (
         <>
-          {/* Overview: completion ring + stats */}
-          <div style={{ display: 'grid', gridTemplateColumns: '180px 1fr', gap: '20px', marginBottom: '24px', ...card }}>
-            <div style={{ position: 'relative', width: '160px', height: '160px' }}>
-              <RadialBarChart width={160} height={160} cx={80} cy={80} innerRadius={55} outerRadius={75} barSize={14} data={[{ value: completionPct, fill: BRAND }]} startAngle={90} endAngle={-270}>
+          {/* Overview */}
+          <div className="dash-card dash-overview">
+            <div className="dash-ring-wrap">
+              <RadialBarChart width={168} height={168} cx={84} cy={84} innerRadius={58} outerRadius={78} barSize={15} data={[{ value: completionPct, fill: '#1a5f2b' }]} startAngle={90} endAngle={-270}>
                 <PolarAngleAxis type="number" domain={[0, 100]} angleAxisId={0} tick={false} />
-                <RadialBar background={{ fill: '#f0f0f0' }} dataKey="value" cornerRadius={8} />
+                <RadialBar background={{ fill: 'var(--gray-100)' }} dataKey="value" cornerRadius={8} />
               </RadialBarChart>
-              <div style={{ position: 'absolute', top: 0, left: 0, width: '160px', height: '160px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-                <div style={{ fontSize: '28px', fontWeight: 'bold', color: BRAND }}>{completionPct}%</div>
-                <div style={{ fontSize: '11px', color: '#888' }}>lessons done</div>
+              <div className="dash-ring-label">
+                <span className="dash-ring-pct">{completionPct}%</span>
+                <span className="dash-ring-caption">lessons complete</span>
               </div>
             </div>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))', gap: '12px', alignContent: 'center' }}>
-              <StatTile label="Courses" value={overview.courses_enrolled} />
-              <StatTile label="Lessons" value={`${overview.lessons_completed}/${overview.lessons_total}`} />
-              <StatTile label="Quizzes taken" value={overview.quizzes_taken} />
-              <StatTile label="Avg quiz score" value={overview.quizzes_taken ? `${overview.average_quiz_score}%` : '—'} />
+            <div className="dash-stats">
+              <StatTile icon={BookOpen} label="Courses" value={overview.courses_enrolled} />
+              <StatTile icon={ListChecks} label="Lessons" value={`${overview.lessons_completed}/${overview.lessons_total}`} />
+              <StatTile icon={PencilLine} label="Quizzes taken" value={overview.quizzes_taken} />
+              <StatTile icon={Sparkles} label="Avg quiz score" value={overview.quizzes_taken ? `${overview.average_quiz_score}%` : '—'} />
             </div>
           </div>
 
           {/* Continue Learning */}
           {continue_learning && (
-            <div style={{ ...card, marginBottom: '24px', borderColor: BRAND, borderWidth: '2px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px' }}>
+            <div className="dash-card dash-continue" style={{ marginTop: '20px' }}>
               <div>
-                <div style={{ fontSize: '12px', color: '#888', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Continue Learning</div>
-                <div style={{ fontSize: '18px', fontWeight: 'bold', margin: '4px 0' }}>{continue_learning.lesson_title}</div>
-                <div style={{ fontSize: '13px', color: '#666' }}>{continue_learning.course_title}</div>
+                <p className="dash-continue-eyebrow">Continue Learning</p>
+                <h3>{continue_learning.lesson_title}</h3>
+                <div className="dash-continue-course">{continue_learning.course_title}</div>
               </div>
               <button
+                className="dash-btn"
                 onClick={() => navigate(`/learn/${continue_learning.course_id}/lessons/${continue_learning.lesson_id}`)}
-                style={{ padding: '12px 24px', background: BRAND, color: 'white', border: 'none', borderRadius: '10px', fontWeight: 'bold', cursor: 'pointer', whiteSpace: 'nowrap' }}
               >
-                Resume →
+                Resume <ArrowRight size={16} />
               </button>
             </div>
           )}
 
-          {/* Current courses */}
-          <div style={{ marginBottom: '24px' }}>
-            <h2 style={{ fontSize: '18px' }}>📖 Your Courses</h2>
+          {/* Courses */}
+          <div style={{ marginTop: '28px' }}>
+            <h2 className="dash-section-title"><BookOpen size={17} /> Your Courses</h2>
             {current_courses.map((c) => (
-              <div key={c.id} onClick={() => navigate(`/learn/${c.id}`)} style={{ ...card, marginBottom: '10px', cursor: 'pointer' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <h4 style={{ margin: 0 }}>{c.title}</h4>
-                  <span style={{ fontSize: '12px', background: BRAND_LIGHT, padding: '2px 10px', borderRadius: '12px' }}>{c.level?.toUpperCase()}</span>
-                </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginTop: '8px' }}>
-                  <div style={{ flex: 1, height: '6px', background: '#f0f0f0', borderRadius: '3px' }}>
-                    <div style={{ width: `${c.progress}%`, height: '100%', background: BRAND, borderRadius: '3px', transition: 'width 0.4s ease' }} />
+              <div key={c.id} className={`dash-course-row level-${c.level}`} onClick={() => navigate(`/learn/${c.id}`)}>
+                <div className="dash-course-info">
+                  <div className="dash-course-title">{c.title}</div>
+                  <div className="dash-course-track">
+                    <div className="dash-course-fill" style={{ width: `${c.progress}%` }} />
                   </div>
-                  <span style={{ fontSize: '12px', color: '#888', whiteSpace: 'nowrap' }}>{c.lessons_completed}/{c.lessons_total} lessons</span>
                 </div>
+                <span className="dash-course-badge">{c.lessons_completed}/{c.lessons_total} · {c.level?.toUpperCase()}</span>
               </div>
             ))}
           </div>
 
-          {/* Focus areas - only shown when real weak-subject data exists */}
+          {/* Focus areas */}
           {weak_subjects.length > 0 && (
-            <div style={{ ...card, marginBottom: '24px', background: '#fff8e1', borderColor: '#f0d88b' }}>
-              <h3 style={{ margin: '0 0 6px', color: '#805900' }}>💡 Focus Areas</h3>
+            <div className="dash-card dash-focus" style={{ marginTop: '20px' }}>
+              <h2 className="dash-section-title" style={{ color: '#a06c00' }}><HelpCircle size={17} /> Focus Areas</h2>
               <p style={{ margin: 0, color: '#665000', fontSize: '14px' }}>
-                Your quiz scores are lower in: <strong>{weak_subjects.join(', ')}</strong>. Consider revisiting these in Practice.
+                Your quiz scores are lower in <strong>{weak_subjects.join(', ')}</strong>. Revisit these in Practice to strengthen them.
               </p>
             </div>
           )}
@@ -178,20 +170,16 @@ const DashboardModule = ({ setActiveModule }) => {
       )}
 
       {/* Quick Navigation */}
-      <div style={{ marginBottom: '24px' }}>
-        <h2 style={{ fontSize: '18px' }}>🚀 Quick Navigation</h2>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))', gap: '12px' }}>
+      <div style={{ marginTop: '28px' }}>
+        <h2 className="dash-section-title"><Compass size={17} /> Quick Navigation</h2>
+        <div className="dash-nav-grid">
           {navItems.map((item) => (
-            <button
-              key={item.label}
-              onClick={() => navigateTo(item.path)}
-              style={{ padding: '16px', background: 'white', border: '1px solid #e0e0e0', borderRadius: '12px', textAlign: 'center', cursor: 'pointer', fontSize: '14px', transition: 'all 0.2s ease' }}
-              onMouseEnter={(e) => { e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.1)'; e.currentTarget.style.transform = 'translateY(-2px)'; }}
-              onMouseLeave={(e) => { e.currentTarget.style.boxShadow = 'none'; e.currentTarget.style.transform = 'translateY(0)'; }}
-            >
-              <div style={{ fontSize: '24px' }}>{item.icon}</div>
-              <div style={{ fontWeight: 'bold', fontSize: '13px' }}>{item.label}</div>
-              <div style={{ fontSize: '10px', color: '#888', marginTop: '4px' }}>{item.description}</div>
+            <button key={item.label} className="dash-nav-tile" onClick={() => navigateTo(item.path)}>
+              <div className="dash-nav-icon" style={{ background: item.bg, color: item.fg }}>
+                <item.icon size={20} />
+              </div>
+              <div className="dash-nav-label">{item.label}</div>
+              <div className="dash-nav-desc">{item.description}</div>
             </button>
           ))}
         </div>
@@ -199,20 +187,27 @@ const DashboardModule = ({ setActiveModule }) => {
 
       {/* Recent Activity */}
       {hasCourses && (
-        <div>
-          <h2 style={{ fontSize: '18px' }}>📋 Recent Activity</h2>
+        <div style={{ marginTop: '28px' }}>
+          <h2 className="dash-section-title"><CheckCircle2 size={17} /> Recent Activity</h2>
           {recent_activity.length > 0 ? (
-            recent_activity.map((item, i) => (
-              <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '12px 16px', ...card, marginBottom: '8px' }}>
-                <span style={{ fontSize: '20px' }}>{item.type === 'quiz' ? '📝' : '✅'}</span>
-                <div style={{ flex: 1 }}>
-                  <div>{item.title}</div>
-                  <div style={{ fontSize: '12px', color: '#888' }}>{item.time ? new Date(item.time).toLocaleDateString() : 'Recently'}</div>
+            <div className="dash-timeline">
+              {recent_activity.map((item, i) => (
+                <div key={i} className="dash-timeline-item">
+                  <div
+                    className="dash-timeline-dot"
+                    style={item.type === 'quiz' ? { background: '#fef6e0', color: '#a06c00' } : { background: 'var(--primary-glow)', color: 'var(--primary)' }}
+                  >
+                    {item.type === 'quiz' ? <PencilLine size={16} /> : <CheckCircle2 size={16} />}
+                  </div>
+                  <div>
+                    <div className="dash-timeline-title">{item.title}</div>
+                    <div className="dash-timeline-time">{item.time ? new Date(item.time).toLocaleDateString() : 'Recently'}</div>
+                  </div>
                 </div>
-              </div>
-            ))
+              ))}
+            </div>
           ) : (
-            <p style={{ color: '#888' }}>No activity yet — complete a lesson or quiz to see it here.</p>
+            <p style={{ color: 'var(--gray-500)' }}>No activity yet — complete a lesson or quiz to see it here.</p>
           )}
         </div>
       )}
@@ -220,10 +215,13 @@ const DashboardModule = ({ setActiveModule }) => {
   );
 };
 
-const StatTile = ({ label, value }) => (
-  <div style={{ textAlign: 'center', padding: '10px', background: '#f8f9fa', borderRadius: '10px' }}>
-    <div style={{ fontSize: '22px', fontWeight: 'bold', color: BRAND }}>{value}</div>
-    <div style={{ fontSize: '11px', color: '#888' }}>{label}</div>
+const StatTile = ({ icon: Icon, label, value }) => (
+  <div className="dash-stat-tile">
+    <div className="dash-stat-icon"><Icon size={17} /></div>
+    <div>
+      <div className="dash-stat-value">{value}</div>
+      <div className="dash-stat-label">{label}</div>
+    </div>
   </div>
 );
 

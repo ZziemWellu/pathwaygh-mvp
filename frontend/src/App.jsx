@@ -73,9 +73,9 @@ const App = () => {
 
   return (
     <BrowserRouter>
-      <div style={{ 
-        fontFamily: 'Arial, sans-serif', 
-        maxWidth: '100%', 
+      <div style={{
+        fontFamily: 'var(--font-family)',
+        maxWidth: '100%',
         padding: '0 16px',
         margin: '0 auto',
         width: '100%'
