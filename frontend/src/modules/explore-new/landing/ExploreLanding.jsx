@@ -1,10 +1,10 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const ExploreLanding = () => {
+const ExploreLanding = ({ user }) => {
   const navigate = useNavigate();
 
-  const features = [
+  const allFeatures = [
     {
       id: 'careers',
       icon: '💼',
@@ -39,9 +39,12 @@ const ExploreLanding = () => {
       description: 'Discover careers that match your interests and skills',
       color: '#6a1b9a',
       path: '/explore/career-match',
-      buttonText: 'Start Assessment'
+      buttonText: 'Start Assessment',
+      countryOnly: 'GH'
     }
   ];
+
+  const features = allFeatures.filter((f) => !f.countryOnly || f.countryOnly === user?.country);
 
   return (
     <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '20px' }}>

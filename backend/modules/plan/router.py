@@ -11,7 +11,9 @@ from pydantic import BaseModel
 from sqlalchemy.orm import Session
 
 from core.database import SessionLocal, get_db
+from core.security import get_current_user
 from models.plan import Plan
+from models.user import User
 
 router = APIRouter(tags=["plan"])
 
@@ -38,11 +40,17 @@ DEFAULT_PLANS = [
 
 
 def _seed_default_plans_if_empty():
+    # Runs at import time against the real configured DB, outside any request's
+    # get_db override - a DB that isn't reachable yet or hasn't been migrated
+    # (e.g. a fresh CI database with no tables) must not crash module import and
+    # take the whole router down with it.
     db = SessionLocal()
     try:
         if db.query(Plan).count() == 0:
             for p in DEFAULT_PLANS:
                 _create_plan_row(db, p)
+    except Exception as e:
+        print(f"Skipping default plan seeding (DB not ready): {e}")
     finally:
         db.close()
 
@@ -99,8 +107,13 @@ async def plan_root():
 
 
 @router.get("/study-plans")
-async def get_study_plans(db: Session = Depends(get_db)):
-    return [_plan_out(p) for p in db.query(Plan).all()]
+async def get_study_plans(db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
+    plans = db.query(Plan).all()
+    return [
+        _plan_out(p)
+        for p in plans
+        if current_user.country == "GH" or p.data.get("target_exam") != "WASSCE"
+    ]
 
 
 @router.get("/study-plans/{plan_id}")

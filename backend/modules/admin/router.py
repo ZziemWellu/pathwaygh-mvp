@@ -29,6 +29,7 @@ def _course_out(course: Course) -> dict:
         "title": course.title,
         "description": course.description,
         "level": course.level,
+        "country": course.country,
         "lesson_count": len(course.lessons),
     }
 
@@ -79,6 +80,7 @@ class CourseIn(BaseModel):
     title: str
     description: Optional[str] = None
     level: str
+    country: str = "GH"
 
 
 @router.get("/courses")

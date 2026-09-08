@@ -38,6 +38,7 @@ const AdminCourseEditor = () => {
         title: course.title,
         description: course.description,
         level: course.level,
+        country: course.country,
       });
       alert('Saved.');
     } catch (err) {
@@ -87,6 +88,11 @@ const AdminCourseEditor = () => {
           <option value="shs">SHS</option>
           <option value="skills">Skills</option>
           <option value="tvet">TVET</option>
+        </select>
+        <label style={labelStyle}>Country</label>
+        <select value={course.country} onChange={(e) => setCourse({ ...course, country: e.target.value })} style={inputStyle}>
+          <option value="GH">Ghana</option>
+          <option value="NG">Nigeria</option>
         </select>
         <button onClick={handleSave} disabled={saving} style={{ padding: '10px', background: saving ? '#ccc' : '#1a5f2b', color: 'white', border: 'none', borderRadius: '8px', cursor: saving ? 'not-allowed' : 'pointer', fontWeight: 'bold' }}>
           {saving ? 'Saving...' : 'Save Course'}
