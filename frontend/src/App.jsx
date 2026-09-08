@@ -1,28 +1,35 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, lazy, Suspense } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import './App.css';
 import { getUser, isAuthenticated, login as authLogin, logout as authLogout } from './constants/auth';
-import DashboardModule from './modules/dashboard/DashboardModule';
-import CourseGrid from './modules/learn/CourseGrid';
-import CourseDetail from './modules/learn/CourseDetail';
-import LessonView from './modules/learn/LessonView';
-// OLD Explore (keep for now)
-import ExploreModule from './modules/explore/ExploreModule';
-// NEW Explore pages
-import { ExploreLanding, CareersPage, UniversitiesPage, ScholarshipsPage, CareerMatchPage } from './modules/explore-new';
-import PracticeModule from './modules/practice/PracticeModule';
-import PlanModule from './modules/plan/PlanModule';
-import ProfileModule from './modules/profile/ProfileModule';
-import CommunityModule from './modules/community/CommunityModule';
-import AdminCourseList from './modules/admin/AdminCourseList';
-import AdminCourseEditor from './modules/admin/AdminCourseEditor';
-import AdminLessonEditor from './modules/admin/AdminLessonEditor';
 import EcosystemNavigation from './components/common/EcosystemNavigation';
 import GhanaFlag from './components/common/GhanaFlag';
 import { User, LogOut } from 'lucide-react';
 import Login from './components/auth/Login';
 import Register from './components/auth/Register';
 import AIChat from './components/ai/AIChat';
+
+// Route-level code splitting: each of these becomes its own chunk instead of
+// bloating the single main bundle every visitor downloads up front.
+const DashboardModule = lazy(() => import('./modules/dashboard/DashboardModule'));
+const CourseGrid = lazy(() => import('./modules/learn/CourseGrid'));
+const CourseDetail = lazy(() => import('./modules/learn/CourseDetail'));
+const LessonView = lazy(() => import('./modules/learn/LessonView'));
+// OLD Explore (keep for now)
+const ExploreModule = lazy(() => import('./modules/explore/ExploreModule'));
+// NEW Explore pages
+const ExploreLanding = lazy(() => import('./modules/explore-new/landing/ExploreLanding'));
+const CareersPage = lazy(() => import('./modules/explore-new/pages/CareersPage'));
+const UniversitiesPage = lazy(() => import('./modules/explore-new/pages/UniversitiesPage'));
+const ScholarshipsPage = lazy(() => import('./modules/explore-new/pages/ScholarshipsPage'));
+const CareerMatchPage = lazy(() => import('./modules/explore-new/pages/CareerMatchPage'));
+const PracticeModule = lazy(() => import('./modules/practice/PracticeModule'));
+const PlanModule = lazy(() => import('./modules/plan/PlanModule'));
+const ProfileModule = lazy(() => import('./modules/profile/ProfileModule'));
+const CommunityModule = lazy(() => import('./modules/community/CommunityModule'));
+const AdminCourseList = lazy(() => import('./modules/admin/AdminCourseList'));
+const AdminCourseEditor = lazy(() => import('./modules/admin/AdminCourseEditor'));
+const AdminLessonEditor = lazy(() => import('./modules/admin/AdminLessonEditor'));
 
 const App = () => {
   const [user, setUser] = useState(null);
@@ -124,6 +131,7 @@ const App = () => {
         <EcosystemNavigation activeModule={activeModule} setActiveModule={setActiveModule} user={user} />
 
         <main style={{ padding: '16px 0', width: '100%' }}>
+          <Suspense fallback={<div style={{ textAlign: 'center', padding: '40px' }}>Loading...</div>}>
           <Routes>
             <Route path="/" element={<DashboardModule setActiveModule={setActiveModule} />} />
             <Route path="/home" element={<DashboardModule setActiveModule={setActiveModule} />} />
@@ -154,6 +162,7 @@ const App = () => {
 
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>
+          </Suspense>
         </main>
 
         <footer style={{ 
