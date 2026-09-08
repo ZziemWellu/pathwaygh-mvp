@@ -1,0 +1,46 @@
+# Render Blueprint for PathwayGH.
+#
+# This file is NOT yet linked to the live services — creating it does nothing
+# on its own. To adopt it: Render dashboard -> New -> Blueprint -> point at
+# this repo, then match each existing service by name (pathwaygh-frontend,
+# pathwaygh-backend) when prompted so Render adopts them instead of creating
+# duplicates.
+#
+# rootDir/buildCommand/startCommand below were confirmed against each
+# service's live Settings -> Build & Deploy on 2026-09-08.
+#
+# Env vars marked `sync: false` are secrets/deploy-specific values Render
+# will prompt for on first sync and never overwrite afterwards - their
+# current values stay exactly as already configured in the dashboard.
+
+services:
+  - type: web
+    name: pathwaygh-backend
+    runtime: python
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    preDeployCommand: alembic upgrade head
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: DATABASE_URL
+        sync: false
+      - key: SECRET_KEY
+        sync: false
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: FRONTEND_URL
+        value: https://pathwaygh-frontend.onrender.com
+
+  - type: web
+    name: pathwaygh-frontend
+    runtime: static
+    rootDir: frontend
+    buildCommand: npm install && npm run build
+    staticPublishPath: dist
+    envVars:
+      - key: VITE_API_URL
+        value: https://pathwaygh-backend.onrender.com
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
