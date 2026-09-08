@@ -27,7 +27,7 @@ class ExploreService:
     def _load_json(self, file_path: str) -> Dict[str, Any]:
         """Load JSON data from file"""
         try:
-            with open(file_path, 'r') as f:
+            with open(file_path, 'r', encoding='utf-8') as f:
                 return json.load(f)
         except FileNotFoundError:
             default = {"careers": [], "universities": [], "scholarships": []}
@@ -39,7 +39,7 @@ class ExploreService:
     def _save_json(self, file_path: str, data: Dict[str, Any]) -> None:
         """Save JSON data to file"""
         try:
-            with open(file_path, 'w') as f:
+            with open(file_path, 'w', encoding='utf-8') as f:
                 json.dump(data, f, indent=2)
         except Exception as e:
             print(f"⚠️ Error saving to {file_path}: {e}")

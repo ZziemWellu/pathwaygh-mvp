@@ -20,7 +20,7 @@ class QuizEngine:
     def _load_questions(self) -> None:
         """Load questions from JSON file"""
         try:
-            with open(self.questions_file, 'r') as f:
+            with open(self.questions_file, 'r', encoding='utf-8') as f:
                 self.questions_data = json.load(f)
         except FileNotFoundError:
             # Create default structure if file doesn't exist
@@ -30,7 +30,7 @@ class QuizEngine:
     def _save_questions(self) -> None:
         """Save questions to JSON file"""
         os.makedirs(os.path.dirname(self.questions_file), exist_ok=True)
-        with open(self.questions_file, 'w') as f:
+        with open(self.questions_file, 'w', encoding='utf-8') as f:
             json.dump(self.questions_data, f, indent=2)
     
     def get_subjects(self) -> List[Dict[str, Any]]:

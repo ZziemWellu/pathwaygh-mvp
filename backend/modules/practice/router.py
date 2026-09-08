@@ -47,7 +47,7 @@ active_quizzes: Dict[str, dict] = {}
 def load_questions():
     try:
         if QUESTIONS_FILE.exists():
-            with open(QUESTIONS_FILE, "r") as f:
+            with open(QUESTIONS_FILE, "r", encoding="utf-8") as f:
                 data = json.load(f)
                 if data.get("subjects"):
                     return data

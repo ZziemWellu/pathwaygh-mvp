@@ -21,7 +21,7 @@ SCHOLARSHIPS_FILE = PROJECT_ROOT / "data" / "explore" / "scholarships.json"
 def load_careers():
     try:
         if CAREERS_FILE.exists():
-            with open(CAREERS_FILE, 'r') as f:
+            with open(CAREERS_FILE, 'r', encoding='utf-8') as f:
                 data = json.load(f)
                 return data.get("careers", [])
     except Exception as e:
@@ -31,7 +31,7 @@ def load_careers():
 def load_universities():
     try:
         if UNIVERSITIES_FILE.exists():
-            with open(UNIVERSITIES_FILE, 'r') as f:
+            with open(UNIVERSITIES_FILE, 'r', encoding='utf-8') as f:
                 data = json.load(f)
                 return data.get("universities", [])
     except Exception as e:
@@ -41,7 +41,7 @@ def load_universities():
 def load_scholarships():
     try:
         if SCHOLARSHIPS_FILE.exists():
-            with open(SCHOLARSHIPS_FILE, 'r') as f:
+            with open(SCHOLARSHIPS_FILE, 'r', encoding='utf-8') as f:
                 data = json.load(f)
                 return data.get("scholarships", [])
     except Exception as e:
