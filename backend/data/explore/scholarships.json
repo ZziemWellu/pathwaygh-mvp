@@ -11,7 +11,8 @@
       "deadline": "2026-12-31",
       "amount": "GHS 15,000",
       "description": "Full scholarship for undergraduate studies in Ghanaian public universities",
-      "website": "https://www.scholarships.gov.gh"
+      "website": "https://www.scholarships.gov.gh",
+      "country": "GH"
     },
     {
       "id": "gov_002",
@@ -24,7 +25,8 @@
       "deadline": "2026-11-15",
       "amount": "GHS 20,000",
       "description": "Supporting students pursuing Science, Technology, Engineering, and Mathematics",
-      "website": "https://www.moe.gov.gh/stem-scholarship"
+      "website": "https://www.moe.gov.gh/stem-scholarship",
+      "country": "GH"
     },
     {
       "id": "private_001",
@@ -37,7 +39,8 @@
       "deadline": "2027-01-15",
       "amount": "Full tuition + living expenses",
       "description": "Empowering the next generation of African leaders",
-      "website": "https://www.mastercardfoundation.org/scholars"
+      "website": "https://www.mastercardfoundation.org/scholars",
+      "country": "GH"
     },
     {
       "id": "private_002",
@@ -50,7 +53,8 @@
       "deadline": "2026-10-30",
       "amount": "GHS 25,000",
       "description": "Honoring Kofi Annan's legacy of excellence and service",
-      "website": "https://www.kofiannanfoundation.org/scholarship"
+      "website": "https://www.kofiannanfoundation.org/scholarship",
+      "country": "GH"
     },
     {
       "id": "international_001",
@@ -63,7 +67,8 @@
       "deadline": "2026-09-01",
       "amount": "Full tuition + £18,000 living expenses",
       "description": "UK government's international awards program for future leaders",
-      "website": "https://www.chevening.org"
+      "website": "https://www.chevening.org",
+      "country": "GH"
     },
     {
       "id": "international_002",
@@ -76,7 +81,8 @@
       "deadline": "2026-11-01",
       "amount": "Full tuition + €1,200/month living allowance",
       "description": "Supporting academic and research collaboration with Germany",
-      "website": "https://www.daad.ghana.org"
+      "website": "https://www.daad.ghana.org",
+      "country": "GH"
     }
   ]
 }

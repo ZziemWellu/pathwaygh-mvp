@@ -15,6 +15,7 @@ class User(Base):
     password_hash = Column(String(255), nullable=False)
     avatar_filename = Column(String(255), nullable=True)
     is_admin = Column(Boolean, nullable=False, default=False)
+    country = Column(String(2), nullable=False, default="GH")
     created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
 
     # Profile fields

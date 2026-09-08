@@ -9,7 +9,7 @@ const ExploreLanding = () => {
       id: 'careers',
       icon: '💼',
       title: 'Careers',
-      description: 'Explore career opportunities and pathways in Ghana',
+      description: 'Explore career opportunities and pathways',
       color: '#1a5f2b',
       path: '/explore/careers',
       buttonText: 'Explore Careers'

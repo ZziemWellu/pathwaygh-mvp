@@ -1,13 +1,18 @@
 import React, { useState, useEffect, lazy, Suspense } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import './App.css';
-import { getUser, isAuthenticated, login as authLogin, logout as authLogout } from './constants/auth';
+import { getUser, isAuthenticated, login as authLogin, logout as authLogout, getCountry, setCountry as persistCountry, removeCountry } from './constants/auth';
 import EcosystemNavigation from './components/common/EcosystemNavigation';
 import GhanaFlag from './components/common/GhanaFlag';
+import NigeriaFlag from './components/common/NigeriaFlag';
 import { User, LogOut } from 'lucide-react';
 import Login from './components/auth/Login';
 import Register from './components/auth/Register';
+import CountrySelector from './components/CountrySelector';
 import AIChat from './components/ai/AIChat';
+
+const COUNTRY_FLAGS = { GH: GhanaFlag, NG: NigeriaFlag };
+const COUNTRY_NAMES = { GH: 'Ghana', NG: 'Nigeria' };
 
 // Route-level code splitting: each of these becomes its own chunk instead of
 // bloating the single main bundle every visitor downloads up front.
@@ -37,6 +42,7 @@ const App = () => {
   const [loading, setLoading] = useState(true);
   const [showLogin, setShowLogin] = useState(true);
   const [activeModule, setActiveModule] = useState('home');
+  const [country, setCountryState] = useState(null);
 
   useEffect(() => {
     const userData = getUser();
@@ -44,11 +50,27 @@ const App = () => {
       setUser(userData);
       setIsAuth(true);
     }
+    setCountryState(getCountry());
     setLoading(false);
   }, []);
 
+  const handleCountrySelect = (code) => {
+    persistCountry(code);
+    setCountryState(code);
+  };
+
+  const handleChangeCountry = () => {
+    removeCountry();
+    setCountryState(null);
+  };
+
   const handleLogin = (userData, token) => {
     authLogin(userData, token);
+    // The account's real country is the source of truth once logged in - a
+    // user who registered as GH but is logging in on a device where NG was
+    // previously selected should see GH content.
+    persistCountry(userData.country);
+    setCountryState(userData.country);
     setUser(userData);
     setIsAuth(true);
   };
@@ -64,11 +86,24 @@ const App = () => {
   }
 
   if (!isAuth) {
+    if (!country) {
+      return (
+        <div style={{ maxWidth: '400px', margin: '40px auto', padding: '20px' }}>
+          <header style={{ textAlign: 'center', marginBottom: '30px' }}>
+            <h1 style={{ color: '#1a5f2b' }}>Pathway AI</h1>
+            <p style={{ color: '#888' }}>AI-Powered Education & Career Ecosystem</p>
+          </header>
+          <CountrySelector onSelect={handleCountrySelect} />
+        </div>
+      );
+    }
+
+    const CountryFlag = COUNTRY_FLAGS[country];
     return (
       <div style={{ maxWidth: '400px', margin: '40px auto', padding: '20px' }}>
         <header style={{ textAlign: 'center', marginBottom: '30px' }}>
-          <h1 style={{ color: '#1a5f2b', display: 'flex', alignItems: 'center', gap: '8px', justifyContent: 'center' }}><GhanaFlag size={24} /> Pathway AI</h1>
-          <p style={{ color: '#888' }}>AI-Powered Education & Career Ecosystem • Ghana</p>
+          <h1 style={{ color: '#1a5f2b', display: 'flex', alignItems: 'center', gap: '8px', justifyContent: 'center' }}><CountryFlag size={24} /> Pathway AI</h1>
+          <p style={{ color: '#888' }}>AI-Powered Education & Career Ecosystem • {COUNTRY_NAMES[country]}</p>
         </header>
         {showLogin ? <Login onSuccess={handleLogin} /> : <Register onSuccess={() => setShowLogin(true)} />}
         <p style={{ textAlign: 'center', marginTop: '16px' }}>
@@ -76,13 +111,19 @@ const App = () => {
             {showLogin ? 'Need an account? Register' : 'Already have an account? Login'}
           </button>
         </p>
+        <p style={{ textAlign: 'center', marginTop: '8px' }}>
+          <button onClick={handleChangeCountry} style={{ background: 'none', border: 'none', color: '#888', cursor: 'pointer', textDecoration: 'underline', fontSize: '13px' }}>
+            Change country
+          </button>
+        </p>
         <footer style={{ textAlign: 'center', marginTop: '40px', padding: '20px', color: '#888', borderTop: '1px solid #eee' }}>
-          <p>© 2026 Pathway AI | Built for Ghana</p>
+          <p>© 2026 Pathway AI</p>
         </footer>
       </div>
     );
   }
 
+  const UserCountryFlag = COUNTRY_FLAGS[user?.country] || GhanaFlag;
   return (
     <BrowserRouter>
       <div style={{
@@ -92,18 +133,18 @@ const App = () => {
         margin: '0 auto',
         width: '100%'
       }}>
-        <header style={{ 
-          display: 'flex', 
-          justifyContent: 'space-between', 
-          alignItems: 'center', 
-          padding: '12px 0', 
-          borderBottom: '1px solid #e0e0e0', 
-          flexWrap: 'wrap', 
-          gap: '8px' 
+        <header style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          padding: '12px 0',
+          borderBottom: '1px solid #e0e0e0',
+          flexWrap: 'wrap',
+          gap: '8px'
         }}>
           <div>
-            <h1 style={{ color: '#1a5f2b', fontSize: '22px', margin: 0, display: 'flex', alignItems: 'center', gap: '8px' }}><GhanaFlag size={22} /> Pathway AI</h1>
-            <span style={{ fontSize: '11px', color: '#888' }}>AI-Powered Education & Career Ecosystem • Ghana</span>
+            <h1 style={{ color: '#1a5f2b', fontSize: '22px', margin: 0, display: 'flex', alignItems: 'center', gap: '8px' }}><UserCountryFlag size={22} /> Pathway AI</h1>
+            <span style={{ fontSize: '11px', color: '#888' }}>AI-Powered Education & Career Ecosystem • {COUNTRY_NAMES[user?.country] || ''}</span>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
             <span style={{ color: '#555', fontSize: '13px', display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
@@ -135,14 +176,14 @@ const App = () => {
           <Routes>
             <Route path="/" element={<DashboardModule setActiveModule={setActiveModule} />} />
             <Route path="/home" element={<DashboardModule setActiveModule={setActiveModule} />} />
-            <Route path="/learn" element={<CourseGrid />} />
+            <Route path="/learn" element={<CourseGrid user={user} />} />
             <Route path="/learn/:courseId" element={<CourseDetail />} />
             <Route path="/learn/:courseId/lessons/:lessonId" element={<LessonView />} />
-            
+
             {/* NEW Explore Routes */}
             <Route path="/explore" element={<ExploreLanding />} />
-            <Route path="/explore/careers" element={<CareersPage />} />
-            <Route path="/explore/universities" element={<UniversitiesPage />} />
+            <Route path="/explore/careers" element={<CareersPage user={user} />} />
+            <Route path="/explore/universities" element={<UniversitiesPage user={user} />} />
             <Route path="/explore/scholarships" element={<ScholarshipsPage />} />
             <Route path="/explore/career-match" element={<CareerMatchPage />} />
             
@@ -172,7 +213,7 @@ const App = () => {
           borderTop: '1px solid #e0e0e0', 
           fontSize: '13px' 
         }}>
-          <p>© 2026 Pathway AI | Built for Ghana</p>
+          <p>© 2026 Pathway AI</p>
         </footer>
 
         <AIChat user={user} />

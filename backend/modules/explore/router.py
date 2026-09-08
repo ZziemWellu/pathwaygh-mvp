@@ -18,32 +18,37 @@ SCHOLARSHIPS_FILE = PROJECT_ROOT / "data" / "explore" / "scholarships.json"
 # Load Functions
 # ============================================================
 
-def load_careers():
+def _filter_by_country(items, country):
+    if country is None:
+        return items
+    return [item for item in items if item.get("country") == country]
+
+def load_careers(country: Optional[str] = None):
     try:
         if CAREERS_FILE.exists():
             with open(CAREERS_FILE, 'r', encoding='utf-8') as f:
                 data = json.load(f)
-                return data.get("careers", [])
+                return _filter_by_country(data.get("careers", []), country)
     except Exception as e:
         print(f"Error loading careers: {e}")
     return []
 
-def load_universities():
+def load_universities(country: Optional[str] = None):
     try:
         if UNIVERSITIES_FILE.exists():
             with open(UNIVERSITIES_FILE, 'r', encoding='utf-8') as f:
                 data = json.load(f)
-                return data.get("universities", [])
+                return _filter_by_country(data.get("universities", []), country)
     except Exception as e:
         print(f"Error loading universities: {e}")
     return []
 
-def load_scholarships():
+def load_scholarships(country: Optional[str] = None):
     try:
         if SCHOLARSHIPS_FILE.exists():
             with open(SCHOLARSHIPS_FILE, 'r', encoding='utf-8') as f:
                 data = json.load(f)
-                return data.get("scholarships", [])
+                return _filter_by_country(data.get("scholarships", []), country)
     except Exception as e:
         print(f"Error loading scholarships: {e}")
     return []
@@ -69,8 +74,8 @@ async def explore_root():
 # ============================================================
 
 @router.get("/careers")
-async def get_careers():
-    return {"success": True, "careers": load_careers()}
+async def get_careers(country: Optional[str] = None):
+    return {"success": True, "careers": load_careers(country)}
 
 @router.get("/career/{career_id}")
 async def get_career(career_id: str):
@@ -85,8 +90,8 @@ async def get_career(career_id: str):
 # ============================================================
 
 @router.get("/universities")
-async def get_universities():
-    return {"success": True, "universities": load_universities()}
+async def get_universities(country: Optional[str] = None):
+    return {"success": True, "universities": load_universities(country)}
 
 @router.get("/university/{university_id}")
 async def get_university(university_id: str):
@@ -104,10 +109,11 @@ async def get_university(university_id: str):
 async def get_scholarships(
     type: Optional[str] = None,
     status: Optional[str] = None,
-    search: Optional[str] = None
+    search: Optional[str] = None,
+    country: Optional[str] = None
 ):
     """Get all scholarships with filters"""
-    scholarships = load_scholarships()
+    scholarships = load_scholarships(country)
     
     if type:
         scholarships = [s for s in scholarships if s.get("type") == type]

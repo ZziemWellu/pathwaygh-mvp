@@ -48,6 +48,7 @@ def _course_out(course: Course, enrolled_ids: set) -> dict:
         "title": course.title,
         "description": course.description,
         "level": course.level,
+        "country": course.country,
         "lesson_count": len(course.lessons),
         "enrolled": course.id in enrolled_ids,
     }
@@ -83,12 +84,15 @@ async def learn_root(db: Session = Depends(get_db)):
 async def get_courses(
     level: Optional[str] = None,
     search: Optional[str] = None,
+    country: Optional[str] = None,
     db: Session = Depends(get_db),
     current_user: Optional[User] = Depends(get_current_user_optional),
 ):
     query = db.query(Course)
     if level:
         query = query.filter(Course.level == level)
+    if country:
+        query = query.filter(Course.country == country)
     if search:
         like = f"%{search.lower()}%"
         query = query.filter(Course.title.ilike(like))

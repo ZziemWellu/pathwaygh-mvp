@@ -12,6 +12,7 @@ class Course(Base):
     title = Column(String(255), nullable=False)
     description = Column(Text, nullable=True)
     level = Column(String(50), nullable=False)  # jhs, shs, skills, tvet
+    country = Column(String(2), nullable=False, default="GH")
 
     lessons = relationship(
         "Lesson", back_populates="course", cascade="all, delete-orphan", order_by="Lesson.order_index"

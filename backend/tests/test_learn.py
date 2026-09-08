@@ -1,8 +1,10 @@
 from models.course import Course, Lesson
 
 
-def _seed_course(db_session):
-    course = Course(slug="test-course", title="Test Course", description="d", level="jhs")
+def _seed_course(db_session, **overrides):
+    defaults = dict(slug="test-course", title="Test Course", description="d", level="jhs")
+    defaults.update(overrides)
+    course = Course(**defaults)
     db_session.add(course)
     db_session.flush()
     lesson = Lesson(course_id=course.id, slug="test-lesson", title="Test Lesson", lesson_type="video", order_index=0)
@@ -17,6 +19,25 @@ def test_course_listing(client, db_session):
     assert response.status_code == 200
     slugs = [c["id"] for c in response.json()]
     assert "test-course" in slugs
+
+
+def test_course_listing_defaults_to_gh_country(client, db_session):
+    _seed_course(db_session)
+    response = client.get("/api/learn/courses")
+    assert response.json()[0]["country"] == "GH"
+
+
+def test_course_listing_filters_by_country(client, db_session):
+    _seed_course(db_session, slug="gh-course", country="GH")
+    _seed_course(db_session, slug="ng-course", country="NG")
+
+    gh_only = client.get("/api/learn/courses", params={"country": "GH"})
+    ng_only = client.get("/api/learn/courses", params={"country": "NG"})
+    unfiltered = client.get("/api/learn/courses")
+
+    assert [c["id"] for c in gh_only.json()] == ["gh-course"]
+    assert [c["id"] for c in ng_only.json()] == ["ng-course"]
+    assert {c["id"] for c in unfiltered.json()} == {"gh-course", "ng-course"}
 
 
 def test_enroll_requires_auth(client, db_session):

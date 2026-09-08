@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import api from '../../../services/api';
 
-const CareersPage = () => {
+const CareersPage = ({ user }) => {
   const [careers, setCareers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -9,13 +9,13 @@ const CareersPage = () => {
 
   useEffect(() => {
     fetchCareers();
-  }, []);
+  }, [user?.country]);
 
   const fetchCareers = async () => {
     setLoading(true);
     setError(null);
     try {
-      const response = await api.get('/api/explore/careers');
+      const response = await api.get('/api/explore/careers', { params: { country: user?.country } });
       const data = response.data;
       let careerData = [];
       if (Array.isArray(data)) careerData = data;
