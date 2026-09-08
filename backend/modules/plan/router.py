@@ -40,11 +40,17 @@ DEFAULT_PLANS = [
 
 
 def _seed_default_plans_if_empty():
+    # Runs at import time against the real configured DB, outside any request's
+    # get_db override - a DB that isn't reachable yet or hasn't been migrated
+    # (e.g. a fresh CI database with no tables) must not crash module import and
+    # take the whole router down with it.
     db = SessionLocal()
     try:
         if db.query(Plan).count() == 0:
             for p in DEFAULT_PLANS:
                 _create_plan_row(db, p)
+    except Exception as e:
+        print(f"Skipping default plan seeding (DB not ready): {e}")
     finally:
         db.close()
 
