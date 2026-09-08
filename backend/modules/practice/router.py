@@ -60,6 +60,7 @@ def load_questions():
                 "id": "mathematics",
                 "name": "Mathematics",
                 "icon": "\U0001F4D0",
+                "country": "GH",
                 "topics": [
                     {
                         "id": "algebra",
@@ -76,11 +77,18 @@ def load_questions():
     }
 
 
-def get_all_questions(subject_id: Optional[str] = None, topic: Optional[str] = None, difficulty: Optional[str] = None):
+def get_all_questions(
+    subject_id: Optional[str] = None,
+    topic: Optional[str] = None,
+    difficulty: Optional[str] = None,
+    country: Optional[str] = None,
+):
     data = load_questions()
     all_questions = []
     for subject in data.get("subjects", []):
         if subject_id and subject["id"] != subject_id:
+            continue
+        if country and subject.get("country") != country:
             continue
         for topic_data in subject.get("topics", []):
             if topic and topic_data["id"] != topic:
@@ -108,10 +116,12 @@ async def practice_root():
 
 
 @router.get("/subjects")
-async def get_subjects():
+async def get_subjects(country: Optional[str] = None):
     data = load_questions()
     subjects = []
     for s in data.get("subjects", []):
+        if country and s.get("country") != country:
+            continue
         topics = []
         question_count = 0
         for t in s.get("topics", []):
@@ -135,7 +145,7 @@ async def get_subject(subject_id: str):
 
 @router.post("/quiz/start")
 async def start_quiz(request: QuizStartRequest, current_user: User = Depends(get_current_user)):
-    questions = get_all_questions(request.subject_id, request.topic, request.difficulty)
+    questions = get_all_questions(request.subject_id, request.topic, request.difficulty, current_user.country)
     if not questions:
         raise HTTPException(status_code=404, detail="No questions found for the selected criteria")
 

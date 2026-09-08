@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import api from '../../../services/api';
 
-const UniversitiesPage = () => {
+const UniversitiesPage = ({ user }) => {
   const [universities, setUniversities] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -9,13 +9,13 @@ const UniversitiesPage = () => {
 
   useEffect(() => {
     fetchUniversities();
-  }, []);
+  }, [user?.country]);
 
   const fetchUniversities = async () => {
     setLoading(true);
     setError(null);
     try {
-      const response = await api.get('/api/explore/universities');
+      const response = await api.get('/api/explore/universities', { params: { country: user?.country } });
       const data = response.data;
       let uniData = [];
       if (Array.isArray(data)) uniData = data;

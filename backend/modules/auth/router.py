@@ -2,6 +2,8 @@
 Authentication Module Router
 """
 
+from typing import Literal
+
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel, EmailStr
 from sqlalchemy.orm import Session
@@ -17,6 +19,7 @@ class RegisterRequest(BaseModel):
     email: EmailStr
     full_name: str
     password: str
+    country: Literal["GH", "NG"]
 
 
 class LoginRequest(BaseModel):
@@ -25,7 +28,13 @@ class LoginRequest(BaseModel):
 
 
 def _user_out(user: User) -> dict:
-    return {"id": user.id, "email": user.email, "full_name": user.full_name, "is_admin": user.is_admin}
+    return {
+        "id": user.id,
+        "email": user.email,
+        "full_name": user.full_name,
+        "is_admin": user.is_admin,
+        "country": user.country,
+    }
 
 
 @router.get("/")
@@ -42,6 +51,7 @@ async def register(request: RegisterRequest, db: Session = Depends(get_db)):
         email=request.email,
         full_name=request.full_name,
         password_hash=hash_password(request.password),
+        country=request.country,
     )
     db.add(user)
     db.commit()

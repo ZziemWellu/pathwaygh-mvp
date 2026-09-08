@@ -6,11 +6,13 @@ export const STORAGE_KEYS = {
   TOKEN: 'pathwaygh_token',
   USER: 'pathwaygh_user',
   REFRESH_TOKEN: 'pathwaygh_refresh_token',
+  COUNTRY: 'pathwaygh_country',
 };
 
 export const TOKEN_KEY = STORAGE_KEYS.TOKEN;
 export const USER_KEY = STORAGE_KEYS.USER;
 export const REFRESH_TOKEN_KEY = STORAGE_KEYS.REFRESH_TOKEN;
+export const COUNTRY_KEY = STORAGE_KEYS.COUNTRY;
 
 export const getToken = () => localStorage.getItem(TOKEN_KEY);
 export const setToken = (token) => localStorage.setItem(TOKEN_KEY, token);
@@ -31,6 +33,10 @@ export const setUser = (user) => {
 };
 
 export const removeUser = () => localStorage.removeItem(USER_KEY);
+
+export const getCountry = () => localStorage.getItem(COUNTRY_KEY);
+export const setCountry = (country) => localStorage.setItem(COUNTRY_KEY, country);
+export const removeCountry = () => localStorage.removeItem(COUNTRY_KEY);
 
 export const isAuthenticated = () => !!getToken();
 
@@ -57,6 +63,7 @@ export default {
   TOKEN_KEY,
   USER_KEY,
   REFRESH_TOKEN_KEY,
+  COUNTRY_KEY,
   getToken,
   setToken,
   removeToken,
@@ -66,6 +73,9 @@ export default {
   getUser,
   setUser,
   removeUser,
+  getCountry,
+  setCountry,
+  removeCountry,
   isAuthenticated,
   clearSession,
   login,

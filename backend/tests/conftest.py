@@ -48,10 +48,10 @@ def client(db_session):
     app.dependency_overrides.clear()
 
 
-def register_user(client, email="student@test.com", password="secret123", full_name="Test Student"):
+def register_user(client, email="student@test.com", password="secret123", full_name="Test Student", country="GH"):
     response = client.post(
         "/api/auth/register",
-        json={"email": email, "full_name": full_name, "password": password},
+        json={"email": email, "full_name": full_name, "password": password, "country": country},
     )
     assert response.status_code == 200, response.text
     return response.json()

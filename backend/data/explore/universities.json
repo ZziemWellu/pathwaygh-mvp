@@ -8,13 +8,21 @@
       "type": "Public",
       "ranking": 1,
       "description": "Ghana's premier science and technology university, known for engineering, medicine, and innovative research.",
-      "programs": ["Engineering", "Medicine", "Science", "Business", "Architecture", "Pharmacy"],
+      "programs": [
+        "Engineering",
+        "Medicine",
+        "Science",
+        "Business",
+        "Architecture",
+        "Pharmacy"
+      ],
       "requirements": [
         "Pass WASSCE with Aggregate 12 or better",
         "Minimum B3 in Core Mathematics, English, and Science",
         "Minimum C6 in three elective subjects"
       ],
-      "admission_info": "Applications open in January. Deadline is March 31st. Visit the university website for detailed requirements."
+      "admission_info": "Applications open in January. Deadline is March 31st. Visit the university website for detailed requirements.",
+      "country": "GH"
     },
     {
       "id": "ug",
@@ -24,13 +32,22 @@
       "type": "Public",
       "ranking": 2,
       "description": "Ghana's oldest and largest university, offering comprehensive programs across all disciplines.",
-      "programs": ["Arts", "Science", "Business", "Law", "Medicine", "Engineering", "Social Sciences"],
+      "programs": [
+        "Arts",
+        "Science",
+        "Business",
+        "Law",
+        "Medicine",
+        "Engineering",
+        "Social Sciences"
+      ],
       "requirements": [
         "Pass WASSCE with Aggregate 14 or better",
         "Minimum C6 in Core Mathematics, English, and Science",
         "Minimum C6 in three elective subjects"
       ],
-      "admission_info": "Applications open in January. Deadline is March 31st. Check the UG admissions portal for updates."
+      "admission_info": "Applications open in January. Deadline is March 31st. Check the UG admissions portal for updates.",
+      "country": "GH"
     },
     {
       "id": "umat",
@@ -40,13 +57,20 @@
       "type": "Public",
       "ranking": 3,
       "description": "Ghana's premier university for mining, geology, and engineering education.",
-      "programs": ["Mining Engineering", "Geology", "Metallurgy", "Environmental Science", "Petroleum Engineering"],
+      "programs": [
+        "Mining Engineering",
+        "Geology",
+        "Metallurgy",
+        "Environmental Science",
+        "Petroleum Engineering"
+      ],
       "requirements": [
         "Pass WASSCE with Aggregate 16 or better",
         "Minimum C6 in Core Mathematics, English, and Science",
         "Minimum C6 in three elective subjects"
       ],
-      "admission_info": "Applications open in January. Deadline is March 31st. Special consideration for female applicants."
+      "admission_info": "Applications open in January. Deadline is March 31st. Special consideration for female applicants.",
+      "country": "GH"
     },
     {
       "id": "ucc",
@@ -56,13 +80,22 @@
       "type": "Public",
       "ranking": 4,
       "description": "A leading university known for teacher training, arts, and social sciences education.",
-      "programs": ["Education", "Arts", "Science", "Business", "Law", "Agriculture", "Social Sciences"],
+      "programs": [
+        "Education",
+        "Arts",
+        "Science",
+        "Business",
+        "Law",
+        "Agriculture",
+        "Social Sciences"
+      ],
       "requirements": [
         "Pass WASSCE with Aggregate 15 or better",
         "Minimum C6 in Core Mathematics, English, and Science",
         "Minimum C6 in three elective subjects"
       ],
-      "admission_info": "Applications open in January. Deadline is March 31st. Teacher training programs have specific requirements."
+      "admission_info": "Applications open in January. Deadline is March 31st. Teacher training programs have specific requirements.",
+      "country": "GH"
     }
   ]
 }

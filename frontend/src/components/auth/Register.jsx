@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import api from '../../services/api';
+import { getCountry } from '../../constants/auth';
 
 const Register = ({ onSuccess }) => {
   const [formData, setFormData] = useState({
@@ -34,16 +35,23 @@ const Register = ({ onSuccess }) => {
       return;
     }
 
+    const country = getCountry();
+    if (!country) {
+      setError('Please select your country first.');
+      return;
+    }
+
     setLoading(true);
     setError('');
     setSuccess(false);
 
     try {
-      // The backend expects: email, full_name, password
+      // The backend expects: email, full_name, password, country
       const payload = {
         email: formData.email,
         full_name: formData.full_name,  // ← CORRECT field name!
-        password: formData.password
+        password: formData.password,
+        country
       };
 
       console.log('📤 Registering with:', payload);

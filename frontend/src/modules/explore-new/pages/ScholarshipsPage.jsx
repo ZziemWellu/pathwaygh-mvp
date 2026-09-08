@@ -18,7 +18,7 @@ const ScholarshipsPage = () => {
   useEffect(() => {
     fetchScholarships();
     fetchSavedScholarships();
-  }, []);
+  }, [user?.country]);
 
   useEffect(() => {
     filterScholarships();
@@ -28,7 +28,7 @@ const ScholarshipsPage = () => {
     setLoading(true);
     setError(null);
     try {
-      const response = await api.get('/api/explore/scholarships');
+      const response = await api.get('/api/explore/scholarships', { params: { country: user?.country } });
       const data = response.data;
       let schData = [];
       if (Array.isArray(data)) schData = data;

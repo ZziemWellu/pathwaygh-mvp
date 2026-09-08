@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../../services/api';
 
-const CourseGrid = () => {
+const CourseGrid = ({ user }) => {
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -11,14 +11,15 @@ const CourseGrid = () => {
 
   useEffect(() => {
     fetchCourses();
-  }, [showEnrolledOnly]);
+  }, [showEnrolledOnly, user?.country]);
 
   const fetchCourses = async () => {
     setLoading(true);
     setError(null);
     try {
       const endpoint = showEnrolledOnly ? '/api/learn/enrolled' : '/api/learn/courses';
-      const response = await api.get(endpoint);
+      const params = showEnrolledOnly ? {} : { country: user?.country };
+      const response = await api.get(endpoint, { params });
       setCourses(Array.isArray(response.data) ? response.data : []);
     } catch (err) {
       console.error('Learn error:', err);
