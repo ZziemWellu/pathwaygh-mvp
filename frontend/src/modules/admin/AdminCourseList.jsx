@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Plus, Trash2, ChevronRight } from 'lucide-react';
 import api from '../../services/api';
 
-const emptyForm = { slug: '', title: '', description: '', level: 'jhs' };
+const emptyForm = { slug: '', title: '', description: '', level: 'jhs', country: 'GH' };
 
 const AdminCourseList = () => {
   const navigate = useNavigate();
@@ -81,6 +81,10 @@ const AdminCourseList = () => {
             <option value="skills">Skills</option>
             <option value="tvet">TVET</option>
           </select>
+          <select value={form.country} onChange={(e) => setForm({ ...form, country: e.target.value })} style={inputStyle}>
+            <option value="GH">Ghana</option>
+            <option value="NG">Nigeria</option>
+          </select>
           <button type="submit" disabled={saving} style={{ padding: '10px', background: saving ? '#ccc' : '#1a5f2b', color: 'white', border: 'none', borderRadius: '8px', cursor: saving ? 'not-allowed' : 'pointer', fontWeight: 'bold' }}>
             {saving ? 'Creating...' : 'Create Course'}
           </button>
@@ -95,7 +99,7 @@ const AdminCourseList = () => {
         >
           <div style={{ flex: 1 }}>
             <div style={{ fontWeight: 'bold' }}>{course.title}</div>
-            <div style={{ fontSize: '12px', color: '#888' }}>{course.slug} · {course.level?.toUpperCase()} · {course.lesson_count} lessons</div>
+            <div style={{ fontSize: '12px', color: '#888' }}>{course.slug} · {course.level?.toUpperCase()} · {course.country} · {course.lesson_count} lessons</div>
           </div>
           <button
             onClick={(e) => { e.stopPropagation(); handleDelete(course); }}

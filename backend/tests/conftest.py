@@ -9,8 +9,8 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.pool import StaticPool
 
+from main import app  # imported first - triggers load_dotenv() before core.database binds its engine
 from core.database import Base, get_db
-from main import app
 
 
 @pytest.fixture(scope="session")

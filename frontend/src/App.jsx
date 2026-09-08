@@ -181,11 +181,11 @@ const App = () => {
             <Route path="/learn/:courseId/lessons/:lessonId" element={<LessonView />} />
 
             {/* NEW Explore Routes */}
-            <Route path="/explore" element={<ExploreLanding />} />
+            <Route path="/explore" element={<ExploreLanding user={user} />} />
             <Route path="/explore/careers" element={<CareersPage user={user} />} />
             <Route path="/explore/universities" element={<UniversitiesPage user={user} />} />
             <Route path="/explore/scholarships" element={<ScholarshipsPage />} />
-            <Route path="/explore/career-match" element={<CareerMatchPage />} />
+            <Route path="/explore/career-match" element={user?.country === 'GH' ? <CareerMatchPage /> : <Navigate to="/" />} />
             
             {/* OLD Explore (keep as fallback) */}
             <Route path="/explore-old" element={<ExploreModule />} />
