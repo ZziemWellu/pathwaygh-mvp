@@ -13,6 +13,7 @@ from models.enrollment import Enrollment
 from models.progress import LessonProgress
 from models.quiz_attempt import QuizAttempt
 from models.user import User
+from modules.dashboard.aggregation import overview_for_users
 
 router = APIRouter(tags=["dashboard"])
 
@@ -67,11 +68,6 @@ async def get_dashboard_summary(current_user: User = Depends(get_current_user), 
         .order_by(QuizAttempt.completed_at.desc())
         .all()
     )
-    quiz_stats = {
-        "total_quizzes": len(quiz_attempts),
-        "average_score": round(sum(a.score for a in quiz_attempts) / len(quiz_attempts)) if quiz_attempts else 0,
-    }
-
     by_subject: dict = {}
     for a in quiz_attempts:
         if a.subject_id:
@@ -104,18 +100,11 @@ async def get_dashboard_summary(current_user: User = Depends(get_current_user), 
         )
     recent_activity.sort(key=lambda a: a["time"] or "", reverse=True)
 
-    total_lessons_watched = len(watched_lesson_ids)
-    total_lessons_available = sum(len(c.lessons) for c in [db.query(Course).filter(Course.id == e.course_id).first() for e in enrollments] if c)
+    overview = overview_for_users(db, [current_user.id])[current_user.id]
 
     return {
         "success": True,
-        "overview": {
-            "courses_enrolled": len(enrollments),
-            "lessons_completed": total_lessons_watched,
-            "lessons_total": total_lessons_available,
-            "quizzes_taken": quiz_stats["total_quizzes"],
-            "average_quiz_score": quiz_stats["average_score"],
-        },
+        "overview": overview,
         "current_courses": current_courses,
         "continue_learning": continue_learning,
         "weak_subjects": weak_subjects,

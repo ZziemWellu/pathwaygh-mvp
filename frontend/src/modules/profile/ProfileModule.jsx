@@ -27,6 +27,10 @@ const ProfileModule = () => {
   const [savedCareers, setSavedCareers] = useState([]);
   const [savedUniversities, setSavedUniversities] = useState([]);
   const [savedScholarships, setSavedScholarships] = useState([]);
+  const [schoolInfo, setSchoolInfo] = useState(null);
+  const [schoolFormMode, setSchoolFormMode] = useState(null); // null | 'create' | 'join'
+  const [schoolFormValue, setSchoolFormValue] = useState('');
+  const [schoolSaving, setSchoolSaving] = useState(false);
 
   useEffect(() => {
     fetchProfileData();
@@ -56,6 +60,9 @@ const ProfileModule = () => {
       setSavedCareers(careersRes.data?.careers || []);
       setSavedUniversities(uniRes.data?.universities || []);
       setSavedScholarships(schRes.data?.scholarships || []);
+
+      const schoolRes = await api.get('/api/school/me').catch(() => ({ data: { school: null, is_school_admin: false } }));
+      setSchoolInfo(schoolRes.data);
     } catch (err) {
       console.error('Profile error:', err);
     } finally {
@@ -191,8 +198,54 @@ const ProfileModule = () => {
     { id: 'academic', icon: '📚', label: 'Academic' },
     { id: 'goals', icon: '🎯', label: 'Goals' },
     { id: 'saved', icon: '💾', label: 'Saved' },
+    { id: 'school', icon: '🏫', label: 'School' },
     { id: 'settings', icon: '⚙️', label: 'Settings' },
   ];
+
+  // App.jsx's user state (and everything gated on user.is_school_admin, like
+  // the nav item and the /school-admin route) is read from the cached
+  // localStorage user object, not re-fetched on its own - creating/joining a
+  // school changes that on the server, so the cache must be refreshed here
+  // before the reload, or the new fields would never appear until the next
+  // full login.
+  const refreshCachedUser = async () => {
+    const me = await api.get('/api/auth/me');
+    setUser(me.data.user);
+  };
+
+  const handleCreateSchool = async () => {
+    if (!schoolFormValue.trim()) return;
+    setSchoolSaving(true);
+    try {
+      await api.post('/api/school/create', { name: schoolFormValue.trim() });
+      await refreshCachedUser();
+      showNotification('School created! Reloading...', 'success');
+      setTimeout(() => window.location.reload(), 1000);
+    } catch (err) {
+      showNotification(err.response?.data?.detail || 'Failed to create school.', 'error');
+      setSchoolSaving(false);
+    }
+  };
+
+  const handleJoinSchool = async () => {
+    if (!schoolFormValue.trim()) return;
+    setSchoolSaving(true);
+    try {
+      await api.post('/api/school/join', { join_code: schoolFormValue.trim() });
+      await refreshCachedUser();
+      showNotification('Joined school! Reloading...', 'success');
+      setTimeout(() => window.location.reload(), 1000);
+    } catch (err) {
+      showNotification(err.response?.data?.detail || 'Failed to join school.', 'error');
+      setSchoolSaving(false);
+    }
+  };
+
+  const copySchoolCode = () => {
+    if (!schoolInfo?.school?.join_code) return;
+    navigator.clipboard.writeText(schoolInfo.school.join_code);
+    showNotification('Join code copied!', 'success');
+  };
 
   if (loading) {
     return (
@@ -571,6 +624,66 @@ const ProfileModule = () => {
                 )}
               </div>
             </div>
+          </div>
+        )}
+
+        {activeTab === 'school' && (
+          <div>
+            <h3 style={{ color: '#333', marginBottom: '16px' }}>🏫 School</h3>
+            {schoolInfo?.school ? (
+              <div>
+                <p><strong style={{ color: '#666' }}>School:</strong> {schoolInfo.school.name}</p>
+                <p>
+                  <strong style={{ color: '#666' }}>Join code:</strong> {schoolInfo.school.join_code}{' '}
+                  <button onClick={copySchoolCode} style={{ marginLeft: '8px', padding: '2px 10px', fontSize: '12px', background: '#f0f0f0', border: 'none', borderRadius: '6px', cursor: 'pointer' }}>
+                    Copy
+                  </button>
+                </p>
+                {schoolInfo.is_school_admin && (
+                  <a href="/school-admin" style={{ display: 'inline-block', marginTop: '12px', padding: '10px 20px', background: '#1a5f2b', color: 'white', borderRadius: '8px', textDecoration: 'none' }}>
+                    Open School Admin Dashboard →
+                  </a>
+                )}
+              </div>
+            ) : (
+              <div>
+                <p style={{ color: '#888', marginBottom: '16px' }}>You're not linked to a school yet.</p>
+                <div style={{ display: 'flex', gap: '12px', marginBottom: '16px' }}>
+                  <button onClick={() => { setSchoolFormMode('join'); setSchoolFormValue(''); }} style={{ padding: '8px 16px', background: schoolFormMode === 'join' ? '#1a5f2b' : '#f0f0f0', color: schoolFormMode === 'join' ? 'white' : '#333', border: 'none', borderRadius: '8px', cursor: 'pointer' }}>
+                    Join a School
+                  </button>
+                  <button onClick={() => { setSchoolFormMode('create'); setSchoolFormValue(''); }} style={{ padding: '8px 16px', background: schoolFormMode === 'create' ? '#1a5f2b' : '#f0f0f0', color: schoolFormMode === 'create' ? 'white' : '#333', border: 'none', borderRadius: '8px', cursor: 'pointer' }}>
+                    Create a School
+                  </button>
+                </div>
+                {schoolFormMode === 'join' && (
+                  <div style={{ display: 'flex', gap: '8px', maxWidth: '400px' }}>
+                    <input
+                      value={schoolFormValue}
+                      onChange={(e) => setSchoolFormValue(e.target.value)}
+                      placeholder="Enter join code"
+                      style={{ flex: 1, padding: '10px', border: '1px solid #e0e0e0', borderRadius: '8px' }}
+                    />
+                    <button onClick={handleJoinSchool} disabled={schoolSaving} style={{ padding: '10px 20px', background: '#1a5f2b', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer' }}>
+                      {schoolSaving ? 'Joining...' : 'Join'}
+                    </button>
+                  </div>
+                )}
+                {schoolFormMode === 'create' && (
+                  <div style={{ display: 'flex', gap: '8px', maxWidth: '400px' }}>
+                    <input
+                      value={schoolFormValue}
+                      onChange={(e) => setSchoolFormValue(e.target.value)}
+                      placeholder="School name"
+                      style={{ flex: 1, padding: '10px', border: '1px solid #e0e0e0', borderRadius: '8px' }}
+                    />
+                    <button onClick={handleCreateSchool} disabled={schoolSaving} style={{ padding: '10px 20px', background: '#1a5f2b', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer' }}>
+                      {schoolSaving ? 'Creating...' : 'Create'}
+                    </button>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         )}
 

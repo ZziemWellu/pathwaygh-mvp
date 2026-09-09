@@ -1,6 +1,6 @@
 from datetime import datetime, timezone
 
-from sqlalchemy import JSON, Boolean, Column, DateTime, Integer, String, Text
+from sqlalchemy import JSON, Boolean, Column, DateTime, ForeignKey, Integer, String, Text
 from sqlalchemy.orm import relationship
 
 from core.database import Base
@@ -17,6 +17,16 @@ class User(Base):
     is_admin = Column(Boolean, nullable=False, default=False)
     country = Column(String(2), nullable=False, default="GH")
     created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
+
+    # Institutional linkage. school_id/is_school_admin are the real
+    # relational link to a School row; the pre-existing `school` string below
+    # is separate self-reported profile text and is left untouched.
+    school_id = Column(
+        Integer,
+        ForeignKey("schools.id", use_alter=True, name="fk_users_school_id"),
+        nullable=True,
+    )
+    is_school_admin = Column(Boolean, nullable=False, default=False)
 
     # Profile fields
     school = Column(String(255), nullable=True)

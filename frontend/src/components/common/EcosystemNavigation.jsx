@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Home, BookOpen, Search, PencilLine, ListChecks, User, Users, Shield } from 'lucide-react';
+import { Home, BookOpen, Search, PencilLine, ListChecks, User, Users, Shield, Building2 } from 'lucide-react';
 
 const EcosystemNavigation = ({ activeModule, setActiveModule, user }) => {
   const navigate = useNavigate();
@@ -14,6 +14,7 @@ const EcosystemNavigation = ({ activeModule, setActiveModule, user }) => {
     { id: 'profile', icon: User, label: 'Profile', path: '/profile' },
     { id: 'community', icon: Users, label: 'Community', path: '/community' },
     ...(user?.is_admin ? [{ id: 'admin', icon: Shield, label: 'Admin', path: '/admin' }] : []),
+    ...(user?.is_school_admin ? [{ id: 'school-admin', icon: Building2, label: 'School Admin', path: '/school-admin' }] : []),
   ];
 
   const handleNavigate = (module) => {
