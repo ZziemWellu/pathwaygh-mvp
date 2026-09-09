@@ -96,6 +96,124 @@
       ],
       "admission_info": "Applications open in January. Deadline is March 31st. Teacher training programs have specific requirements.",
       "country": "GH"
+    },
+    {
+      "id": "unilag",
+      "name": "University of Lagos",
+      "location": "Lagos",
+      "cutoff": "UTME 200 (institutional minimum; most departments require more)",
+      "type": "Public (Federal)",
+      "ranking": 1,
+      "description": "Nigeria's premier university located in Lagos, renowned for medicine, law, business, and engineering.",
+      "programs": [
+        "Medicine",
+        "Engineering",
+        "Law",
+        "Business",
+        "Sciences",
+        "Arts"
+      ],
+      "requirements": [
+        "JAMB UTME score of 200 or higher (departmental cutoffs are often higher)",
+        "Five WAEC/NECO credits including English Language and Mathematics, in no more than two sittings",
+        "Pass the UNILAG Post-UTME screening exercise"
+      ],
+      "admission_info": "JAMB UTME registration typically opens January-February. Post-UTME screening follows after JAMB releases results. Check the UNILAG admissions portal for exact 2026/2027 dates.",
+      "country": "NG"
+    },
+    {
+      "id": "ui",
+      "name": "University of Ibadan",
+      "location": "Ibadan, Oyo State",
+      "cutoff": "UTME 200 (institutional minimum; competitive courses require more)",
+      "type": "Public (Federal)",
+      "ranking": 2,
+      "description": "Nigeria's first university, established in 1948, known for strong programs in medicine, the sciences, and the humanities.",
+      "programs": [
+        "Medicine",
+        "Sciences",
+        "Arts",
+        "Social Sciences",
+        "Agriculture",
+        "Law"
+      ],
+      "requirements": [
+        "JAMB UTME score of 200 or higher (departmental cutoffs vary by faculty)",
+        "Five WAEC/NECO credits including English Language and Mathematics, in no more than two sittings",
+        "Pass the UI Post-UTME screening exercise"
+      ],
+      "admission_info": "JAMB UTME registration typically opens January-February. Post-UTME screening and admission list release follow later in the year. Check the UI admissions portal for exact 2026/2027 dates.",
+      "country": "NG"
+    },
+    {
+      "id": "oau",
+      "name": "Obafemi Awolowo University",
+      "location": "Ile-Ife, Osun State",
+      "cutoff": "UTME 200 (Medicine and Surgery is highly competitive, typically 280+)",
+      "type": "Public (Federal)",
+      "ranking": 3,
+      "description": "A leading federal university known for its unified campus design, strong sciences, and highly competitive medicine programme.",
+      "programs": [
+        "Medicine",
+        "Engineering",
+        "Sciences",
+        "Law",
+        "Agriculture",
+        "Environmental Design"
+      ],
+      "requirements": [
+        "JAMB UTME score of 200 or higher (Medicine and Surgery typically requires 280+)",
+        "Five WAEC/NECO credits including English Language and Mathematics, in no more than two sittings",
+        "Pass the OAU Post-UTME screening exercise"
+      ],
+      "admission_info": "JAMB UTME registration typically opens January-February. Check the OAU admissions portal for exact 2026/2027 Post-UTME dates.",
+      "country": "NG"
+    },
+    {
+      "id": "unn",
+      "name": "University of Nigeria, Nsukka",
+      "location": "Nsukka, Enugu State",
+      "cutoff": "UTME 160 (departmental cutoffs are higher - e.g. Medicine and Surgery around 314)",
+      "type": "Public (Federal)",
+      "ranking": 4,
+      "description": "Nigeria's first indigenous university, offering a broad range of programs including medicine, engineering, and agriculture.",
+      "programs": [
+        "Medicine",
+        "Engineering",
+        "Agriculture",
+        "Sciences",
+        "Arts",
+        "Social Sciences"
+      ],
+      "requirements": [
+        "JAMB UTME score of 160 or higher (institutional minimum; departmental cutoffs are set after Post-UTME)",
+        "Five WAEC/NECO credits including English Language and Mathematics, in no more than two sittings",
+        "Pass the UNN Post-UTME screening exercise"
+      ],
+      "admission_info": "JAMB UTME registration typically opens January-February. Check the UNN admissions portal for exact 2026/2027 Post-UTME dates.",
+      "country": "NG"
+    },
+    {
+      "id": "covenant",
+      "name": "Covenant University",
+      "location": "Ota, Ogun State",
+      "cutoff": "UTME 150",
+      "type": "Private",
+      "ranking": 5,
+      "description": "A leading private Christian university known for engineering, computer science, and business programs, with a strong focus on entrepreneurship.",
+      "programs": [
+        "Engineering",
+        "Computer Science",
+        "Business",
+        "Sciences"
+      ],
+      "requirements": [
+        "JAMB UTME score of 150 or higher",
+        "Five WAEC/NECO credits including English Language and Mathematics, in no more than two sittings",
+        "Pass the Covenant University Post-UTME/aptitude screening"
+      ],
+      "admission_info": "Applications open shortly after JAMB registration. As a private university, Covenant also runs its own Direct Entry and screening timelines - check the official admissions portal for 2026/2027 dates.",
+      "country": "NG"
     }
   ]
 }

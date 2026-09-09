@@ -143,6 +143,162 @@
       "ai_score": 75,
       "ai_match": 70,
       "country": "GH"
+    },
+    {
+      "id": "medical_doctor_ng",
+      "title": "Medical Doctor",
+      "category": "Healthcare",
+      "description": "Diagnose and treat medical conditions, prescribe medication, and provide healthcare advice to patients.",
+      "salary_range": "₦150,000 - ₦600,000",
+      "demand": "Very High",
+      "growth": "Rising demand amid a nationwide doctor shortage",
+      "difficulty": "Very Hard",
+      "required_subjects": [
+        "Biology",
+        "Chemistry",
+        "Physics",
+        "English Language"
+      ],
+      "skills": [
+        "Diagnostic Skills",
+        "Patient Care",
+        "Medical Knowledge",
+        "Communication"
+      ],
+      "universities": [
+        "University of Lagos",
+        "University of Ibadan",
+        "Obafemi Awolowo University"
+      ],
+      "roadmap": [
+        {
+          "title": "Credit passes in English, Biology, Physics, Chemistry (WAEC/NECO)",
+          "duration": "3 years"
+        },
+        {
+          "title": "Competitive JAMB UTME score and Post-UTME screening",
+          "duration": "1 year"
+        },
+        {
+          "title": "Bachelor of Medicine, Bachelor of Surgery (MBBS)",
+          "duration": "6 years"
+        },
+        {
+          "title": "Housemanship (internship)",
+          "duration": "1 year"
+        },
+        {
+          "title": "NYSC, then Residency / Specialization",
+          "duration": "3-6 years"
+        }
+      ],
+      "ai_score": 78,
+      "ai_match": 82,
+      "country": "NG"
+    },
+    {
+      "id": "software_engineer_ng",
+      "title": "Software Engineer",
+      "category": "Technology",
+      "description": "Design, develop, and maintain software applications and systems for various industries.",
+      "salary_range": "₦150,000 - ₦700,000",
+      "demand": "Very High",
+      "growth": "Fast-growing, driven by Nigeria's tech and fintech sector",
+      "difficulty": "Hard",
+      "required_subjects": [
+        "Mathematics",
+        "English Language",
+        "Physics",
+        "Chemistry"
+      ],
+      "skills": [
+        "Programming",
+        "Problem Solving",
+        "System Design",
+        "Team Collaboration"
+      ],
+      "universities": [
+        "University of Lagos",
+        "Covenant University",
+        "University of Ibadan"
+      ],
+      "roadmap": [
+        {
+          "title": "Credit passes in English, Mathematics, Physics (WAEC/NECO)",
+          "duration": "3 years"
+        },
+        {
+          "title": "JAMB UTME and Post-UTME for Computer Science / Software Engineering",
+          "duration": "1 year"
+        },
+        {
+          "title": "Bachelor's in Computer Science / Software Engineering",
+          "duration": "4 years"
+        },
+        {
+          "title": "NYSC, then Internship / Junior Developer",
+          "duration": "1 year"
+        },
+        {
+          "title": "Mid-Level / Senior Developer",
+          "duration": "2-3 years"
+        }
+      ],
+      "ai_score": 92,
+      "ai_match": 88,
+      "country": "NG"
+    },
+    {
+      "id": "civil_engineer_ng",
+      "title": "Civil Engineer",
+      "category": "Engineering",
+      "description": "Design and supervise construction of infrastructure projects like roads, bridges, and buildings.",
+      "salary_range": "₦150,000 - ₦500,000",
+      "demand": "High",
+      "growth": "Steady demand from infrastructure and oil & gas projects",
+      "difficulty": "Hard",
+      "required_subjects": [
+        "Mathematics",
+        "Physics",
+        "Chemistry",
+        "English Language"
+      ],
+      "skills": [
+        "Structural Analysis",
+        "Project Management",
+        "CAD Design",
+        "Problem Solving"
+      ],
+      "universities": [
+        "University of Lagos",
+        "University of Nigeria Nsukka",
+        "Obafemi Awolowo University"
+      ],
+      "roadmap": [
+        {
+          "title": "Credit passes in English, Mathematics, Physics, Chemistry (WAEC/NECO)",
+          "duration": "3 years"
+        },
+        {
+          "title": "JAMB UTME and Post-UTME for Civil Engineering",
+          "duration": "1 year"
+        },
+        {
+          "title": "Bachelor's in Civil Engineering (B.Eng)",
+          "duration": "5 years"
+        },
+        {
+          "title": "NYSC, then Graduate Engineer role",
+          "duration": "1 year"
+        },
+        {
+          "title": "COREN registration (professional licensing)",
+          "duration": "2 years"
+        }
+      ],
+      "ai_score": 75,
+      "ai_match": 70,
+      "country": "NG"
     }
   ]
 }
