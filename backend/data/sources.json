@@ -90,6 +90,104 @@
       "url": "https://www.payscale.com",
       "data_used": ["Salary benchmarks by career", "Experience-based pay"],
       "last_updated": "2024"
+    },
+    {
+      "name": "JAMB (Joint Admissions and Matriculation Board)",
+      "type": "Examination / Admissions Body",
+      "url": "https://www.jamb.gov.ng",
+      "data_used": ["UTME subject combinations", "National and institutional cut-off marks", "O'Level (WAEC/NECO) admission requirements"],
+      "last_updated": "2026"
+    },
+    {
+      "name": "University of Lagos (UNILAG)",
+      "type": "University Admissions",
+      "url": "https://unilag.edu.ng",
+      "data_used": ["Cut-off marks", "Programs offered", "Post-UTME requirements"],
+      "last_updated": "2026"
+    },
+    {
+      "name": "University of Ibadan (UI)",
+      "type": "University Admissions",
+      "url": "https://ui.edu.ng",
+      "data_used": ["Cut-off marks", "Programs offered", "Post-UTME requirements"],
+      "last_updated": "2026"
+    },
+    {
+      "name": "Obafemi Awolowo University (OAU)",
+      "type": "University Admissions",
+      "url": "https://oauife.edu.ng",
+      "data_used": ["Cut-off marks", "Medicine and Surgery admission requirements"],
+      "last_updated": "2026"
+    },
+    {
+      "name": "University of Nigeria, Nsukka (UNN)",
+      "type": "University Admissions",
+      "url": "https://unn.edu.ng",
+      "data_used": ["Cut-off marks", "Departmental requirements"],
+      "last_updated": "2026"
+    },
+    {
+      "name": "Covenant University",
+      "type": "University Admissions (Private)",
+      "url": "https://covenantuniversity.edu.ng",
+      "data_used": ["Cut-off marks", "Engineering and Computer Science requirements"],
+      "last_updated": "2026"
+    },
+    {
+      "name": "Federal Ministry of Education - Federal Scholarship Board",
+      "type": "Government Agency",
+      "url": "https://scholarship.education.gov.ng",
+      "data_used": ["Federal Government Scholarship eligibility", "BEA study-abroad track"],
+      "last_updated": "2026"
+    },
+    {
+      "name": "Petroleum Technology Development Fund (PTDF)",
+      "type": "Government Agency",
+      "url": "https://scholarship.ptdf.gov.ng",
+      "data_used": ["Undergraduate scholarship eligibility and coverage"],
+      "last_updated": "2026"
+    },
+    {
+      "name": "TotalEnergies Nigeria",
+      "type": "Corporate Scholarship Sponsor",
+      "url": "https://corporate.totalenergies.ng",
+      "data_used": ["NNPC/TotalEnergies National Merit Scholarship eligibility and award amount"],
+      "last_updated": "2026"
+    },
+    {
+      "name": "MTN Nigeria Foundation",
+      "type": "Corporate Scholarship Sponsor",
+      "url": "https://www.mtn.ng/scholarships",
+      "data_used": ["MTN Foundation Scholarship eligibility, deadline, and award amount"],
+      "last_updated": "2026"
+    },
+    {
+      "name": "Chevening (UK Government)",
+      "type": "International Scholarship Program",
+      "url": "https://www.chevening.org/scholarship/nigeria",
+      "data_used": ["Nigeria eligibility and application timeline"],
+      "last_updated": "2026"
+    },
+    {
+      "name": "Mastercard Foundation",
+      "type": "International Scholarship Program",
+      "url": "https://mastercardfdn.org/en/what-we-do/our-programs/mastercard-foundation-scholars-program",
+      "data_used": ["Scholars Program eligibility", "Pan-Atlantic University partnership"],
+      "last_updated": "2026"
+    },
+    {
+      "name": "CONMESS (Consolidated Medical Salary Structure) via ClinikeHR",
+      "type": "Salary Data",
+      "url": "https://clinikehr.com/blog/doctor-salary-nigeria-2026",
+      "data_used": ["Medical doctor salary ranges by grade level"],
+      "last_updated": "2026"
+    },
+    {
+      "name": "Jobberman / industry salary surveys (Nigeria)",
+      "type": "Salary Data",
+      "url": "https://www.jobberman.com",
+      "data_used": ["Software engineer and civil engineer salary ranges"],
+      "last_updated": "2026"
     }
   ]
 }

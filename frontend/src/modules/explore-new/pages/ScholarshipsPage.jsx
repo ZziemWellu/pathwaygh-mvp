@@ -117,6 +117,10 @@ const ScholarshipsPage = () => {
   const formatDate = (dateStr) => {
     if (!dateStr) return 'N/A';
     const date = new Date(dateStr);
+    // Some deadlines are a note rather than a fixed date (e.g. "Announced
+    // annually - check the official portal") when a real one isn't known -
+    // show that text as-is instead of "Invalid Date".
+    if (isNaN(date.getTime())) return dateStr;
     return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
   };
 
