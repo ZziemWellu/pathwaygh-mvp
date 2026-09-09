@@ -31,8 +31,9 @@ const Login = ({ onSuccess }) => {
       {error && <p style={{ color: 'red', textAlign: 'center' }}>{error}</p>}
       <form onSubmit={handleSubmit}>
         <div style={{ marginBottom: '16px' }}>
-          <label style={{ display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>Email</label>
+          <label htmlFor="login-email" style={{ display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>Email</label>
           <input
+            id="login-email"
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
@@ -42,8 +43,9 @@ const Login = ({ onSuccess }) => {
           />
         </div>
         <div style={{ marginBottom: '16px' }}>
-          <label style={{ display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>Password</label>
+          <label htmlFor="login-password" style={{ display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>Password</label>
           <input
+            id="login-password"
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}

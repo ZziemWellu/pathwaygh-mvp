@@ -205,7 +205,7 @@ function AdmissionPredictor() {
                     <div style={{ fontSize: '14px', color: '#666', marginTop: '5px' }}>
                       {pred.program} • Cutoff: ≤{pred.cutoff} • {pred.competitive_score}
                     </div>
-                    <div style={{ fontSize: '12px', color: '#888' }}>
+                    <div style={{ fontSize: '12px', color: '#666666' }}>
                       Subjects: {pred.subject_match}
                     </div>
                   </div>

@@ -56,20 +56,20 @@ const SchoolAdminDashboard = () => {
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: '16px', marginBottom: '24px' }}>
         <div style={{ background: 'white', border: '1px solid #e0e0e0', borderRadius: '12px', padding: '16px', textAlign: 'center' }}>
           <div style={{ fontSize: '28px', fontWeight: 'bold', color: '#1a5f2b' }}>{summary.student_count}</div>
-          <div style={{ fontSize: '12px', color: '#888' }}>Students</div>
+          <div style={{ fontSize: '12px', color: '#666666' }}>Students</div>
         </div>
         <div style={{ background: 'white', border: '1px solid #e0e0e0', borderRadius: '12px', padding: '16px', textAlign: 'center' }}>
           <div style={{ fontSize: '28px', fontWeight: 'bold', color: '#1a5f2b' }}>{summary.average_completion_rate}%</div>
-          <div style={{ fontSize: '12px', color: '#888' }}>Avg. Completion</div>
+          <div style={{ fontSize: '12px', color: '#666666' }}>Avg. Completion</div>
         </div>
         <div style={{ background: 'white', border: '1px solid #e0e0e0', borderRadius: '12px', padding: '16px', textAlign: 'center' }}>
           <div style={{ fontSize: '28px', fontWeight: 'bold', color: '#1a5f2b' }}>{summary.average_quiz_score}%</div>
-          <div style={{ fontSize: '12px', color: '#888' }}>Avg. Quiz Score</div>
+          <div style={{ fontSize: '12px', color: '#666666' }}>Avg. Quiz Score</div>
         </div>
       </div>
 
       {roster.length === 0 ? (
-        <div style={{ textAlign: 'center', padding: '40px', color: '#888', background: 'white', border: '1px solid #e0e0e0', borderRadius: '12px' }}>
+        <div style={{ textAlign: 'center', padding: '40px', color: '#666666', background: 'white', border: '1px solid #e0e0e0', borderRadius: '12px' }}>
           No students yet. Share the join code above so students can link themselves to {school?.name}.
         </div>
       ) : (

@@ -111,7 +111,7 @@ const CourseDetail = () => {
               <span style={{ fontSize: '20px' }}>{lesson.watched ? '✅' : LESSON_ICON[lesson.lesson_type] || '📄'}</span>
               <div style={{ flex: 1 }}>
                 <div style={{ fontWeight: 500 }}>{lesson.title}</div>
-                <div style={{ fontSize: '12px', color: '#888' }}>
+                <div style={{ fontSize: '12px', color: '#666666' }}>
                   {lesson.duration_minutes ? `${lesson.duration_minutes} min` : ''}
                   {lesson.is_free_preview && ' • Free preview'}
                 </div>

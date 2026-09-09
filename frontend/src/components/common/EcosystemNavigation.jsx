@@ -39,6 +39,7 @@ const EcosystemNavigation = ({ activeModule, setActiveModule, user }) => {
           <button
             key={module.id}
             onClick={() => handleNavigate(module)}
+            aria-current={active ? 'page' : undefined}
             style={{
               display: 'inline-flex',
               alignItems: 'center',
@@ -60,7 +61,7 @@ const EcosystemNavigation = ({ activeModule, setActiveModule, user }) => {
               if (!active) e.currentTarget.style.background = 'transparent';
             }}
           >
-            <module.icon size={15} />
+            <module.icon size={15} aria-hidden="true" />
             {module.label}
           </button>
         );

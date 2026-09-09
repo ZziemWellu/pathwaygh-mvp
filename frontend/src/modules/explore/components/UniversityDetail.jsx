@@ -79,10 +79,10 @@ const UniversityDetail = ({ university, onClose }) => {
             border: 'none',
             fontSize: '24px',
             cursor: 'pointer',
-            color: '#888',
+            color: '#666666',
           }}
           onMouseEnter={(e) => e.currentTarget.style.color = '#333'}
-          onMouseLeave={(e) => e.currentTarget.style.color = '#888'}
+          onMouseLeave={(e) => e.currentTarget.style.color = '#666666'}
         >
           ✕
         </button>
@@ -122,19 +122,19 @@ const UniversityDetail = ({ university, onClose }) => {
         }}>
           {university.cutoff && (
             <div style={{ padding: '14px', background: '#f8f9fa', borderRadius: '10px' }}>
-              <div style={{ fontSize: '11px', color: '#888' }}>📊 Cutoff</div>
+              <div style={{ fontSize: '11px', color: '#666666' }}>📊 Cutoff</div>
               <div style={{ fontSize: '16px', fontWeight: 'bold', color: '#1a5f2b' }}>{university.cutoff}</div>
             </div>
           )}
           {university.ranking && (
             <div style={{ padding: '14px', background: '#f8f9fa', borderRadius: '10px' }}>
-              <div style={{ fontSize: '11px', color: '#888' }}>🏆 Ranking</div>
+              <div style={{ fontSize: '11px', color: '#666666' }}>🏆 Ranking</div>
               <div style={{ fontSize: '16px', fontWeight: 'bold', color: '#1a5f2b' }}>#{university.ranking}</div>
             </div>
           )}
           {university.type && (
             <div style={{ padding: '14px', background: '#f8f9fa', borderRadius: '10px' }}>
-              <div style={{ fontSize: '11px', color: '#888' }}>🏛️ Type</div>
+              <div style={{ fontSize: '11px', color: '#666666' }}>🏛️ Type</div>
               <div style={{ fontSize: '16px', fontWeight: 'bold', color: '#1a5f2b' }}>{university.type}</div>
             </div>
           )}

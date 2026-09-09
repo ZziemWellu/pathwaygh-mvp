@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import api from '../../../services/api';
 import { getUser } from '../../../constants/auth';
+import { useModalA11y } from '../../../hooks/useModalA11y';
 
 const ScholarshipsPage = () => {
   const [scholarships, setScholarships] = useState([]);
@@ -12,7 +13,10 @@ const ScholarshipsPage = () => {
   const [filterType, setFilterType] = useState('all');
   const [filterStatus, setFilterStatus] = useState('all');
   const [savedScholarships, setSavedScholarships] = useState([]);
-  
+  const modalRef = useRef(null);
+  const closeModal = useCallback(() => setSelectedScholarship(null), []);
+  useModalA11y({ isOpen: !!selectedScholarship, onClose: closeModal, containerRef: modalRef });
+
   const user = getUser();
 
   useEffect(() => {
@@ -49,8 +53,12 @@ const ScholarshipsPage = () => {
       const userId = user?.id || 'test_user';
       const response = await api.get(`/api/profile/saved/scholarships`, {
         params: { user_id: userId }
-      }).catch(() => ({ data: [] }));
-      setSavedScholarships(response.data || []);
+      }).catch(() => ({ data: { scholarships: [] } }));
+      // The endpoint returns {success, scholarships: [...]}, not a bare
+      // array - `response.data || []` previously kept that whole object
+      // (truthy), so isSaved()'s `.some()` call crashed the page the moment
+      // any card was clicked.
+      setSavedScholarships(response.data?.scholarships || []);
     } catch (err) {
       console.error('Saved scholarships error:', err);
     }
@@ -106,7 +114,7 @@ const ScholarshipsPage = () => {
       case 'government': return '#1a5f2b';
       case 'private': return '#1565c0';
       case 'international': return '#6a1b9a';
-      default: return '#888';
+      default: return '#666666';
     }
   };
 
@@ -129,7 +137,7 @@ const ScholarshipsPage = () => {
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '300px' }}>
         <div style={{ textAlign: 'center' }}>
           <div style={{ width: '40px', height: '40px', border: '4px solid #f0f0f0', borderTopColor: '#1a5f2b', borderRadius: '50%', animation: 'spin 0.8s linear infinite', margin: '0 auto 16px' }} />
-          <p style={{ color: '#888' }}>Loading scholarships...</p>
+          <p style={{ color: '#666666' }}>Loading scholarships...</p>
         </div>
       </div>
     );
@@ -150,12 +158,12 @@ const ScholarshipsPage = () => {
       <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '20px' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', flexWrap: 'wrap', gap: '10px' }}>
           <h2 style={{ color: '#1a5f2b' }}>💰 Scholarships</h2>
-          <span style={{ color: '#888' }}>0 scholarships available</span>
+          <span style={{ color: '#666666' }}>0 scholarships available</span>
         </div>
         <div style={{ textAlign: 'center', padding: '60px 20px', background: 'white', borderRadius: '12px', border: '1px solid #e0e0e0' }}>
           <div style={{ fontSize: '48px', marginBottom: '16px' }}>🎓</div>
           <h3 style={{ color: '#666' }}>Scholarships Coming Soon</h3>
-          <p style={{ color: '#888', maxWidth: '400px', margin: '0 auto' }}>
+          <p style={{ color: '#666666', maxWidth: '400px', margin: '0 auto' }}>
             We're working on adding scholarship opportunities. Check back soon!
           </p>
         </div>
@@ -168,7 +176,7 @@ const ScholarshipsPage = () => {
       {/* Header */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', flexWrap: 'wrap', gap: '10px' }}>
         <h2 style={{ color: '#1a5f2b' }}>💰 Scholarships</h2>
-        <span style={{ color: '#888' }}>{filteredScholarships.length} scholarships available</span>
+        <span style={{ color: '#666666' }}>{filteredScholarships.length} scholarships available</span>
       </div>
 
       {/* Search and Filters */}
@@ -188,6 +196,7 @@ const ScholarshipsPage = () => {
           }}
         />
         <select
+          aria-label="Filter by scholarship type"
           value={filterType}
           onChange={(e) => setFilterType(e.target.value)}
           style={{
@@ -204,6 +213,7 @@ const ScholarshipsPage = () => {
           <option value="international">🌍 International</option>
         </select>
         <select
+          aria-label="Filter by scholarship status"
           value={filterStatus}
           onChange={(e) => setFilterStatus(e.target.value)}
           style={{
@@ -223,13 +233,21 @@ const ScholarshipsPage = () => {
       {/* Scholarships Grid */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '20px' }}>
         {filteredScholarships.length === 0 ? (
-          <p style={{ gridColumn: '1 / -1', textAlign: 'center', padding: '40px', color: '#888' }}>
+          <p style={{ gridColumn: '1 / -1', textAlign: 'center', padding: '40px', color: '#666666' }}>
             No scholarships match your filters.
           </p>
         ) : (
           filteredScholarships.map((sch) => (
             <div
               key={sch.id}
+              role="button"
+              tabIndex={0}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  setSelectedScholarship(sch);
+                }
+              }}
               style={{
                 border: '1px solid #e0e0e0',
                 borderRadius: '12px',
@@ -283,7 +301,7 @@ const ScholarshipsPage = () => {
                   {sch.type.toUpperCase()}
                 </span>
               </div>
-              <div style={{ fontSize: '12px', color: '#888', marginTop: '12px' }}>
+              <div style={{ fontSize: '12px', color: '#666666', marginTop: '12px' }}>
                 Click for full details →
               </div>
             </div>
@@ -310,6 +328,11 @@ const ScholarshipsPage = () => {
           onClick={() => setSelectedScholarship(null)}
         >
           <div
+            ref={modalRef}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="scholarship-modal-title"
+            tabIndex={-1}
             style={{
               background: 'white',
               padding: '30px',
@@ -322,12 +345,13 @@ const ScholarshipsPage = () => {
             onClick={(e) => e.stopPropagation()}
           >
             <button
-              style={{ float: 'right', background: 'none', border: 'none', fontSize: '24px', cursor: 'pointer', color: '#888' }}
+              aria-label="Close"
+              style={{ float: 'right', background: 'none', border: 'none', fontSize: '24px', cursor: 'pointer', color: '#666666' }}
               onClick={() => setSelectedScholarship(null)}
             >
               ✕
             </button>
-            <h2 style={{ color: '#1a5f2b', marginBottom: '8px' }}>{selectedScholarship.title}</h2>
+            <h2 id="scholarship-modal-title" style={{ color: '#1a5f2b', marginBottom: '8px' }}>{selectedScholarship.title}</h2>
             <span style={{
               padding: '2px 12px',
               borderRadius: '12px',

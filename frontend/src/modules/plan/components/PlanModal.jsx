@@ -171,7 +171,7 @@ const PlanModal = ({ isOpen, onClose, onPlanCreated, user }) => {
               border: 'none',
               fontSize: '24px',
               cursor: 'pointer',
-              color: '#888',
+              color: '#666666',
               padding: '0 8px',
             }}
           >
@@ -341,7 +341,7 @@ const PlanModal = ({ isOpen, onClose, onPlanCreated, user }) => {
                           background: 'none',
                           border: 'none',
                           cursor: 'pointer',
-                          color: '#888',
+                          color: '#666666',
                           fontSize: '14px',
                           padding: '0',
                         }}
@@ -352,7 +352,7 @@ const PlanModal = ({ isOpen, onClose, onPlanCreated, user }) => {
                   ))}
                 </div>
                 {formData.subjects.length === 0 && (
-                  <div style={{ fontSize: '12px', color: '#888', marginTop: '4px' }}>
+                  <div style={{ fontSize: '12px', color: '#666666', marginTop: '4px' }}>
                     Add at least one subject to continue
                   </div>
                 )}

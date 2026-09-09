@@ -161,7 +161,7 @@ const PlanModule = () => {
       </div>
 
       {plans.length === 0 ? (
-        <div style={{ textAlign: 'center', padding: '60px 20px', color: '#888' }}>
+        <div style={{ textAlign: 'center', padding: '60px 20px', color: '#666666' }}>
           <p>No study plans yet. Create your first plan!</p>
         </div>
       ) : (
@@ -180,7 +180,7 @@ const PlanModule = () => {
             >
               <div style={{ position: 'absolute', top: '12px', right: '12px' }}>
                 <button
-                  style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#888', fontSize: '16px' }}
+                  style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#666666', fontSize: '16px' }}
                   onClick={() => {/* Delete plan */}}
                 >
                   ✕
@@ -192,7 +192,7 @@ const PlanModule = () => {
               <p style={{ color: '#666', fontSize: '14px', margin: '0 0 8px 0' }}>
                 {plan.description}
               </p>
-              <div style={{ display: 'flex', gap: '12px', fontSize: '12px', color: '#888', flexWrap: 'wrap' }}>
+              <div style={{ display: 'flex', gap: '12px', fontSize: '12px', color: '#666666', flexWrap: 'wrap' }}>
                 <span>📅 {plan.duration_months || plan.duration || 'N/A'} months</span>
                 <span>📊 {plan.progress || 0}% complete</span>
               </div>
@@ -206,7 +206,7 @@ const PlanModule = () => {
                 </div>
               )}
               {plan.goal && (
-                <div style={{ marginTop: '8px', fontSize: '11px', color: '#888' }}>
+                <div style={{ marginTop: '8px', fontSize: '11px', color: '#666666' }}>
                   🎯 {plan.goal}
                 </div>
               )}
@@ -259,7 +259,7 @@ const PlanModule = () => {
               <h2 style={{ color: '#1a5f2b', margin: 0 }}>📋 Create Study Plan</h2>
               <button
                 onClick={handleCloseModal}
-                style={{ background: 'none', border: 'none', fontSize: '24px', cursor: 'pointer', color: '#888' }}
+                style={{ background: 'none', border: 'none', fontSize: '24px', cursor: 'pointer', color: '#666666' }}
               >
                 ✕
               </button>

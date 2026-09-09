@@ -67,12 +67,12 @@ const CourseGrid = ({ user }) => {
           >
             {showEnrolledOnly ? '📚 My Courses' : '📚 All Courses'}
           </button>
-          <span style={{ color: '#888', fontSize: '14px' }}>{courses.length} courses</span>
+          <span style={{ color: '#666666', fontSize: '14px' }}>{courses.length} courses</span>
         </div>
       </div>
 
       {courses.length === 0 ? (
-        <div style={{ textAlign: 'center', padding: '60px 20px', color: '#888' }}>
+        <div style={{ textAlign: 'center', padding: '60px 20px', color: '#666666' }}>
           {showEnrolledOnly ? (
             <div>
               <p>You haven't enrolled in any courses yet.</p>
@@ -124,7 +124,7 @@ const CourseGrid = ({ user }) => {
                 </span>
               )}
               <p style={{ color: '#555', fontSize: '14px', margin: '12px 0' }}>{course.description}</p>
-              <div style={{ fontSize: '12px', color: '#888' }}>📖 {course.lesson_count || 0} lessons</div>
+              <div style={{ fontSize: '12px', color: '#666666' }}>📖 {course.lesson_count || 0} lessons</div>
               <div style={{ marginTop: '12px', fontSize: '12px', color: '#1a5f2b', textAlign: 'center' }}>
                 {course.enrolled ? '📖 Continue Learning →' : '👆 View course'}
               </div>
