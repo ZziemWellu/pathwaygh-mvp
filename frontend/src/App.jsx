@@ -1,5 +1,5 @@
 import React, { useState, useEffect, lazy, Suspense } from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate, Link } from 'react-router-dom';
 import './App.css';
 import { getUser, isAuthenticated, login as authLogin, logout as authLogout, getCountry, setCountry as persistCountry, removeCountry } from './constants/auth';
 import EcosystemNavigation from './components/common/EcosystemNavigation';
@@ -12,6 +12,7 @@ import CountrySelector from './components/CountrySelector';
 import LanguageSwitcher from './components/LanguageSwitcher';
 import AIChat from './components/ai/AIChat';
 import { useLanguage } from './contexts/LanguageContext';
+import PrivacyPolicy from './modules/legal/PrivacyPolicy';
 
 const COUNTRY_FLAGS = { GH: GhanaFlag, NG: NigeriaFlag };
 const COUNTRY_NAMES = { GH: 'Ghana', NG: 'Nigeria' };
@@ -48,6 +49,7 @@ const App = () => {
   const [showLogin, setShowLogin] = useState(true);
   const [activeModule, setActiveModule] = useState('home');
   const [country, setCountryState] = useState(null);
+  const [showPrivacy, setShowPrivacy] = useState(false);
 
   useEffect(() => {
     const userData = getUser();
@@ -91,6 +93,10 @@ const App = () => {
   }
 
   if (!isAuth) {
+    if (showPrivacy) {
+      return <PrivacyPolicy onBack={() => setShowPrivacy(false)} />;
+    }
+
     if (!country) {
       return (
         <div style={{ maxWidth: '400px', margin: '40px auto', padding: '20px' }}>
@@ -104,6 +110,11 @@ const App = () => {
             </div>
             <CountrySelector onSelect={handleCountrySelect} />
           </main>
+          <footer style={{ textAlign: 'center', marginTop: '24px' }}>
+            <button onClick={() => setShowPrivacy(true)} style={{ background: 'none', border: 'none', color: '#666666', cursor: 'pointer', textDecoration: 'underline', fontSize: '12px' }}>
+              {t('footerPrivacyPolicy')}
+            </button>
+          </footer>
         </div>
       );
     }
@@ -116,7 +127,7 @@ const App = () => {
           <p style={{ color: '#666666' }}>{t('tagline')} • {COUNTRY_NAMES[country]}</p>
         </header>
         <main>
-          {showLogin ? <Login onSuccess={handleLogin} /> : <Register onSuccess={() => setShowLogin(true)} />}
+          {showLogin ? <Login onSuccess={handleLogin} /> : <Register onSuccess={() => setShowLogin(true)} onShowPrivacy={() => setShowPrivacy(true)} />}
           <p style={{ textAlign: 'center', marginTop: '16px' }}>
             <button onClick={() => setShowLogin(!showLogin)} style={{ background: 'none', border: 'none', color: '#1a5f2b', cursor: 'pointer', textDecoration: 'underline' }}>
               {showLogin ? t('needAccountRegister') : t('alreadyHaveAccountLogin')}
@@ -133,6 +144,9 @@ const App = () => {
         </main>
         <footer style={{ textAlign: 'center', marginTop: '40px', padding: '20px', color: '#666666', borderTop: '1px solid #eee' }}>
           <p>{t('copyright')}</p>
+          <button onClick={() => setShowPrivacy(true)} style={{ background: 'none', border: 'none', color: '#666666', cursor: 'pointer', textDecoration: 'underline', fontSize: '12px' }}>
+            {t('footerPrivacyPolicy')}
+          </button>
         </footer>
       </div>
     );
@@ -219,6 +233,7 @@ const App = () => {
             <Route path="/admin/lessons/:lessonId" element={user?.is_admin ? <AdminLessonEditor /> : <Navigate to="/" />} />
             <Route path="/school-admin" element={user?.is_school_admin ? <SchoolAdminDashboard /> : <Navigate to="/" />} />
             <Route path="/impact" element={user?.is_admin ? <ImpactDashboard /> : <Navigate to="/" />} />
+            <Route path="/privacy" element={<PrivacyPolicy />} />
 
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>
@@ -233,6 +248,9 @@ const App = () => {
           fontSize: '13px' 
         }}>
           <p>{t('copyright')}</p>
+          <Link to="/privacy" style={{ color: '#666666', fontSize: '12px', textDecoration: 'underline' }}>
+            {t('footerPrivacyPolicy')}
+          </Link>
         </footer>
 
         <AIChat user={user} />

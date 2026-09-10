@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import api from '../../services/api';
 import { getUser, setUser } from '../../constants/auth';
 import LanguageSwitcher from '../../components/LanguageSwitcher';
@@ -32,6 +33,8 @@ const ProfileModule = () => {
   const [schoolFormMode, setSchoolFormMode] = useState(null); // null | 'create' | 'join'
   const [schoolFormValue, setSchoolFormValue] = useState('');
   const [schoolSaving, setSchoolSaving] = useState(false);
+  const [guardianEmailValue, setGuardianEmailValue] = useState('');
+  const [guardianEmailSaving, setGuardianEmailSaving] = useState(false);
 
   useEffect(() => {
     fetchProfileData();
@@ -49,6 +52,7 @@ const ProfileModule = () => {
       const profileData = profileRes.data || {};
       setProfile(profileData);
       setFormData(profileData);
+      setGuardianEmailValue(profileData.guardian_email || '');
 
       const statsRes = await api.get('/api/dashboard/statistics').catch(() => ({ data: {} }));
       setStats(prev => ({ ...prev, ...statsRes.data }));
@@ -212,6 +216,19 @@ const ProfileModule = () => {
   const refreshCachedUser = async () => {
     const me = await api.get('/api/auth/me');
     setUser(me.data.user);
+  };
+
+  const handleSaveGuardianEmail = async () => {
+    setGuardianEmailSaving(true);
+    try {
+      const response = await api.put('/api/profile/me', { guardian_email: guardianEmailValue.trim() || null });
+      setProfile(response.data.profile);
+      showNotification('✅ Parent/Guardian email saved.');
+    } catch (err) {
+      showNotification(err.response?.data?.detail || 'Failed to save parent/guardian email.', 'error');
+    } finally {
+      setGuardianEmailSaving(false);
+    }
   };
 
   const handleCreateSchool = async () => {
@@ -699,9 +716,28 @@ const ProfileModule = () => {
               <div>
                 <p style={{ marginBottom: '8px' }}><strong style={{ color: '#666' }}>Language:</strong></p>
                 <LanguageSwitcher style={{ marginBottom: '16px' }} />
-                <p><strong style={{ color: '#666' }}>Privacy Settings:</strong></p>
-                <p style={{ color: '#666666', fontSize: '13px' }}>Account settings and privacy controls coming soon.</p>
               </div>
+            </div>
+
+            <div style={{ marginTop: '24px', paddingTop: '16px', borderTop: '1px solid #eee' }}>
+              <p style={{ marginBottom: '8px' }}><strong style={{ color: '#666' }}>Parent/Guardian Email:</strong></p>
+              <div style={{ display: 'flex', gap: '8px', marginBottom: '12px', maxWidth: '400px' }}>
+                <input
+                  type="email"
+                  value={guardianEmailValue}
+                  onChange={(e) => setGuardianEmailValue(e.target.value)}
+                  placeholder="parent@email.com"
+                  style={{ flex: 1, padding: '10px', border: '1px solid #e0e0e0', borderRadius: '8px' }}
+                />
+                <button onClick={handleSaveGuardianEmail} disabled={guardianEmailSaving} style={{ padding: '10px 20px', background: '#1a5f2b', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer' }}>
+                  {guardianEmailSaving ? 'Saving...' : 'Save'}
+                </button>
+              </div>
+              <p style={{ color: '#666666', fontSize: '13px' }}>
+                Consent given: {profile?.consent_given_at ? new Date(profile.consent_given_at).toLocaleDateString() : 'Not recorded (account predates consent tracking)'}
+                {profile?.consent_version && ` · version ${profile.consent_version}`}
+              </p>
+              <Link to="/privacy" style={{ color: '#1a5f2b', fontSize: '13px' }}>View Privacy Policy</Link>
             </div>
           </div>
         )}

@@ -7,7 +7,7 @@ from pathlib import Path
 from typing import List, Optional
 
 from fastapi import APIRouter, Depends, File, HTTPException, UploadFile
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr
 from sqlalchemy.orm import Session
 
 from core.database import get_db
@@ -30,6 +30,7 @@ class ProfileUpdateRequest(BaseModel):
     goals: Optional[List[str]] = None
     subjects: Optional[List[str]] = None
     language: Optional[str] = None
+    guardian_email: Optional[EmailStr] = None
 
 
 class SavedItemRequest(BaseModel):
@@ -52,6 +53,9 @@ def _profile_out(user: User) -> dict:
         "language": user.language,
         "avatar_url": f"/uploads/avatars/{user.avatar_filename}" if user.avatar_filename else None,
         "created_at": user.created_at.isoformat() if user.created_at else None,
+        "guardian_email": user.guardian_email,
+        "consent_given_at": user.consent_given_at.isoformat() if user.consent_given_at else None,
+        "consent_version": user.consent_version,
     }
 
 
@@ -71,7 +75,7 @@ async def update_my_profile(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
-    for field in ("full_name", "school", "grade", "bio", "phone", "location", "interests", "goals", "subjects", "language"):
+    for field in ("full_name", "school", "grade", "bio", "phone", "location", "interests", "goals", "subjects", "language", "guardian_email"):
         value = getattr(request, field)
         if value is not None:
             setattr(current_user, field, value)

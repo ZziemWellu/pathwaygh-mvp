@@ -3,28 +3,31 @@ import api from '../../services/api';
 import { getCountry } from '../../constants/auth';
 import { useLanguage } from '../../contexts/LanguageContext';
 
-const Register = ({ onSuccess }) => {
+const Register = ({ onSuccess, onShowPrivacy }) => {
   const { t } = useLanguage();
   const [formData, setFormData] = useState({
     full_name: '',
     email: '',
     password: '',
-    confirm_password: ''
+    confirm_password: '',
+    consent_confirmed: false,
+    guardian_email: ''
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
 
   const handleChange = (e) => {
+    const { name, type, checked, value } = e.target;
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [name]: type === 'checkbox' ? checked : value
     });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     // Validate passwords match
     if (formData.password !== formData.confirm_password) {
       setError(t('passwordsDoNotMatch'));
@@ -34,6 +37,11 @@ const Register = ({ onSuccess }) => {
     // Validate password length
     if (formData.password.length < 6) {
       setError(t('passwordTooShort'));
+      return;
+    }
+
+    if (!formData.consent_confirmed) {
+      setError(t('consentRequired'));
       return;
     }
 
@@ -48,12 +56,14 @@ const Register = ({ onSuccess }) => {
     setSuccess(false);
 
     try {
-      // The backend expects: email, full_name, password, country
+      // The backend expects: email, full_name, password, country, consent_confirmed, guardian_email
       const payload = {
         email: formData.email,
         full_name: formData.full_name,  // ← CORRECT field name!
         password: formData.password,
-        country
+        country,
+        consent_confirmed: formData.consent_confirmed,
+        guardian_email: formData.guardian_email.trim() || null
       };
 
       console.log('📤 Registering with:', payload);
@@ -206,6 +216,48 @@ const Register = ({ onSuccess }) => {
             }}
             placeholder={t('confirmPasswordPlaceholder')}
           />
+        </div>
+
+        <div style={{ marginBottom: '16px' }}>
+          <label htmlFor="guardian_email" style={{ display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>{t('guardianEmailLabel')}</label>
+          <input
+            id="guardian_email"
+            type="email"
+            name="guardian_email"
+            value={formData.guardian_email}
+            onChange={handleChange}
+            style={{
+              width: '100%',
+              padding: '10px',
+              border: '1px solid #e0e0e0',
+              borderRadius: '8px',
+              fontSize: '14px'
+            }}
+            placeholder={t('guardianEmailPlaceholder')}
+          />
+        </div>
+
+        <div style={{ marginBottom: '16px' }}>
+          <label style={{ display: 'flex', alignItems: 'flex-start', gap: '8px', fontSize: '13px', cursor: 'pointer' }}>
+            <input
+              type="checkbox"
+              name="consent_confirmed"
+              checked={formData.consent_confirmed}
+              onChange={handleChange}
+              style={{ marginTop: '3px' }}
+            />
+            <span>
+              {t('consentStatementBeforeLink')}{' '}
+              <button
+                type="button"
+                onClick={onShowPrivacy}
+                style={{ background: 'none', border: 'none', color: '#1a5f2b', cursor: 'pointer', textDecoration: 'underline', padding: 0, font: 'inherit' }}
+              >
+                {t('privacyPolicyLinkText')}
+              </button>
+              {t('consentStatementAfterLink')}
+            </span>
+          </label>
         </div>
 
         <button

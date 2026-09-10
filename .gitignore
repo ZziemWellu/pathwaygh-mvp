@@ -26,3 +26,5 @@ Thumbs.db
 
 # Local raw video files - not source code, don't commit large binaries
 /Videos/
+
+.claude/settings.local.json

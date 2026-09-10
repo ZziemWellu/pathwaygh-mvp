@@ -51,7 +51,13 @@ def client(db_session):
 def register_user(client, email="student@test.com", password="secret123", full_name="Test Student", country="GH"):
     response = client.post(
         "/api/auth/register",
-        json={"email": email, "full_name": full_name, "password": password, "country": country},
+        json={
+            "email": email,
+            "full_name": full_name,
+            "password": password,
+            "country": country,
+            "consent_confirmed": True,
+        },
     )
     assert response.status_code == 200, response.text
     return response.json()

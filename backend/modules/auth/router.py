@@ -2,7 +2,8 @@
 Authentication Module Router
 """
 
-from typing import Literal
+from datetime import datetime, timezone
+from typing import Literal, Optional
 
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel, EmailStr
@@ -14,12 +15,16 @@ from models.user import User
 
 router = APIRouter(tags=["auth"])
 
+CURRENT_CONSENT_VERSION = "2026-09-v1"
+
 
 class RegisterRequest(BaseModel):
     email: EmailStr
     full_name: str
     password: str
     country: Literal["GH", "NG"]
+    consent_confirmed: bool
+    guardian_email: Optional[EmailStr] = None
 
 
 class LoginRequest(BaseModel):
@@ -46,6 +51,8 @@ async def auth_root():
 
 @router.post("/register")
 async def register(request: RegisterRequest, db: Session = Depends(get_db)):
+    if not request.consent_confirmed:
+        raise HTTPException(status_code=400, detail="You must confirm the age/consent statement to register")
     if db.query(User).filter(User.email == request.email).first():
         raise HTTPException(status_code=400, detail="Email already registered")
 
@@ -54,6 +61,9 @@ async def register(request: RegisterRequest, db: Session = Depends(get_db)):
         full_name=request.full_name,
         password_hash=hash_password(request.password),
         country=request.country,
+        guardian_email=request.guardian_email,
+        consent_given_at=datetime.now(timezone.utc),
+        consent_version=CURRENT_CONSENT_VERSION,
     )
     db.add(user)
     db.commit()

@@ -1,7 +1,7 @@
 def test_register_returns_token(client):
     response = client.post(
         "/api/auth/register",
-        json={"email": "new@test.com", "full_name": "New Student", "password": "secret123", "country": "GH"},
+        json={"email": "new@test.com", "full_name": "New Student", "password": "secret123", "country": "GH", "consent_confirmed": True},
     )
     assert response.status_code == 200
     data = response.json()
@@ -13,19 +13,19 @@ def test_register_returns_token(client):
 
 
 def test_duplicate_email_rejected(client):
-    client.post("/api/auth/register", json={"email": "dup@test.com", "full_name": "A", "password": "secret123", "country": "GH"})
-    response = client.post("/api/auth/register", json={"email": "dup@test.com", "full_name": "B", "password": "other123", "country": "GH"})
+    client.post("/api/auth/register", json={"email": "dup@test.com", "full_name": "A", "password": "secret123", "country": "GH", "consent_confirmed": True})
+    response = client.post("/api/auth/register", json={"email": "dup@test.com", "full_name": "B", "password": "other123", "country": "GH", "consent_confirmed": True})
     assert response.status_code == 400
 
 
 def test_login_wrong_password_rejected(client):
-    client.post("/api/auth/register", json={"email": "user@test.com", "full_name": "A", "password": "secret123", "country": "GH"})
+    client.post("/api/auth/register", json={"email": "user@test.com", "full_name": "A", "password": "secret123", "country": "GH", "consent_confirmed": True})
     response = client.post("/api/auth/login", json={"email": "user@test.com", "password": "wrongpass"})
     assert response.status_code == 401
 
 
 def test_login_success(client):
-    client.post("/api/auth/register", json={"email": "user2@test.com", "full_name": "A", "password": "secret123", "country": "GH"})
+    client.post("/api/auth/register", json={"email": "user2@test.com", "full_name": "A", "password": "secret123", "country": "GH", "consent_confirmed": True})
     response = client.post("/api/auth/login", json={"email": "user2@test.com", "password": "secret123"})
     assert response.status_code == 200
     assert response.json()["token"]

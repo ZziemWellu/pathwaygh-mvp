@@ -7,6 +7,7 @@ const SchoolAdminDashboard = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [copied, setCopied] = useState(false);
+  const [attesting, setAttesting] = useState(false);
 
   useEffect(() => {
     fetchDashboard();
@@ -32,6 +33,18 @@ const SchoolAdminDashboard = () => {
     setTimeout(() => setCopied(false), 2000);
   };
 
+  const toggleConsent = async (checked) => {
+    setAttesting(true);
+    try {
+      const response = await api.patch('/api/school/consent', { attested: checked });
+      setData((prev) => ({ ...prev, school: response.data.school }));
+    } catch (err) {
+      // no-op - checkbox will simply not reflect the change, safe failure mode
+    } finally {
+      setAttesting(false);
+    }
+  };
+
   if (loading) return <div style={{ textAlign: 'center', padding: '40px' }}>Loading...</div>;
   if (error) return <div style={{ textAlign: 'center', padding: '40px', color: '#c62828' }}>{error}</div>;
   if (!data) return null;
@@ -51,6 +64,26 @@ const SchoolAdminDashboard = () => {
           <Copy size={14} />
           {copied && <span style={{ color: '#1a5f2b' }}>Copied!</span>}
         </div>
+      </div>
+
+      <div style={{ background: 'white', border: '1px solid #e0e0e0', borderRadius: '12px', padding: '16px', marginBottom: '24px' }}>
+        <label style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', cursor: 'pointer' }}>
+          <input
+            type="checkbox"
+            checked={school?.parent_consent_attested || false}
+            disabled={attesting}
+            onChange={(e) => toggleConsent(e.target.checked)}
+            style={{ marginTop: '3px' }}
+          />
+          <span style={{ fontSize: '13px' }}>
+            Our school has obtained parental or guardian consent for enrolled students under 18 to use this platform, as part of our standard enrollment process.
+          </span>
+        </label>
+        {school?.parent_consent_attested && school?.parent_consent_attested_at && (
+          <p style={{ fontSize: '12px', color: '#666', marginTop: '8px', marginLeft: '26px' }}>
+            Confirmed {new Date(school.parent_consent_attested_at).toLocaleDateString()}
+          </p>
+        )}
       </div>
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: '16px', marginBottom: '24px' }}>
