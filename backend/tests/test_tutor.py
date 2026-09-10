@@ -1,4 +1,4 @@
-from modules.tutor.router import SYSTEM_PROMPT_BY_COUNTRY
+from modules.tutor.router import LANGUAGE_INSTRUCTION, SYSTEM_PROMPT_BY_COUNTRY
 
 
 def test_gh_prompt_mentions_wassce():
@@ -8,6 +8,18 @@ def test_gh_prompt_mentions_wassce():
 def test_ng_prompt_does_not_mention_wassce():
     assert "WASSCE" not in SYSTEM_PROMPT_BY_COUNTRY["NG"]
     assert "BECE" not in SYSTEM_PROMPT_BY_COUNTRY["NG"]
+
+
+def test_english_language_instruction_is_empty():
+    assert LANGUAGE_INSTRUCTION["en"] == ""
+
+
+def test_twi_and_pidgin_instructions_are_distinct_and_non_empty():
+    assert LANGUAGE_INSTRUCTION["tw"].strip()
+    assert LANGUAGE_INSTRUCTION["pcm"].strip()
+    assert LANGUAGE_INSTRUCTION["tw"] != LANGUAGE_INSTRUCTION["pcm"]
+    assert "Twi" in LANGUAGE_INSTRUCTION["tw"]
+    assert "Pidgin" in LANGUAGE_INSTRUCTION["pcm"]
 
 
 def test_chat_requires_auth(client):

@@ -7,12 +7,14 @@ export const STORAGE_KEYS = {
   USER: 'pathwaygh_user',
   REFRESH_TOKEN: 'pathwaygh_refresh_token',
   COUNTRY: 'pathwaygh_country',
+  LANGUAGE: 'pathwaygh_language',
 };
 
 export const TOKEN_KEY = STORAGE_KEYS.TOKEN;
 export const USER_KEY = STORAGE_KEYS.USER;
 export const REFRESH_TOKEN_KEY = STORAGE_KEYS.REFRESH_TOKEN;
 export const COUNTRY_KEY = STORAGE_KEYS.COUNTRY;
+export const LANGUAGE_KEY = STORAGE_KEYS.LANGUAGE;
 
 export const getToken = () => localStorage.getItem(TOKEN_KEY);
 export const setToken = (token) => localStorage.setItem(TOKEN_KEY, token);
@@ -37,6 +39,10 @@ export const removeUser = () => localStorage.removeItem(USER_KEY);
 export const getCountry = () => localStorage.getItem(COUNTRY_KEY);
 export const setCountry = (country) => localStorage.setItem(COUNTRY_KEY, country);
 export const removeCountry = () => localStorage.removeItem(COUNTRY_KEY);
+
+export const getLanguage = () => localStorage.getItem(LANGUAGE_KEY) || 'en';
+export const setLanguage = (language) => localStorage.setItem(LANGUAGE_KEY, language);
+export const removeLanguage = () => localStorage.removeItem(LANGUAGE_KEY);
 
 export const isAuthenticated = () => !!getToken();
 
@@ -64,6 +70,7 @@ export default {
   USER_KEY,
   REFRESH_TOKEN_KEY,
   COUNTRY_KEY,
+  LANGUAGE_KEY,
   getToken,
   setToken,
   removeToken,
@@ -76,6 +83,9 @@ export default {
   getCountry,
   setCountry,
   removeCountry,
+  getLanguage,
+  setLanguage,
+  removeLanguage,
   isAuthenticated,
   clearSession,
   login,

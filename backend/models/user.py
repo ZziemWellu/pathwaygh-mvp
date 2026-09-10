@@ -16,6 +16,7 @@ class User(Base):
     avatar_filename = Column(String(255), nullable=True)
     is_admin = Column(Boolean, nullable=False, default=False)
     country = Column(String(2), nullable=False, default="GH")
+    language = Column(String(3), nullable=False, default="en")
     created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
 
     # Institutional linkage. school_id/is_school_admin are the real

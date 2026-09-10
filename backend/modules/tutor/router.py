@@ -48,6 +48,13 @@ SYSTEM_PROMPT_BY_COUNTRY = {
 }
 
 
+LANGUAGE_INSTRUCTION = {
+    "en": "",
+    "tw": " Respond in Twi (the Akan language spoken in Ghana).",
+    "pcm": " Respond in Nigerian Pidgin English.",
+}
+
+
 class ChatRequest(BaseModel):
     message: str
 
@@ -71,7 +78,8 @@ async def chat(request: ChatRequest, current_user: User = Depends(get_current_us
             model="gemini-3.6-flash",
             contents=request.message,
             config={
-                "system_instruction": SYSTEM_PROMPT_BY_COUNTRY.get(current_user.country, SYSTEM_PROMPT_BY_COUNTRY["GH"]),
+                "system_instruction": SYSTEM_PROMPT_BY_COUNTRY.get(current_user.country, SYSTEM_PROMPT_BY_COUNTRY["GH"])
+                + LANGUAGE_INSTRUCTION.get(current_user.language, ""),
                 "max_output_tokens": 2048,
             },
         )

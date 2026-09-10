@@ -9,7 +9,9 @@ import { User, LogOut } from 'lucide-react';
 import Login from './components/auth/Login';
 import Register from './components/auth/Register';
 import CountrySelector from './components/CountrySelector';
+import LanguageSwitcher from './components/LanguageSwitcher';
 import AIChat from './components/ai/AIChat';
+import { useLanguage } from './contexts/LanguageContext';
 
 const COUNTRY_FLAGS = { GH: GhanaFlag, NG: NigeriaFlag };
 const COUNTRY_NAMES = { GH: 'Ghana', NG: 'Nigeria' };
@@ -38,6 +40,7 @@ const AdminLessonEditor = lazy(() => import('./modules/admin/AdminLessonEditor')
 const SchoolAdminDashboard = lazy(() => import('./modules/school-admin/SchoolAdminDashboard'));
 
 const App = () => {
+  const { t } = useLanguage();
   const [user, setUser] = useState(null);
   const [isAuth, setIsAuth] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -83,7 +86,7 @@ const App = () => {
   };
 
   if (loading) {
-    return <div style={{ textAlign: 'center', padding: '40px' }}>Loading...</div>;
+    return <div style={{ textAlign: 'center', padding: '40px' }}>{t('loading')}</div>;
   }
 
   if (!isAuth) {
@@ -92,8 +95,11 @@ const App = () => {
         <div style={{ maxWidth: '400px', margin: '40px auto', padding: '20px' }}>
           <header style={{ textAlign: 'center', marginBottom: '30px' }}>
             <h1 style={{ color: '#1a5f2b' }}>Pathway AI</h1>
-            <p style={{ color: '#888' }}>AI-Powered Education & Career Ecosystem</p>
+            <p style={{ color: '#888' }}>{t('tagline')}</p>
           </header>
+          <div style={{ textAlign: 'center', marginBottom: '16px' }}>
+            <LanguageSwitcher />
+          </div>
           <CountrySelector onSelect={handleCountrySelect} />
         </div>
       );
@@ -104,21 +110,24 @@ const App = () => {
       <div style={{ maxWidth: '400px', margin: '40px auto', padding: '20px' }}>
         <header style={{ textAlign: 'center', marginBottom: '30px' }}>
           <h1 style={{ color: '#1a5f2b', display: 'flex', alignItems: 'center', gap: '8px', justifyContent: 'center' }}><CountryFlag size={24} /> Pathway AI</h1>
-          <p style={{ color: '#888' }}>AI-Powered Education & Career Ecosystem • {COUNTRY_NAMES[country]}</p>
+          <p style={{ color: '#888' }}>{t('tagline')} • {COUNTRY_NAMES[country]}</p>
         </header>
         {showLogin ? <Login onSuccess={handleLogin} /> : <Register onSuccess={() => setShowLogin(true)} />}
         <p style={{ textAlign: 'center', marginTop: '16px' }}>
           <button onClick={() => setShowLogin(!showLogin)} style={{ background: 'none', border: 'none', color: '#1a5f2b', cursor: 'pointer', textDecoration: 'underline' }}>
-            {showLogin ? 'Need an account? Register' : 'Already have an account? Login'}
+            {showLogin ? t('needAccountRegister') : t('alreadyHaveAccountLogin')}
           </button>
         </p>
         <p style={{ textAlign: 'center', marginTop: '8px' }}>
           <button onClick={handleChangeCountry} style={{ background: 'none', border: 'none', color: '#888', cursor: 'pointer', textDecoration: 'underline', fontSize: '13px' }}>
-            Change country
+            {t('changeCountry')}
           </button>
         </p>
+        <p style={{ textAlign: 'center', marginTop: '8px' }}>
+          <LanguageSwitcher />
+        </p>
         <footer style={{ textAlign: 'center', marginTop: '40px', padding: '20px', color: '#888', borderTop: '1px solid #eee' }}>
-          <p>© 2026 Pathway AI</p>
+          <p>{t('copyright')}</p>
         </footer>
       </div>
     );
@@ -145,17 +154,18 @@ const App = () => {
         }}>
           <div>
             <h1 style={{ color: '#1a5f2b', fontSize: '22px', margin: 0, display: 'flex', alignItems: 'center', gap: '8px' }}><UserCountryFlag size={22} /> Pathway AI</h1>
-            <span style={{ fontSize: '11px', color: '#888' }}>AI-Powered Education & Career Ecosystem • {COUNTRY_NAMES[user?.country] || ''}</span>
+            <span style={{ fontSize: '11px', color: '#888' }}>{t('tagline')} • {COUNTRY_NAMES[user?.country] || ''}</span>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
             <span style={{ color: '#555', fontSize: '13px', display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
-              <User size={14} /> {user?.full_name || user?.name || 'Student'}
+              <User size={14} /> {user?.full_name || user?.name || t('student')}
             </span>
             {user?.is_admin && (
               <span style={{ fontSize: '11px', fontWeight: 'bold', color: '#1a5f2b', background: '#e8f5e9', border: '1px solid #a5d6a7', borderRadius: '999px', padding: '3px 10px' }}>
-                Admin
+                {t('admin')}
               </span>
             )}
+            <LanguageSwitcher />
             <button onClick={handleLogout} style={{
               display: 'inline-flex',
               alignItems: 'center',
@@ -166,14 +176,14 @@ const App = () => {
               borderRadius: '6px',
               cursor: 'pointer',
               fontSize: '13px'
-            }}><LogOut size={14} /> Logout</button>
+            }}><LogOut size={14} /> {t('logout')}</button>
           </div>
         </header>
 
         <EcosystemNavigation activeModule={activeModule} setActiveModule={setActiveModule} user={user} />
 
         <main style={{ padding: '16px 0', width: '100%' }}>
-          <Suspense fallback={<div style={{ textAlign: 'center', padding: '40px' }}>Loading...</div>}>
+          <Suspense fallback={<div style={{ textAlign: 'center', padding: '40px' }}>{t('loading')}</div>}>
           <Routes>
             <Route path="/" element={<DashboardModule setActiveModule={setActiveModule} />} />
             <Route path="/home" element={<DashboardModule setActiveModule={setActiveModule} />} />
@@ -215,7 +225,7 @@ const App = () => {
           borderTop: '1px solid #e0e0e0', 
           fontSize: '13px' 
         }}>
-          <p>© 2026 Pathway AI</p>
+          <p>{t('copyright')}</p>
         </footer>
 
         <AIChat user={user} />
