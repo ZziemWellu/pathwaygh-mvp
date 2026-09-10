@@ -57,6 +57,12 @@ export const translations = {
     selectCountryFirst: 'Please select your country first.',
     registrationFailed: 'Registration failed',
     registrationFailedRetry: 'Registration failed. Please try again.',
+    consentStatementBeforeLink: "I confirm I am at least 13 years old, and if I am under 18, I have my parent or guardian's permission to create this account. I agree to the",
+    privacyPolicyLinkText: 'Privacy Policy',
+    consentStatementAfterLink: '.',
+    consentRequired: 'You must confirm the age/consent statement to continue',
+    guardianEmailLabel: 'Parent/Guardian email (optional)',
+    guardianEmailPlaceholder: 'parent@email.com',
 
     // Country selector
     whereLearningFrom: 'Where are you learning from?',
@@ -65,6 +71,9 @@ export const translations = {
 
     // Language switcher
     language: 'Language',
+
+    // Footer
+    footerPrivacyPolicy: 'Privacy Policy',
   },
   tw: {
     tagline: 'AI a ɛboa Adesua ne Adwuma Ho Nhyehyɛe',
@@ -116,6 +125,12 @@ export const translations = {
     selectCountryFirst: 'Yɛsrɛ wo, paw wo ɔman kan.',
     registrationFailed: 'Wɔ kyerɛw din no anyɛ yie',
     registrationFailedRetry: 'Wɔ kyerɛw din no anyɛ yie. Yɛsrɛ wo sɔ hwɛ bio.',
+    consentStatementBeforeLink: "Migye di sɛ madi mfeɛ 13 anaa ɛboro saa, na sɛ me mfeɛ nnu 18 a, m'awofo anaa me hwɛfoɔ apene sɛ menyɛ saa akontaabu yi. Migye",
+    privacyPolicyLinkText: 'Privacy Policy',
+    consentStatementAfterLink: ' no tom.',
+    consentRequired: 'Ɛsɛ sɛ wugye saa asɛm yi tom ansa na woatoa so',
+    guardianEmailLabel: "W'awofo anaa Hwɛfo Email (ɛnhia)",
+    guardianEmailPlaceholder: 'awofo@email.com',
 
     // Country selector
     whereLearningFrom: 'Ɛhe wo suasua fi?',
@@ -124,6 +139,9 @@ export const translations = {
 
     // Language switcher
     language: 'Kasa',
+
+    // Footer
+    footerPrivacyPolicy: 'Privacy Policy',
   },
   pcm: {
     tagline: 'AI Wey Dey Help Education and Career',
@@ -175,6 +193,12 @@ export const translations = {
     selectCountryFirst: 'Abeg select your country first.',
     registrationFailed: 'Registration no work',
     registrationFailedRetry: 'Registration no work. Abeg try again.',
+    consentStatementBeforeLink: 'I confirm say I don reach 13 years, and if I no reach 18, my parent or guardian don gree make I create this account. I agree to di',
+    privacyPolicyLinkText: 'Privacy Policy',
+    consentStatementAfterLink: '.',
+    consentRequired: 'You must confirm di age/consent statement before you fit continue',
+    guardianEmailLabel: 'Parent/Guardian email (no compulsory)',
+    guardianEmailPlaceholder: 'parent@email.com',
 
     // Country selector
     whereLearningFrom: 'Where you dey learn from?',
@@ -183,6 +207,9 @@ export const translations = {
 
     // Language switcher
     language: 'Language',
+
+    // Footer
+    footerPrivacyPolicy: 'Privacy Policy',
   },
 };
 

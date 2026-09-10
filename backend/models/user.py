@@ -29,6 +29,13 @@ class User(Base):
     )
     is_school_admin = Column(Boolean, nullable=False, default=False)
 
+    # Consent (child-data protection). Nullable and never backfilled for
+    # existing users - a fabricated consent timestamp would be a false
+    # attestation. Only the register endpoint sets these.
+    guardian_email = Column(String(255), nullable=True)
+    consent_given_at = Column(DateTime, nullable=True)
+    consent_version = Column(String(20), nullable=True)
+
     # Profile fields
     school = Column(String(255), nullable=True)
     grade = Column(String(50), nullable=True)

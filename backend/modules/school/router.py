@@ -8,6 +8,7 @@ address another school's roster by guessing or editing an id.
 """
 
 import secrets
+from datetime import datetime, timezone
 
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel
@@ -36,6 +37,10 @@ class JoinSchoolRequest(BaseModel):
     join_code: str
 
 
+class SchoolConsentRequest(BaseModel):
+    attested: bool
+
+
 def _generate_join_code(db: Session) -> str:
     for _ in range(10):
         code = "".join(secrets.choice(JOIN_CODE_ALPHABET) for _ in range(JOIN_CODE_LENGTH))
@@ -50,6 +55,8 @@ def _school_out(school: School) -> dict:
         "name": school.name,
         "country": school.country,
         "join_code": school.join_code,
+        "parent_consent_attested": school.parent_consent_attested,
+        "parent_consent_attested_at": school.parent_consent_attested_at.isoformat() if school.parent_consent_attested_at else None,
     }
 
 
@@ -105,6 +112,21 @@ async def join_school(
     current_user.school_id = school.id
     db.commit()
 
+    return {"success": True, "school": _school_out(school)}
+
+
+@router.patch("/consent")
+async def set_school_consent(
+    request: SchoolConsentRequest,
+    current_user: User = Depends(require_school_admin),
+    db: Session = Depends(get_db),
+):
+    school = db.query(School).filter(School.id == current_user.school_id).first()
+    school.parent_consent_attested = request.attested
+    school.parent_consent_attested_at = datetime.now(timezone.utc) if request.attested else None
+    school.parent_consent_attested_by_id = current_user.id if request.attested else None
+    db.commit()
+    db.refresh(school)
     return {"success": True, "school": _school_out(school)}
 
 
