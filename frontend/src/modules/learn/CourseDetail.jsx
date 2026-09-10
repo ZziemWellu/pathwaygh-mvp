@@ -16,6 +16,17 @@ const CourseDetail = () => {
     fetchCourse();
   }, [courseId]);
 
+  useEffect(() => {
+    // Idempotent retroactive safety-net: covers a course that was already
+    // 100% complete before this feature existed, or any edge case where the
+    // auto-issue trigger on the lesson-progress endpoint didn't fire.
+    if (!course || course.lessons.length === 0) return;
+    const watched = course.lessons.filter((l) => l.watched).length;
+    if (watched === course.lessons.length) {
+      api.post(`/api/certificates/check/${courseId}`).catch(() => {});
+    }
+  }, [course, courseId]);
+
   const fetchCourse = async () => {
     setLoading(true);
     setError(null);
@@ -55,6 +66,7 @@ const CourseDetail = () => {
 
   const watchedCount = course.lessons.filter((l) => l.watched).length;
   const progressPct = course.lessons.length ? Math.round((watchedCount / course.lessons.length) * 100) : 0;
+  const isComplete = course.lessons.length > 0 && watchedCount === course.lessons.length;
 
   return (
     <div style={{ maxWidth: '800px', margin: '0 auto', padding: '20px' }}>
@@ -77,6 +89,14 @@ const CourseDetail = () => {
           <div style={{ height: '6px', background: '#f0f0f0', borderRadius: '3px' }}>
             <div style={{ width: `${progressPct}%`, height: '100%', background: '#1a5f2b', borderRadius: '3px', transition: 'width 0.4s ease' }} />
           </div>
+          {isComplete && (
+            <Link
+              to={`/certificates/${courseId}`}
+              style={{ display: 'inline-block', marginTop: '10px', color: '#1a5f2b', fontWeight: 'bold', textDecoration: 'underline' }}
+            >
+              🏆 View Certificate
+            </Link>
+          )}
         </div>
       ) : (
         <button

@@ -1,3 +1,4 @@
+from models.certificate import Certificate
 from models.course import Course, Exercise, Lesson
 from models.enrollment import Enrollment
 from models.exercise_result import ExerciseResult
@@ -18,4 +19,5 @@ __all__ = [
     "QuizAttempt",
     "Plan",
     "School",
+    "Certificate",
 ]

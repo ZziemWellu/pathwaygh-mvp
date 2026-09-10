@@ -16,6 +16,7 @@ from models.enrollment import Enrollment
 from models.exercise_result import ExerciseResult
 from models.progress import LessonProgress
 from models.user import User
+from modules.certificates.service import check_and_issue_certificate
 
 router = APIRouter()
 
@@ -245,4 +246,17 @@ async def update_lesson_progress(
     progress.watched_at = datetime.now(timezone.utc) if payload.watched else None
     db.commit()
 
-    return {"success": True, "watched": progress.watched}
+    certificate_issued = False
+    certificate_code = None
+    if payload.watched:
+        certificate, created = check_and_issue_certificate(db, current_user, lesson.course)
+        if created:
+            certificate_issued = True
+            certificate_code = certificate.code
+
+    return {
+        "success": True,
+        "watched": progress.watched,
+        "certificate_issued": certificate_issued,
+        "certificate_code": certificate_code,
+    }

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, lazy, Suspense } from 'react';
-import { BrowserRouter, Routes, Route, Navigate, Link } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate, Link, useParams } from 'react-router-dom';
 import './App.css';
 import { getUser, isAuthenticated, login as authLogin, logout as authLogout, getCountry, setCountry as persistCountry, removeCountry } from './constants/auth';
 import EcosystemNavigation from './components/common/EcosystemNavigation';
@@ -13,9 +13,19 @@ import LanguageSwitcher from './components/LanguageSwitcher';
 import AIChat from './components/ai/AIChat';
 import { useLanguage } from './contexts/LanguageContext';
 import PrivacyPolicy from './modules/legal/PrivacyPolicy';
+import CertificateVerify from './modules/certificates/CertificateVerify';
 
 const COUNTRY_FLAGS = { GH: GhanaFlag, NG: NigeriaFlag };
 const COUNTRY_NAMES = { GH: 'Ghana', NG: 'Nigeria' };
+
+// CertificateVerify takes `code` as a prop (never useParams internally)
+// since App.jsx also renders it directly, pre-BrowserRouter, for a
+// logged-out visitor's cold page load. This wrapper supplies that prop
+// from the route param for the in-app (already-routed) case.
+const CertificateVerifyRoute = () => {
+  const { code } = useParams();
+  return <CertificateVerify code={code} />;
+};
 
 // Route-level code splitting: each of these becomes its own chunk instead of
 // bloating the single main bundle every visitor downloads up front.
@@ -40,6 +50,7 @@ const AdminCourseEditor = lazy(() => import('./modules/admin/AdminCourseEditor')
 const AdminLessonEditor = lazy(() => import('./modules/admin/AdminLessonEditor'));
 const SchoolAdminDashboard = lazy(() => import('./modules/school-admin/SchoolAdminDashboard'));
 const ImpactDashboard = lazy(() => import('./modules/impact/ImpactDashboard'));
+const CertificatePage = lazy(() => import('./modules/certificates/CertificatePage'));
 
 const App = () => {
   const { t } = useLanguage();
@@ -87,6 +98,19 @@ const App = () => {
     setUser(null);
     setIsAuth(false);
   };
+
+  // A shared certificate-verification link must work for a logged-out
+  // visitor with empty localStorage landing directly on the URL (e.g. from
+  // LinkedIn) - short-circuit before loading/auth/country gates and before
+  // BrowserRouter mounts, since none of that should gate a read-only public
+  // page. This only fires on a cold/hard page load - client-side <Link>/
+  // useNavigate navigation never re-executes this function body - so the
+  // in-router /certificates/verify/:code route below still handles the
+  // case of an already-logged-in user clicking a verify link in-app.
+  const certifyMatch = window.location.pathname.match(/^\/certificates\/verify\/([^/]+)\/?$/);
+  if (certifyMatch) {
+    return <CertificateVerify code={decodeURIComponent(certifyMatch[1])} />;
+  }
 
   if (loading) {
     return <div style={{ textAlign: 'center', padding: '40px' }}>{t('loading')}</div>;
@@ -234,6 +258,8 @@ const App = () => {
             <Route path="/school-admin" element={user?.is_school_admin ? <SchoolAdminDashboard /> : <Navigate to="/" />} />
             <Route path="/impact" element={user?.is_admin ? <ImpactDashboard /> : <Navigate to="/" />} />
             <Route path="/privacy" element={<PrivacyPolicy />} />
+            <Route path="/certificates/verify/:code" element={<CertificateVerifyRoute />} />
+            <Route path="/certificates/:courseSlug" element={<CertificatePage />} />
 
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>
