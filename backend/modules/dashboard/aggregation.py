@@ -21,6 +21,28 @@ def _empty_overview() -> dict:
         "lessons_total": 0,
         "quizzes_taken": 0,
         "average_quiz_score": 0,
+        "average_quiz_time_seconds": 0,
+    }
+
+
+def summarize_overviews(overviews: list) -> dict:
+    """Rolls up a list of per-user overview dicts (as returned by
+    overview_for_users' values()) into one summary - shared by the school
+    dashboard and the platform-wide impact dashboard so both report the
+    identical number for the same group of students."""
+    quiz_scores = [o["average_quiz_score"] for o in overviews if o["quizzes_taken"] > 0]
+    completion_rates = [
+        round((o["lessons_completed"] / o["lessons_total"]) * 100) for o in overviews if o["lessons_total"] > 0
+    ]
+    quiz_times = [
+        o["average_quiz_time_seconds"] for o in overviews if o["quizzes_taken"] > 0 and o["average_quiz_time_seconds"] > 0
+    ]
+    return {
+        "student_count": len(overviews),
+        "average_completion_rate": round(sum(completion_rates) / len(completion_rates)) if completion_rates else 0,
+        "average_quiz_score": round(sum(quiz_scores) / len(quiz_scores)) if quiz_scores else 0,
+        "average_quiz_time_seconds": round(sum(quiz_times) / len(quiz_times)) if quiz_times else 0,
+        "quizzes_taken": sum(o["quizzes_taken"] for o in overviews),
     }
 
 
@@ -65,6 +87,8 @@ def overview_for_users(db: Session, user_ids: list) -> dict:
 
         attempts = quiz_attempts_by_user.get(user_id, [])
         average_quiz_score = round(sum(a.score for a in attempts) / len(attempts)) if attempts else 0
+        timed_attempts = [a.time_spent for a in attempts if a.time_spent is not None]
+        average_quiz_time_seconds = round(sum(timed_attempts) / len(timed_attempts)) if timed_attempts else 0
 
         overview[user_id] = {
             "courses_enrolled": len(user_enrollments),
@@ -72,6 +96,7 @@ def overview_for_users(db: Session, user_ids: list) -> dict:
             "lessons_total": lessons_total,
             "quizzes_taken": len(attempts),
             "average_quiz_score": average_quiz_score,
+            "average_quiz_time_seconds": average_quiz_time_seconds,
         }
 
     return overview

@@ -38,6 +38,7 @@ const AdminCourseList = lazy(() => import('./modules/admin/AdminCourseList'));
 const AdminCourseEditor = lazy(() => import('./modules/admin/AdminCourseEditor'));
 const AdminLessonEditor = lazy(() => import('./modules/admin/AdminLessonEditor'));
 const SchoolAdminDashboard = lazy(() => import('./modules/school-admin/SchoolAdminDashboard'));
+const ImpactDashboard = lazy(() => import('./modules/impact/ImpactDashboard'));
 
 const App = () => {
   const { t } = useLanguage();
@@ -217,6 +218,7 @@ const App = () => {
             <Route path="/admin/courses/:courseId" element={user?.is_admin ? <AdminCourseEditor /> : <Navigate to="/" />} />
             <Route path="/admin/lessons/:lessonId" element={user?.is_admin ? <AdminLessonEditor /> : <Navigate to="/" />} />
             <Route path="/school-admin" element={user?.is_school_admin ? <SchoolAdminDashboard /> : <Navigate to="/" />} />
+            <Route path="/impact" element={user?.is_admin ? <ImpactDashboard /> : <Navigate to="/" />} />
 
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>

@@ -28,6 +28,7 @@ export const translations = {
     navCommunity: 'Community',
     navAdmin: 'Admin',
     navSchoolAdmin: 'School Admin',
+    navImpact: 'Impact',
 
     // Login
     welcomeBack: 'Welcome Back',
@@ -86,6 +87,7 @@ export const translations = {
     navCommunity: 'Mpɔtam',
     navAdmin: 'Sohwɛfoɔ',
     navSchoolAdmin: 'Sukuu Sohwɛfoɔ',
+    navImpact: 'Nkɛntɛnso',
 
     // Login
     welcomeBack: 'Akwaaba Bio',
@@ -144,6 +146,7 @@ export const translations = {
     navCommunity: 'Community',
     navAdmin: 'Admin',
     navSchoolAdmin: 'School Admin',
+    navImpact: 'Impact',
 
     // Login
     welcomeBack: 'Welcome Back',
