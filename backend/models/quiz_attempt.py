@@ -16,6 +16,7 @@ class QuizAttempt(Base):
     score = Column(Integer, nullable=False)
     total_questions = Column(Integer, nullable=False)
     answers = Column(JSON, nullable=True)
+    time_spent = Column(Integer, nullable=True)
     completed_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
 
     user = relationship("User", back_populates="quiz_attempts")

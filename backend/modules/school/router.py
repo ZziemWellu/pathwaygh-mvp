@@ -17,7 +17,7 @@ from core.database import get_db
 from core.security import get_current_user, require_school_admin
 from models.school import School
 from models.user import User
-from modules.dashboard.aggregation import overview_for_users
+from modules.dashboard.aggregation import overview_for_users, summarize_overviews
 
 router = APIRouter(tags=["school"])
 
@@ -125,21 +125,11 @@ async def get_school_dashboard(current_user: User = Depends(require_school_admin
         for s in students
     ]
 
-    student_count = len(roster)
-    quiz_scores = [r["average_quiz_score"] for r in roster if r["quizzes_taken"] > 0]
-    completion_rates = [
-        round((r["lessons_completed"] / r["lessons_total"]) * 100) for r in roster if r["lessons_total"] > 0
-    ]
-
     school = db.query(School).filter(School.id == current_user.school_id).first()
 
     return {
         "success": True,
         "school": _school_out(school) if school else None,
         "roster": roster,
-        "summary": {
-            "student_count": student_count,
-            "average_completion_rate": round(sum(completion_rates) / len(completion_rates)) if completion_rates else 0,
-            "average_quiz_score": round(sum(quiz_scores) / len(quiz_scores)) if quiz_scores else 0,
-        },
+        "summary": summarize_overviews(list(overview_by_user.values())),
     }

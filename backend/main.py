@@ -115,6 +115,7 @@ modules = [
     ("payment", "modules.payment.router", "/api/payment"),
     ("live", "modules.live.router", "/api/live"),
     ("dashboard", "modules.dashboard.router", "/api/dashboard"),
+    ("impact", "modules.impact.router", "/api/impact"),
     ("activity", "modules.activity.router", "/api/activity"),
     ("analytics", "modules.analytics.router", "/api/analytics"),
     ("tutor", "modules.tutor.router", "/api/tutor"),

@@ -200,6 +200,7 @@ async def submit_quiz(
             score=score,
             total_questions=total,
             answers={str(k): v for k, v in request.answers.items()},
+            time_spent=request.time_spent,
         )
     )
     db.commit()
