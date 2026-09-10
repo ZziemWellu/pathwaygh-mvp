@@ -29,6 +29,8 @@ const ProfileModule = () => {
   const [savedCareers, setSavedCareers] = useState([]);
   const [savedUniversities, setSavedUniversities] = useState([]);
   const [savedScholarships, setSavedScholarships] = useState([]);
+  const [certificates, setCertificates] = useState([]);
+  const [copiedCertCode, setCopiedCertCode] = useState(null);
   const [schoolInfo, setSchoolInfo] = useState(null);
   const [schoolFormMode, setSchoolFormMode] = useState(null); // null | 'create' | 'join'
   const [schoolFormValue, setSchoolFormValue] = useState('');
@@ -57,13 +59,15 @@ const ProfileModule = () => {
       const statsRes = await api.get('/api/dashboard/statistics').catch(() => ({ data: {} }));
       setStats(prev => ({ ...prev, ...statsRes.data }));
 
-      const [careersRes, uniRes, schRes] = await Promise.all([
+      const [careersRes, uniRes, schRes, certRes] = await Promise.all([
         api.get('/api/profile/saved/careers').catch(() => ({ data: { careers: [] } })),
         api.get('/api/profile/saved/universities').catch(() => ({ data: { universities: [] } })),
         api.get('/api/profile/saved/scholarships').catch(() => ({ data: { scholarships: [] } })),
+        api.get('/api/certificates/me').catch(() => ({ data: { certificates: [] } })),
       ]);
       setSavedCareers(careersRes.data?.careers || []);
       setSavedUniversities(uniRes.data?.universities || []);
+      setCertificates(certRes.data?.certificates || []);
       setSavedScholarships(schRes.data?.scholarships || []);
 
       const schoolRes = await api.get('/api/school/me').catch(() => ({ data: { school: null, is_school_admin: false } }));
@@ -203,6 +207,7 @@ const ProfileModule = () => {
     { id: 'academic', icon: '📚', label: 'Academic' },
     { id: 'goals', icon: '🎯', label: 'Goals' },
     { id: 'saved', icon: '💾', label: 'Saved' },
+    { id: 'certificates', icon: '🏆', label: 'Certificates' },
     { id: 'school', icon: '🏫', label: 'School' },
     { id: 'settings', icon: '⚙️', label: 'Settings' },
   ];
@@ -642,6 +647,42 @@ const ProfileModule = () => {
                 )}
               </div>
             </div>
+          </div>
+        )}
+
+        {activeTab === 'certificates' && (
+          <div>
+            <h3 style={{ color: '#333', marginBottom: '16px' }}>🏆 Certificates</h3>
+            {certificates.length === 0 ? (
+              <p style={{ color: '#666666', fontSize: '13px' }}>Complete a course to earn your first certificate.</p>
+            ) : (
+              certificates.map((cert) => {
+                const verifyUrl = `${window.location.origin}/certificates/verify/${cert.code}`;
+                return (
+                  <div key={cert.code} style={{ background: '#f8f9fa', borderRadius: '8px', padding: '16px', marginBottom: '12px' }}>
+                    <h4 style={{ margin: '0 0 4px 0', color: '#1a5f2b' }}>{cert.course_title}</h4>
+                    <p style={{ margin: '0 0 8px 0', fontSize: '13px', color: '#666666' }}>
+                      Issued {new Date(cert.issued_at).toLocaleDateString()} · {cert.lesson_count} lessons
+                    </p>
+                    <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', alignItems: 'center' }}>
+                      <Link to={`/certificates/${cert.course_slug}`} style={{ color: '#1a5f2b', fontSize: '13px', fontWeight: 'bold' }}>
+                        View / Print
+                      </Link>
+                      <button
+                        onClick={() => {
+                          navigator.clipboard.writeText(verifyUrl);
+                          setCopiedCertCode(cert.code);
+                          setTimeout(() => setCopiedCertCode(null), 2000);
+                        }}
+                        style={{ padding: '4px 10px', background: 'none', border: '1px solid #1a5f2b', color: '#1a5f2b', borderRadius: '6px', cursor: 'pointer', fontSize: '12px' }}
+                      >
+                        {copiedCertCode === cert.code ? 'Copied!' : 'Copy verification link'}
+                      </button>
+                    </div>
+                  </div>
+                );
+              })
+            )}
           </div>
         )}
 

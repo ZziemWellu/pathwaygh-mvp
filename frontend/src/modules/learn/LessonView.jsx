@@ -11,6 +11,7 @@ const LessonView = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [marking, setMarking] = useState(false);
+  const [justCompleted, setJustCompleted] = useState(null);
 
   useEffect(() => {
     fetchLesson();
@@ -33,8 +34,11 @@ const LessonView = () => {
   const markWatched = async () => {
     setMarking(true);
     try {
-      await api.post(`/api/learn/lessons/${lessonId}/progress`, { watched: true });
+      const response = await api.post(`/api/learn/lessons/${lessonId}/progress`, { watched: true });
       setLesson((prev) => ({ ...prev, watched: true }));
+      if (response.data.certificate_issued) {
+        setJustCompleted({ code: response.data.certificate_code });
+      }
     } catch (err) {
       console.error('Progress update error:', err);
     } finally {
@@ -105,6 +109,15 @@ const LessonView = () => {
           </button>
         )}
       </div>
+
+      {justCompleted && (
+        <div style={{ marginTop: '16px', padding: '16px', background: '#e8f5e9', border: '1px solid #a5d6a7', borderRadius: '12px', textAlign: 'center' }}>
+          <p style={{ margin: '0 0 8px 0', fontWeight: 'bold', color: '#1a5f2b' }}>🎉 Course complete! Your certificate is ready.</p>
+          <Link to={`/certificates/${courseId}`} style={{ color: '#1a5f2b', fontWeight: 'bold', textDecoration: 'underline' }}>
+            View certificate
+          </Link>
+        </div>
+      )}
 
       {lesson.has_exercises && (
         <ExerciseSection lessonId={lessonId} exercises={lesson.exercises} bestScore={lesson.best_score} />

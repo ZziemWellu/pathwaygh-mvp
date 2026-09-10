@@ -1,0 +1,7 @@
+@media print {
+  body * { visibility: hidden; }
+  .certificate-print-area, .certificate-print-area * { visibility: visible; }
+  .certificate-print-area { position: absolute; top: 0; left: 0; width: 100%; }
+  .no-print { display: none !important; }
+  @page { size: landscape; margin: 0.5in; }
+}

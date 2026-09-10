@@ -18,6 +18,10 @@ class Course(Base):
         "Lesson", back_populates="course", cascade="all, delete-orphan", order_by="Lesson.order_index"
     )
     enrollments = relationship("Enrollment", back_populates="course", cascade="all, delete-orphan")
+    # No cascade delete: a course with issued certificates must not have
+    # them silently disappear if the course is deleted (see the delete
+    # guard in modules/admin/router.py).
+    certificates = relationship("Certificate", back_populates="course")
 
 
 class Lesson(Base):
