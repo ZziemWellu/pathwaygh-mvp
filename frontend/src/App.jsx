@@ -92,9 +92,11 @@ const App = () => {
         <div style={{ maxWidth: '400px', margin: '40px auto', padding: '20px' }}>
           <header style={{ textAlign: 'center', marginBottom: '30px' }}>
             <h1 style={{ color: '#1a5f2b' }}>Pathway AI</h1>
-            <p style={{ color: '#888' }}>AI-Powered Education & Career Ecosystem</p>
+            <p style={{ color: '#666666' }}>AI-Powered Education & Career Ecosystem</p>
           </header>
-          <CountrySelector onSelect={handleCountrySelect} />
+          <main>
+            <CountrySelector onSelect={handleCountrySelect} />
+          </main>
         </div>
       );
     }
@@ -104,20 +106,22 @@ const App = () => {
       <div style={{ maxWidth: '400px', margin: '40px auto', padding: '20px' }}>
         <header style={{ textAlign: 'center', marginBottom: '30px' }}>
           <h1 style={{ color: '#1a5f2b', display: 'flex', alignItems: 'center', gap: '8px', justifyContent: 'center' }}><CountryFlag size={24} /> Pathway AI</h1>
-          <p style={{ color: '#888' }}>AI-Powered Education & Career Ecosystem • {COUNTRY_NAMES[country]}</p>
+          <p style={{ color: '#666666' }}>AI-Powered Education & Career Ecosystem • {COUNTRY_NAMES[country]}</p>
         </header>
-        {showLogin ? <Login onSuccess={handleLogin} /> : <Register onSuccess={() => setShowLogin(true)} />}
-        <p style={{ textAlign: 'center', marginTop: '16px' }}>
-          <button onClick={() => setShowLogin(!showLogin)} style={{ background: 'none', border: 'none', color: '#1a5f2b', cursor: 'pointer', textDecoration: 'underline' }}>
-            {showLogin ? 'Need an account? Register' : 'Already have an account? Login'}
-          </button>
-        </p>
-        <p style={{ textAlign: 'center', marginTop: '8px' }}>
-          <button onClick={handleChangeCountry} style={{ background: 'none', border: 'none', color: '#888', cursor: 'pointer', textDecoration: 'underline', fontSize: '13px' }}>
-            Change country
-          </button>
-        </p>
-        <footer style={{ textAlign: 'center', marginTop: '40px', padding: '20px', color: '#888', borderTop: '1px solid #eee' }}>
+        <main>
+          {showLogin ? <Login onSuccess={handleLogin} /> : <Register onSuccess={() => setShowLogin(true)} />}
+          <p style={{ textAlign: 'center', marginTop: '16px' }}>
+            <button onClick={() => setShowLogin(!showLogin)} style={{ background: 'none', border: 'none', color: '#1a5f2b', cursor: 'pointer', textDecoration: 'underline' }}>
+              {showLogin ? 'Need an account? Register' : 'Already have an account? Login'}
+            </button>
+          </p>
+          <p style={{ textAlign: 'center', marginTop: '8px' }}>
+            <button onClick={handleChangeCountry} style={{ background: 'none', border: 'none', color: '#666666', cursor: 'pointer', textDecoration: 'underline', fontSize: '13px' }}>
+              Change country
+            </button>
+          </p>
+        </main>
+        <footer style={{ textAlign: 'center', marginTop: '40px', padding: '20px', color: '#666666', borderTop: '1px solid #eee' }}>
           <p>© 2026 Pathway AI</p>
         </footer>
       </div>
@@ -134,6 +138,7 @@ const App = () => {
         margin: '0 auto',
         width: '100%'
       }}>
+        <a href="#main-content" className="skip-link">Skip to main content</a>
         <header style={{
           display: 'flex',
           justifyContent: 'space-between',
@@ -145,11 +150,11 @@ const App = () => {
         }}>
           <div>
             <h1 style={{ color: '#1a5f2b', fontSize: '22px', margin: 0, display: 'flex', alignItems: 'center', gap: '8px' }}><UserCountryFlag size={22} /> Pathway AI</h1>
-            <span style={{ fontSize: '11px', color: '#888' }}>AI-Powered Education & Career Ecosystem • {COUNTRY_NAMES[user?.country] || ''}</span>
+            <span style={{ fontSize: '11px', color: '#666666' }}>AI-Powered Education & Career Ecosystem • {COUNTRY_NAMES[user?.country] || ''}</span>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
             <span style={{ color: '#555', fontSize: '13px', display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
-              <User size={14} /> {user?.full_name || user?.name || 'Student'}
+              <User size={14} aria-hidden="true" /> {user?.full_name || user?.name || 'Student'}
             </span>
             {user?.is_admin && (
               <span style={{ fontSize: '11px', fontWeight: 'bold', color: '#1a5f2b', background: '#e8f5e9', border: '1px solid #a5d6a7', borderRadius: '999px', padding: '3px 10px' }}>
@@ -166,13 +171,13 @@ const App = () => {
               borderRadius: '6px',
               cursor: 'pointer',
               fontSize: '13px'
-            }}><LogOut size={14} /> Logout</button>
+            }}><LogOut size={14} aria-hidden="true" /> Logout</button>
           </div>
         </header>
 
         <EcosystemNavigation activeModule={activeModule} setActiveModule={setActiveModule} user={user} />
 
-        <main style={{ padding: '16px 0', width: '100%' }}>
+        <main id="main-content" style={{ padding: '16px 0', width: '100%' }}>
           <Suspense fallback={<div style={{ textAlign: 'center', padding: '40px' }}>Loading...</div>}>
           <Routes>
             <Route path="/" element={<DashboardModule setActiveModule={setActiveModule} />} />
@@ -211,7 +216,7 @@ const App = () => {
         <footer style={{ 
           textAlign: 'center', 
           padding: '16px 0', 
-          color: '#888', 
+          color: '#666666', 
           borderTop: '1px solid #e0e0e0', 
           fontSize: '13px' 
         }}>

@@ -47,7 +47,7 @@ function AICopilot() {
         {/* Chat Messages */}
         <div style={{ flex: 1, overflowY: 'auto', maxHeight: '400px', marginBottom: '20px' }}>
           {chatHistory.length === 0 && (
-            <div style={{ textAlign: 'center', color: '#888', padding: '40px' }}>
+            <div style={{ textAlign: 'center', color: '#666666', padding: '40px' }}>
               <p style={{ fontSize: '18px' }}>👋 Welcome to PathwayGH!</p>
               <p>Ask me about:<br />
                 📚 University requirements<br />
@@ -82,7 +82,7 @@ function AICopilot() {
           {loading && (
             <div style={{ textAlign: 'left' }}>
               <div style={{ display: 'inline-block', padding: '12px 16px', borderRadius: '12px', background: 'white', border: '1px solid #e0e0e0' }}>
-                <span style={{ color: '#888' }}>Thinking...</span>
+                <span style={{ color: '#666666' }}>Thinking...</span>
               </div>
             </div>
           )}

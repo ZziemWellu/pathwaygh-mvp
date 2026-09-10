@@ -344,7 +344,7 @@ function CompleteProfileSetup({ onComplete }) {
     }}>
       <div style={{ textAlign: 'center', marginBottom: '25px' }}>
         <h2 style={{ color: '#1a5f2b', margin: 0, fontSize: '24px' }}>🇬🇭 PathwayGH Profile</h2>
-        <p style={{ color: '#888', fontSize: '14px', marginTop: '5px' }}>Complete your profile for personalized guidance</p>
+        <p style={{ color: '#666666', fontSize: '14px', marginTop: '5px' }}>Complete your profile for personalized guidance</p>
         <div style={{ display: 'flex', justifyContent: 'center', gap: '8px', marginTop: '12px' }}>
           {[1, 2, 3, 4, 5].map(s => (
             <div
@@ -358,7 +358,7 @@ function CompleteProfileSetup({ onComplete }) {
             />
           ))}
         </div>
-        <div style={{ fontSize: '12px', color: '#aaa', marginTop: '4px' }}>
+        <div style={{ fontSize: '12px', color: '#666666', marginTop: '4px' }}>
           Step {step} of 5
         </div>
       </div>

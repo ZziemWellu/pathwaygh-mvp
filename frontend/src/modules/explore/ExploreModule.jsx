@@ -118,7 +118,7 @@ const ExploreModule = () => {
       {/* Header */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
         <h2 style={{ margin: 0 }}>🔍 Explore</h2>
-        <span style={{ color: '#888' }}>
+        <span style={{ color: '#666666' }}>
           {careers.length} careers • {universities.length} universities
         </span>
       </div>
@@ -159,7 +159,7 @@ const ExploreModule = () => {
       {activeTab === 'careers' && (
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '20px' }}>
           {careers.length === 0 ? (
-            <p style={{ gridColumn: '1 / -1', textAlign: 'center', padding: '40px', color: '#888' }}>No careers available.</p>
+            <p style={{ gridColumn: '1 / -1', textAlign: 'center', padding: '40px', color: '#666666' }}>No careers available.</p>
           ) : (
             careers.map((career) => (
               <div
@@ -199,7 +199,7 @@ const ExploreModule = () => {
                   )}
                 </div>
                 <p style={{ color: '#666', fontSize: '14px', margin: '8px 0' }}>{career.description}</p>
-                <div style={{ display: 'flex', gap: '12px', fontSize: '12px', color: '#888', marginTop: '8px' }}>
+                <div style={{ display: 'flex', gap: '12px', fontSize: '12px', color: '#666666', marginTop: '8px' }}>
                   {career.salary_range && <span>💰 {career.salary_range}</span>}
                   {career.demand && <span>📊 {career.demand}</span>}
                 </div>
@@ -216,7 +216,7 @@ const ExploreModule = () => {
       {activeTab === 'universities' && (
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '20px' }}>
           {universities.length === 0 ? (
-            <p style={{ gridColumn: '1 / -1', textAlign: 'center', padding: '40px', color: '#888' }}>No universities available.</p>
+            <p style={{ gridColumn: '1 / -1', textAlign: 'center', padding: '40px', color: '#666666' }}>No universities available.</p>
           ) : (
             universities.map((uni) => (
               <div
@@ -242,7 +242,7 @@ const ExploreModule = () => {
               >
                 <h3 style={{ color: '#1a5f2b', margin: '0 0 8px 0', fontSize: '18px' }}>{uni.name}</h3>
                 {uni.location && <div style={{ color: '#666', fontSize: '14px' }}>📍 {uni.location}</div>}
-                {uni.cutoff && <div style={{ color: '#888', fontSize: '13px' }}>Cutoff: {uni.cutoff}</div>}
+                {uni.cutoff && <div style={{ color: '#666666', fontSize: '13px' }}>Cutoff: {uni.cutoff}</div>}
                 {uni.programs && uni.programs.length > 0 && (
                   <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginTop: '8px' }}>
                     {uni.programs.slice(0, 2).map((p, i) => (

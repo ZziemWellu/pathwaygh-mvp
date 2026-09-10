@@ -55,7 +55,7 @@ const CommunityModule = () => {
         border: '1px solid #e0e0e0',
         borderRadius: '12px',
         textAlign: 'center',
-        color: '#888'
+        color: '#666666'
       }}>
         <p style={{ margin: '0 0 12px 0' }}>🌱 Community features coming soon. Connect with other learners!</p>
         <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', flexWrap: 'wrap' }}>

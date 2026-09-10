@@ -75,13 +75,15 @@ const AdminCourseList = () => {
           <input required placeholder="Slug (e.g. shs-physics)" value={form.slug} onChange={(e) => setForm({ ...form, slug: e.target.value })} style={inputStyle} />
           <input required placeholder="Title" value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} style={inputStyle} />
           <textarea placeholder="Description" value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} style={{ ...inputStyle, minHeight: '70px' }} />
-          <select value={form.level} onChange={(e) => setForm({ ...form, level: e.target.value })} style={inputStyle}>
+          <label htmlFor="new-course-level" style={srOnlyStyle}>Level</label>
+          <select id="new-course-level" value={form.level} onChange={(e) => setForm({ ...form, level: e.target.value })} style={inputStyle}>
             <option value="jhs">JHS</option>
             <option value="shs">SHS</option>
             <option value="skills">Skills</option>
             <option value="tvet">TVET</option>
           </select>
-          <select value={form.country} onChange={(e) => setForm({ ...form, country: e.target.value })} style={inputStyle}>
+          <label htmlFor="new-course-country" style={srOnlyStyle}>Country</label>
+          <select id="new-course-country" value={form.country} onChange={(e) => setForm({ ...form, country: e.target.value })} style={inputStyle}>
             <option value="GH">Ghana</option>
             <option value="NG">Nigeria</option>
           </select>
@@ -99,7 +101,7 @@ const AdminCourseList = () => {
         >
           <div style={{ flex: 1 }}>
             <div style={{ fontWeight: 'bold' }}>{course.title}</div>
-            <div style={{ fontSize: '12px', color: '#888' }}>{course.slug} · {course.level?.toUpperCase()} · {course.country} · {course.lesson_count} lessons</div>
+            <div style={{ fontSize: '12px', color: '#666666' }}>{course.slug} · {course.level?.toUpperCase()} · {course.country} · {course.lesson_count} lessons</div>
           </div>
           <button
             onClick={(e) => { e.stopPropagation(); handleDelete(course); }}
@@ -107,7 +109,7 @@ const AdminCourseList = () => {
           >
             <Trash2 size={16} />
           </button>
-          <ChevronRight size={18} color="#888" />
+          <ChevronRight size={18} color="#666666" />
         </div>
       ))}
     </div>
@@ -115,5 +117,20 @@ const AdminCourseList = () => {
 };
 
 const inputStyle = { padding: '10px 12px', border: '1px solid #e0e0e0', borderRadius: '8px', fontSize: '14px', fontFamily: 'inherit' };
+
+// Visually hidden but still announced by screen readers - this form's other
+// fields lean on placeholder text alone, but a <select>'s value never shows
+// as placeholder text, so it needs a real (if visually invisible) label.
+const srOnlyStyle = {
+  position: 'absolute',
+  width: '1px',
+  height: '1px',
+  padding: 0,
+  margin: '-1px',
+  overflow: 'hidden',
+  clip: 'rect(0, 0, 0, 0)',
+  whiteSpace: 'nowrap',
+  border: 0,
+};
 
 export default AdminCourseList;

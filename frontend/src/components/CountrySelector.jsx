@@ -10,7 +10,7 @@ const COUNTRIES = [
 const CountrySelector = ({ onSelect }) => (
   <div style={{ maxWidth: '400px', margin: '0 auto' }}>
     <h2 style={{ color: '#1a5f2b', textAlign: 'center' }}>Where are you learning from?</h2>
-    <p style={{ color: '#888', textAlign: 'center', marginBottom: '24px' }}>
+    <p style={{ color: '#666666', textAlign: 'center', marginBottom: '24px' }}>
       We'll show you courses, careers, and universities relevant to your country.
     </p>
     {COUNTRIES.map(({ code, name, Flag }) => (
@@ -37,7 +37,7 @@ const CountrySelector = ({ onSelect }) => (
         {name}
       </button>
     ))}
-    <p style={{ color: '#aaa', textAlign: 'center', fontSize: '13px', marginTop: '16px' }}>
+    <p style={{ color: '#666666', textAlign: 'center', fontSize: '13px', marginTop: '16px' }}>
       More African countries coming soon.
     </p>
   </div>

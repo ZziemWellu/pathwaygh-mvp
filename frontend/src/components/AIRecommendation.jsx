@@ -150,7 +150,7 @@ function AIRecommendation() {
                     </span>
                   </div>
                   <p style={{ margin: '10px 0', fontSize: '14px', color: '#555' }}>{career.aggregate_match}</p>
-                  <div style={{ fontSize: '12px', color: '#888' }}>
+                  <div style={{ fontSize: '12px', color: '#666666' }}>
                     <span style={{ marginRight: '15px' }}>💰 {career.salary_range}</span>
                     <span>🎓 {career.duration_years} years</span>
                   </div>

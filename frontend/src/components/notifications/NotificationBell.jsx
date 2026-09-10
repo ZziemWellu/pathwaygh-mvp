@@ -142,7 +142,7 @@ const NotificationBell = ({ user }) => {
 
           <div style={{ overflowY: 'auto', maxHeight: '320px' }}>
             {notifications.length === 0 ? (
-              <div style={{ padding: '30px', textAlign: 'center', color: '#888' }}>
+              <div style={{ padding: '30px', textAlign: 'center', color: '#666666' }}>
                 <div style={{ fontSize: '32px' }}>🎉</div>
                 <p>No notifications yet!</p>
               </div>
@@ -168,7 +168,7 @@ const NotificationBell = ({ user }) => {
                         {n.title}
                       </div>
                       <div style={{ fontSize: '13px', color: '#666' }}>{n.message}</div>
-                      <div style={{ fontSize: '11px', color: '#888', marginTop: '4px' }}>
+                      <div style={{ fontSize: '11px', color: '#666666', marginTop: '4px' }}>
                         {n.time ? new Date(n.time).toLocaleDateString() : 'Recently'}
                       </div>
                     </div>
@@ -198,7 +198,7 @@ const NotificationBell = ({ user }) => {
               borderTop: '1px solid #e0e0e0',
               cursor: 'pointer',
               fontSize: '13px',
-              color: '#888',
+              color: '#666666',
             }}
           >
             Close

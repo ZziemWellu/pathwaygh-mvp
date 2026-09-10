@@ -82,10 +82,10 @@ const CareerDetail = ({ career, onClose }) => {
             border: 'none',
             fontSize: '24px',
             cursor: 'pointer',
-            color: '#888',
+            color: '#666666',
           }}
           onMouseEnter={(e) => e.currentTarget.style.color = '#333'}
-          onMouseLeave={(e) => e.currentTarget.style.color = '#888'}
+          onMouseLeave={(e) => e.currentTarget.style.color = '#666666'}
         >
           ✕
         </button>
@@ -152,25 +152,25 @@ const CareerDetail = ({ career, onClose }) => {
         }}>
           {career.salary_range && (
             <div style={{ padding: '14px', background: '#f8f9fa', borderRadius: '10px' }}>
-              <div style={{ fontSize: '11px', color: '#888' }}>💰 Salary Range</div>
+              <div style={{ fontSize: '11px', color: '#666666' }}>💰 Salary Range</div>
               <div style={{ fontSize: '16px', fontWeight: 'bold', color: '#1a5f2b' }}>{career.salary_range}</div>
             </div>
           )}
           {career.demand && (
             <div style={{ padding: '14px', background: '#f8f9fa', borderRadius: '10px' }}>
-              <div style={{ fontSize: '11px', color: '#888' }}>📊 Job Demand</div>
+              <div style={{ fontSize: '11px', color: '#666666' }}>📊 Job Demand</div>
               <div style={{ fontSize: '16px', fontWeight: 'bold', color: '#1a5f2b' }}>{career.demand}</div>
             </div>
           )}
           {career.growth && (
             <div style={{ padding: '14px', background: '#f8f9fa', borderRadius: '10px' }}>
-              <div style={{ fontSize: '11px', color: '#888' }}>📈 Growth Outlook</div>
+              <div style={{ fontSize: '11px', color: '#666666' }}>📈 Growth Outlook</div>
               <div style={{ fontSize: '16px', fontWeight: 'bold', color: '#1a5f2b' }}>{career.growth}</div>
             </div>
           )}
           {career.ai_score && (
             <div style={{ padding: '14px', background: '#f8f9fa', borderRadius: '10px' }}>
-              <div style={{ fontSize: '11px', color: '#888' }}>🤖 AI Suitability</div>
+              <div style={{ fontSize: '11px', color: '#666666' }}>🤖 AI Suitability</div>
               <div style={{ fontSize: '16px', fontWeight: 'bold', color: '#1a5f2b' }}>{career.ai_score}%</div>
             </div>
           )}
@@ -267,7 +267,7 @@ const CareerDetail = ({ career, onClose }) => {
                   </span>
                   <div>
                     <div style={{ fontWeight: 'bold', fontSize: '14px' }}>{step.title}</div>
-                    <div style={{ fontSize: '12px', color: '#888' }}>{step.duration}</div>
+                    <div style={{ fontSize: '12px', color: '#666666' }}>{step.duration}</div>
                   </div>
                 </div>
               ))}

@@ -78,19 +78,19 @@ const AdminCourseEditor = () => {
       <Link to="/admin" style={{ color: '#1a5f2b', fontSize: '14px' }}>← All courses</Link>
 
       <div style={{ background: 'white', border: '1px solid #e0e0e0', borderRadius: '12px', padding: '18px', margin: '16px 0', display: 'flex', flexDirection: 'column', gap: '10px' }}>
-        <label style={labelStyle}>Title</label>
-        <input value={course.title} onChange={(e) => setCourse({ ...course, title: e.target.value })} style={inputStyle} />
-        <label style={labelStyle}>Description</label>
-        <textarea value={course.description || ''} onChange={(e) => setCourse({ ...course, description: e.target.value })} style={{ ...inputStyle, minHeight: '70px' }} />
-        <label style={labelStyle}>Level</label>
-        <select value={course.level} onChange={(e) => setCourse({ ...course, level: e.target.value })} style={inputStyle}>
+        <label htmlFor="course-title" style={labelStyle}>Title</label>
+        <input id="course-title" value={course.title} onChange={(e) => setCourse({ ...course, title: e.target.value })} style={inputStyle} />
+        <label htmlFor="course-description" style={labelStyle}>Description</label>
+        <textarea id="course-description" value={course.description || ''} onChange={(e) => setCourse({ ...course, description: e.target.value })} style={{ ...inputStyle, minHeight: '70px' }} />
+        <label htmlFor="course-level" style={labelStyle}>Level</label>
+        <select id="course-level" value={course.level} onChange={(e) => setCourse({ ...course, level: e.target.value })} style={inputStyle}>
           <option value="jhs">JHS</option>
           <option value="shs">SHS</option>
           <option value="skills">Skills</option>
           <option value="tvet">TVET</option>
         </select>
-        <label style={labelStyle}>Country</label>
-        <select value={course.country} onChange={(e) => setCourse({ ...course, country: e.target.value })} style={inputStyle}>
+        <label htmlFor="course-country" style={labelStyle}>Country</label>
+        <select id="course-country" value={course.country} onChange={(e) => setCourse({ ...course, country: e.target.value })} style={inputStyle}>
           <option value="GH">Ghana</option>
           <option value="NG">Nigeria</option>
         </select>
@@ -132,12 +132,12 @@ const AdminCourseEditor = () => {
         >
           <div style={{ flex: 1 }}>
             <div style={{ fontWeight: 'bold' }}>{lesson.title}</div>
-            <div style={{ fontSize: '12px', color: '#888' }}>{lesson.lesson_type} · {lesson.exercise_count} exercises</div>
+            <div style={{ fontSize: '12px', color: '#666666' }}>{lesson.lesson_type} · {lesson.exercise_count} exercises</div>
           </div>
           <button onClick={(e) => { e.stopPropagation(); handleDeleteLesson(lesson); }} style={{ background: 'none', border: 'none', color: '#c62828', cursor: 'pointer', padding: '6px' }}>
             <Trash2 size={16} />
           </button>
-          <ChevronRight size={18} color="#888" />
+          <ChevronRight size={18} color="#666666" />
         </div>
       ))}
     </div>
