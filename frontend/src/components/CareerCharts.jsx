@@ -82,7 +82,7 @@ function CareerCharts() {
               <Bar dataKey="aggregate" fill="#2e7d32" name="Required Aggregate" />
             </BarChart>
           </ResponsiveContainer>
-          <p style={{ fontSize: '12px', color: '#888', marginTop: '10px' }}>
+          <p style={{ fontSize: '12px', color: '#666666', marginTop: '10px' }}>
             Lower aggregate = Better. Medicine needs ≤12, Engineering ≤16.
           </p>
         </div>

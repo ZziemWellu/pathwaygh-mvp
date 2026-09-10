@@ -73,7 +73,7 @@ const LessonView = () => {
             />
           </div>
         ) : (
-          <div style={{ padding: '60px 20px', textAlign: 'center', background: '#f8f9fa', borderRadius: '12px', color: '#888' }}>
+          <div style={{ padding: '60px 20px', textAlign: 'center', background: '#f8f9fa', borderRadius: '12px', color: '#666666' }}>
             🎬 Video coming soon for this lesson.
           </div>
         )

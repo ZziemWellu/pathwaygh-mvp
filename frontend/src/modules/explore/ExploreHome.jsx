@@ -67,7 +67,7 @@ function ExploreHome() {
                   <h4 style={{ margin: '0 0 5px 0', color: '#1a5f2b' }}>{career.name}</h4>
                   <span style={{ fontSize: '12px', color: '#666' }}>{career.field}</span>
                   <p style={{ fontSize: '13px', color: '#555', margin: '8px 0' }}>{career.description}</p>
-                  <div style={{ fontSize: '12px', color: '#888' }}>💰 {career.salary_range}</div>
+                  <div style={{ fontSize: '12px', color: '#666666' }}>💰 {career.salary_range}</div>
                 </div>
               ))}
             </div>

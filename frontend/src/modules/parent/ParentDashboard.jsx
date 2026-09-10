@@ -92,7 +92,7 @@ function ParentDashboard() {
           >
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <h3 style={{ margin: '0 0 5px 0', color: '#1a5f2b' }}>{child.child_name}</h3>
-              <span style={{ fontSize: '12px', color: '#888' }}>{child.relationship}</span>
+              <span style={{ fontSize: '12px', color: '#666666' }}>{child.relationship}</span>
             </div>
             <p style={{ fontSize: '14px', color: '#666', margin: '5px 0' }}>
               {child.grade_level} • {child.school || 'School not specified'}
@@ -113,7 +113,7 @@ function ParentDashboard() {
               </div>
             </div>
 
-            <div style={{ display: 'flex', gap: '15px', fontSize: '13px', color: '#888' }}>
+            <div style={{ display: 'flex', gap: '15px', fontSize: '13px', color: '#666666' }}>
               <span>📚 {child.courses_enrolled || 0} courses</span>
               <span>📝 {child.lessons_completed || 0}/{child.total_lessons || 0} lessons</span>
               <span>📊 {child.quiz_score_avg || 0}% avg</span>

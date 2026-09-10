@@ -117,7 +117,7 @@ const ExploreLanding = ({ user }) => {
         ))}
       </div>
 
-      <footer style={{ textAlign: 'center', marginTop: '40px', padding: '20px', color: '#888', borderTop: '1px solid #e0e0e0' }}>
+      <footer style={{ textAlign: 'center', marginTop: '40px', padding: '20px', color: '#666666', borderTop: '1px solid #e0e0e0' }}>
         <p>Discover your path with Pathway AI</p>
       </footer>
     </div>

@@ -253,7 +253,7 @@ const ProfileModule = () => {
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '400px' }}>
         <div style={{ textAlign: 'center' }}>
           <div style={{ fontSize: '24px', marginBottom: '12px' }}>⏳</div>
-          <p style={{ color: '#888' }}>Loading profile...</p>
+          <p style={{ color: '#666666' }}>Loading profile...</p>
         </div>
       </div>
     );
@@ -408,19 +408,19 @@ const ProfileModule = () => {
             <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
                 <div>
-                  <label style={{ display: 'block', fontSize: '13px', color: '#888', marginBottom: '4px' }}>Full Name</label>
+                  <label style={{ display: 'block', fontSize: '13px', color: '#666666', marginBottom: '4px' }}>Full Name</label>
                   <input name="full_name" value={formData.full_name || ''} onChange={handleChange} style={{ width: '100%', padding: '10px', border: '1px solid #e0e0e0', borderRadius: '8px' }} />
                 </div>
                 <div>
-                  <label style={{ display: 'block', fontSize: '13px', color: '#888', marginBottom: '4px' }}>Email</label>
+                  <label style={{ display: 'block', fontSize: '13px', color: '#666666', marginBottom: '4px' }}>Email</label>
                   <input name="email" value={formData.email || ''} onChange={handleChange} style={{ width: '100%', padding: '10px', border: '1px solid #e0e0e0', borderRadius: '8px' }} disabled />
                 </div>
                 <div>
-                  <label style={{ display: 'block', fontSize: '13px', color: '#888', marginBottom: '4px' }}>School</label>
+                  <label style={{ display: 'block', fontSize: '13px', color: '#666666', marginBottom: '4px' }}>School</label>
                   <input name="school" value={formData.school || ''} onChange={handleChange} placeholder="Your school name" style={{ width: '100%', padding: '10px', border: '1px solid #e0e0e0', borderRadius: '8px' }} />
                 </div>
                 <div>
-                  <label style={{ display: 'block', fontSize: '13px', color: '#888', marginBottom: '4px' }}>Grade/Level</label>
+                  <label style={{ display: 'block', fontSize: '13px', color: '#666666', marginBottom: '4px' }}>Grade/Level</label>
                   <select name="grade" value={formData.grade || ''} onChange={handleChange} style={{ width: '100%', padding: '10px', border: '1px solid #e0e0e0', borderRadius: '8px' }}>
                     <option value="">Select Grade</option>
                     <option value="JHS 1">JHS 1</option>
@@ -433,23 +433,23 @@ const ProfileModule = () => {
                   </select>
                 </div>
                 <div>
-                  <label style={{ display: 'block', fontSize: '13px', color: '#888', marginBottom: '4px' }}>Bio / About Me</label>
+                  <label style={{ display: 'block', fontSize: '13px', color: '#666666', marginBottom: '4px' }}>Bio / About Me</label>
                   <textarea name="bio" value={formData.bio || ''} onChange={handleChange} placeholder="Tell us about yourself..." rows="3" style={{ width: '100%', padding: '10px', border: '1px solid #e0e0e0', borderRadius: '8px', resize: 'vertical' }} />
                 </div>
                 <div>
-                  <label style={{ display: 'block', fontSize: '13px', color: '#888', marginBottom: '4px' }}>Phone Number</label>
+                  <label style={{ display: 'block', fontSize: '13px', color: '#666666', marginBottom: '4px' }}>Phone Number</label>
                   <input name="phone" value={formData.phone || ''} onChange={handleChange} placeholder="+233 XX XXX XXXX" style={{ width: '100%', padding: '10px', border: '1px solid #e0e0e0', borderRadius: '8px' }} />
                 </div>
                 <div>
-                  <label style={{ display: 'block', fontSize: '13px', color: '#888', marginBottom: '4px' }}>Location</label>
+                  <label style={{ display: 'block', fontSize: '13px', color: '#666666', marginBottom: '4px' }}>Location</label>
                   <input name="location" value={formData.location || ''} onChange={handleChange} placeholder="Accra, Kumasi, ..." style={{ width: '100%', padding: '10px', border: '1px solid #e0e0e0', borderRadius: '8px' }} />
                 </div>
                 <div>
-                  <label style={{ display: 'block', fontSize: '13px', color: '#888', marginBottom: '4px' }}>Career Interests (comma separated)</label>
+                  <label style={{ display: 'block', fontSize: '13px', color: '#666666', marginBottom: '4px' }}>Career Interests (comma separated)</label>
                   <input name="interests" value={formData.interests?.join(', ') || ''} onChange={(e) => handleArrayChange(e, 'interests')} placeholder="Engineering, Medicine, Technology, ..." style={{ width: '100%', padding: '10px', border: '1px solid #e0e0e0', borderRadius: '8px' }} />
                 </div>
                 <div>
-                  <label style={{ display: 'block', fontSize: '13px', color: '#888', marginBottom: '4px' }}>Learning Goals (comma separated)</label>
+                  <label style={{ display: 'block', fontSize: '13px', color: '#666666', marginBottom: '4px' }}>Learning Goals (comma separated)</label>
                   <input name="goals" value={formData.goals?.join(', ') || ''} onChange={(e) => handleArrayChange(e, 'goals')} placeholder="Pass WASSCE, Study Engineering, ..." style={{ width: '100%', padding: '10px', border: '1px solid #e0e0e0', borderRadius: '8px' }} />
                 </div>
               </div>
@@ -463,27 +463,27 @@ const ProfileModule = () => {
               <div style={{ textAlign: 'center', padding: '12px', background: '#f8f9fa', borderRadius: '8px' }}>
                 <div style={{ fontSize: '24px' }}>📚</div>
                 <div style={{ fontSize: '20px', fontWeight: 'bold', color: '#1a5f2b' }}>{stats.coursesCompleted || 0}</div>
-                <div style={{ fontSize: '12px', color: '#888' }}>Courses</div>
+                <div style={{ fontSize: '12px', color: '#666666' }}>Courses</div>
               </div>
               <div style={{ textAlign: 'center', padding: '12px', background: '#f8f9fa', borderRadius: '8px' }}>
                 <div style={{ fontSize: '24px' }}>📖</div>
                 <div style={{ fontSize: '20px', fontWeight: 'bold', color: '#1a5f2b' }}>{stats.totalLessons || 0}</div>
-                <div style={{ fontSize: '12px', color: '#888' }}>Lessons</div>
+                <div style={{ fontSize: '12px', color: '#666666' }}>Lessons</div>
               </div>
               <div style={{ textAlign: 'center', padding: '12px', background: '#f8f9fa', borderRadius: '8px' }}>
                 <div style={{ fontSize: '24px' }}>📝</div>
                 <div style={{ fontSize: '20px', fontWeight: 'bold', color: '#1a5f2b' }}>{stats.quizzesTaken || 0}</div>
-                <div style={{ fontSize: '12px', color: '#888' }}>Quizzes</div>
+                <div style={{ fontSize: '12px', color: '#666666' }}>Quizzes</div>
               </div>
               <div style={{ textAlign: 'center', padding: '12px', background: '#f8f9fa', borderRadius: '8px' }}>
                 <div style={{ fontSize: '24px' }}>🔥</div>
                 <div style={{ fontSize: '20px', fontWeight: 'bold', color: '#1a5f2b' }}>{stats.studyStreak || 0}</div>
-                <div style={{ fontSize: '12px', color: '#888' }}>Day Streak</div>
+                <div style={{ fontSize: '12px', color: '#666666' }}>Day Streak</div>
               </div>
               <div style={{ textAlign: 'center', padding: '12px', background: '#f8f9fa', borderRadius: '8px' }}>
                 <div style={{ fontSize: '24px' }}>⭐</div>
                 <div style={{ fontSize: '20px', fontWeight: 'bold', color: '#1a5f2b' }}>{stats.xp || 0}</div>
-                <div style={{ fontSize: '12px', color: '#888' }}>XP</div>
+                <div style={{ fontSize: '12px', color: '#666666' }}>XP</div>
               </div>
             </div>
           )}
@@ -576,7 +576,7 @@ const ProfileModule = () => {
                       <span key={i} style={{ background: '#e8f5e9', padding: '4px 12px', borderRadius: '12px', fontSize: '13px', color: '#1a5f2b' }}>{interest}</span>
                     ))
                   ) : (
-                    <span style={{ color: '#888' }}>No interests added yet</span>
+                    <span style={{ color: '#666666' }}>No interests added yet</span>
                   )}
                 </div>
               </div>
@@ -588,7 +588,7 @@ const ProfileModule = () => {
                       <span key={i} style={{ background: '#fff3e0', padding: '4px 12px', borderRadius: '12px', fontSize: '13px', color: '#e65100' }}>{goal}</span>
                     ))
                   ) : (
-                    <span style={{ color: '#888' }}>No goals added yet</span>
+                    <span style={{ color: '#666666' }}>No goals added yet</span>
                   )}
                 </div>
               </div>
@@ -605,7 +605,7 @@ const ProfileModule = () => {
                 {savedCareers.length > 0 ? (
                   savedCareers.map((career, i) => <div key={i} style={{ fontSize: '13px', color: '#555', padding: '4px 0' }}>• {career}</div>)
                 ) : (
-                  <span style={{ color: '#888', fontSize: '13px' }}>No saved careers</span>
+                  <span style={{ color: '#666666', fontSize: '13px' }}>No saved careers</span>
                 )}
               </div>
               <div style={{ background: '#f8f9fa', borderRadius: '8px', padding: '16px' }}>
@@ -613,7 +613,7 @@ const ProfileModule = () => {
                 {savedUniversities.length > 0 ? (
                   savedUniversities.map((uni, i) => <div key={i} style={{ fontSize: '13px', color: '#555', padding: '4px 0' }}>• {uni}</div>)
                 ) : (
-                  <span style={{ color: '#888', fontSize: '13px' }}>No saved universities</span>
+                  <span style={{ color: '#666666', fontSize: '13px' }}>No saved universities</span>
                 )}
               </div>
               <div style={{ background: '#f8f9fa', borderRadius: '8px', padding: '16px' }}>
@@ -621,7 +621,7 @@ const ProfileModule = () => {
                 {savedScholarships.length > 0 ? (
                   savedScholarships.map((sch, i) => <div key={i} style={{ fontSize: '13px', color: '#555', padding: '4px 0' }}>• {sch}</div>)
                 ) : (
-                  <span style={{ color: '#888', fontSize: '13px' }}>No saved scholarships</span>
+                  <span style={{ color: '#666666', fontSize: '13px' }}>No saved scholarships</span>
                 )}
               </div>
             </div>
@@ -648,7 +648,7 @@ const ProfileModule = () => {
               </div>
             ) : (
               <div>
-                <p style={{ color: '#888', marginBottom: '16px' }}>You're not linked to a school yet.</p>
+                <p style={{ color: '#666666', marginBottom: '16px' }}>You're not linked to a school yet.</p>
                 <div style={{ display: 'flex', gap: '12px', marginBottom: '16px' }}>
                   <button onClick={() => { setSchoolFormMode('join'); setSchoolFormValue(''); }} style={{ padding: '8px 16px', background: schoolFormMode === 'join' ? '#1a5f2b' : '#f0f0f0', color: schoolFormMode === 'join' ? 'white' : '#333', border: 'none', borderRadius: '8px', cursor: 'pointer' }}>
                     Join a School
@@ -700,7 +700,7 @@ const ProfileModule = () => {
                 <p style={{ marginBottom: '8px' }}><strong style={{ color: '#666' }}>Language:</strong></p>
                 <LanguageSwitcher style={{ marginBottom: '16px' }} />
                 <p><strong style={{ color: '#666' }}>Privacy Settings:</strong></p>
-                <p style={{ color: '#888', fontSize: '13px' }}>Account settings and privacy controls coming soon.</p>
+                <p style={{ color: '#666666', fontSize: '13px' }}>Account settings and privacy controls coming soon.</p>
               </div>
             </div>
           </div>

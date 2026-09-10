@@ -129,7 +129,7 @@ const AdminExerciseEditor = ({ lessonId, exercises, onChange }) => {
             </div>
             <div style={{ flex: 1 }} onClick={() => setEditingId(exercise.id)}>
               <div style={{ fontWeight: 600, cursor: 'pointer' }}>{i + 1}. {exercise.question}</div>
-              <div style={{ fontSize: '12px', color: '#888' }}>Correct: {exercise.options[exercise.correct_index]}</div>
+              <div style={{ fontSize: '12px', color: '#666666' }}>Correct: {exercise.options[exercise.correct_index]}</div>
             </div>
             <button onClick={() => handleDelete(exercise)} style={{ background: 'none', border: 'none', color: '#c62828', cursor: 'pointer' }}><Trash2 size={16} /></button>
           </div>

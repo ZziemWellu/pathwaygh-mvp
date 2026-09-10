@@ -19,13 +19,6 @@ const STATIC_ASSETS = [
   '/icons/icon-512x512.png'
 ];
 
-// API endpoints to cache (GET only)
-const API_CACHE = [
-  '/api/careers',
-  '/api/learn/courses',
-  '/api/practice/subjects'
-];
-
 // Install event - cache static assets
 self.addEventListener('install', event => {
   event.waitUntil(

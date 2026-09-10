@@ -92,7 +92,7 @@ function AITutor({ userId }) {
     <div style={{ maxWidth: '900px', margin: '0 auto', padding: '20px' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
         <h2 style={{ color: '#1a5f2b', margin: 0 }}>🤖 AI Tutor</h2>
-        <span style={{ fontSize: '12px', color: '#888' }}>
+        <span style={{ fontSize: '12px', color: '#666666' }}>
           {session?.conversation?.length || 0} interactions
         </span>
       </div>
@@ -108,7 +108,7 @@ function AITutor({ userId }) {
         marginBottom: '15px'
       }}>
         {messages.length === 0 && (
-          <div style={{ textAlign: 'center', color: '#888', padding: '40px' }}>
+          <div style={{ textAlign: 'center', color: '#666666', padding: '40px' }}>
             <p style={{ fontSize: '18px' }}>👋 Welcome to AI Tutor!</p>
             <p>Ask me about Biology, Chemistry, Physics, Mathematics, and more.</p>
             <p style={{ fontSize: '13px', marginTop: '10px' }}>
@@ -137,7 +137,7 @@ function AITutor({ userId }) {
             >
               <strong>{msg.role === 'user' ? 'You' : 'AI Tutor'}:</strong>
               <div style={{ marginTop: '5px' }}>{msg.content}</div>
-              <div style={{ fontSize: '10px', color: '#888', marginTop: '5px' }}>
+              <div style={{ fontSize: '10px', color: '#666666', marginTop: '5px' }}>
                 {msg.timestamp ? new Date(msg.timestamp).toLocaleTimeString() : ''}
               </div>
             </div>
@@ -146,7 +146,7 @@ function AITutor({ userId }) {
         {loading && (
           <div style={{ textAlign: 'left' }}>
             <div style={{ display: 'inline-block', padding: '12px 16px', borderRadius: '12px', background: 'white', border: '1px solid #e0e0e0' }}>
-              <span style={{ color: '#888' }}>Thinking...</span>
+              <span style={{ color: '#666666' }}>Thinking...</span>
             </div>
           </div>
         )}

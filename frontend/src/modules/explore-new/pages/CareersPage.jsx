@@ -1,11 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import api from '../../../services/api';
+import { useModalA11y } from '../../../hooks/useModalA11y';
 
 const CareersPage = ({ user }) => {
   const [careers, setCareers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedCareer, setSelectedCareer] = useState(null);
+  const modalRef = useRef(null);
+  const closeModal = useCallback(() => setSelectedCareer(null), []);
+  useModalA11y({ isOpen: !!selectedCareer, onClose: closeModal, containerRef: modalRef });
 
   useEffect(() => {
     fetchCareers();
@@ -35,7 +39,7 @@ const CareersPage = ({ user }) => {
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '300px' }}>
         <div style={{ textAlign: 'center' }}>
           <div style={{ width: '40px', height: '40px', border: '4px solid #f0f0f0', borderTopColor: '#1a5f2b', borderRadius: '50%', animation: 'spin 0.8s linear infinite', margin: '0 auto 16px' }} />
-          <p style={{ color: '#888' }}>Loading careers...</p>
+          <p style={{ color: '#666666' }}>Loading careers...</p>
         </div>
       </div>
     );
@@ -55,7 +59,7 @@ const CareersPage = ({ user }) => {
     <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '20px' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', flexWrap: 'wrap', gap: '10px' }}>
         <h2 style={{ color: '#1a5f2b' }}>💼 Careers</h2>
-        <span style={{ color: '#888' }}>{careers.length} careers available</span>
+        <span style={{ color: '#666666' }}>{careers.length} careers available</span>
       </div>
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '20px' }}>
@@ -63,6 +67,14 @@ const CareersPage = ({ user }) => {
           <div
             key={career.id}
             onClick={() => setSelectedCareer(career)}
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                setSelectedCareer(career);
+              }
+            }}
             style={{
               border: '1px solid #e0e0e0',
               borderRadius: '12px',
@@ -85,7 +97,7 @@ const CareersPage = ({ user }) => {
             {career.salary_range && (
               <div style={{ fontSize: '13px', color: '#666' }}>💰 {career.salary_range}</div>
             )}
-            <div style={{ fontSize: '12px', color: '#888', marginTop: '12px' }}>Click for full details →</div>
+            <div style={{ fontSize: '12px', color: '#666666', marginTop: '12px' }}>Click for full details →</div>
           </div>
         ))}
       </div>
@@ -109,6 +121,11 @@ const CareersPage = ({ user }) => {
           onClick={() => setSelectedCareer(null)}
         >
           <div
+            ref={modalRef}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="career-modal-title"
+            tabIndex={-1}
             style={{
               background: 'white',
               padding: '30px',
@@ -121,12 +138,13 @@ const CareersPage = ({ user }) => {
             onClick={(e) => e.stopPropagation()}
           >
             <button
-              style={{ float: 'right', background: 'none', border: 'none', fontSize: '24px', cursor: 'pointer', color: '#888' }}
+              aria-label="Close"
+              style={{ float: 'right', background: 'none', border: 'none', fontSize: '24px', cursor: 'pointer', color: '#666666' }}
               onClick={() => setSelectedCareer(null)}
             >
               ✕
             </button>
-            <h2 style={{ color: '#1a5f2b' }}>{selectedCareer.title}</h2>
+            <h2 id="career-modal-title" style={{ color: '#1a5f2b' }}>{selectedCareer.title}</h2>
             {selectedCareer.category && (
               <span style={{ background: '#e8f5e9', padding: '2px 10px', borderRadius: '12px', fontSize: '12px', display: 'inline-block' }}>
                 {selectedCareer.category}

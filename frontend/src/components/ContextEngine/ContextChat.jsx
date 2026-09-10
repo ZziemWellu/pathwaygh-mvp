@@ -235,7 +235,7 @@ function ContextChat() {
         {loading && (
           <div style={{ textAlign: 'left' }}>
             <div style={{ display: 'inline-block', padding: '12px 16px', borderRadius: '12px', background: 'white', border: '1px solid #e0e0e0' }}>
-              <span style={{ color: '#888' }}>Thinking...</span>
+              <span style={{ color: '#666666' }}>Thinking...</span>
             </div>
           </div>
         )}

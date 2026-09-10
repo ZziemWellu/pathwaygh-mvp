@@ -62,7 +62,7 @@ function CareerRoadmap({ career }) {
               </p>
               <span style={{ 
                 fontSize: '11px', 
-                color: '#888',
+                color: '#666666',
                 textTransform: 'uppercase',
                 letterSpacing: '0.5px'
               }}>

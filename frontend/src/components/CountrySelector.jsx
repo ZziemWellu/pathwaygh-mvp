@@ -13,7 +13,7 @@ const CountrySelector = ({ onSelect }) => {
   return (
     <div style={{ maxWidth: '400px', margin: '0 auto' }}>
       <h2 style={{ color: '#1a5f2b', textAlign: 'center' }}>{t('whereLearningFrom')}</h2>
-      <p style={{ color: '#888', textAlign: 'center', marginBottom: '24px' }}>
+      <p style={{ color: '#666666', textAlign: 'center', marginBottom: '24px' }}>
         {t('countrySelectorDescription')}
       </p>
       {COUNTRIES.map(({ code, name, Flag }) => (
@@ -40,7 +40,7 @@ const CountrySelector = ({ onSelect }) => {
           {name}
         </button>
       ))}
-      <p style={{ color: '#aaa', textAlign: 'center', fontSize: '13px', marginTop: '16px' }}>
+      <p style={{ color: '#666666', textAlign: 'center', fontSize: '13px', marginTop: '16px' }}>
         {t('moreCountriesComingSoon')}
       </p>
     </div>

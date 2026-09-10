@@ -128,8 +128,9 @@ const Register = ({ onSuccess }) => {
 
       <form onSubmit={handleSubmit}>
         <div style={{ marginBottom: '16px' }}>
-          <label style={{ display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>{t('fullName')}</label>
+          <label htmlFor="full_name" style={{ display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>{t('fullName')}</label>
           <input
+            id="full_name"
             type="text"
             name="full_name"
             value={formData.full_name}
@@ -147,8 +148,9 @@ const Register = ({ onSuccess }) => {
         </div>
 
         <div style={{ marginBottom: '16px' }}>
-          <label style={{ display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>{t('email')}</label>
+          <label htmlFor="register-email" style={{ display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>{t('email')}</label>
           <input
+            id="register-email"
             type="email"
             name="email"
             value={formData.email}
@@ -166,8 +168,9 @@ const Register = ({ onSuccess }) => {
         </div>
 
         <div style={{ marginBottom: '16px' }}>
-          <label style={{ display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>{t('password')}</label>
+          <label htmlFor="register-password" style={{ display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>{t('password')}</label>
           <input
+            id="register-password"
             type="password"
             name="password"
             value={formData.password}
@@ -186,8 +189,9 @@ const Register = ({ onSuccess }) => {
         </div>
 
         <div style={{ marginBottom: '16px' }}>
-          <label style={{ display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>{t('confirmPassword')}</label>
+          <label htmlFor="confirm_password" style={{ display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>{t('confirmPassword')}</label>
           <input
+            id="confirm_password"
             type="password"
             name="confirm_password"
             value={formData.confirm_password}
