@@ -64,13 +64,15 @@
   "screenshots": [
     {
       "src": "/screenshots/dashboard.png",
-      "sizes": "1080x1920",
-      "type": "image/png"
+      "sizes": "1080x1000",
+      "type": "image/png",
+      "form_factor": "wide"
     },
     {
       "src": "/screenshots/learn.png",
-      "sizes": "1080x1920",
-      "type": "image/png"
+      "sizes": "1080x950",
+      "type": "image/png",
+      "form_factor": "wide"
     }
   ],
   "shortcuts": [
