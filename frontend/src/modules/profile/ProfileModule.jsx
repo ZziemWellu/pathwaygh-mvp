@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import api from '../../services/api';
 import { getUser, setUser } from '../../constants/auth';
+import LanguageSwitcher from '../../components/LanguageSwitcher';
 
 const ProfileModule = () => {
   const [user, setUserState] = useState(getUser());
@@ -696,6 +697,8 @@ const ProfileModule = () => {
                 <p><strong style={{ color: '#666' }}>Location:</strong> {profile?.location || 'Not specified'}</p>
               </div>
               <div>
+                <p style={{ marginBottom: '8px' }}><strong style={{ color: '#666' }}>Language:</strong></p>
+                <LanguageSwitcher style={{ marginBottom: '16px' }} />
                 <p><strong style={{ color: '#666' }}>Privacy Settings:</strong></p>
                 <p style={{ color: '#666666', fontSize: '13px' }}>Account settings and privacy controls coming soon.</p>
               </div>

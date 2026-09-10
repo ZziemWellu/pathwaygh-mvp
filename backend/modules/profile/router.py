@@ -29,6 +29,7 @@ class ProfileUpdateRequest(BaseModel):
     interests: Optional[List[str]] = None
     goals: Optional[List[str]] = None
     subjects: Optional[List[str]] = None
+    language: Optional[str] = None
 
 
 class SavedItemRequest(BaseModel):
@@ -48,6 +49,7 @@ def _profile_out(user: User) -> dict:
         "interests": user.interests or [],
         "goals": user.goals or [],
         "subjects": user.subjects or [],
+        "language": user.language,
         "avatar_url": f"/uploads/avatars/{user.avatar_filename}" if user.avatar_filename else None,
         "created_at": user.created_at.isoformat() if user.created_at else None,
     }
@@ -69,7 +71,7 @@ async def update_my_profile(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
-    for field in ("full_name", "school", "grade", "bio", "phone", "location", "interests", "goals", "subjects"):
+    for field in ("full_name", "school", "grade", "bio", "phone", "location", "interests", "goals", "subjects", "language"):
         value = getattr(request, field)
         if value is not None:
             setattr(current_user, field, value)

@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import api from '../../services/api';
 import { getCountry } from '../../constants/auth';
+import { useLanguage } from '../../contexts/LanguageContext';
 
 const Register = ({ onSuccess }) => {
+  const { t } = useLanguage();
   const [formData, setFormData] = useState({
     full_name: '',
     email: '',
@@ -25,19 +27,19 @@ const Register = ({ onSuccess }) => {
     
     // Validate passwords match
     if (formData.password !== formData.confirm_password) {
-      setError('Passwords do not match');
+      setError(t('passwordsDoNotMatch'));
       return;
     }
-    
+
     // Validate password length
     if (formData.password.length < 6) {
-      setError('Password must be at least 6 characters');
+      setError(t('passwordTooShort'));
       return;
     }
 
     const country = getCountry();
     if (!country) {
-      setError('Please select your country first.');
+      setError(t('selectCountryFirst'));
       return;
     }
 
@@ -64,13 +66,13 @@ const Register = ({ onSuccess }) => {
         // Wait 1.5 seconds then switch to login
         setTimeout(() => onSuccess(), 1500);
       } else {
-        setError(response.data?.message || 'Registration failed');
+        setError(response.data?.message || t('registrationFailed'));
       }
     } catch (err) {
       console.error('❌ Registration error:', err);
-      
+
       // Handle different error formats
-      let errorMsg = 'Registration failed. Please try again.';
+      let errorMsg = t('registrationFailedRetry');
       if (err.response?.data?.detail) {
         errorMsg = err.response.data.detail;
       } else if (err.response?.data?.message) {
@@ -86,8 +88,8 @@ const Register = ({ onSuccess }) => {
   if (success) {
     return (
       <div style={{ maxWidth: '400px', margin: '0 auto', textAlign: 'center' }}>
-        <h2 style={{ color: '#1a5f2b' }}>✅ Registration Successful!</h2>
-        <p>Your account has been created. Redirecting to login...</p>
+        <h2 style={{ color: '#1a5f2b' }}>{t('registrationSuccessful')}</h2>
+        <p>{t('registrationSuccessfulBody')}</p>
         <button
           onClick={onSuccess}
           style={{
@@ -100,7 +102,7 @@ const Register = ({ onSuccess }) => {
             marginTop: '16px'
           }}
         >
-          Go to Login Now
+          {t('goToLoginNow')}
         </button>
       </div>
     );
@@ -108,7 +110,7 @@ const Register = ({ onSuccess }) => {
 
   return (
     <div style={{ maxWidth: '400px', margin: '0 auto' }}>
-      <h2 style={{ color: '#1a5f2b', textAlign: 'center' }}>Create Account</h2>
+      <h2 style={{ color: '#1a5f2b', textAlign: 'center' }}>{t('createAccount')}</h2>
       
       {error && (
         <div style={{ 
@@ -126,7 +128,7 @@ const Register = ({ onSuccess }) => {
 
       <form onSubmit={handleSubmit}>
         <div style={{ marginBottom: '16px' }}>
-          <label htmlFor="full_name" style={{ display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>Full Name</label>
+          <label htmlFor="full_name" style={{ display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>{t('fullName')}</label>
           <input
             id="full_name"
             type="text"
@@ -134,19 +136,19 @@ const Register = ({ onSuccess }) => {
             value={formData.full_name}
             onChange={handleChange}
             required
-            style={{ 
-              width: '100%', 
-              padding: '10px', 
-              border: '1px solid #e0e0e0', 
+            style={{
+              width: '100%',
+              padding: '10px',
+              border: '1px solid #e0e0e0',
               borderRadius: '8px',
               fontSize: '14px'
             }}
-            placeholder="Your Full Name"
+            placeholder={t('fullNamePlaceholder')}
           />
         </div>
 
         <div style={{ marginBottom: '16px' }}>
-          <label htmlFor="register-email" style={{ display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>Email</label>
+          <label htmlFor="register-email" style={{ display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>{t('email')}</label>
           <input
             id="register-email"
             type="email"
@@ -154,19 +156,19 @@ const Register = ({ onSuccess }) => {
             value={formData.email}
             onChange={handleChange}
             required
-            style={{ 
-              width: '100%', 
-              padding: '10px', 
-              border: '1px solid #e0e0e0', 
+            style={{
+              width: '100%',
+              padding: '10px',
+              border: '1px solid #e0e0e0',
               borderRadius: '8px',
               fontSize: '14px'
             }}
-            placeholder="your@email.com"
+            placeholder={t('emailPlaceholder')}
           />
         </div>
 
         <div style={{ marginBottom: '16px' }}>
-          <label htmlFor="register-password" style={{ display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>Password</label>
+          <label htmlFor="register-password" style={{ display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>{t('password')}</label>
           <input
             id="register-password"
             type="password"
@@ -175,19 +177,19 @@ const Register = ({ onSuccess }) => {
             onChange={handleChange}
             required
             minLength="6"
-            style={{ 
-              width: '100%', 
-              padding: '10px', 
-              border: '1px solid #e0e0e0', 
+            style={{
+              width: '100%',
+              padding: '10px',
+              border: '1px solid #e0e0e0',
               borderRadius: '8px',
               fontSize: '14px'
             }}
-            placeholder="•••••••• (min 6 characters)"
+            placeholder={t('passwordPlaceholder')}
           />
         </div>
 
         <div style={{ marginBottom: '16px' }}>
-          <label htmlFor="confirm_password" style={{ display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>Confirm Password</label>
+          <label htmlFor="confirm_password" style={{ display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>{t('confirmPassword')}</label>
           <input
             id="confirm_password"
             type="password"
@@ -195,14 +197,14 @@ const Register = ({ onSuccess }) => {
             value={formData.confirm_password}
             onChange={handleChange}
             required
-            style={{ 
-              width: '100%', 
-              padding: '10px', 
-              border: '1px solid #e0e0e0', 
+            style={{
+              width: '100%',
+              padding: '10px',
+              border: '1px solid #e0e0e0',
               borderRadius: '8px',
               fontSize: '14px'
             }}
-            placeholder="Confirm your password"
+            placeholder={t('confirmPasswordPlaceholder')}
           />
         </div>
 
@@ -228,7 +230,7 @@ const Register = ({ onSuccess }) => {
             if (!loading) e.currentTarget.style.background = '#1a5f2b';
           }}
         >
-          {loading ? 'Creating account...' : 'Register'}
+          {loading ? t('creatingAccount') : t('register')}
         </button>
       </form>
     </div>

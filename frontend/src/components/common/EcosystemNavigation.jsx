@@ -1,20 +1,22 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Home, BookOpen, Search, PencilLine, ListChecks, User, Users, Shield, Building2 } from 'lucide-react';
+import { useLanguage } from '../../contexts/LanguageContext';
 
 const EcosystemNavigation = ({ activeModule, setActiveModule, user }) => {
   const navigate = useNavigate();
+  const { t } = useLanguage();
 
   const modules = [
-    { id: 'home', icon: Home, label: 'Home', path: '/' },
-    { id: 'learn', icon: BookOpen, label: 'Learn', path: '/learn' },
-    { id: 'explore', icon: Search, label: 'Explore', path: '/explore' },
-    { id: 'practice', icon: PencilLine, label: 'Practice', path: '/practice' },
-    { id: 'plan', icon: ListChecks, label: 'Plan', path: '/plan' },
-    { id: 'profile', icon: User, label: 'Profile', path: '/profile' },
-    { id: 'community', icon: Users, label: 'Community', path: '/community' },
-    ...(user?.is_admin ? [{ id: 'admin', icon: Shield, label: 'Admin', path: '/admin' }] : []),
-    ...(user?.is_school_admin ? [{ id: 'school-admin', icon: Building2, label: 'School Admin', path: '/school-admin' }] : []),
+    { id: 'home', icon: Home, label: t('navHome'), path: '/' },
+    { id: 'learn', icon: BookOpen, label: t('navLearn'), path: '/learn' },
+    { id: 'explore', icon: Search, label: t('navExplore'), path: '/explore' },
+    { id: 'practice', icon: PencilLine, label: t('navPractice'), path: '/practice' },
+    { id: 'plan', icon: ListChecks, label: t('navPlan'), path: '/plan' },
+    { id: 'profile', icon: User, label: t('navProfile'), path: '/profile' },
+    { id: 'community', icon: Users, label: t('navCommunity'), path: '/community' },
+    ...(user?.is_admin ? [{ id: 'admin', icon: Shield, label: t('navAdmin'), path: '/admin' }] : []),
+    ...(user?.is_school_admin ? [{ id: 'school-admin', icon: Building2, label: t('navSchoolAdmin'), path: '/school-admin' }] : []),
   ];
 
   const handleNavigate = (module) => {
