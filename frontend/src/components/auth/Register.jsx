@@ -45,6 +45,16 @@ const Register = ({ onSuccess, onShowPrivacy }) => {
       return;
     }
 
+    if (!formData.guardian_email.trim()) {
+      setError(t('guardianEmailRequired'));
+      return;
+    }
+
+    if (formData.guardian_email.trim().toLowerCase() === formData.email.trim().toLowerCase()) {
+      setError(t('guardianEmailMustDiffer'));
+      return;
+    }
+
     const country = getCountry();
     if (!country) {
       setError(t('selectCountryFirst'));
@@ -63,7 +73,7 @@ const Register = ({ onSuccess, onShowPrivacy }) => {
         password: formData.password,
         country,
         consent_confirmed: formData.consent_confirmed,
-        guardian_email: formData.guardian_email.trim() || null
+        guardian_email: formData.guardian_email.trim()
       };
 
       console.log('📤 Registering with:', payload);
@@ -226,6 +236,7 @@ const Register = ({ onSuccess, onShowPrivacy }) => {
             name="guardian_email"
             value={formData.guardian_email}
             onChange={handleChange}
+            required
             style={{
               width: '100%',
               padding: '10px',

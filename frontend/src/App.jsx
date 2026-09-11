@@ -11,6 +11,7 @@ import Register from './components/auth/Register';
 import CountrySelector from './components/CountrySelector';
 import LanguageSwitcher from './components/LanguageSwitcher';
 import AIChat from './components/ai/AIChat';
+import ConsentBanner from './components/consent/ConsentBanner';
 import { useLanguage } from './contexts/LanguageContext';
 import PrivacyPolicy from './modules/legal/PrivacyPolicy';
 import CertificateVerify from './modules/certificates/CertificateVerify';
@@ -223,6 +224,8 @@ const App = () => {
             }}><LogOut size={14} aria-hidden="true" /> {t('logout')}</button>
           </div>
         </header>
+
+        <ConsentBanner user={user} onVerified={(updatedUser) => setUser(updatedUser)} />
 
         <EcosystemNavigation activeModule={activeModule} setActiveModule={setActiveModule} user={user} />
 

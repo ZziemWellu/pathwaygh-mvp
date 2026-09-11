@@ -21,7 +21,12 @@ load_dotenv()
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from slowapi import _rate_limit_exceeded_handler
+from slowapi.errors import RateLimitExceeded
+from slowapi.middleware import SlowAPIMiddleware
 import logging
+
+from core.rate_limit import limiter
 
 # Setup logging
 logging.basicConfig(level=logging.INFO)
@@ -47,6 +52,13 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Rate limiting - in-memory, correct for the current single-instance
+# deployment (see core/rate_limit.py). Specific limits are applied via
+# @limiter.limit(...) on individual auth-adjacent endpoints.
+app.state.limiter = limiter
+app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
+app.add_middleware(SlowAPIMiddleware)
 
 # ============================================
 # HEALTH & ROOT ENDPOINTS
