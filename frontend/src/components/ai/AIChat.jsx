@@ -20,11 +20,19 @@ const AIChat = ({ user }) => {
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const [subjects, setSubjects] = useState([]);
+  const [selectedSubject, setSelectedSubject] = useState('');
   const messagesEndRef = useRef(null);
 
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
+
+  useEffect(() => {
+    api.get('/api/practice/subjects')
+      .then(response => setSubjects(response.data.subjects || []))
+      .catch(err => console.error('Failed to load subjects:', err));
+  }, []);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -34,6 +42,7 @@ const AIChat = ({ user }) => {
     if (!input.trim()) return;
 
     const userMessage = { role: 'user', content: input };
+    const history = messages.map(({ role, content }) => ({ role, content }));
     setMessages(prev => [...prev, userMessage]);
     setInput('');
     setLoading(true);
@@ -41,13 +50,15 @@ const AIChat = ({ user }) => {
     try {
       const response = await api.post('/api/tutor/chat', {
         message: input,
-        user_id: user?.id || 'test_user',
-        context: { subject: 'general' }
+        subject_id: selectedSubject || undefined,
+        history,
       });
 
       const aiMessage = {
         role: 'assistant',
-        content: response.data.response || 'I\'m here to help!'
+        content: response.data.response || 'I\'m here to help!',
+        grounded: response.data.grounded,
+        computedMath: response.data.computed_math,
       };
       setMessages(prev => [...prev, aiMessage]);
     } catch (err) {
@@ -133,6 +144,33 @@ const AIChat = ({ user }) => {
         </button>
       </div>
 
+      {/* Subject picker */}
+      <div
+        style={{
+          padding: '8px 16px',
+          borderBottom: '1px solid #e0e0e0',
+          background: 'white',
+        }}
+      >
+        <select
+          value={selectedSubject}
+          onChange={(e) => setSelectedSubject(e.target.value)}
+          style={{
+            width: '100%',
+            padding: '6px 8px',
+            fontSize: '13px',
+            borderRadius: '6px',
+            border: '1px solid #e0e0e0',
+            color: '#333',
+          }}
+        >
+          <option value="">General</option>
+          {subjects.map((s) => (
+            <option key={s.id} value={s.id}>{s.name}</option>
+          ))}
+        </select>
+      </div>
+
       {/* Messages */}
       <div
         style={{
@@ -163,7 +201,23 @@ const AIChat = ({ user }) => {
               }}
             >
               {msg.role === 'assistant' ? (
-                <ReactMarkdown components={markdownComponents}>{msg.content}</ReactMarkdown>
+                <>
+                  <ReactMarkdown components={markdownComponents}>{msg.content}</ReactMarkdown>
+                  {(msg.grounded || msg.computedMath) && (
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginTop: '4px' }}>
+                      {msg.grounded && (
+                        <span style={{ fontSize: '11px', color: '#1a5f2b', background: '#eaf5ee', padding: '2px 8px', borderRadius: '10px' }}>
+                          📚 grounded in curriculum
+                        </span>
+                      )}
+                      {msg.computedMath && (
+                        <span style={{ fontSize: '11px', color: '#1a5f2b', background: '#eaf5ee', padding: '2px 8px', borderRadius: '10px' }}>
+                          🧮 verified: {msg.computedMath.expression} = {msg.computedMath.result}
+                        </span>
+                      )}
+                    </div>
+                  )}
+                </>
               ) : (
                 msg.content
               )}
