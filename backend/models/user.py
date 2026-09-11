@@ -31,10 +31,20 @@ class User(Base):
 
     # Consent (child-data protection). Nullable and never backfilled for
     # existing users - a fabricated consent timestamp would be a false
-    # attestation. Only the register endpoint sets these.
+    # attestation. consent_given_at/consent_version are only set once a
+    # guardian_email is OTP-verified (see modules/auth/consent.py) - not
+    # at registration time.
     guardian_email = Column(String(255), nullable=True)
     consent_given_at = Column(DateTime, nullable=True)
     consent_version = Column(String(20), nullable=True)
+
+    # Pending guardian-consent OTP state. Cleared once verify_consent_otp
+    # succeeds; consent_otp_attempts resets to 0 each time a new code is
+    # issued (registration or resend).
+    consent_otp_hash = Column(String(255), nullable=True)
+    consent_otp_expires_at = Column(DateTime, nullable=True)
+    consent_otp_attempts = Column(Integer, nullable=False, default=0)
+    consent_otp_sent_at = Column(DateTime, nullable=True)
 
     # Profile fields
     school = Column(String(255), nullable=True)

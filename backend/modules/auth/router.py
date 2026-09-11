@@ -2,20 +2,19 @@
 Authentication Module Router
 """
 
-from datetime import datetime, timezone
-from typing import Literal, Optional
+from typing import Literal
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Request
 from pydantic import BaseModel, EmailStr
 from sqlalchemy.orm import Session
 
 from core.database import get_db
+from core.rate_limit import limiter
 from core.security import create_access_token, get_current_user, hash_password, verify_password
 from models.user import User
+from modules.auth.consent import can_resend, issue_consent_otp, verify_consent_otp
 
 router = APIRouter(tags=["auth"])
-
-CURRENT_CONSENT_VERSION = "2026-09-v1"
 
 
 class RegisterRequest(BaseModel):
@@ -24,12 +23,16 @@ class RegisterRequest(BaseModel):
     password: str
     country: Literal["GH", "NG"]
     consent_confirmed: bool
-    guardian_email: Optional[EmailStr] = None
+    guardian_email: EmailStr
 
 
 class LoginRequest(BaseModel):
     email: EmailStr
     password: str
+
+
+class ConsentOtpRequest(BaseModel):
+    code: str
 
 
 def _user_out(user: User) -> dict:
@@ -41,6 +44,8 @@ def _user_out(user: User) -> dict:
         "is_school_admin": user.is_school_admin,
         "school_id": user.school_id,
         "country": user.country,
+        "guardian_email": user.guardian_email,
+        "consent_verified": user.consent_given_at is not None,
     }
 
 
@@ -50,21 +55,23 @@ async def auth_root():
 
 
 @router.post("/register")
-async def register(request: RegisterRequest, db: Session = Depends(get_db)):
-    if not request.consent_confirmed:
+@limiter.limit("20/hour")
+async def register(request: Request, body: RegisterRequest, db: Session = Depends(get_db)):
+    if not body.consent_confirmed:
         raise HTTPException(status_code=400, detail="You must confirm the age/consent statement to register")
-    if db.query(User).filter(User.email == request.email).first():
+    if body.guardian_email == body.email:
+        raise HTTPException(status_code=400, detail="Guardian email must be different from your own email")
+    if db.query(User).filter(User.email == body.email).first():
         raise HTTPException(status_code=400, detail="Email already registered")
 
     user = User(
-        email=request.email,
-        full_name=request.full_name,
-        password_hash=hash_password(request.password),
-        country=request.country,
-        guardian_email=request.guardian_email,
-        consent_given_at=datetime.now(timezone.utc),
-        consent_version=CURRENT_CONSENT_VERSION,
+        email=body.email,
+        full_name=body.full_name,
+        password_hash=hash_password(body.password),
+        country=body.country,
+        guardian_email=body.guardian_email,
     )
+    issue_consent_otp(user)
     db.add(user)
     db.commit()
     db.refresh(user)
@@ -74,9 +81,10 @@ async def register(request: RegisterRequest, db: Session = Depends(get_db)):
 
 
 @router.post("/login")
-async def login(request: LoginRequest, db: Session = Depends(get_db)):
-    user = db.query(User).filter(User.email == request.email).first()
-    if not user or not verify_password(request.password, user.password_hash):
+@limiter.limit("10/minute")
+async def login(request: Request, body: LoginRequest, db: Session = Depends(get_db)):
+    user = db.query(User).filter(User.email == body.email).first()
+    if not user or not verify_password(body.password, user.password_hash):
         raise HTTPException(status_code=401, detail="Invalid credentials")
 
     token = create_access_token(user.id)
@@ -86,3 +94,36 @@ async def login(request: LoginRequest, db: Session = Depends(get_db)):
 @router.get("/me")
 async def me(current_user: User = Depends(get_current_user)):
     return {"success": True, "user": _user_out(current_user)}
+
+
+@router.post("/verify-consent")
+@limiter.limit("10/hour")
+async def verify_consent(
+    request: Request,
+    body: ConsentOtpRequest,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    verify_consent_otp(current_user, body.code)
+    db.commit()
+    db.refresh(current_user)
+    return {"success": True, "user": _user_out(current_user)}
+
+
+@router.post("/resend-consent")
+@limiter.limit("3/hour")
+async def resend_consent(
+    request: Request,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    if not current_user.guardian_email:
+        raise HTTPException(status_code=400, detail="No guardian email on file")
+    if current_user.consent_given_at is not None:
+        raise HTTPException(status_code=400, detail="Consent is already verified")
+    if not can_resend(current_user):
+        raise HTTPException(status_code=400, detail="Please wait a moment before requesting another code")
+
+    issue_consent_otp(current_user)
+    db.commit()
+    return {"success": True}

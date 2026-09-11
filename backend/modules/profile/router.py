@@ -13,6 +13,7 @@ from sqlalchemy.orm import Session
 from core.database import get_db
 from core.security import get_current_user
 from models.user import User
+from modules.auth.consent import issue_consent_otp
 
 router = APIRouter(tags=["profile"])
 
@@ -75,10 +76,22 @@ async def update_my_profile(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
-    for field in ("full_name", "school", "grade", "bio", "phone", "location", "interests", "goals", "subjects", "language", "guardian_email"):
+    for field in ("full_name", "school", "grade", "bio", "phone", "location", "interests", "goals", "subjects", "language"):
         value = getattr(request, field)
         if value is not None:
             setattr(current_user, field, value)
+
+    if request.guardian_email is not None and request.guardian_email != current_user.guardian_email:
+        if request.guardian_email == current_user.email:
+            raise HTTPException(status_code=400, detail="Guardian email must be different from your own email")
+        # Changing the guardian contact always requires re-verifying it -
+        # otherwise a previously-verified status would silently carry over
+        # to a brand-new, never-confirmed address.
+        current_user.guardian_email = request.guardian_email
+        current_user.consent_given_at = None
+        current_user.consent_version = None
+        issue_consent_otp(current_user)
+
     db.commit()
     db.refresh(current_user)
     return {"success": True, "profile": _profile_out(current_user)}
