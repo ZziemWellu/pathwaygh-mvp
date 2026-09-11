@@ -9,7 +9,7 @@ respond promptly.
 Please report suspected security vulnerabilities privately - do not open
 a public GitHub issue.
 
-**Contact:** `[SECURITY_CONTACT_EMAIL - replace before publishing]`
+**Contact:** ziemwellu@gmail.com
 
 Please include:
 - A description of the issue and its potential impact
