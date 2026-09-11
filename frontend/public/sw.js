@@ -99,15 +99,18 @@ async function handleAPIRequest(request) {
   // Try network first for API
   try {
     const response = await fetch(request);
+    // A completed round trip - even a 4xx/5xx from the server - is not an
+    // "offline" condition and must reach the caller unchanged, so real
+    // errors (401 session expiry, 403 permission, 404, validation 400s)
+    // aren't misreported as connectivity loss. Only cache successful
+    // responses; only an actual fetch() failure below means offline.
     if (response.status === 200) {
-      // Cache successful API responses
       const responseClone = response.clone();
       caches.open(DYNAMIC_CACHE).then(cache => {
         cache.put(request, responseClone);
       });
-      return response;
     }
-    throw new Error('API request failed');
+    return response;
   } catch (error) {
     // Return cached API response if available
     const cached = await caches.match(request);
