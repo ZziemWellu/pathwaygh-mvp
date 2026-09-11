@@ -12,8 +12,10 @@ from models.course import Course, Lesson
 from models.enrollment import Enrollment
 from models.progress import LessonProgress
 from models.quiz_attempt import QuizAttempt
+from models.skill_mastery import SkillMastery
 from models.user import User
 from modules.dashboard.aggregation import overview_for_users
+from modules.practice.mastery import topic_names_by_id
 
 router = APIRouter(tags=["dashboard"])
 
@@ -77,6 +79,20 @@ async def get_dashboard_summary(current_user: User = Depends(get_current_user), 
         key=lambda subject: sum(by_subject[subject]) / len(by_subject[subject]),
     )
 
+    # Additive to weak_subjects above (kept unchanged) - real per-skill
+    # mastery from the adaptive learning engine, once attempts exist.
+    topic_names = topic_names_by_id()
+    weak_masteries = (
+        db.query(SkillMastery)
+        .filter(SkillMastery.user_id == current_user.id, SkillMastery.mastery_probability < 0.5)
+        .order_by(SkillMastery.mastery_probability.asc())
+        .all()
+    )
+    weak_topics = [
+        {"subject_id": m.subject_id, "topic_id": m.topic_id, "topic_name": topic_names.get(m.topic_id, m.topic_id)}
+        for m in weak_masteries
+    ]
+
     recent_activity = []
     for progress in (
         db.query(LessonProgress)
@@ -108,5 +124,6 @@ async def get_dashboard_summary(current_user: User = Depends(get_current_user), 
         "current_courses": current_courses,
         "continue_learning": continue_learning,
         "weak_subjects": weak_subjects,
+        "weak_topics": weak_topics,
         "recent_activity": recent_activity[:6],
     }

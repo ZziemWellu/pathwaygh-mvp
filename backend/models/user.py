@@ -54,3 +54,4 @@ class User(Base):
     quiz_attempts = relationship("QuizAttempt", back_populates="user", cascade="all, delete-orphan")
     plans = relationship("Plan", back_populates="user", cascade="all, delete-orphan")
     certificates = relationship("Certificate", back_populates="user", cascade="all, delete-orphan")
+    skill_masteries = relationship("SkillMastery", back_populates="user", cascade="all, delete-orphan")
