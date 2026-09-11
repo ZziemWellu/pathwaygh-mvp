@@ -79,7 +79,7 @@ const DashboardModule = ({ setActiveModule }) => {
     );
   }
 
-  const { overview, current_courses, continue_learning, weak_subjects, recent_activity } = summary;
+  const { overview, current_courses, continue_learning, weak_subjects, weak_topics, recent_activity } = summary;
   const completionPct = overview.lessons_total > 0 ? Math.round((overview.lessons_completed / overview.lessons_total) * 100) : 0;
   const hasCourses = overview.courses_enrolled > 0;
 
@@ -157,16 +157,27 @@ const DashboardModule = ({ setActiveModule }) => {
             ))}
           </div>
 
-          {/* Focus areas */}
-          {weak_subjects.length > 0 && (
-            <div className="dash-card dash-focus" style={{ marginTop: '20px' }}>
-              <h2 className="dash-section-title" style={{ color: '#a06c00' }}><HelpCircle size={17} /> Focus Areas</h2>
-              <p style={{ margin: 0, color: '#665000', fontSize: '14px' }}>
-                Your quiz scores are lower in <strong>{weak_subjects.join(', ')}</strong>. Revisit these in Practice to strengthen them.
-              </p>
-            </div>
-          )}
         </>
+      )}
+
+      {/* Focus areas - deliberately outside the hasCourses branch above:
+          this reflects quiz activity, not course enrollment, so a student
+          who has only taken practice quizzes (never enrolled in a course)
+          must still see it. */}
+      {(weak_subjects.length > 0 || (weak_topics && weak_topics.length > 0)) && (
+        <div className="dash-card dash-focus" style={{ marginTop: '20px' }}>
+          <h2 className="dash-section-title" style={{ color: '#a06c00' }}><HelpCircle size={17} /> Focus Areas</h2>
+          {weak_subjects.length > 0 && (
+            <p style={{ margin: 0, color: '#665000', fontSize: '14px' }}>
+              Your quiz scores are lower in <strong>{weak_subjects.join(', ')}</strong>. Revisit these in Practice to strengthen them.
+            </p>
+          )}
+          {weak_topics && weak_topics.length > 0 && (
+            <p style={{ margin: weak_subjects.length > 0 ? '8px 0 0 0' : 0, color: '#665000', fontSize: '13px' }}>
+              Weakest topics: <strong>{weak_topics.map((t) => `${t.topic_name} (${t.subject_id})`).join(', ')}</strong>
+            </p>
+          )}
+        </div>
       )}
 
       {/* Quick Navigation */}

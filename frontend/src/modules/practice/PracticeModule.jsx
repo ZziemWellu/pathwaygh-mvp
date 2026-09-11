@@ -356,6 +356,32 @@ const PracticeModule = () => {
               <span style={{ display: 'block', fontSize: '12px', color: '#666666' }}>Accuracy</span>
             </div>
           </div>
+
+          {statistics.topic_mastery && statistics.topic_mastery.length > 0 && (
+            <div style={{ marginTop: '20px' }}>
+              <h4 style={{ color: '#1a5f2b', margin: '0 0 12px 0', fontSize: '14px' }}>Your topic mastery</h4>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                {statistics.topic_mastery.map((topic) => {
+                  const pct = Math.round(topic.mastery_probability * 100);
+                  return (
+                    <div key={`${topic.subject_id}-${topic.topic_id}`}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px', marginBottom: '4px' }}>
+                        <span>{topic.topic_name}</span>
+                        <span style={{ color: '#666666' }}>{pct}%</span>
+                      </div>
+                      <div style={{ height: '6px', background: '#f0f0f0', borderRadius: '3px', overflow: 'hidden' }}>
+                        <div style={{ width: `${pct}%`, height: '100%', background: pct < 50 ? '#ef6c00' : '#1a5f2b', borderRadius: '3px' }} />
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+              <p style={{ fontSize: '11px', color: '#999999', marginTop: '10px' }}>
+                Practice quizzes automatically focus more on your weaker topics.
+              </p>
+            </div>
+          )}
+
           <button onClick={() => setShowStats(false)} style={{ marginTop: '16px', padding: '8px 20px', background: '#f0f0f0', border: 'none', borderRadius: '8px', cursor: 'pointer' }}>Close</button>
         </div>
       )}

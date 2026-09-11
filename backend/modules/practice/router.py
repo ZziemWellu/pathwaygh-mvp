@@ -2,11 +2,8 @@
 Practice Module Router
 """
 
-import json
-import logging
 import random
 import uuid
-from pathlib import Path
 from typing import Dict, Optional
 
 from fastapi import APIRouter, Depends, HTTPException
@@ -16,10 +13,11 @@ from sqlalchemy.orm import Session
 from core.database import get_db
 from core.security import get_current_user
 from models.quiz_attempt import QuizAttempt
+from models.skill_mastery import SkillMastery
 from models.user import User
+from modules.practice.mastery import allocate_adaptive_slots, load_questions, record_topic_attempt, topic_names_by_id
 
 router = APIRouter(tags=["practice"])
-logger = logging.getLogger(__name__)
 
 
 class QuizStartRequest(BaseModel):
@@ -35,46 +33,10 @@ class QuizSubmitRequest(BaseModel):
     time_spent: Optional[int] = 30
 
 
-PROJECT_ROOT = Path(__file__).resolve().parents[2]
-QUESTIONS_FILE = PROJECT_ROOT / "data" / "practice" / "questions.json"
-
 # In-flight quizzes are ephemeral session state (the correct answers must stay
 # server-side while a quiz is being taken); completed results are persisted
 # to QuizAttempt below so history survives a restart.
 active_quizzes: Dict[str, dict] = {}
-
-
-def load_questions():
-    try:
-        if QUESTIONS_FILE.exists():
-            with open(QUESTIONS_FILE, "r", encoding="utf-8") as f:
-                data = json.load(f)
-                if data.get("subjects"):
-                    return data
-    except Exception as e:
-        logger.error(f"Error loading questions: {e}")
-
-    return {
-        "subjects": [
-            {
-                "id": "mathematics",
-                "name": "Mathematics",
-                "icon": "\U0001F4D0",
-                "country": "GH",
-                "topics": [
-                    {
-                        "id": "algebra",
-                        "name": "Algebra",
-                        "questions": [
-                            {"id": "math_001", "question": "What is 2 + 2?", "options": ["3", "4", "5", "6"], "correct": "4", "difficulty": "easy"},
-                            {"id": "math_002", "question": "What is 3 x 3?", "options": ["6", "8", "9", "12"], "correct": "9", "difficulty": "easy"},
-                            {"id": "math_003", "question": "What is the square root of 16?", "options": ["2", "3", "4", "5"], "correct": "4", "difficulty": "medium"},
-                        ],
-                    },
-                ],
-            },
-        ]
-    }
 
 
 def get_all_questions(
@@ -98,6 +60,7 @@ def get_all_questions(
                     continue
                 q["subject_id"] = subject["id"]
                 q["subject_name"] = subject["name"]
+                q["topic_id"] = topic_data["id"]
                 q["topic_name"] = topic_data["name"]
                 all_questions.append(q)
     return all_questions
@@ -144,13 +107,44 @@ async def get_subject(subject_id: str):
 
 
 @router.post("/quiz/start")
-async def start_quiz(request: QuizStartRequest, current_user: User = Depends(get_current_user)):
+async def start_quiz(
+    request: QuizStartRequest,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
     questions = get_all_questions(request.subject_id, request.topic, request.difficulty, current_user.country)
     if not questions:
         raise HTTPException(status_code=404, detail="No questions found for the selected criteria")
 
     count = min(request.question_count or 5, len(questions))
-    selected = random.sample(questions, count)
+
+    if request.topic:
+        # An explicit topic filter is a manual override - keep plain
+        # random selection within that one topic, unchanged.
+        selected = random.sample(questions, count)
+    else:
+        # Adaptive path (what every real quiz-start actually goes through
+        # today, since the frontend never sends a topic filter): bias
+        # selection toward whichever topics this student has mastered
+        # least. See modules/practice/mastery.py.
+        questions_by_topic: Dict[str, list] = {}
+        for q in questions:
+            questions_by_topic.setdefault(q.get("topic_id"), []).append(q)
+
+        mastery_rows = (
+            db.query(SkillMastery)
+            .filter(SkillMastery.user_id == current_user.id, SkillMastery.subject_id == request.subject_id)
+            .all()
+        )
+        masteries = {m.topic_id: m.mastery_probability for m in mastery_rows}
+        topic_question_counts = {topic_id: len(qs) for topic_id, qs in questions_by_topic.items()}
+        slots = allocate_adaptive_slots(topic_question_counts, masteries, count)
+
+        selected = []
+        for topic_id, slot_count in slots.items():
+            if slot_count > 0:
+                selected.extend(random.sample(questions_by_topic[topic_id], slot_count))
+        random.shuffle(selected)
 
     quiz_id = f"quiz_{uuid.uuid4().hex[:8]}"
     quiz_data = {
@@ -159,6 +153,7 @@ async def start_quiz(request: QuizStartRequest, current_user: User = Depends(get
         "subject_id": request.subject_id,
         "topic": request.topic,
         "correct_answers": {i: q["correct"] for i, q in enumerate(selected)},
+        "topic_ids": {i: q.get("topic_id") for i, q in enumerate(selected)},
         "questions": [
             {"id": q["id"], "question": q["question"], "options": q.get("options", []), "difficulty": q.get("difficulty", "medium")}
             for q in selected
@@ -180,14 +175,26 @@ async def submit_quiz(
         raise HTTPException(status_code=404, detail="Quiz not found")
 
     correct_answers = quiz.get("correct_answers", {})
+    topic_ids = quiz.get("topic_ids", {})
+    quiz_questions = quiz.get("questions", [])
+    subject_id = quiz.get("subject_id")
     correct_count = 0
     results = []
+    # Fresh per request: a single quiz commonly has multiple questions from
+    # the same topic, and record_topic_attempt needs this to avoid trying
+    # to insert the same (user, subject, topic) mastery row twice.
+    mastery_cache: dict = {}
     for i, answer in request.answers.items():
         idx = int(i)
         is_correct = answer == correct_answers.get(idx, "")
         if is_correct:
             correct_count += 1
         results.append({"question_index": idx, "user_answer": answer, "correct_answer": correct_answers.get(idx, ""), "is_correct": is_correct})
+
+        topic_id = topic_ids.get(idx)
+        if topic_id and subject_id and idx < len(quiz_questions):
+            num_options = len(quiz_questions[idx].get("options", []))
+            record_topic_attempt(db, mastery_cache, current_user.id, subject_id, topic_id, is_correct, num_options)
 
     total = len(correct_answers)
     score = round((correct_count / total) * 100) if total > 0 else 0
@@ -244,11 +251,34 @@ async def get_quiz_history(
     return {"success": True, "history": history, "total": len(history)}
 
 
+def _topic_mastery_for(db: Session, user_id: int) -> list:
+    rows = db.query(SkillMastery).filter(SkillMastery.user_id == user_id).order_by(SkillMastery.mastery_probability.asc()).all()
+    topic_names = topic_names_by_id()
+    return [
+        {
+            "subject_id": m.subject_id,
+            "topic_id": m.topic_id,
+            "topic_name": topic_names.get(m.topic_id, m.topic_id),
+            "mastery_probability": round(m.mastery_probability, 3),
+            "attempts_count": m.attempts_count,
+        }
+        for m in rows
+    ]
+
+
 @router.get("/statistics")
 async def get_quiz_statistics(current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
     attempts = db.query(QuizAttempt).filter(QuizAttempt.user_id == current_user.id).all()
     if not attempts:
-        return {"success": True, "total_quizzes": 0, "average_score": 0, "best_score": 0, "total_questions": 0, "accuracy": 0}
+        return {
+            "success": True,
+            "total_quizzes": 0,
+            "average_score": 0,
+            "best_score": 0,
+            "total_questions": 0,
+            "accuracy": 0,
+            "topic_mastery": _topic_mastery_for(db, current_user.id),
+        }
 
     total_questions = sum(a.total_questions for a in attempts)
     correct_answers = sum(round(a.score / 100 * a.total_questions) for a in attempts)
@@ -264,6 +294,7 @@ async def get_quiz_statistics(current_user: User = Depends(get_current_user), db
         "total_quizzes": len(attempts),
         "average_score": round(sum(a.score for a in attempts) / len(attempts)),
         "best_score": max(a.score for a in attempts),
+        "topic_mastery": _topic_mastery_for(db, current_user.id),
         "total_questions": total_questions,
         "accuracy": round((correct_answers / total_questions) * 100) if total_questions else 0,
         "subject_averages": subject_averages,
