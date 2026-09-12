@@ -1,0 +1,15 @@
+name: Send parent WhatsApp digests
+
+on:
+  schedule:
+    - cron: '0 8 * * 0' # weekly, Sunday 08:00 UTC
+  workflow_dispatch: {}
+
+jobs:
+  send-digests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger digest send
+        run: |
+          curl -f -X POST https://pathwaygh-backend.onrender.com/api/parent/send-digests \
+            -H "X-Digest-Secret: ${{ secrets.DIGEST_TRIGGER_SECRET }}"

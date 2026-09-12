@@ -2,12 +2,13 @@
 Profile Module Router
 """
 
+import re
 import uuid
 from pathlib import Path
 from typing import List, Optional
 
 from fastapi import APIRouter, Depends, File, HTTPException, UploadFile
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, EmailStr, field_validator
 from sqlalchemy.orm import Session
 
 from core.database import get_db
@@ -32,6 +33,15 @@ class ProfileUpdateRequest(BaseModel):
     subjects: Optional[List[str]] = None
     language: Optional[str] = None
     guardian_email: Optional[EmailStr] = None
+    guardian_phone: Optional[str] = None
+    guardian_whatsapp_opt_in: Optional[bool] = None
+
+    @field_validator("guardian_phone")
+    @classmethod
+    def _validate_e164(cls, value):
+        if value is not None and not re.match(r"^\+[1-9]\d{7,14}$", value):
+            raise ValueError("guardian_phone must be in E.164 format, e.g. +233241234567")
+        return value
 
 
 class SavedItemRequest(BaseModel):
@@ -57,6 +67,8 @@ def _profile_out(user: User) -> dict:
         "guardian_email": user.guardian_email,
         "consent_given_at": user.consent_given_at.isoformat() if user.consent_given_at else None,
         "consent_version": user.consent_version,
+        "guardian_phone": user.guardian_phone,
+        "guardian_whatsapp_opt_in": user.guardian_whatsapp_opt_in,
     }
 
 
@@ -76,7 +88,7 @@ async def update_my_profile(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
-    for field in ("full_name", "school", "grade", "bio", "phone", "location", "interests", "goals", "subjects", "language"):
+    for field in ("full_name", "school", "grade", "bio", "phone", "location", "interests", "goals", "subjects", "language", "guardian_phone", "guardian_whatsapp_opt_in"):
         value = getattr(request, field)
         if value is not None:
             setattr(current_user, field, value)

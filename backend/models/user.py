@@ -46,6 +46,13 @@ class User(Base):
     consent_otp_attempts = Column(Integer, nullable=False, default=0)
     consent_otp_sent_at = Column(DateTime, nullable=True)
 
+    # Guardian WhatsApp digest. A delivery preference, not a consent gate -
+    # consent is already satisfied via the OTP-verified guardian_email
+    # above, so changing this never touches consent_given_at/version.
+    guardian_phone = Column(String(20), nullable=True)  # E.164, e.g. +233241234567
+    guardian_whatsapp_opt_in = Column(Boolean, nullable=False, default=False)
+    last_digest_sent_at = Column(DateTime, nullable=True)
+
     # Profile fields
     school = Column(String(255), nullable=True)
     grade = Column(String(50), nullable=True)

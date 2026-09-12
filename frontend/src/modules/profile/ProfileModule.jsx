@@ -37,6 +37,9 @@ const ProfileModule = () => {
   const [schoolSaving, setSchoolSaving] = useState(false);
   const [guardianEmailValue, setGuardianEmailValue] = useState('');
   const [guardianEmailSaving, setGuardianEmailSaving] = useState(false);
+  const [guardianPhoneValue, setGuardianPhoneValue] = useState('');
+  const [guardianWhatsappOptIn, setGuardianWhatsappOptIn] = useState(false);
+  const [guardianPhoneSaving, setGuardianPhoneSaving] = useState(false);
 
   useEffect(() => {
     fetchProfileData();
@@ -55,6 +58,8 @@ const ProfileModule = () => {
       setProfile(profileData);
       setFormData(profileData);
       setGuardianEmailValue(profileData.guardian_email || '');
+      setGuardianPhoneValue(profileData.guardian_phone || '');
+      setGuardianWhatsappOptIn(!!profileData.guardian_whatsapp_opt_in);
 
       const statsRes = await api.get('/api/dashboard/statistics').catch(() => ({ data: {} }));
       setStats(prev => ({ ...prev, ...statsRes.data }));
@@ -233,6 +238,22 @@ const ProfileModule = () => {
       showNotification(err.response?.data?.detail || 'Failed to save parent/guardian email.', 'error');
     } finally {
       setGuardianEmailSaving(false);
+    }
+  };
+
+  const handleSaveGuardianWhatsapp = async () => {
+    setGuardianPhoneSaving(true);
+    try {
+      const response = await api.put('/api/profile/me', {
+        guardian_phone: guardianPhoneValue.trim() || null,
+        guardian_whatsapp_opt_in: guardianWhatsappOptIn,
+      });
+      setProfile(response.data.profile);
+      showNotification('✅ Guardian WhatsApp number saved.');
+    } catch (err) {
+      showNotification(err.response?.data?.detail || 'Failed to save guardian WhatsApp number.', 'error');
+    } finally {
+      setGuardianPhoneSaving(false);
     }
   };
 
@@ -779,6 +800,31 @@ const ProfileModule = () => {
                 {profile?.consent_version && ` · version ${profile.consent_version}`}
               </p>
               <Link to="/privacy" style={{ color: '#1a5f2b', fontSize: '13px' }}>View Privacy Policy</Link>
+            </div>
+
+            <div style={{ marginTop: '24px', paddingTop: '16px', borderTop: '1px solid #eee' }}>
+              <p style={{ marginBottom: '8px' }}><strong style={{ color: '#666' }}>Guardian WhatsApp Updates:</strong></p>
+              <div style={{ display: 'flex', gap: '8px', marginBottom: '8px', maxWidth: '400px' }}>
+                <input
+                  type="tel"
+                  value={guardianPhoneValue}
+                  onChange={(e) => setGuardianPhoneValue(e.target.value)}
+                  placeholder="+233241234567"
+                  style={{ flex: 1, padding: '10px', border: '1px solid #e0e0e0', borderRadius: '8px' }}
+                />
+              </div>
+              <label style={{ display: 'flex', alignItems: 'flex-start', gap: '8px', fontSize: '13px', cursor: 'pointer', marginBottom: '12px' }}>
+                <input
+                  type="checkbox"
+                  checked={guardianWhatsappOptIn}
+                  onChange={(e) => setGuardianWhatsappOptIn(e.target.checked)}
+                  style={{ marginTop: '3px' }}
+                />
+                <span>My guardian has agreed to receive a periodic WhatsApp study update at this number.</span>
+              </label>
+              <button onClick={handleSaveGuardianWhatsapp} disabled={guardianPhoneSaving} style={{ padding: '10px 20px', background: '#1a5f2b', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer' }}>
+                {guardianPhoneSaving ? 'Saving...' : 'Save'}
+              </button>
             </div>
           </div>
         )}
