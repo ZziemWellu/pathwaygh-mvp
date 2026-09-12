@@ -3,7 +3,7 @@
  */
 
 import axios from 'axios';
-import { getToken, setToken, clearSession } from '../constants/auth';
+import { getToken, clearSession } from '../constants/auth';
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://pathwaygh-backend.onrender.com';
 
@@ -31,31 +31,27 @@ api.interceptors.request.use(
 
 api.interceptors.response.use(
   (response) => response,
-  async (error) => {
+  (error) => {
     const originalRequest = error.config;
-    if (error.response?.status === 401 && !originalRequest._retry) {
-      originalRequest._retry = true;
-      try {
-        const refreshToken = localStorage.getItem('pathwaygh_refresh_token');
-        if (refreshToken) {
-          const response = await axios.post(`${API_BASE_URL}/api/auth/refresh`, {
-            refresh_token: refreshToken,
-          });
-          if (response.data?.token) {
-            setToken(response.data.token);
-            originalRequest.headers.Authorization = `Bearer ${response.data.token}`;
-            return api(originalRequest);
-          }
-        }
-      } catch {
-        // No dedicated /login route exists - the app shows the login form
-        // at "/" whenever isAuthenticated() is false, so just clear the
-        // session and reload the current page rather than navigating to a
-        // path that was never real (this used to 404 on Render).
-        clearSession();
-        if (typeof window !== 'undefined') {
-          window.location.reload();
-        }
+    const wasAuthenticated = !!originalRequest?.headers?.Authorization;
+    const isAuthEndpoint = originalRequest?.url?.includes('/api/auth/login') || originalRequest?.url?.includes('/api/auth/register');
+
+    // A 401 on a request that carried a token means that token is dead
+    // (expired, or for a since-deleted account) - there is no
+    // refresh-token flow in this app (the backend has never issued one),
+    // so there's nothing to retry. Leaving the stale token in place would
+    // strand the user on an authenticated screen where every request
+    // fails the same way forever (isAuthenticated() only checks that a
+    // token string exists, not that it's still valid). Clear it and
+    // reload so they land back on a clean login screen.
+    // isAuthEndpoint is excluded so a wrong-password login attempt (which
+    // also 401s) is never mistaken for a dead session - login/register are
+    // reached specifically because the user isn't authenticated yet, and
+    // must surface their own error inline instead of force-reloading.
+    if (error.response?.status === 401 && wasAuthenticated && !isAuthEndpoint) {
+      clearSession();
+      if (typeof window !== 'undefined') {
+        window.location.reload();
       }
     }
     return Promise.reject(error);
