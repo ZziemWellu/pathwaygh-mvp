@@ -1,4 +1,4 @@
-name: Send parent WhatsApp digests
+name: Send WhatsApp digests
 
 on:
   schedule:
@@ -9,7 +9,12 @@ jobs:
   send-digests:
     runs-on: ubuntu-latest
     steps:
-      - name: Trigger digest send
+      - name: Send parent digests
         run: |
           curl -f -X POST https://pathwaygh-backend.onrender.com/api/parent/send-digests \
+            -H "X-Digest-Secret: ${{ secrets.DIGEST_TRIGGER_SECRET }}"
+
+      - name: Send school-admin digests
+        run: |
+          curl -f -X POST https://pathwaygh-backend.onrender.com/api/school/send-digests \
             -H "X-Digest-Secret: ${{ secrets.DIGEST_TRIGGER_SECRET }}"
