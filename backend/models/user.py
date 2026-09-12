@@ -53,6 +53,14 @@ class User(Base):
     guardian_whatsapp_opt_in = Column(Boolean, nullable=False, default=False)
     last_digest_sent_at = Column(DateTime, nullable=True)
 
+    # School-admin WhatsApp digest. Reuses the existing `phone` field below
+    # (this account's own number) rather than a new column - unlike
+    # guardian_phone, which is necessarily a different person's number.
+    # Separate cooldown from last_digest_sent_at since an admin who is also
+    # a parent can legitimately receive both digests independently.
+    school_digest_whatsapp_opt_in = Column(Boolean, nullable=False, default=False)
+    last_school_digest_sent_at = Column(DateTime, nullable=True)
+
     # Profile fields
     school = Column(String(255), nullable=True)
     grade = Column(String(50), nullable=True)

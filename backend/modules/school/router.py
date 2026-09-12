@@ -7,18 +7,21 @@ anywhere in this router, which is the point: a school admin can never
 address another school's roster by guessing or editing an id.
 """
 
+import os
 import secrets
 from datetime import datetime, timezone
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, Header, HTTPException
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
 
 from core.database import get_db
 from core.security import get_current_user, require_school_admin
+from core.whatsapp import send_whatsapp_message
 from models.school import School
 from models.user import User
 from modules.dashboard.aggregation import overview_for_users, summarize_overviews
+from modules.school.digest import build_school_digest_text, eligible_admins_for_digest
 
 router = APIRouter(tags=["school"])
 
@@ -155,3 +158,30 @@ async def get_school_dashboard(current_user: User = Depends(require_school_admin
         "roster": roster,
         "summary": summarize_overviews(list(overview_by_user.values())),
     }
+
+
+@router.post("/send-digests")
+async def send_school_digests(x_digest_secret: str = Header(...), db: Session = Depends(get_db)):
+    """Cron-callable (see .github/workflows/parent-digest.yml), not
+    user-facing - gated by the same shared secret as the parent digest
+    endpoint, not get_current_user."""
+    expected = os.getenv("DIGEST_TRIGGER_SECRET")
+    if not expected:
+        raise HTTPException(status_code=503, detail="Digest sending is not configured")
+    if x_digest_secret != expected:
+        raise HTTPException(status_code=401, detail="Invalid digest secret")
+
+    sent = skipped = failed = 0
+    for admin in eligible_admins_for_digest(db):
+        text = build_school_digest_text(db, admin)
+        if not text:
+            skipped += 1
+            continue
+        if send_whatsapp_message(to=admin.phone, body=text):
+            admin.last_school_digest_sent_at = datetime.utcnow()
+            db.commit()
+            sent += 1
+        else:
+            failed += 1
+
+    return {"success": True, "sent": sent, "skipped": skipped, "failed": failed}

@@ -20,6 +20,8 @@ router = APIRouter(tags=["profile"])
 
 UPLOAD_DIR = Path(__file__).parent.parent.parent / "uploads" / "avatars"
 
+E164_PATTERN = re.compile(r"^\+[1-9]\d{7,14}$")
+
 
 class ProfileUpdateRequest(BaseModel):
     full_name: Optional[str] = None
@@ -35,11 +37,12 @@ class ProfileUpdateRequest(BaseModel):
     guardian_email: Optional[EmailStr] = None
     guardian_phone: Optional[str] = None
     guardian_whatsapp_opt_in: Optional[bool] = None
+    school_digest_whatsapp_opt_in: Optional[bool] = None
 
     @field_validator("guardian_phone")
     @classmethod
     def _validate_e164(cls, value):
-        if value is not None and not re.match(r"^\+[1-9]\d{7,14}$", value):
+        if value is not None and not E164_PATTERN.match(value):
             raise ValueError("guardian_phone must be in E.164 format, e.g. +233241234567")
         return value
 
@@ -69,6 +72,7 @@ def _profile_out(user: User) -> dict:
         "consent_version": user.consent_version,
         "guardian_phone": user.guardian_phone,
         "guardian_whatsapp_opt_in": user.guardian_whatsapp_opt_in,
+        "school_digest_whatsapp_opt_in": user.school_digest_whatsapp_opt_in,
     }
 
 
@@ -88,10 +92,17 @@ async def update_my_profile(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
-    for field in ("full_name", "school", "grade", "bio", "phone", "location", "interests", "goals", "subjects", "language", "guardian_phone", "guardian_whatsapp_opt_in"):
+    for field in ("full_name", "school", "grade", "bio", "phone", "location", "interests", "goals", "subjects", "language", "guardian_phone", "guardian_whatsapp_opt_in", "school_digest_whatsapp_opt_in"):
         value = getattr(request, field)
         if value is not None:
             setattr(current_user, field, value)
+
+    # Cross-field: can't be a plain Pydantic field validator since it
+    # depends on the *effective* phone, which may come from this request
+    # or from a value already saved in an earlier one - checked after the
+    # loop above so current_user.phone already reflects that.
+    if current_user.school_digest_whatsapp_opt_in and not (current_user.phone and E164_PATTERN.match(current_user.phone)):
+        raise HTTPException(status_code=400, detail="phone must be in E.164 format to enable the school WhatsApp digest, e.g. +233241234567")
 
     if request.guardian_email is not None and request.guardian_email != current_user.guardian_email:
         if request.guardian_email == current_user.email:
