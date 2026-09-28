@@ -299,6 +299,425 @@
       "ai_score": 75,
       "ai_match": 70,
       "country": "NG"
+    },
+    {
+      "id": "medical_doctor_sl",
+      "title": "Medical Doctor",
+      "category": "Healthcare",
+      "description": "Diagnose and treat medical conditions, prescribe medication, and provide healthcare advice to patients.",
+      "salary_range": "Le 8,000 - 25,000",
+      "demand": "Very High",
+      "growth": "Rising demand amid a national shortage of doctors",
+      "difficulty": "Very Hard",
+      "required_subjects": [
+        "Biology",
+        "Chemistry",
+        "Physics",
+        "Mathematics"
+      ],
+      "skills": [
+        "Diagnostic Skills",
+        "Patient Care",
+        "Medical Knowledge",
+        "Communication"
+      ],
+      "universities": [
+        "University of Sierra Leone (COMAHS)",
+        "Njala University"
+      ],
+      "roadmap": [
+        {
+          "title": "Credit passes in Biology, Chemistry, Physics, Mathematics, English (WASSCE)",
+          "duration": "3 years"
+        },
+        {
+          "title": "Bachelor of Medicine and Bachelor of Surgery (MBChB) at COMAHS",
+          "duration": "6 years"
+        },
+        {
+          "title": "Internship",
+          "duration": "1 year"
+        },
+        {
+          "title": "Residency / Specialization",
+          "duration": "3-5 years"
+        }
+      ],
+      "ai_score": 78,
+      "ai_match": 82,
+      "country": "SL"
+    },
+    {
+      "id": "software_engineer_sl",
+      "title": "Software Engineer",
+      "category": "Technology",
+      "description": "Design, develop, and maintain software applications and systems for various industries.",
+      "salary_range": "Le 5,000 - 18,000",
+      "demand": "High",
+      "growth": "Growing alongside Sierra Leone's fintech and mobile-money sector",
+      "difficulty": "Hard",
+      "required_subjects": [
+        "Mathematics",
+        "English Language",
+        "Physics"
+      ],
+      "skills": [
+        "Programming",
+        "Problem Solving",
+        "System Design",
+        "Team Collaboration"
+      ],
+      "universities": [
+        "University of Sierra Leone (Fourah Bay College)",
+        "Njala University"
+      ],
+      "roadmap": [
+        {
+          "title": "Credit passes in English, Mathematics, and a Science subject (WASSCE)",
+          "duration": "3 years"
+        },
+        {
+          "title": "Bachelor's in Computer Science / Information Technology",
+          "duration": "4 years"
+        },
+        {
+          "title": "Internship / Junior Developer",
+          "duration": "1 year"
+        },
+        {
+          "title": "Mid-Level / Senior Developer",
+          "duration": "2-3 years"
+        }
+      ],
+      "ai_score": 90,
+      "ai_match": 85,
+      "country": "SL"
+    },
+    {
+      "id": "civil_engineer_sl",
+      "title": "Civil Engineer",
+      "category": "Engineering",
+      "description": "Design and supervise construction of infrastructure projects like roads, bridges, and buildings.",
+      "salary_range": "Le 6,000 - 20,000",
+      "demand": "High",
+      "growth": "Steady demand from post-conflict infrastructure rebuilding",
+      "difficulty": "Hard",
+      "required_subjects": [
+        "Mathematics",
+        "Physics",
+        "Chemistry",
+        "English Language"
+      ],
+      "skills": [
+        "Structural Analysis",
+        "Project Management",
+        "CAD Design",
+        "Problem Solving"
+      ],
+      "universities": [
+        "Njala University",
+        "University of Sierra Leone (Fourah Bay College)"
+      ],
+      "roadmap": [
+        {
+          "title": "Credit passes in Mathematics, Physics, Chemistry, English (WASSCE)",
+          "duration": "3 years"
+        },
+        {
+          "title": "Bachelor's in Civil Engineering",
+          "duration": "4-5 years"
+        },
+        {
+          "title": "Internship / Site Engineer",
+          "duration": "1 year"
+        },
+        {
+          "title": "Professional Certification",
+          "duration": "2 years"
+        }
+      ],
+      "ai_score": 75,
+      "ai_match": 70,
+      "country": "SL"
+    },
+    {
+      "id": "medical_doctor_lr",
+      "title": "Medical Doctor",
+      "category": "Healthcare",
+      "description": "Diagnose and treat medical conditions, prescribe medication, and provide healthcare advice to patients.",
+      "salary_range": "L$ 60,000 - 200,000",
+      "demand": "Very High",
+      "growth": "Rising demand amid a national shortage of doctors",
+      "difficulty": "Very Hard",
+      "required_subjects": [
+        "Biology",
+        "Chemistry",
+        "Physics",
+        "Mathematics"
+      ],
+      "skills": [
+        "Diagnostic Skills",
+        "Patient Care",
+        "Medical Knowledge",
+        "Communication"
+      ],
+      "universities": [
+        "University of Liberia (A.M. Dogliotti College of Medicine)",
+        "Cuttington University"
+      ],
+      "roadmap": [
+        {
+          "title": "Credit passes in Biology, Chemistry, Physics, Mathematics, English (WASSCE)",
+          "duration": "3 years"
+        },
+        {
+          "title": "Doctor of Medicine (MD) at A.M. Dogliotti College of Medicine",
+          "duration": "6 years"
+        },
+        {
+          "title": "Internship",
+          "duration": "1 year"
+        },
+        {
+          "title": "Residency / Specialization",
+          "duration": "3-5 years"
+        }
+      ],
+      "ai_score": 78,
+      "ai_match": 82,
+      "country": "LR"
+    },
+    {
+      "id": "software_engineer_lr",
+      "title": "Software Engineer",
+      "category": "Technology",
+      "description": "Design, develop, and maintain software applications and systems for various industries.",
+      "salary_range": "L$ 40,000 - 150,000",
+      "demand": "High",
+      "growth": "Growing slowly as Liberia's tech and mobile-money sector expands",
+      "difficulty": "Hard",
+      "required_subjects": [
+        "Mathematics",
+        "English Language",
+        "Physics"
+      ],
+      "skills": [
+        "Programming",
+        "Problem Solving",
+        "System Design",
+        "Team Collaboration"
+      ],
+      "universities": [
+        "University of Liberia",
+        "Cuttington University"
+      ],
+      "roadmap": [
+        {
+          "title": "Credit passes in English, Mathematics, and a Science subject (WASSCE)",
+          "duration": "3 years"
+        },
+        {
+          "title": "Bachelor's in Computer Science / Information Technology",
+          "duration": "4 years"
+        },
+        {
+          "title": "Internship / Junior Developer",
+          "duration": "1 year"
+        },
+        {
+          "title": "Mid-Level / Senior Developer",
+          "duration": "2-3 years"
+        }
+      ],
+      "ai_score": 88,
+      "ai_match": 84,
+      "country": "LR"
+    },
+    {
+      "id": "civil_engineer_lr",
+      "title": "Civil Engineer",
+      "category": "Engineering",
+      "description": "Design and supervise construction of infrastructure projects like roads, bridges, and buildings.",
+      "salary_range": "L$ 45,000 - 160,000",
+      "demand": "High",
+      "growth": "Steady demand from post-conflict infrastructure rebuilding",
+      "difficulty": "Hard",
+      "required_subjects": [
+        "Mathematics",
+        "Physics",
+        "Chemistry",
+        "English Language"
+      ],
+      "skills": [
+        "Structural Analysis",
+        "Project Management",
+        "CAD Design",
+        "Problem Solving"
+      ],
+      "universities": [
+        "University of Liberia",
+        "Cuttington University"
+      ],
+      "roadmap": [
+        {
+          "title": "Credit passes in Mathematics, Physics, Chemistry, English (WASSCE)",
+          "duration": "3 years"
+        },
+        {
+          "title": "Bachelor's in Civil Engineering",
+          "duration": "4-5 years"
+        },
+        {
+          "title": "Internship / Site Engineer",
+          "duration": "1 year"
+        },
+        {
+          "title": "Professional Certification",
+          "duration": "2 years"
+        }
+      ],
+      "ai_score": 75,
+      "ai_match": 70,
+      "country": "LR"
+    },
+    {
+      "id": "medical_doctor_gm",
+      "title": "Medical Doctor",
+      "category": "Healthcare",
+      "description": "Diagnose and treat medical conditions, prescribe medication, and provide healthcare advice to patients.",
+      "salary_range": "D 25,000 - 70,000",
+      "demand": "Very High",
+      "growth": "Rising demand amid a national shortage of doctors",
+      "difficulty": "Very Hard",
+      "required_subjects": [
+        "Biology",
+        "Chemistry",
+        "Physics",
+        "Mathematics"
+      ],
+      "skills": [
+        "Diagnostic Skills",
+        "Patient Care",
+        "Medical Knowledge",
+        "Communication"
+      ],
+      "universities": [
+        "American International University West Africa",
+        "University of The Gambia"
+      ],
+      "roadmap": [
+        {
+          "title": "Credit passes in Biology, Chemistry, Physics, Mathematics, English (WASSCE)",
+          "duration": "3 years"
+        },
+        {
+          "title": "Doctor of Medicine (MD)",
+          "duration": "6 years"
+        },
+        {
+          "title": "Internship",
+          "duration": "1 year"
+        },
+        {
+          "title": "Residency / Specialization",
+          "duration": "3-5 years"
+        }
+      ],
+      "ai_score": 78,
+      "ai_match": 82,
+      "country": "GM"
+    },
+    {
+      "id": "software_engineer_gm",
+      "title": "Software Engineer",
+      "category": "Technology",
+      "description": "Design, develop, and maintain software applications and systems for various industries.",
+      "salary_range": "D 15,000 - 50,000",
+      "demand": "High",
+      "growth": "Growing alongside Gambia's fintech and mobile-money sector",
+      "difficulty": "Hard",
+      "required_subjects": [
+        "Mathematics",
+        "English Language",
+        "Physics"
+      ],
+      "skills": [
+        "Programming",
+        "Problem Solving",
+        "System Design",
+        "Team Collaboration"
+      ],
+      "universities": [
+        "University of The Gambia",
+        "American International University West Africa"
+      ],
+      "roadmap": [
+        {
+          "title": "Credit passes in English, Mathematics, and a Science subject (WASSCE)",
+          "duration": "3 years"
+        },
+        {
+          "title": "Bachelor's in Computer Science / Information Technology",
+          "duration": "4 years"
+        },
+        {
+          "title": "Internship / Junior Developer",
+          "duration": "1 year"
+        },
+        {
+          "title": "Mid-Level / Senior Developer",
+          "duration": "2-3 years"
+        }
+      ],
+      "ai_score": 88,
+      "ai_match": 84,
+      "country": "GM"
+    },
+    {
+      "id": "civil_engineer_gm",
+      "title": "Civil Engineer",
+      "category": "Engineering",
+      "description": "Design and supervise construction of infrastructure projects like roads, bridges, and buildings.",
+      "salary_range": "D 18,000 - 55,000",
+      "demand": "Moderate",
+      "growth": "Steady demand from tourism and coastal infrastructure development",
+      "difficulty": "Hard",
+      "required_subjects": [
+        "Mathematics",
+        "Physics",
+        "Chemistry",
+        "English Language"
+      ],
+      "skills": [
+        "Structural Analysis",
+        "Project Management",
+        "CAD Design",
+        "Problem Solving"
+      ],
+      "universities": [
+        "University of The Gambia"
+      ],
+      "roadmap": [
+        {
+          "title": "Credit passes in Mathematics, Physics, Chemistry, English (WASSCE)",
+          "duration": "3 years"
+        },
+        {
+          "title": "Bachelor's in Civil Engineering",
+          "duration": "4-5 years"
+        },
+        {
+          "title": "Internship / Site Engineer",
+          "duration": "1 year"
+        },
+        {
+          "title": "Professional Certification",
+          "duration": "2 years"
+        }
+      ],
+      "ai_score": 72,
+      "ai_match": 68,
+      "country": "GM"
     }
   ]
 }

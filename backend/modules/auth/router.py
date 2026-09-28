@@ -21,7 +21,7 @@ class RegisterRequest(BaseModel):
     email: EmailStr
     full_name: str
     password: str
-    country: Literal["GH", "NG"]
+    country: Literal["GH", "NG", "SL", "LR", "GM"]
     consent_confirmed: bool
     guardian_email: EmailStr
 

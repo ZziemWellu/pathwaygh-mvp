@@ -1,6 +1,11 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
+// Countries that sit WASSCE under WAEC - matches WASSCE_COUNTRIES in
+// App.jsx and backend/modules/plan/router.py. Career Match's content is
+// WASSCE-specific, so it's gated to these countries.
+const WASSCE_COUNTRIES = ['GH', 'SL', 'LR', 'GM'];
+
 const ExploreLanding = ({ user }) => {
   const navigate = useNavigate();
 
@@ -40,11 +45,11 @@ const ExploreLanding = ({ user }) => {
       color: '#6a1b9a',
       path: '/explore/career-match',
       buttonText: 'Start Assessment',
-      countryOnly: 'GH'
+      wassceOnly: true
     }
   ];
 
-  const features = allFeatures.filter((f) => !f.countryOnly || f.countryOnly === user?.country);
+  const features = allFeatures.filter((f) => !f.wassceOnly || WASSCE_COUNTRIES.includes(user?.country));
 
   return (
     <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '20px' }}>

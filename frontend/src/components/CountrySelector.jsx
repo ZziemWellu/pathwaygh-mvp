@@ -1,11 +1,17 @@
 import React from 'react';
 import GhanaFlag from './common/GhanaFlag';
 import NigeriaFlag from './common/NigeriaFlag';
+import SierraLeoneFlag from './common/SierraLeoneFlag';
+import LiberiaFlag from './common/LiberiaFlag';
+import GambiaFlag from './common/GambiaFlag';
 import { useLanguage } from '../contexts/LanguageContext';
 
 const COUNTRIES = [
   { code: 'GH', name: 'Ghana', Flag: GhanaFlag },
   { code: 'NG', name: 'Nigeria', Flag: NigeriaFlag },
+  { code: 'SL', name: 'Sierra Leone', Flag: SierraLeoneFlag },
+  { code: 'LR', name: 'Liberia', Flag: LiberiaFlag },
+  { code: 'GM', name: 'The Gambia', Flag: GambiaFlag },
 ];
 
 const CountrySelector = ({ onSelect }) => {

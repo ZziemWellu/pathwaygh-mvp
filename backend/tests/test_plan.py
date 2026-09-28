@@ -31,6 +31,21 @@ def test_gh_user_sees_wassce_plan(client, db_session):
     assert "University Entrance" in target_exams
 
 
+def test_sl_lr_gm_users_see_wassce_plan(client, db_session):
+    """Sierra Leone, Liberia, and The Gambia all sit WASSCE under WAEC, same
+    as Ghana - see WASSCE_COUNTRIES in modules/plan/router.py."""
+    _seed_plan(db_session, "wassce-plan", "WASSCE")
+    _seed_plan(db_session, "uni-plan", "University Entrance")
+
+    for i, country in enumerate(("SL", "LR", "GM")):
+        headers = _headers(client, f"{country.lower()}-plan{i}@test.com", country)
+        response = client.get("/api/plan/study-plans", headers=headers)
+        assert response.status_code == 200
+        target_exams = {p["target_exam"] for p in response.json()}
+        assert "WASSCE" in target_exams, f"{country} should see WASSCE plans"
+        assert "University Entrance" in target_exams
+
+
 def test_ng_user_does_not_see_wassce_plan(client, db_session):
     _seed_plan(db_session, "wassce-plan", "WASSCE")
     _seed_plan(db_session, "uni-plan", "University Entrance")

@@ -86,6 +86,9 @@ const AdminCourseList = () => {
           <select id="new-course-country" value={form.country} onChange={(e) => setForm({ ...form, country: e.target.value })} style={inputStyle}>
             <option value="GH">Ghana</option>
             <option value="NG">Nigeria</option>
+            <option value="SL">Sierra Leone</option>
+            <option value="LR">Liberia</option>
+            <option value="GM">The Gambia</option>
           </select>
           <button type="submit" disabled={saving} style={{ padding: '10px', background: saving ? '#ccc' : '#1a5f2b', color: 'white', border: 'none', borderRadius: '8px', cursor: saving ? 'not-allowed' : 'pointer', fontWeight: 'bold' }}>
             {saving ? 'Creating...' : 'Create Course'}

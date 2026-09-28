@@ -17,6 +17,13 @@ from models.user import User
 
 router = APIRouter(tags=["plan"])
 
+# Countries that sit WASSCE under WAEC. Nigeria also uses WAEC, but its exam
+# content and admission pathway (NECO/JAMB) are handled separately elsewhere
+# in this app (see modules/tutor/router.py's system prompts and the
+# universities/careers data in backend/data/explore/), so it's deliberately
+# excluded here too.
+WASSCE_COUNTRIES = {"GH", "SL", "LR", "GM"}
+
 DEFAULT_PLANS = [
     {
         "name": "WASSCE Preparation Plan",
@@ -112,7 +119,7 @@ async def get_study_plans(db: Session = Depends(get_db), current_user: User = De
     return [
         _plan_out(p)
         for p in plans
-        if current_user.country == "GH" or p.data.get("target_exam") != "WASSCE"
+        if current_user.country in WASSCE_COUNTRIES or p.data.get("target_exam") != "WASSCE"
     ]
 
 

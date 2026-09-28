@@ -10,6 +10,16 @@ def test_ng_prompt_does_not_mention_wassce():
     assert "BECE" not in SYSTEM_PROMPT_BY_COUNTRY["NG"]
 
 
+def test_sl_lr_gm_prompts_mention_wassce_and_are_distinct():
+    """Sierra Leone, Liberia, and The Gambia all sit WASSCE under WAEC, same
+    as Ghana."""
+    for country in ("SL", "LR", "GM"):
+        assert "WASSCE" in SYSTEM_PROMPT_BY_COUNTRY[country]
+
+    prompts = [SYSTEM_PROMPT_BY_COUNTRY[c] for c in ("GH", "NG", "SL", "LR", "GM")]
+    assert len(set(prompts)) == len(prompts)
+
+
 def test_english_language_instruction_is_empty():
     assert LANGUAGE_INSTRUCTION["en"] == ""
 

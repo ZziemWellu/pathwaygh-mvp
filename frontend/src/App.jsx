@@ -5,6 +5,9 @@ import { getUser, isAuthenticated, login as authLogin, logout as authLogout, get
 import EcosystemNavigation from './components/common/EcosystemNavigation';
 import GhanaFlag from './components/common/GhanaFlag';
 import NigeriaFlag from './components/common/NigeriaFlag';
+import SierraLeoneFlag from './components/common/SierraLeoneFlag';
+import LiberiaFlag from './components/common/LiberiaFlag';
+import GambiaFlag from './components/common/GambiaFlag';
 import { User, LogOut } from 'lucide-react';
 import Login from './components/auth/Login';
 import Register from './components/auth/Register';
@@ -16,8 +19,14 @@ import { useLanguage } from './contexts/LanguageContext';
 import PrivacyPolicy from './modules/legal/PrivacyPolicy';
 import CertificateVerify from './modules/certificates/CertificateVerify';
 
-const COUNTRY_FLAGS = { GH: GhanaFlag, NG: NigeriaFlag };
-const COUNTRY_NAMES = { GH: 'Ghana', NG: 'Nigeria' };
+const COUNTRY_FLAGS = { GH: GhanaFlag, NG: NigeriaFlag, SL: SierraLeoneFlag, LR: LiberiaFlag, GM: GambiaFlag };
+const COUNTRY_NAMES = { GH: 'Ghana', NG: 'Nigeria', SL: 'Sierra Leone', LR: 'Liberia', GM: 'The Gambia' };
+
+// The countries that sit the WASSCE exam under WAEC (Ghana, Sierra Leone,
+// Liberia, The Gambia) - Nigeria uses WAEC/NECO differently in this app's
+// content model (see modules/plan/router.py's study-plan filter), so it's
+// deliberately excluded from WASSCE-specific features like Career Match.
+const WASSCE_COUNTRIES = ['GH', 'SL', 'LR', 'GM'];
 
 // CertificateVerify takes `code` as a prop (never useParams internally)
 // since App.jsx also renders it directly, pre-BrowserRouter, for a
@@ -243,7 +252,7 @@ const App = () => {
             <Route path="/explore/careers" element={<CareersPage user={user} />} />
             <Route path="/explore/universities" element={<UniversitiesPage user={user} />} />
             <Route path="/explore/scholarships" element={<ScholarshipsPage />} />
-            <Route path="/explore/career-match" element={user?.country === 'GH' ? <CareerMatchPage /> : <Navigate to="/" />} />
+            <Route path="/explore/career-match" element={WASSCE_COUNTRIES.includes(user?.country) ? <CareerMatchPage /> : <Navigate to="/" />} />
             
             {/* OLD Explore (keep as fallback) */}
             <Route path="/explore-old" element={<ExploreModule />} />

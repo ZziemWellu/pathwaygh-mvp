@@ -214,6 +214,141 @@
       ],
       "admission_info": "Applications open shortly after JAMB registration. As a private university, Covenant also runs its own Direct Entry and screening timelines - check the official admissions portal for 2026/2027 dates.",
       "country": "NG"
+    },
+    {
+      "id": "usl",
+      "name": "University of Sierra Leone",
+      "location": "Freetown",
+      "cutoff": "WASSCE credit passes (varies by constituent college)",
+      "type": "Public",
+      "ranking": 1,
+      "description": "Sierra Leone's oldest and largest public university, comprising constituent colleges including Fourah Bay College and the College of Medicine and Allied Health Sciences (COMAHS).",
+      "programs": [
+        "Medicine",
+        "Engineering",
+        "Law",
+        "Arts",
+        "Sciences",
+        "Social Sciences"
+      ],
+      "requirements": [
+        "WASSCE credit passes in five subjects including English Language and Mathematics",
+        "Additional science credits required for Medicine and Engineering programmes"
+      ],
+      "admission_info": "Applications typically open mid-year following WASSCE results. Check each constituent college's admissions office for exact dates and requirements.",
+      "country": "SL"
+    },
+    {
+      "id": "njala",
+      "name": "Njala University",
+      "location": "Njala / Bo",
+      "cutoff": "WASSCE credit passes (varies by programme)",
+      "type": "Public",
+      "ranking": 2,
+      "description": "A public university with campuses in Njala and Bo, known for agriculture, environmental science, and education programmes.",
+      "programs": [
+        "Agriculture",
+        "Environmental Science",
+        "Education",
+        "Engineering",
+        "Business"
+      ],
+      "requirements": [
+        "WASSCE credit passes in five subjects including English Language and Mathematics",
+        "Relevant science credits required for Agriculture and Engineering programmes"
+      ],
+      "admission_info": "Applications typically open mid-year following WASSCE results. Check the university's admissions office for exact dates.",
+      "country": "SL"
+    },
+    {
+      "id": "ul",
+      "name": "University of Liberia",
+      "location": "Monrovia",
+      "cutoff": "WASSCE credit passes plus university entrance exam",
+      "type": "Public",
+      "ranking": 1,
+      "description": "Liberia's oldest and largest public university, home to the A.M. Dogliotti College of Medicine, the country's only medical school.",
+      "programs": [
+        "Medicine",
+        "Law",
+        "Engineering",
+        "Business",
+        "Sciences",
+        "Social Sciences"
+      ],
+      "requirements": [
+        "WASSCE credit passes in five subjects including English Language and Mathematics",
+        "Pass the University of Liberia entrance examination"
+      ],
+      "admission_info": "Entrance examinations are typically held mid-year following WASSCE results. Check the university admissions office for exact 2026/2027 dates.",
+      "country": "LR"
+    },
+    {
+      "id": "cuttington",
+      "name": "Cuttington University",
+      "location": "Suacoco, Bong County",
+      "cutoff": "WASSCE credit passes (varies by programme)",
+      "type": "Private",
+      "ranking": 2,
+      "description": "Founded in 1889, the oldest private, coeducational, degree-granting university in Sub-Saharan Africa, known for its agriculture, nursing, and theology programmes.",
+      "programs": [
+        "Agriculture",
+        "Nursing",
+        "Business",
+        "Theology",
+        "Education",
+        "Sciences"
+      ],
+      "requirements": [
+        "WASSCE credit passes in five subjects including English Language and Mathematics",
+        "Pass Cuttington's own admissions screening"
+      ],
+      "admission_info": "Applications open following WASSCE results - check the university's admissions office for exact dates.",
+      "country": "LR"
+    },
+    {
+      "id": "utg",
+      "name": "University of The Gambia",
+      "location": "Kanifing / Brikama",
+      "cutoff": "WASSCE credit passes (varies by programme)",
+      "type": "Public",
+      "ranking": 1,
+      "description": "The Gambia's only public university, established in 1998, offering undergraduate and graduate programmes including a growing number of PhD offerings.",
+      "programs": [
+        "Medicine",
+        "Law",
+        "Engineering",
+        "Business",
+        "Sciences",
+        "Education"
+      ],
+      "requirements": [
+        "WASSCE credit passes in five subjects including English Language and Mathematics",
+        "Additional science credits required for Medicine and Engineering programmes"
+      ],
+      "admission_info": "Applications typically open mid-year following WASSCE results. Check the university's admissions office for exact dates.",
+      "country": "GM"
+    },
+    {
+      "id": "aiuwa",
+      "name": "American International University West Africa",
+      "location": "Serekunda",
+      "cutoff": "WASSCE credit passes (varies by programme)",
+      "type": "Private",
+      "ranking": 2,
+      "description": "A private university founded in 2011, offering a Doctor of Medicine (MD) programme based on the American medical school system, alongside Business, IT, and Health Sciences degrees.",
+      "programs": [
+        "Medicine",
+        "Business Administration",
+        "Information Technology",
+        "Health Sciences"
+      ],
+      "requirements": [
+        "WASSCE credit passes in five subjects including English Language, Mathematics, and relevant sciences for Medicine",
+        "Pass the university's own admissions screening"
+      ],
+      "admission_info": "Applications open on a rolling basis - check the university's admissions office for current intake dates.",
+      "country": "GM"
     }
   ]
 }
