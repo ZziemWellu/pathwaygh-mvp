@@ -15,7 +15,13 @@ const api = axios.create({
     'Content-Type': 'application/json',
     Accept: 'application/json',
   },
-  timeout: 30000,
+  // Render's free tier spins the backend down after ~15 min idle and can
+  // take 30-60s to cold-start on the next request. 30s wasn't enough
+  // margin: axios would abort client-side while the backend was still
+  // booting, and the backend - having no idea the client gave up - would
+  // finish the request anyway (e.g. committing a new user row), so a
+  // retry with the same details would then hit "already registered."
+  timeout: 60000,
 });
 
 api.interceptors.request.use(

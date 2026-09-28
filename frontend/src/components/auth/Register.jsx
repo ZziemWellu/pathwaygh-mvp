@@ -91,9 +91,17 @@ const Register = ({ onSuccess, onShowPrivacy }) => {
     } catch (err) {
       console.error('❌ Registration error:', err);
 
-      // Handle different error formats
+      // Handle different error formats. A request that never got a
+      // response (timeout, or the backend cold-starting after idle) has no
+      // err.response at all - tell the user the server may still be
+      // waking up rather than showing a generic failure, since the
+      // request may well complete on the backend after we've stopped
+      // waiting for it (resubmitting the same details would then look
+      // like a duplicate "already registered" error).
       let errorMsg = t('registrationFailedRetry');
-      if (err.response?.data?.detail) {
+      if (!err.response) {
+        errorMsg = t('serverWakingUp');
+      } else if (err.response?.data?.detail) {
         errorMsg = err.response.data.detail;
       } else if (err.response?.data?.message) {
         errorMsg = err.response.data.message;

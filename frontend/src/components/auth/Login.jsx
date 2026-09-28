@@ -21,7 +21,11 @@ const Login = ({ onSuccess }) => {
         setError(response.data?.message || t('loginFailed'));
       }
     } catch (err) {
-      setError(err.response?.data?.message || t('loginFailedRetry'));
+      if (!err.response) {
+        setError(t('serverWakingUp'));
+      } else {
+        setError(err.response?.data?.detail || err.response?.data?.message || t('loginFailedRetry'));
+      }
     } finally {
       setLoading(false);
     }
