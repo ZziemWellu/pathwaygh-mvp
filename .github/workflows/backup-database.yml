@@ -1,0 +1,72 @@
+name: Backup database
+
+# An independent backup, on top of whatever Render's Postgres plan
+# provides - the repo has no way to verify from here whether the live
+# plan includes point-in-time recovery (check the Render dashboard
+# directly), and free/Basic tiers often don't. This closes that gap
+# regardless of what that check finds.
+#
+# Requires two repo secrets that don't exist yet - this workflow will
+# fail until they're added (Settings -> Secrets and variables -> Actions):
+#   BACKUP_DATABASE_URL  - the Postgres instance's *External* Database
+#                          URL from the Render dashboard (the Internal
+#                          URL only resolves inside Render's network,
+#                          not from a GitHub Actions runner).
+#   BACKUP_ENCRYPTION_KEY - any long random passphrase (e.g. output of
+#                          `openssl rand -base64 32`). The dump contains
+#                          real student/guardian PII (emails, phone
+#                          numbers, consent records), so it's encrypted
+#                          before upload, never stored in the clear.
+#
+# To restore: download the artifact, then
+#   gpg --decrypt --batch --passphrase-fd 0 backup.sql.gpg <<< "$BACKUP_ENCRYPTION_KEY" > backup.sql
+#   psql "$DATABASE_URL" < backup.sql
+
+on:
+  schedule:
+    - cron: '0 3 * * *' # daily, 03:00 UTC
+  workflow_dispatch: {}
+
+permissions:
+  issues: write
+
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dump database
+        env:
+          BACKUP_DATABASE_URL: ${{ secrets.BACKUP_DATABASE_URL }}
+        run: |
+          if [ -z "$BACKUP_DATABASE_URL" ]; then
+            echo "BACKUP_DATABASE_URL secret is not set - see this workflow's file header for setup." >&2
+            exit 1
+          fi
+          sudo apt-get update -qq && sudo apt-get install -y -qq postgresql-client
+          pg_dump "$BACKUP_DATABASE_URL" --no-owner --no-privileges -f backup.sql
+
+      - name: Encrypt dump
+        env:
+          BACKUP_ENCRYPTION_KEY: ${{ secrets.BACKUP_ENCRYPTION_KEY }}
+        run: |
+          if [ -z "$BACKUP_ENCRYPTION_KEY" ]; then
+            echo "BACKUP_ENCRYPTION_KEY secret is not set - see this workflow's file header for setup." >&2
+            exit 1
+          fi
+          gpg --symmetric --batch --yes --passphrase-fd 0 --cipher-algo AES256 -o backup.sql.gpg backup.sql <<< "$BACKUP_ENCRYPTION_KEY"
+          rm -f backup.sql
+
+      - name: Upload encrypted backup
+        uses: actions/upload-artifact@v4
+        with:
+          name: db-backup-${{ github.run_id }}
+          path: backup.sql.gpg
+          retention-days: 30
+
+      - name: Open an alert issue if the backup failed
+        if: failure()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh issue create --title "🔴 Nightly database backup failed" \
+            --body "The scheduled backup run failed on $(date -u '+%Y-%m-%d %H:%M UTC'). See: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"

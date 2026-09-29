@@ -5,6 +5,9 @@ on:
     - cron: '0 8 * * 0' # weekly, Sunday 08:00 UTC
   workflow_dispatch: {}
 
+permissions:
+  issues: write
+
 jobs:
   send-digests:
     runs-on: ubuntu-latest
@@ -23,3 +26,17 @@ jobs:
         run: |
           curl -f --max-time 90 --retry 2 --retry-delay 30 -X POST https://pathwaygh-backend.onrender.com/api/school/send-digests \
             -H "X-Digest-Secret: ${{ secrets.DIGEST_TRIGGER_SECRET }}"
+
+      # Previously a failed send here was silent - visible only to someone
+      # who happened to check the Actions tab. This makes it impossible
+      # to miss, the same way monitor-health.yml does for backend outages.
+      - name: Open an alert issue if either send failed
+        if: failure()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          BODY="The scheduled parent/school-admin digest run failed on $(date -u '+%Y-%m-%d %H:%M UTC')."
+          BODY="$BODY See the failed run for which step and why: $RUN_URL"
+          BODY="$BODY This was not retried automatically beyond curl's built-in --retry - re-run the workflow manually (workflow_dispatch) once the underlying issue is fixed, since this week's digest was not delivered."
+          gh issue create --title "🔴 Weekly WhatsApp digest failed to send" --body "$BODY"

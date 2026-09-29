@@ -1,0 +1,75 @@
+name: Monitor backend health
+
+# Closes the "nothing tells a human" gap: if the backend is down, /health
+# unreachable, or the database is unreachable, this opens (or updates) a
+# single tracking issue so it's impossible to miss on the repo's Issues
+# tab - and closes it automatically with a comment once things recover.
+#
+# This also indirectly catches a failed deploy migration: render.yaml's
+# startCommand is `alembic upgrade head && uvicorn ...`, so a migration
+# that fails means uvicorn never starts, which means /health simply
+# doesn't respond - the same failure mode this workflow already detects.
+#
+# This is a free, in-repo substitute for a dedicated uptime monitor
+# (UptimeRobot, Pingdom, etc.) - those poll more reliably and from
+# outside GitHub's own infrastructure, so consider adding one too for
+# a second, independent signal.
+
+on:
+  schedule:
+    - cron: '*/15 * * * *'
+  workflow_dispatch: {}
+
+permissions:
+  issues: write
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check /health
+        id: health
+        run: |
+          status=$(curl -fsS --max-time 30 -o /tmp/health.json -w "%{http_code}" https://pathwaygh-backend.onrender.com/health || echo "000")
+          echo "http_status=$status" >> "$GITHUB_OUTPUT"
+          if [ "$status" = "200" ]; then
+            body=$(cat /tmp/health.json)
+            db_status=$(echo "$body" | grep -o '"database"[[:space:]]*:[[:space:]]*"[^"]*"' | cut -d'"' -f4)
+            if [ "$db_status" = "ok" ]; then
+              echo "healthy=true" >> "$GITHUB_OUTPUT"
+            else
+              echo "healthy=false" >> "$GITHUB_OUTPUT"
+              echo "reason=Backend responded but reported its database as: ${db_status:-unknown}" >> "$GITHUB_OUTPUT"
+            fi
+          else
+            echo "healthy=false" >> "$GITHUB_OUTPUT"
+            echo "reason=/health returned HTTP $status (or the request timed out/failed entirely)" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Open or update alert issue on failure
+        if: steps.health.outputs.healthy == 'false'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TITLE="🔴 Backend health check failing"
+          REASON="${{ steps.health.outputs.reason }}"
+          EXISTING=$(gh issue list --search "in:title \"$TITLE\"" --state open --json number --jq '.[0].number')
+          NOW="$(date -u '+%Y-%m-%d %H:%M UTC')"
+          if [ -n "$EXISTING" ]; then
+            gh issue comment "$EXISTING" --body "Still failing as of $NOW. $REASON"
+          else
+            BODY=$(printf '%s\n\nChecked https://pathwaygh-backend.onrender.com/health from this scheduled workflow. This issue will close itself automatically once a check succeeds again.\n\nFirst detected: %s' "$REASON" "$NOW")
+            gh issue create --title "$TITLE" --body "$BODY"
+          fi
+
+      - name: Close alert issue on recovery
+        if: steps.health.outputs.healthy == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TITLE="🔴 Backend health check failing"
+          EXISTING=$(gh issue list --search "in:title \"$TITLE\"" --state open --json number --jq '.[0].number')
+          if [ -n "$EXISTING" ]; then
+            gh issue comment "$EXISTING" --body "✅ Recovered as of $(date -u '+%Y-%m-%d %H:%M UTC') - /health is reporting healthy again. Closing."
+            gh issue close "$EXISTING"
+          fi
