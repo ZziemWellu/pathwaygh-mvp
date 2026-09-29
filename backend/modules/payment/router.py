@@ -1,21 +1,19 @@
 """
-Payment Module Router
+Payment Module Router - not yet built. Mobile Money integration (MTN
+MoMo/Paystack) is deliberately deferred to post-grant phase 2 (see the
+Sustainability & Monetization Strategy doc) - this endpoint must say so
+honestly rather than fabricate a fake successful transaction, since a
+"success" response here would be actively misleading about money.
 """
 
-import uuid
-
-from fastapi import APIRouter
+from fastapi import APIRouter, HTTPException
 
 router = APIRouter(tags=["payment"])
 
 @router.get("/")
 async def payment_root():
-    return {"module": "payment", "status": "active"}
+    return {"module": "payment", "status": "not_implemented"}
 
 @router.post("/initialize")
 async def initialize_payment():
-    return {
-        "success": True,
-        "message": "Payment initialized",
-        "reference": f"pay_{uuid.uuid4().hex[:8]}"
-    }
+    raise HTTPException(status_code=503, detail="Payments are not yet available on PathwayGH.")

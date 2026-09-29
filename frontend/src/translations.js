@@ -39,6 +39,23 @@ export const translations = {
     loginFailed: 'Login failed',
     loginFailedRetry: 'Login failed. Please try again.',
 
+    // Forgot / reset password
+    forgotPasswordLink: 'Forgot password?',
+    forgotPasswordTitle: 'Reset your password',
+    forgotPasswordSendCode: 'Send reset code',
+    forgotPasswordSending: 'Sending...',
+    forgotPasswordCodeSent: "If that email is registered, we've sent a reset code to it.",
+    forgotPasswordFailedRetry: 'Could not send reset code. Please try again.',
+    resetPasswordCodeLabel: 'Reset code',
+    resetPasswordCodePlaceholder: 'Paste the code from your email',
+    resetPasswordNewLabel: 'New password',
+    resetPasswordSaving: 'Saving...',
+    resetPasswordSubmit: 'Reset password',
+    resetPasswordFailed: 'That code is incorrect or has expired.',
+    resetPasswordSuccessTitle: '✅ Password reset',
+    resetPasswordSuccessBody: 'Your password has been changed. You can now log in.',
+    backToLogin: 'Back to login',
+
     // Register
     createAccount: 'Create Account',
     fullName: 'Full Name',
@@ -117,6 +134,23 @@ export const translations = {
     loginFailed: 'Mu hyɛn anyɛ yie',
     loginFailedRetry: 'Mu hyɛn anyɛ yie. Yɛsrɛ wo sɔ hwɛ bio.',
 
+    // Forgot / reset password
+    forgotPasswordLink: 'Wo werɛ afi w\'ahintasɛm?',
+    forgotPasswordTitle: 'Sesa w\'ahintasɛm',
+    forgotPasswordSendCode: 'Fa koodu no bra',
+    forgotPasswordSending: 'Ɛrekɔ...',
+    forgotPasswordCodeSent: 'Sɛ saa email yi wɔ hɔ a, yɛde koodu akɔ hɔ.',
+    forgotPasswordFailedRetry: 'Yɛantumi amfa koodu no ankɔ. Yɛsrɛ wo sɔ hwɛ bio.',
+    resetPasswordCodeLabel: 'Koodu a wɔde sesa ahintasɛm',
+    resetPasswordCodePlaceholder: 'Fa koodu a ɛwɔ wo email mu hyɛ mu',
+    resetPasswordNewLabel: 'Ahintasɛm foforo',
+    resetPasswordSaving: 'Ɛrekora...',
+    resetPasswordSubmit: 'Sesa ahintasɛm',
+    resetPasswordFailed: 'Koodu no nyɛ nokware anaa atwa mu.',
+    resetPasswordSuccessTitle: '✅ Wɔasesa Ahintasɛm',
+    resetPasswordSuccessBody: 'Wɔasesa w\'ahintasɛm. Wobɛtumi ahyɛn mu seesei.',
+    backToLogin: 'San kɔ hyɛn mu',
+
     // Register
     createAccount: 'Yɛ Akontaabu',
     fullName: 'Din a Ɛkyerɛ Wo Nyinaa',
@@ -194,6 +228,23 @@ export const translations = {
     loggingIn: 'E Dey Login...',
     loginFailed: 'Login no work',
     loginFailedRetry: 'Login no work. Abeg try again.',
+
+    // Forgot / reset password
+    forgotPasswordLink: 'You forget password?',
+    forgotPasswordTitle: 'Reset your password',
+    forgotPasswordSendCode: 'Send reset code',
+    forgotPasswordSending: 'E Dey Send...',
+    forgotPasswordCodeSent: 'If that email dey registered, we don send reset code go there.',
+    forgotPasswordFailedRetry: 'We no fit send reset code. Abeg try again.',
+    resetPasswordCodeLabel: 'Reset code',
+    resetPasswordCodePlaceholder: 'Paste the code wey dey your email',
+    resetPasswordNewLabel: 'New password',
+    resetPasswordSaving: 'E Dey Save...',
+    resetPasswordSubmit: 'Reset password',
+    resetPasswordFailed: 'That code no correct or e don expire.',
+    resetPasswordSuccessTitle: '✅ Password Don Reset',
+    resetPasswordSuccessBody: 'Dem don change your password. You fit login now.',
+    backToLogin: 'Go back to login',
 
     // Register
     createAccount: 'Create Account',

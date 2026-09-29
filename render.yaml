@@ -22,12 +22,31 @@ services:
     # preDeployCommand needs a paid instance; free-tier workaround is running
     # the migration as part of startup instead.
     startCommand: alembic upgrade head && uvicorn main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
     envVars:
       - key: DATABASE_URL
         sync: false
       - key: SECRET_KEY
         sync: false
       - key: GEMINI_API_KEY
+        sync: false
+      - key: DIGEST_TRIGGER_SECRET
+        sync: false
+      - key: TWILIO_ACCOUNT_SID
+        sync: false
+      - key: TWILIO_AUTH_TOKEN
+        sync: false
+      - key: TWILIO_WHATSAPP_FROM
+        sync: false
+      - key: SMTP_HOST
+        sync: false
+      - key: SMTP_PORT
+        sync: false
+      - key: SMTP_USER
+        sync: false
+      - key: SMTP_PASSWORD
+        sync: false
+      - key: SMTP_FROM
         sync: false
       - key: FRONTEND_URL
         value: https://pathwaygh-frontend.onrender.com

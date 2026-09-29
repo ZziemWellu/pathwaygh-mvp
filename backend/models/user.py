@@ -13,6 +13,12 @@ class User(Base):
     email = Column(String(255), unique=True, nullable=False, index=True)
     full_name = Column(String(255), nullable=False)
     password_hash = Column(String(255), nullable=False)
+
+    # Forgot-password flow. Same shape as the guardian-consent OTP fields
+    # below: only a hash is ever stored, cleared once used or replaced by
+    # a newer request.
+    password_reset_token_hash = Column(String(255), nullable=True)
+    password_reset_expires_at = Column(DateTime, nullable=True)
     avatar_filename = Column(String(255), nullable=True)
     is_admin = Column(Boolean, nullable=False, default=False)
     country = Column(String(2), nullable=False, default="GH")

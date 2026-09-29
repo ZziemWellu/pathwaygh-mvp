@@ -5,12 +5,13 @@ AI Tutor Module Router - real LLM-backed chat (Google Gemini).
 import os
 from typing import List, Literal, Optional
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Request
 from google import genai
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
 
 from core.database import get_db
+from core.rate_limit import limiter
 from core.security import get_current_user
 from models.user import User
 from modules.tutor.grounding import build_grounding_context
@@ -114,8 +115,10 @@ async def tutor_root():
 
 
 @router.post("/chat")
+@limiter.limit("20/hour")
 async def chat(
-    request: ChatRequest,
+    request: Request,
+    body: ChatRequest,
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
@@ -123,16 +126,16 @@ async def chat(
     if client is None:
         raise HTTPException(status_code=503, detail="AI tutor is not configured (missing GEMINI_API_KEY)")
 
-    if not request.message.strip():
+    if not body.message.strip():
         raise HTTPException(status_code=400, detail="Message cannot be empty")
 
     grounding = None
     try:
-        grounding = build_grounding_context(db, request.subject_id, request.lesson_id, request.message)
+        grounding = build_grounding_context(db, body.subject_id, body.lesson_id, body.message)
     except Exception:
         grounding = None
 
-    computed_math = await compute_math(request.message)
+    computed_math = await compute_math(body.message)
 
     system_instruction = (
         SYSTEM_PROMPT_BY_COUNTRY.get(current_user.country, SYSTEM_PROMPT_BY_COUNTRY["GH"])
@@ -151,9 +154,9 @@ async def chat(
         )
 
     contents = []
-    for turn in (request.history or [])[-10:]:
+    for turn in (body.history or [])[-10:]:
         contents.append({"role": "model" if turn.role == "assistant" else "user", "parts": [{"text": turn.content}]})
-    contents.append({"role": "user", "parts": [{"text": request.message}]})
+    contents.append({"role": "user", "parts": [{"text": body.message}]})
 
     try:
         response = client.models.generate_content(

@@ -64,6 +64,24 @@ api.interceptors.response.use(
   }
 );
 
+// FastAPI's own 422 validation errors shape `detail` as an array of
+// {loc, msg, type} objects, while every hand-written HTTPException in
+// this backend uses a plain string `detail`. A component that does
+// `setError(err.response.data.detail)` and renders {error} directly
+// crashes ("Objects are not valid as a React child") the moment a
+// request hits a validation error instead of a business-logic one.
+// Always route error display through this helper instead.
+export const extractErrorMessage = (err, fallback) => {
+  const detail = err?.response?.data?.detail;
+  if (typeof detail === 'string') return detail;
+  if (Array.isArray(detail)) {
+    return detail.map((item) => item?.msg || String(item)).join(' ');
+  }
+  const message = err?.response?.data?.message;
+  if (typeof message === 'string') return message;
+  return fallback;
+};
+
 export const extractData = (response) => {
   const data = response.data;
   if (Array.isArray(data)) return data;

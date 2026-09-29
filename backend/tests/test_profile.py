@@ -91,3 +91,36 @@ def test_school_digest_opt_in_with_non_e164_phone_rejected(client, auth_headers)
         headers=headers,
     )
     assert response.status_code == 400
+
+
+def _real_png_bytes():
+    import io
+
+    from PIL import Image
+
+    buf = io.BytesIO()
+    Image.new("RGB", (4, 4), color="green").save(buf, format="PNG")
+    return buf.getvalue()
+
+
+def test_avatar_upload_accepts_a_real_image(client, auth_headers):
+    headers, _ = auth_headers
+    response = client.post(
+        "/api/profile/avatar",
+        headers=headers,
+        files={"avatar": ("photo.png", _real_png_bytes(), "image/png")},
+    )
+    assert response.status_code == 200
+    assert response.json()["avatar_url"].endswith(".png")
+
+
+def test_avatar_upload_rejects_spoofed_content_type(client, auth_headers):
+    """The Content-Type header is client-supplied and trivially spoofable -
+    this must be rejected on the actual bytes, not the claimed header."""
+    headers, _ = auth_headers
+    response = client.post(
+        "/api/profile/avatar",
+        headers=headers,
+        files={"avatar": ("fake.png", b"<script>alert(1)</script>", "image/png")},
+    )
+    assert response.status_code == 400

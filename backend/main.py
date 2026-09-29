@@ -97,11 +97,35 @@ async def root():
 
 @app.get("/health")
 async def health():
-    return {
-        "status": "healthy",
+    # Render's healthCheckPath and the keep-warm ping both hit this -
+    # previously it was a static response, so it reported "healthy" even
+    # with the database unreachable, hiding exactly the kind of outage a
+    # health check exists to catch.
+    from sqlalchemy import text
+
+    from core.database import SessionLocal
+
+    db_status = "ok"
+    try:
+        db = SessionLocal()
+        try:
+            db.execute(text("SELECT 1"))
+        finally:
+            db.close()
+    except Exception:
+        db_status = "unreachable"
+
+    body = {
+        "status": "healthy" if db_status == "ok" else "degraded",
         "service": "pathway-ai-ecosystem",
-        "version": "3.0.0"
+        "version": "3.0.0",
+        "database": db_status,
     }
+    if db_status != "ok":
+        from fastapi.responses import JSONResponse
+
+        return JSONResponse(status_code=503, content=body)
+    return body
 
 # ============================================
 # REGISTER ALL ROUTERS

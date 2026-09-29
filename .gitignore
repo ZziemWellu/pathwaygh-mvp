@@ -5,12 +5,18 @@ venv/
 .venv/
 *.egg-info/
 .env
+.env.*
+!.env.example
 
 # Logs
 *.log
 
 # Local SQLite test/dev artifacts
 *.db
+
+# User-uploaded content - never source code, don't commit real uploads
+# or the local files created by running the avatar-upload tests
+backend/uploads/
 
 # Node
 node_modules/

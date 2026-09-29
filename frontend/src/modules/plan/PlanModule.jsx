@@ -90,6 +90,17 @@ const PlanModule = () => {
     setStep(1);
   };
 
+  const handleDelete = async (planId) => {
+    if (!window.confirm('Delete this plan? This cannot be undone.')) return;
+    try {
+      await api.delete(`/api/plan/study-plans/${planId}`);
+      await fetchPlans();
+    } catch (err) {
+      console.error('❌ Delete plan error:', err);
+      alert(err.response?.status === 403 ? "You can't delete this plan." : 'Failed to delete plan. Please try again.');
+    }
+  };
+
   const handleSave = async () => {
     setSaving(true);
     try {
@@ -181,7 +192,8 @@ const PlanModule = () => {
               <div style={{ position: 'absolute', top: '12px', right: '12px' }}>
                 <button
                   style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#666666', fontSize: '16px' }}
-                  onClick={() => {/* Delete plan */}}
+                  onClick={() => handleDelete(plan.id)}
+                  aria-label={`Delete ${plan.name}`}
                 >
                   ✕
                 </button>

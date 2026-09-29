@@ -14,7 +14,18 @@ from sqlalchemy.orm import Session
 from core.database import get_db
 from models.user import User
 
-SECRET_KEY = os.getenv("SECRET_KEY", "dev-secret-key-change-in-production")
+SECRET_KEY = os.getenv("SECRET_KEY")
+if not SECRET_KEY:
+    # No fallback default - a silently-applied, publicly-known default
+    # would let anyone forge a valid JWT for any user. Every legitimate
+    # environment already sets this explicitly: backend/.env for local
+    # dev, backend-tests.yml's job-level env for CI, and the Render
+    # dashboard (render.yaml marks it sync: false) for production.
+    raise RuntimeError(
+        "SECRET_KEY environment variable is not set. Refusing to start with a "
+        "default JWT signing key - set SECRET_KEY in your .env (local) or in "
+        "the Render dashboard (production)."
+    )
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24 * 7  # 7 days
 

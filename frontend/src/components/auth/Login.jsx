@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import api from '../../services/api';
+import api, { extractErrorMessage } from '../../services/api';
 import { useLanguage } from '../../contexts/LanguageContext';
 
 const Login = ({ onSuccess }) => {
@@ -24,7 +24,7 @@ const Login = ({ onSuccess }) => {
       if (!err.response) {
         setError(t('serverWakingUp'));
       } else {
-        setError(err.response?.data?.detail || err.response?.data?.message || t('loginFailedRetry'));
+        setError(extractErrorMessage(err, t('loginFailedRetry')));
       }
     } finally {
       setLoading(false);

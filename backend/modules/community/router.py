@@ -1,21 +1,17 @@
 """
-Community Module Router
+Community Module Router - not yet built. Returns an honest 501 rather
+than fabricated sample data; the frontend's Community page already
+shows its own "coming soon" state and doesn't call this endpoint.
 """
 
-from fastapi import APIRouter
+from fastapi import APIRouter, HTTPException
 
 router = APIRouter(tags=["community"])
 
 @router.get("/")
 async def community_root():
-    return {"module": "community", "status": "active"}
+    return {"module": "community", "status": "not_implemented"}
 
 @router.get("/forums")
 async def get_forums():
-    return {
-        "success": True,
-        "forums": [
-            {"id": "1", "name": "General Discussion", "posts": 45},
-            {"id": "2", "name": "Mathematics Help", "posts": 32}
-        ]
-    }
+    raise HTTPException(status_code=501, detail="Community forums are not yet available.")

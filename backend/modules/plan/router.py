@@ -113,9 +113,20 @@ async def plan_root():
     }
 
 
+def _require_owner(plan: Plan, current_user: User) -> None:
+    """Only the plan's own creator may mutate it. plan.user_id is None for
+    the shared system templates seeded by DEFAULT_PLANS (e.g. the WASSCE
+    Preparation Plan every user sees) - nobody may edit or delete those
+    through these endpoints."""
+    if plan.user_id != current_user.id:
+        raise HTTPException(status_code=403, detail="You do not have permission to modify this plan")
+
+
 @router.get("/study-plans")
 async def get_study_plans(db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
-    plans = db.query(Plan).all()
+    plans = db.query(Plan).filter(
+        (Plan.user_id == current_user.id) | (Plan.user_id.is_(None))
+    ).all()
     return [
         _plan_out(p)
         for p in plans
@@ -124,15 +135,19 @@ async def get_study_plans(db: Session = Depends(get_db), current_user: User = De
 
 
 @router.get("/study-plans/{plan_id}")
-async def get_study_plan(plan_id: str, db: Session = Depends(get_db)):
+async def get_study_plan(plan_id: str, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
     plan = db.query(Plan).filter(Plan.slug == plan_id).first()
     if not plan:
+        raise HTTPException(status_code=404, detail="Plan not found")
+    if plan.user_id is not None and plan.user_id != current_user.id:
         raise HTTPException(status_code=404, detail="Plan not found")
     return _plan_out(plan)
 
 
 @router.post("/study-plans/create")
-async def create_study_plan(request: CreatePlanRequest, db: Session = Depends(get_db)):
+async def create_study_plan(
+    request: CreatePlanRequest, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)
+):
     plan = _create_plan_row(
         db,
         {
@@ -144,15 +159,22 @@ async def create_study_plan(request: CreatePlanRequest, db: Session = Depends(ge
             "target_exam": request.target_exam,
             "priority": request.priority or "medium",
         },
+        user_id=current_user.id,
     )
     return {"success": True, "message": "Study plan created successfully", "plan": _plan_out(plan)}
 
 
 @router.put("/study-plans/{plan_id}")
-async def update_study_plan(plan_id: str, request: UpdatePlanRequest, db: Session = Depends(get_db)):
+async def update_study_plan(
+    plan_id: str,
+    request: UpdatePlanRequest,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
     plan = db.query(Plan).filter(Plan.slug == plan_id).first()
     if not plan:
         raise HTTPException(status_code=404, detail="Plan not found")
+    _require_owner(plan, current_user)
 
     data = dict(plan.data)
     if request.name is not None:
@@ -177,25 +199,36 @@ async def update_study_plan(plan_id: str, request: UpdatePlanRequest, db: Sessio
 
 
 @router.delete("/study-plans/{plan_id}")
-async def delete_study_plan(plan_id: str, db: Session = Depends(get_db)):
+async def delete_study_plan(
+    plan_id: str, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)
+):
     plan = db.query(Plan).filter(Plan.slug == plan_id).first()
     if not plan:
         raise HTTPException(status_code=404, detail="Plan not found")
+    _require_owner(plan, current_user)
     deleted = _plan_out(plan)
     db.delete(plan)
     db.commit()
     return {"success": True, "message": f"Plan '{plan_id}' deleted successfully", "deleted": deleted}
 
 
+class UpdateProgressRequest(BaseModel):
+    progress: int
+
+
 @router.put("/study-plans/{plan_id}/progress")
-async def update_progress(plan_id: str, payload: dict, db: Session = Depends(get_db)):
-    progress = payload.get("progress")
-    if progress is None:
-        raise HTTPException(status_code=400, detail="Progress value required")
+async def update_progress(
+    plan_id: str,
+    request: UpdateProgressRequest,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    progress = request.progress
 
     plan = db.query(Plan).filter(Plan.slug == plan_id).first()
     if not plan:
         raise HTTPException(status_code=404, detail="Plan not found")
+    _require_owner(plan, current_user)
 
     data = dict(plan.data)
     data["progress"] = min(100, max(0, progress))

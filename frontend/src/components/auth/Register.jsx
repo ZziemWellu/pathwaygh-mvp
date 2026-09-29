@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import api from '../../services/api';
+import api, { extractErrorMessage } from '../../services/api';
 import { getCountry } from '../../constants/auth';
 import { useLanguage } from '../../contexts/LanguageContext';
 
@@ -98,14 +98,9 @@ const Register = ({ onSuccess, onShowPrivacy }) => {
       // request may well complete on the backend after we've stopped
       // waiting for it (resubmitting the same details would then look
       // like a duplicate "already registered" error).
-      let errorMsg = t('registrationFailedRetry');
-      if (!err.response) {
-        errorMsg = t('serverWakingUp');
-      } else if (err.response?.data?.detail) {
-        errorMsg = err.response.data.detail;
-      } else if (err.response?.data?.message) {
-        errorMsg = err.response.data.message;
-      }
+      const errorMsg = !err.response
+        ? t('serverWakingUp')
+        : extractErrorMessage(err, t('registrationFailedRetry'));
       setError(errorMsg);
     } finally {
       setLoading(false);

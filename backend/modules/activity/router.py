@@ -1,22 +1,16 @@
 """
-Activity Module Router
+Activity Module Router - not yet built. Returns an honest 501 rather
+than fabricated sample data; nothing in the frontend calls this today.
 """
 
-from fastapi import APIRouter
+from fastapi import APIRouter, HTTPException
 
 router = APIRouter(tags=["activity"])
 
 @router.get("/")
 async def activity_root():
-    return {"module": "activity", "status": "active"}
+    return {"module": "activity", "status": "not_implemented"}
 
 @router.get("/{user_id}")
 async def get_activities(user_id: str):
-    return {
-        "success": True,
-        "user_id": user_id,
-        "activities": [
-            {"id": "1", "action": "Completed quiz", "timestamp": "2024-01-15T10:30:00"},
-            {"id": "2", "action": "Watched lesson", "timestamp": "2024-01-15T09:00:00"}
-        ]
-    }
+    raise HTTPException(status_code=501, detail="Activity feed is not yet available.")

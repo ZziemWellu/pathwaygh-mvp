@@ -9,12 +9,17 @@ jobs:
   send-digests:
     runs-on: ubuntu-latest
     steps:
+      # --max-time covers a Render free-tier cold start (30-60s); --retry
+      # gives one extra chance if a transient network/cold-start hiccup
+      # still trips it. Previously neither call had any timeout or retry,
+      # so a single bad moment silently dropped that week's digest for
+      # every parent/school admin with nothing to show for it.
       - name: Send parent digests
         run: |
-          curl -f -X POST https://pathwaygh-backend.onrender.com/api/parent/send-digests \
+          curl -f --max-time 90 --retry 2 --retry-delay 30 -X POST https://pathwaygh-backend.onrender.com/api/parent/send-digests \
             -H "X-Digest-Secret: ${{ secrets.DIGEST_TRIGGER_SECRET }}"
 
       - name: Send school-admin digests
         run: |
-          curl -f -X POST https://pathwaygh-backend.onrender.com/api/school/send-digests \
+          curl -f --max-time 90 --retry 2 --retry-delay 30 -X POST https://pathwaygh-backend.onrender.com/api/school/send-digests \
             -H "X-Digest-Secret: ${{ secrets.DIGEST_TRIGGER_SECRET }}"

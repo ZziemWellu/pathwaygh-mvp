@@ -5,7 +5,7 @@ Authentication Module Router
 from typing import Literal
 
 from fastapi import APIRouter, Depends, HTTPException, Request
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, EmailStr, Field
 from sqlalchemy.orm import Session
 
 from core.database import get_db
@@ -13,13 +13,14 @@ from core.rate_limit import limiter
 from core.security import create_access_token, get_current_user, hash_password, verify_password
 from models.user import User
 from modules.auth.consent import can_resend, issue_consent_otp, verify_consent_otp
+from modules.auth.password_reset import issue_password_reset_token, reset_password
 
 router = APIRouter(tags=["auth"])
 
 
 class RegisterRequest(BaseModel):
     email: EmailStr
-    full_name: str
+    full_name: str = Field(min_length=1, max_length=255)
     password: str
     country: Literal["GH", "NG", "SL", "LR", "GM"]
     consent_confirmed: bool
@@ -33,6 +34,16 @@ class LoginRequest(BaseModel):
 
 class ConsentOtpRequest(BaseModel):
     code: str
+
+
+class ForgotPasswordRequest(BaseModel):
+    email: EmailStr
+
+
+class ResetPasswordRequest(BaseModel):
+    email: EmailStr
+    token: str
+    new_password: str = Field(min_length=6)
 
 
 def _user_out(user: User) -> dict:
@@ -127,3 +138,27 @@ async def resend_consent(
     issue_consent_otp(current_user)
     db.commit()
     return {"success": True}
+
+
+@router.post("/forgot-password")
+@limiter.limit("5/hour")
+async def forgot_password(request: Request, body: ForgotPasswordRequest, db: Session = Depends(get_db)):
+    user = db.query(User).filter(User.email == body.email).first()
+    # Always return the same generic response whether or not the email
+    # exists - a different response would let anyone enumerate which
+    # emails are registered.
+    if user:
+        issue_password_reset_token(user)
+        db.commit()
+    return {"success": True, "message": "If that email is registered, a reset code has been sent to it."}
+
+
+@router.post("/reset-password")
+@limiter.limit("10/hour")
+async def reset_password_endpoint(request: Request, body: ResetPasswordRequest, db: Session = Depends(get_db)):
+    user = db.query(User).filter(User.email == body.email).first()
+    if not user:
+        raise HTTPException(status_code=400, detail="Incorrect or invalid reset code")
+    reset_password(user, body.token, body.new_password)
+    db.commit()
+    return {"success": True, "message": "Password has been reset - you can now log in."}

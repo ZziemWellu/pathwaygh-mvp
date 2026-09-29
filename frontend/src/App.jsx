@@ -11,6 +11,7 @@ import GambiaFlag from './components/common/GambiaFlag';
 import { User, LogOut } from 'lucide-react';
 import Login from './components/auth/Login';
 import Register from './components/auth/Register';
+import ForgotPassword from './components/auth/ForgotPassword';
 import CountrySelector from './components/CountrySelector';
 import LanguageSwitcher from './components/LanguageSwitcher';
 import AIChat from './components/ai/AIChat';
@@ -68,6 +69,7 @@ const App = () => {
   const [isAuth, setIsAuth] = useState(false);
   const [loading, setLoading] = useState(true);
   const [showLogin, setShowLogin] = useState(true);
+  const [showForgotPassword, setShowForgotPassword] = useState(false);
   const [activeModule, setActiveModule] = useState('home');
   const [country, setCountryState] = useState(null);
   const [showPrivacy, setShowPrivacy] = useState(false);
@@ -161,12 +163,27 @@ const App = () => {
           <p style={{ color: '#666666' }}>{t('tagline')} • {COUNTRY_NAMES[country]}</p>
         </header>
         <main>
-          {showLogin ? <Login onSuccess={handleLogin} /> : <Register onSuccess={() => setShowLogin(true)} onShowPrivacy={() => setShowPrivacy(true)} />}
-          <p style={{ textAlign: 'center', marginTop: '16px' }}>
-            <button onClick={() => setShowLogin(!showLogin)} style={{ background: 'none', border: 'none', color: '#1a5f2b', cursor: 'pointer', textDecoration: 'underline' }}>
-              {showLogin ? t('needAccountRegister') : t('alreadyHaveAccountLogin')}
-            </button>
-          </p>
+          {showForgotPassword ? (
+            <ForgotPassword onBackToLogin={() => setShowForgotPassword(false)} />
+          ) : showLogin ? (
+            <Login onSuccess={handleLogin} />
+          ) : (
+            <Register onSuccess={() => setShowLogin(true)} onShowPrivacy={() => setShowPrivacy(true)} />
+          )}
+          {!showForgotPassword && (
+            <p style={{ textAlign: 'center', marginTop: '16px' }}>
+              <button onClick={() => setShowLogin(!showLogin)} style={{ background: 'none', border: 'none', color: '#1a5f2b', cursor: 'pointer', textDecoration: 'underline' }}>
+                {showLogin ? t('needAccountRegister') : t('alreadyHaveAccountLogin')}
+              </button>
+            </p>
+          )}
+          {showLogin && !showForgotPassword && (
+            <p style={{ textAlign: 'center', marginTop: '8px' }}>
+              <button onClick={() => setShowForgotPassword(true)} style={{ background: 'none', border: 'none', color: '#666666', cursor: 'pointer', textDecoration: 'underline', fontSize: '13px' }}>
+                {t('forgotPasswordLink')}
+              </button>
+            </p>
+          )}
           <p style={{ textAlign: 'center', marginTop: '8px' }}>
             <button onClick={handleChangeCountry} style={{ background: 'none', border: 'none', color: '#666666', cursor: 'pointer', textDecoration: 'underline', fontSize: '13px' }}>
               {t('changeCountry')}

@@ -2,12 +2,14 @@
 Profile Module Router
 """
 
+import io
 import re
 import uuid
 from pathlib import Path
 from typing import List, Optional
 
 from fastapi import APIRouter, Depends, File, HTTPException, UploadFile
+from PIL import Image, UnidentifiedImageError
 from pydantic import BaseModel, EmailStr, field_validator
 from sqlalchemy.orm import Session
 
@@ -126,15 +128,27 @@ async def upload_avatar(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
-    valid_types = ["image/jpeg", "image/png", "image/webp", "image/gif"]
-    if avatar.content_type not in valid_types:
-        raise HTTPException(status_code=400, detail="Invalid file type. Please upload JPG, PNG, WebP, or GIF.")
-
     content = await avatar.read()
     if len(content) > 5 * 1024 * 1024:
         raise HTTPException(status_code=400, detail="File too large. Maximum size is 5MB.")
 
-    file_extension = avatar.filename.split(".")[-1] if avatar.filename else "jpg"
+    # The client-supplied Content-Type header (and filename/extension) is
+    # trivially spoofable - a request can claim image/png while uploading
+    # anything. Decode the actual bytes with Pillow and derive the saved
+    # extension from what the image really is, so a non-image file (e.g.
+    # an .svg or .html with embedded script) can never be written into
+    # /uploads/avatars, regardless of what the request claimed.
+    valid_formats = {"JPEG": "jpg", "PNG": "png", "WEBP": "webp", "GIF": "gif"}
+    try:
+        image = Image.open(io.BytesIO(content))
+        image.verify()
+        image_format = image.format
+    except (UnidentifiedImageError, OSError):
+        image_format = None
+    if image_format not in valid_formats:
+        raise HTTPException(status_code=400, detail="Invalid file type. Please upload JPG, PNG, WebP, or GIF.")
+
+    file_extension = valid_formats[image_format]
     filename = f"user{current_user.id}_{uuid.uuid4().hex[:8]}.{file_extension}"
 
     UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
