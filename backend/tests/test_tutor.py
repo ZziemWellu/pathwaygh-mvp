@@ -112,6 +112,43 @@ def test_chat_wires_weak_topic_mastery_into_the_system_prompt(client, db_session
     assert "algebra" in system_instruction.lower()
 
 
+def test_chat_prefers_sub_skill_granularity_when_available(client, db_session, monkeypatch):
+    """Once sub_skill-tagged attempt data exists, the tutor prompt should
+    name the specific weak sub-skill (e.g. "linear equations"), not just
+    the whole topic - the more precise signal sub-skill tagging exists
+    for in the first place."""
+    from models.sub_skill_mastery import SubSkillMastery
+
+    data = register_user(client, email="tutor_subskill@test.com", country="GH")
+    headers = {"Authorization": f"Bearer {data['token']}"}
+
+    db_session.add(
+        SubSkillMastery(
+            user_id=data["user"]["id"],
+            subject_id="mathematics",
+            topic_id="algebra",
+            sub_skill="linear_equations",
+            mastery_probability=0.1,
+            attempts_count=5,
+        )
+    )
+    db_session.commit()
+
+    fake_client = _FakeGeminiClient()
+    monkeypatch.setattr(tutor_router, "get_gemini_client", lambda: fake_client)
+
+    response = client.post(
+        "/api/tutor/chat",
+        json={"message": "Can you help me with equations?", "subject_id": "mathematics"},
+        headers=headers,
+    )
+    assert response.status_code == 200
+
+    system_instruction = fake_client.models.calls[0]["config"]["system_instruction"]
+    assert "weaker mastery" in system_instruction
+    assert "linear equations" in system_instruction.lower()
+
+
 def test_chat_without_a_subject_id_does_not_touch_mastery_data(client, monkeypatch):
     data = register_user(client, email="tutor_no_subject@test.com", country="GH")
     headers = {"Authorization": f"Bearer {data['token']}"}

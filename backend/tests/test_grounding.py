@@ -3,12 +3,12 @@ from modules.tutor.grounding import build_grounding_context
 
 
 def test_subject_grounding_returns_real_content(db_session):
-    context = build_grounding_context(db_session, "mathematics", None, "What is 2 + 2?")
+    context = build_grounding_context(db_session, "mathematics", None, "What is the square root of 16?")
     assert context is not None
     assert "Mathematics" in context
     # The real explanation text from data/practice/questions.json, not a
     # fabricated or generic string.
-    assert "2 + 2 equals 4" in context
+    assert "4 × 4 = 16" in context
 
 
 def test_no_subject_or_lesson_returns_none(db_session):

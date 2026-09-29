@@ -86,3 +86,4 @@ class User(Base):
     plans = relationship("Plan", back_populates="user", cascade="all, delete-orphan")
     certificates = relationship("Certificate", back_populates="user", cascade="all, delete-orphan")
     skill_masteries = relationship("SkillMastery", back_populates="user", cascade="all, delete-orphan")
+    sub_skill_masteries = relationship("SubSkillMastery", back_populates="user", cascade="all, delete-orphan")

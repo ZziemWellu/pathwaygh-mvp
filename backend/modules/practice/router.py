@@ -19,6 +19,7 @@ from modules.practice.mastery import (
     allocate_adaptive_slots,
     effective_mastery,
     load_questions,
+    record_sub_skill_attempt,
     record_topic_attempt,
     topic_names_by_id,
 )
@@ -68,6 +69,7 @@ def get_all_questions(
                 q["subject_name"] = subject["name"]
                 q["topic_id"] = topic_data["id"]
                 q["topic_name"] = topic_data["name"]
+                q.setdefault("sub_skill", None)
                 all_questions.append(q)
     return all_questions
 
@@ -160,6 +162,7 @@ async def start_quiz(
         "topic": request.topic,
         "correct_answers": {i: q["correct"] for i, q in enumerate(selected)},
         "topic_ids": {i: q.get("topic_id") for i, q in enumerate(selected)},
+        "sub_skills": {i: q.get("sub_skill") for i, q in enumerate(selected)},
         "questions": [
             {"id": q["id"], "question": q["question"], "options": q.get("options", []), "difficulty": q.get("difficulty", "medium")}
             for q in selected
@@ -182,14 +185,16 @@ async def submit_quiz(
 
     correct_answers = quiz.get("correct_answers", {})
     topic_ids = quiz.get("topic_ids", {})
+    sub_skills = quiz.get("sub_skills", {})
     quiz_questions = quiz.get("questions", [])
     subject_id = quiz.get("subject_id")
     correct_count = 0
     results = []
     # Fresh per request: a single quiz commonly has multiple questions from
-    # the same topic, and record_topic_attempt needs this to avoid trying
-    # to insert the same (user, subject, topic) mastery row twice.
+    # the same topic, and record_topic_attempt/record_sub_skill_attempt need
+    # this to avoid trying to insert the same mastery row twice.
     mastery_cache: dict = {}
+    sub_skill_cache: dict = {}
     for i, answer in request.answers.items():
         idx = int(i)
         is_correct = answer == correct_answers.get(idx, "")
@@ -201,6 +206,9 @@ async def submit_quiz(
         if topic_id and subject_id and idx < len(quiz_questions):
             num_options = len(quiz_questions[idx].get("options", []))
             record_topic_attempt(db, mastery_cache, current_user.id, subject_id, topic_id, is_correct, num_options)
+            record_sub_skill_attempt(
+                db, sub_skill_cache, current_user.id, subject_id, topic_id, sub_skills.get(idx), is_correct, num_options
+            )
 
     total = len(correct_answers)
     score = round((correct_count / total) * 100) if total > 0 else 0

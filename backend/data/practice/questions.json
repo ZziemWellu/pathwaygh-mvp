@@ -11,32 +11,118 @@
           "questions": [
             {
               "id": "math_001",
-              "question": "What is 2 + 2?",
+              "question": "Simplify using BODMAS: 3 + 4 × 2",
               "options": [
-                "3",
-                "4",
-                "5",
-                "6"
+                "11",
+                "14",
+                "10",
+                "20"
               ],
-              "correct": "4",
-              "difficulty": "easy",
-              "explanation": "2 + 2 equals 4"
+              "correct": "11",
+              "difficulty": "medium",
+              "explanation": "Multiplication before addition: 4 × 2 = 8, then 3 + 8 = 11",
+              "sub_skill": "order_of_operations"
             },
             {
               "id": "math_002",
-              "question": "What is 3 × 3?",
+              "question": "Simplify using BODMAS: (2 + 3) × 4",
               "options": [
-                "6",
-                "8",
+                "20",
+                "14",
                 "9",
-                "12"
+                "24"
               ],
-              "correct": "9",
-              "difficulty": "easy",
-              "explanation": "3 × 3 equals 9"
+              "correct": "20",
+              "difficulty": "medium",
+              "explanation": "Brackets first: 2 + 3 = 5, then 5 × 4 = 20",
+              "sub_skill": "order_of_operations"
             },
             {
               "id": "math_003",
+              "question": "Simplify using BODMAS: 10 - 2 × 3",
+              "options": [
+                "4",
+                "24",
+                "8",
+                "5"
+              ],
+              "correct": "4",
+              "difficulty": "medium",
+              "explanation": "Multiplication before subtraction: 2 × 3 = 6, then 10 - 6 = 4",
+              "sub_skill": "order_of_operations"
+            },
+            {
+              "id": "math_004",
+              "question": "Simplify using BODMAS: 20 ÷ 4 + 3",
+              "options": [
+                "8",
+                "5",
+                "4",
+                "10"
+              ],
+              "correct": "8",
+              "difficulty": "medium",
+              "explanation": "Division before addition: 20 ÷ 4 = 5, then 5 + 3 = 8",
+              "sub_skill": "order_of_operations"
+            },
+            {
+              "id": "math_005",
+              "question": "Solve for x: x + 5 = 12",
+              "options": [
+                "5",
+                "6",
+                "7",
+                "8"
+              ],
+              "correct": "7",
+              "difficulty": "medium",
+              "explanation": "x = 12 - 5 = 7",
+              "sub_skill": "linear_equations"
+            },
+            {
+              "id": "math_006",
+              "question": "Solve for x: 3x = 18",
+              "options": [
+                "4",
+                "5",
+                "6",
+                "7"
+              ],
+              "correct": "6",
+              "difficulty": "medium",
+              "explanation": "x = 18 ÷ 3 = 6",
+              "sub_skill": "linear_equations"
+            },
+            {
+              "id": "math_007",
+              "question": "Solve for x: x - 4 = 9",
+              "options": [
+                "11",
+                "12",
+                "13",
+                "14"
+              ],
+              "correct": "13",
+              "difficulty": "medium",
+              "explanation": "x = 9 + 4 = 13",
+              "sub_skill": "linear_equations"
+            },
+            {
+              "id": "math_008",
+              "question": "Solve for x: 2x + 1 = 11",
+              "options": [
+                "4",
+                "5",
+                "6",
+                "7"
+              ],
+              "correct": "5",
+              "difficulty": "hard",
+              "explanation": "2x = 11 - 1 = 10, so x = 5",
+              "sub_skill": "linear_equations"
+            },
+            {
+              "id": "math_009",
               "question": "What is the square root of 16?",
               "options": [
                 "2",
@@ -46,75 +132,53 @@
               ],
               "correct": "4",
               "difficulty": "medium",
-              "explanation": "4 × 4 = 16"
+              "explanation": "4 × 4 = 16",
+              "sub_skill": "indices_and_roots"
             },
             {
-              "id": "math_004",
-              "question": "What is 10 × 10?",
+              "id": "math_010",
+              "question": "What is the square root of 81?",
               "options": [
-                "50",
-                "100",
-                "150",
-                "200"
-              ],
-              "correct": "100",
-              "difficulty": "easy",
-              "explanation": "10 × 10 = 100"
-            },
-            {
-              "id": "math_005",
-              "question": "What is 15 - 7?",
-              "options": [
-                "6",
                 "7",
                 "8",
-                "9"
+                "9",
+                "10"
+              ],
+              "correct": "9",
+              "difficulty": "medium",
+              "explanation": "9 × 9 = 81",
+              "sub_skill": "indices_and_roots"
+            },
+            {
+              "id": "math_011",
+              "question": "What is 6 squared (6²)?",
+              "options": [
+                "12",
+                "24",
+                "36",
+                "42"
+              ],
+              "correct": "36",
+              "difficulty": "easy",
+              "explanation": "6² = 6 × 6 = 36",
+              "sub_skill": "indices_and_roots"
+            },
+            {
+              "id": "math_012",
+              "question": "What is 2 cubed (2³)?",
+              "options": [
+                "4",
+                "6",
+                "8",
+                "16"
               ],
               "correct": "8",
-              "difficulty": "easy",
-              "explanation": "15 - 7 = 8"
-            },
-            {
-              "id": "math_006",
-              "question": "What is 4 × 8?",
-              "options": [
-                "28",
-                "30",
-                "32",
-                "34"
-              ],
-              "correct": "32",
               "difficulty": "medium",
-              "explanation": "4 × 8 = 32"
+              "explanation": "2³ = 2 × 2 × 2 = 8",
+              "sub_skill": "indices_and_roots"
             },
             {
-              "id": "math_007",
-              "question": "What is 144 ÷ 12?",
-              "options": [
-                "10",
-                "11",
-                "12",
-                "13"
-              ],
-              "correct": "12",
-              "difficulty": "medium",
-              "explanation": "144 ÷ 12 = 12"
-            },
-            {
-              "id": "math_008",
-              "question": "What is 7 × 7?",
-              "options": [
-                "42",
-                "47",
-                "49",
-                "51"
-              ],
-              "correct": "49",
-              "difficulty": "easy",
-              "explanation": "7 × 7 = 49"
-            },
-            {
-              "id": "math_009",
+              "id": "math_013",
               "question": "What is 20% of 50?",
               "options": [
                 "5",
@@ -124,20 +188,106 @@
               ],
               "correct": "10",
               "difficulty": "hard",
-              "explanation": "20% of 50 = 10"
+              "explanation": "20% of 50 = 0.20 × 50 = 10",
+              "sub_skill": "percentages"
             },
             {
-              "id": "math_010",
-              "question": "What is 5 × 5?",
+              "id": "math_014",
+              "question": "What is 25% of 200?",
+              "options": [
+                "25",
+                "40",
+                "50",
+                "60"
+              ],
+              "correct": "50",
+              "difficulty": "hard",
+              "explanation": "25% of 200 = 0.25 × 200 = 50",
+              "sub_skill": "percentages"
+            },
+            {
+              "id": "math_015",
+              "question": "What is 10% of 90?",
+              "options": [
+                "7",
+                "8",
+                "9",
+                "10"
+              ],
+              "correct": "9",
+              "difficulty": "medium",
+              "explanation": "10% of 90 = 0.10 × 90 = 9",
+              "sub_skill": "percentages"
+            },
+            {
+              "id": "math_016",
+              "question": "What is 50% of 64?",
+              "options": [
+                "16",
+                "24",
+                "32",
+                "40"
+              ],
+              "correct": "32",
+              "difficulty": "medium",
+              "explanation": "50% of 64 = 0.50 × 64 = 32",
+              "sub_skill": "percentages"
+            },
+            {
+              "id": "math_017",
+              "question": "What is 15 - 7?",
+              "options": [
+                "6",
+                "7",
+                "8",
+                "9"
+              ],
+              "correct": "8",
+              "difficulty": "easy",
+              "explanation": "15 - 7 = 8",
+              "sub_skill": "simplification"
+            },
+            {
+              "id": "math_018",
+              "question": "What is 4 × 8?",
+              "options": [
+                "28",
+                "30",
+                "32",
+                "34"
+              ],
+              "correct": "32",
+              "difficulty": "medium",
+              "explanation": "4 × 8 = 32",
+              "sub_skill": "simplification"
+            },
+            {
+              "id": "math_019",
+              "question": "What is 144 ÷ 12?",
+              "options": [
+                "10",
+                "11",
+                "12",
+                "13"
+              ],
+              "correct": "12",
+              "difficulty": "medium",
+              "explanation": "144 ÷ 12 = 12",
+              "sub_skill": "simplification"
+            },
+            {
+              "id": "math_020",
+              "question": "What is 100 ÷ 4?",
               "options": [
                 "20",
                 "25",
                 "30",
-                "35"
+                "40"
               ],
               "correct": "25",
               "difficulty": "easy",
-              "explanation": "5 × 5 = 25"
+              "explanation": "100 ÷ 4 = 25",
+              "sub_skill": "simplification"
             }
           ]
         },
@@ -146,7 +296,63 @@
           "name": "Geometry",
           "questions": [
             {
-              "id": "math_011",
+              "id": "math_021",
+              "question": "What is the sum of angles in a triangle?",
+              "options": [
+                "90°",
+                "180°",
+                "270°",
+                "360°"
+              ],
+              "correct": "180°",
+              "difficulty": "medium",
+              "explanation": "The interior angles of a triangle always add up to 180°",
+              "sub_skill": "angles"
+            },
+            {
+              "id": "math_022",
+              "question": "Angles on a straight line add up to how many degrees?",
+              "options": [
+                "90°",
+                "180°",
+                "270°",
+                "360°"
+              ],
+              "correct": "180°",
+              "difficulty": "medium",
+              "explanation": "Angles on a straight line always sum to 180°",
+              "sub_skill": "angles"
+            },
+            {
+              "id": "math_023",
+              "question": "Angles around a point add up to how many degrees?",
+              "options": [
+                "90°",
+                "180°",
+                "270°",
+                "360°"
+              ],
+              "correct": "360°",
+              "difficulty": "medium",
+              "explanation": "Angles at a single point always sum to 360°",
+              "sub_skill": "angles"
+            },
+            {
+              "id": "math_024",
+              "question": "What is the sum of angles in a quadrilateral?",
+              "options": [
+                "180°",
+                "270°",
+                "360°",
+                "450°"
+              ],
+              "correct": "360°",
+              "difficulty": "medium",
+              "explanation": "The interior angles of any quadrilateral always add up to 360°",
+              "sub_skill": "angles"
+            },
+            {
+              "id": "math_025",
               "question": "How many sides does a triangle have?",
               "options": [
                 "2",
@@ -156,10 +362,53 @@
               ],
               "correct": "3",
               "difficulty": "easy",
-              "explanation": "A triangle has 3 sides"
+              "explanation": "A triangle has 3 sides",
+              "sub_skill": "shapes_and_properties"
             },
             {
-              "id": "math_012",
+              "id": "math_026",
+              "question": "How many sides does a rectangle have?",
+              "options": [
+                "3",
+                "4",
+                "5",
+                "6"
+              ],
+              "correct": "4",
+              "difficulty": "easy",
+              "explanation": "A rectangle has 4 sides",
+              "sub_skill": "shapes_and_properties"
+            },
+            {
+              "id": "math_027",
+              "question": "How many sides does a pentagon have?",
+              "options": [
+                "4",
+                "5",
+                "6",
+                "7"
+              ],
+              "correct": "5",
+              "difficulty": "easy",
+              "explanation": "A pentagon has 5 sides",
+              "sub_skill": "shapes_and_properties"
+            },
+            {
+              "id": "math_028",
+              "question": "An angle of exactly 90° is called what?",
+              "options": [
+                "Acute angle",
+                "Right angle",
+                "Obtuse angle",
+                "Reflex angle"
+              ],
+              "correct": "Right angle",
+              "difficulty": "easy",
+              "explanation": "An angle of exactly 90° is a right angle",
+              "sub_skill": "shapes_and_properties"
+            },
+            {
+              "id": "math_029",
               "question": "What is the area of a square with side length 4?",
               "options": [
                 "8",
@@ -169,7 +418,50 @@
               ],
               "correct": "16",
               "difficulty": "medium",
-              "explanation": "Area = 4 × 4 = 16"
+              "explanation": "Area = 4 × 4 = 16",
+              "sub_skill": "perimeter_and_area"
+            },
+            {
+              "id": "math_030",
+              "question": "What is the area of a rectangle 5cm by 3cm?",
+              "options": [
+                "8",
+                "15",
+                "16",
+                "18"
+              ],
+              "correct": "15",
+              "difficulty": "medium",
+              "explanation": "Area = length × width = 5 × 3 = 15",
+              "sub_skill": "perimeter_and_area"
+            },
+            {
+              "id": "math_031",
+              "question": "What is the perimeter of a square with side length 6?",
+              "options": [
+                "12",
+                "18",
+                "24",
+                "36"
+              ],
+              "correct": "24",
+              "difficulty": "medium",
+              "explanation": "Perimeter = 4 × side = 4 × 6 = 24",
+              "sub_skill": "perimeter_and_area"
+            },
+            {
+              "id": "math_032",
+              "question": "What is the perimeter of a rectangle 4cm long and 2cm wide?",
+              "options": [
+                "8",
+                "10",
+                "12",
+                "16"
+              ],
+              "correct": "12",
+              "difficulty": "medium",
+              "explanation": "Perimeter = 2 × (length + width) = 2 × (4 + 2) = 12",
+              "sub_skill": "perimeter_and_area"
             }
           ]
         }
@@ -186,7 +478,7 @@
           "name": "Grammar",
           "questions": [
             {
-              "id": "eng_001",
+              "id": "eng_004",
               "question": "What is a noun?",
               "options": [
                 "Action word",
@@ -196,10 +488,11 @@
               ],
               "correct": "Person, place, or thing",
               "difficulty": "easy",
-              "explanation": "A noun is a person, place, or thing"
+              "explanation": "A noun is a person, place, or thing",
+              "sub_skill": "parts_of_speech"
             },
             {
-              "id": "eng_002",
+              "id": "eng_005",
               "question": "What is a verb?",
               "options": [
                 "Action word",
@@ -209,10 +502,11 @@
               ],
               "correct": "Action word",
               "difficulty": "easy",
-              "explanation": "A verb is an action word"
+              "explanation": "A verb is an action word",
+              "sub_skill": "parts_of_speech"
             },
             {
-              "id": "eng_003",
+              "id": "eng_006",
               "question": "What is an adjective?",
               "options": [
                 "Action word",
@@ -222,7 +516,190 @@
               ],
               "correct": "Describing word",
               "difficulty": "medium",
-              "explanation": "An adjective describes a noun"
+              "explanation": "An adjective describes a noun",
+              "sub_skill": "parts_of_speech"
+            },
+            {
+              "id": "eng_007",
+              "question": "In 'She ran quickly', what part of speech is 'quickly'?",
+              "options": [
+                "Noun",
+                "Verb",
+                "Adverb",
+                "Preposition"
+              ],
+              "correct": "Adverb",
+              "difficulty": "medium",
+              "explanation": "'Quickly' describes how she ran, so it is an adverb",
+              "sub_skill": "parts_of_speech"
+            },
+            {
+              "id": "eng_008",
+              "question": "Choose the correct sentence.",
+              "options": [
+                "The boys was playing football",
+                "The boys were playing football",
+                "The boys is playing football",
+                "The boys am playing football"
+              ],
+              "correct": "The boys were playing football",
+              "difficulty": "medium",
+              "explanation": "'Boys' is plural, so it takes the plural verb 'were'",
+              "sub_skill": "subject_verb_agreement"
+            },
+            {
+              "id": "eng_009",
+              "question": "Choose the correct sentence.",
+              "options": [
+                "She go to school every day",
+                "She goes to school every day",
+                "She going to school every day",
+                "She gone to school every day"
+              ],
+              "correct": "She goes to school every day",
+              "difficulty": "medium",
+              "explanation": "'She' is third-person singular, so the verb takes an -s: 'goes'",
+              "sub_skill": "subject_verb_agreement"
+            },
+            {
+              "id": "eng_010",
+              "question": "Choose the correct sentence.",
+              "options": [
+                "They is playing football now",
+                "They am playing football now",
+                "They are playing football now",
+                "They be playing football now"
+              ],
+              "correct": "They are playing football now",
+              "difficulty": "easy",
+              "explanation": "'They' is plural, so it takes the plural verb 'are'",
+              "sub_skill": "subject_verb_agreement"
+            },
+            {
+              "id": "eng_011",
+              "question": "Choose the correct sentence.",
+              "options": [
+                "He am a doctor",
+                "He is a doctor",
+                "He are a doctor",
+                "He be a doctor"
+              ],
+              "correct": "He is a doctor",
+              "difficulty": "easy",
+              "explanation": "'He' is third-person singular, so it takes 'is'",
+              "sub_skill": "subject_verb_agreement"
+            },
+            {
+              "id": "eng_012",
+              "question": "What tense is the sentence 'I am eating'?",
+              "options": [
+                "Simple past",
+                "Present continuous",
+                "Simple future",
+                "Present perfect"
+              ],
+              "correct": "Present continuous",
+              "difficulty": "medium",
+              "explanation": "'am eating' describes an action happening now - present continuous tense",
+              "sub_skill": "tenses"
+            },
+            {
+              "id": "eng_013",
+              "question": "What tense is the sentence 'I ate rice'?",
+              "options": [
+                "Simple past",
+                "Simple present",
+                "Simple future",
+                "Past continuous"
+              ],
+              "correct": "Simple past",
+              "difficulty": "easy",
+              "explanation": "'ate' is the past form of 'eat' - simple past tense",
+              "sub_skill": "tenses"
+            },
+            {
+              "id": "eng_014",
+              "question": "What tense is the sentence 'I will go home'?",
+              "options": [
+                "Simple past",
+                "Simple present",
+                "Simple future",
+                "Present continuous"
+              ],
+              "correct": "Simple future",
+              "difficulty": "easy",
+              "explanation": "'will go' describes an action yet to happen - simple future tense",
+              "sub_skill": "tenses"
+            },
+            {
+              "id": "eng_015",
+              "question": "What tense is the sentence 'I have finished my homework'?",
+              "options": [
+                "Simple past",
+                "Present perfect",
+                "Simple future",
+                "Past perfect"
+              ],
+              "correct": "Present perfect",
+              "difficulty": "hard",
+              "explanation": "'have finished' links a past action to the present result - present perfect tense",
+              "sub_skill": "tenses"
+            },
+            {
+              "id": "eng_016",
+              "question": "What is a synonym for 'happy'?",
+              "options": [
+                "Sad",
+                "Angry",
+                "Joyful",
+                "Tired"
+              ],
+              "correct": "Joyful",
+              "difficulty": "easy",
+              "explanation": "'Joyful' has the same meaning as 'happy'",
+              "sub_skill": "vocabulary"
+            },
+            {
+              "id": "eng_017",
+              "question": "What is an antonym for 'hot'?",
+              "options": [
+                "Warm",
+                "Cold",
+                "Dry",
+                "Bright"
+              ],
+              "correct": "Cold",
+              "difficulty": "easy",
+              "explanation": "'Cold' is the opposite of 'hot'",
+              "sub_skill": "vocabulary"
+            },
+            {
+              "id": "eng_018",
+              "question": "What is a synonym for 'big'?",
+              "options": [
+                "Small",
+                "Tiny",
+                "Large",
+                "Short"
+              ],
+              "correct": "Large",
+              "difficulty": "easy",
+              "explanation": "'Large' has the same meaning as 'big'",
+              "sub_skill": "vocabulary"
+            },
+            {
+              "id": "eng_019",
+              "question": "What is an antonym for 'fast'?",
+              "options": [
+                "Quick",
+                "Rapid",
+                "Slow",
+                "Sudden"
+              ],
+              "correct": "Slow",
+              "difficulty": "easy",
+              "explanation": "'Slow' is the opposite of 'fast'",
+              "sub_skill": "vocabulary"
             }
           ]
         }
@@ -239,7 +716,7 @@
           "name": "Biology",
           "questions": [
             {
-              "id": "sci_001",
+              "id": "sci_003",
               "question": "What is the powerhouse of the cell?",
               "options": [
                 "Nucleus",
@@ -249,10 +726,53 @@
               ],
               "correct": "Mitochondria",
               "difficulty": "medium",
-              "explanation": "Mitochondria are the powerhouse of the cell"
+              "explanation": "Mitochondria are the powerhouse of the cell",
+              "sub_skill": "cell_biology"
             },
             {
-              "id": "sci_002",
+              "id": "sci_004",
+              "question": "Which part of the cell controls its activities?",
+              "options": [
+                "Cell wall",
+                "Ribosome",
+                "Nucleus",
+                "Cytoplasm"
+              ],
+              "correct": "Nucleus",
+              "difficulty": "medium",
+              "explanation": "The nucleus controls the cell's activities and holds its genetic material",
+              "sub_skill": "cell_biology"
+            },
+            {
+              "id": "sci_005",
+              "question": "What structure gives a plant cell its rigid shape?",
+              "options": [
+                "Cell membrane",
+                "Cell wall",
+                "Nucleus",
+                "Vacuole"
+              ],
+              "correct": "Cell wall",
+              "difficulty": "medium",
+              "explanation": "The cell wall is a rigid layer that supports and shapes a plant cell",
+              "sub_skill": "cell_biology"
+            },
+            {
+              "id": "sci_006",
+              "question": "Which cell structure is the site of protein synthesis?",
+              "options": [
+                "Ribosome",
+                "Nucleus",
+                "Mitochondria",
+                "Cell wall"
+              ],
+              "correct": "Ribosome",
+              "difficulty": "hard",
+              "explanation": "Ribosomes are where proteins are made in a cell",
+              "sub_skill": "cell_biology"
+            },
+            {
+              "id": "sci_007",
               "question": "What is the largest organ in the human body?",
               "options": [
                 "Heart",
@@ -262,7 +782,162 @@
               ],
               "correct": "Skin",
               "difficulty": "medium",
-              "explanation": "The skin is the largest organ"
+              "explanation": "The skin is the largest organ in the human body",
+              "sub_skill": "human_body_systems"
+            },
+            {
+              "id": "sci_008",
+              "question": "Which organ pumps blood around the body?",
+              "options": [
+                "Lungs",
+                "Heart",
+                "Kidney",
+                "Stomach"
+              ],
+              "correct": "Heart",
+              "difficulty": "easy",
+              "explanation": "The heart pumps blood around the body",
+              "sub_skill": "human_body_systems"
+            },
+            {
+              "id": "sci_009",
+              "question": "Which organ filters waste from the blood?",
+              "options": [
+                "Heart",
+                "Lungs",
+                "Kidney",
+                "Liver"
+              ],
+              "correct": "Kidney",
+              "difficulty": "medium",
+              "explanation": "The kidneys filter waste products out of the blood",
+              "sub_skill": "human_body_systems"
+            },
+            {
+              "id": "sci_010",
+              "question": "Which organs are used for breathing?",
+              "options": [
+                "Heart",
+                "Lungs",
+                "Kidney",
+                "Stomach"
+              ],
+              "correct": "Lungs",
+              "difficulty": "easy",
+              "explanation": "The lungs take in oxygen and remove carbon dioxide during breathing",
+              "sub_skill": "human_body_systems"
+            },
+            {
+              "id": "sci_011",
+              "question": "Which part of a plant carries out photosynthesis?",
+              "options": [
+                "Root",
+                "Stem",
+                "Leaf",
+                "Flower"
+              ],
+              "correct": "Leaf",
+              "difficulty": "medium",
+              "explanation": "The leaf contains chlorophyll, which traps sunlight for photosynthesis",
+              "sub_skill": "plant_biology"
+            },
+            {
+              "id": "sci_012",
+              "question": "Which gas do plants absorb for photosynthesis?",
+              "options": [
+                "Oxygen",
+                "Nitrogen",
+                "Carbon dioxide",
+                "Hydrogen"
+              ],
+              "correct": "Carbon dioxide",
+              "difficulty": "medium",
+              "explanation": "Plants absorb carbon dioxide from the air to use in photosynthesis",
+              "sub_skill": "plant_biology"
+            },
+            {
+              "id": "sci_013",
+              "question": "Which part of a plant absorbs water from the soil?",
+              "options": [
+                "Leaf",
+                "Flower",
+                "Root",
+                "Stem"
+              ],
+              "correct": "Root",
+              "difficulty": "easy",
+              "explanation": "The roots absorb water and minerals from the soil",
+              "sub_skill": "plant_biology"
+            },
+            {
+              "id": "sci_014",
+              "question": "Which gas do plants release during photosynthesis?",
+              "options": [
+                "Carbon dioxide",
+                "Nitrogen",
+                "Oxygen",
+                "Hydrogen"
+              ],
+              "correct": "Oxygen",
+              "difficulty": "medium",
+              "explanation": "Photosynthesis releases oxygen as a byproduct",
+              "sub_skill": "plant_biology"
+            },
+            {
+              "id": "sci_015",
+              "question": "Which food class mainly provides the body with energy?",
+              "options": [
+                "Proteins",
+                "Vitamins",
+                "Carbohydrates",
+                "Minerals"
+              ],
+              "correct": "Carbohydrates",
+              "difficulty": "medium",
+              "explanation": "Carbohydrates are the body's main energy source",
+              "sub_skill": "nutrition_and_health"
+            },
+            {
+              "id": "sci_016",
+              "question": "Which food class is needed for growth and repair of body tissue?",
+              "options": [
+                "Carbohydrates",
+                "Proteins",
+                "Vitamins",
+                "Water"
+              ],
+              "correct": "Proteins",
+              "difficulty": "medium",
+              "explanation": "Proteins build and repair body tissues",
+              "sub_skill": "nutrition_and_health"
+            },
+            {
+              "id": "sci_017",
+              "question": "Which vitamin does the body produce from sunlight?",
+              "options": [
+                "Vitamin A",
+                "Vitamin C",
+                "Vitamin D",
+                "Vitamin K"
+              ],
+              "correct": "Vitamin D",
+              "difficulty": "hard",
+              "explanation": "The skin produces vitamin D when exposed to sunlight",
+              "sub_skill": "nutrition_and_health"
+            },
+            {
+              "id": "sci_018",
+              "question": "A diet containing all necessary food classes in the right amounts is called what?",
+              "options": [
+                "A balanced diet",
+                "A fasting diet",
+                "A liquid diet",
+                "A protein diet"
+              ],
+              "correct": "A balanced diet",
+              "difficulty": "easy",
+              "explanation": "A balanced diet supplies all food classes (carbohydrates, proteins, fats, vitamins, minerals, water) in the right proportions",
+              "sub_skill": "nutrition_and_health"
             }
           ]
         }
@@ -280,32 +955,118 @@
           "questions": [
             {
               "id": "math_ng_001",
-              "question": "What is 2 + 2?",
+              "question": "Simplify using BODMAS: 3 + 4 × 2",
               "options": [
-                "3",
-                "4",
-                "5",
-                "6"
+                "11",
+                "14",
+                "10",
+                "20"
               ],
-              "correct": "4",
-              "difficulty": "easy",
-              "explanation": "2 + 2 equals 4"
+              "correct": "11",
+              "difficulty": "medium",
+              "explanation": "Multiplication before addition: 4 × 2 = 8, then 3 + 8 = 11",
+              "sub_skill": "order_of_operations"
             },
             {
               "id": "math_ng_002",
-              "question": "What is 3 × 3?",
+              "question": "Simplify using BODMAS: (2 + 3) × 4",
               "options": [
-                "6",
-                "8",
+                "20",
+                "14",
                 "9",
-                "12"
+                "24"
               ],
-              "correct": "9",
-              "difficulty": "easy",
-              "explanation": "3 × 3 equals 9"
+              "correct": "20",
+              "difficulty": "medium",
+              "explanation": "Brackets first: 2 + 3 = 5, then 5 × 4 = 20",
+              "sub_skill": "order_of_operations"
             },
             {
               "id": "math_ng_003",
+              "question": "Simplify using BODMAS: 10 - 2 × 3",
+              "options": [
+                "4",
+                "24",
+                "8",
+                "5"
+              ],
+              "correct": "4",
+              "difficulty": "medium",
+              "explanation": "Multiplication before subtraction: 2 × 3 = 6, then 10 - 6 = 4",
+              "sub_skill": "order_of_operations"
+            },
+            {
+              "id": "math_ng_004",
+              "question": "Simplify using BODMAS: 20 ÷ 4 + 3",
+              "options": [
+                "8",
+                "5",
+                "4",
+                "10"
+              ],
+              "correct": "8",
+              "difficulty": "medium",
+              "explanation": "Division before addition: 20 ÷ 4 = 5, then 5 + 3 = 8",
+              "sub_skill": "order_of_operations"
+            },
+            {
+              "id": "math_ng_005",
+              "question": "Solve for x: x + 5 = 12",
+              "options": [
+                "5",
+                "6",
+                "7",
+                "8"
+              ],
+              "correct": "7",
+              "difficulty": "medium",
+              "explanation": "x = 12 - 5 = 7",
+              "sub_skill": "linear_equations"
+            },
+            {
+              "id": "math_ng_006",
+              "question": "Solve for x: 3x = 18",
+              "options": [
+                "4",
+                "5",
+                "6",
+                "7"
+              ],
+              "correct": "6",
+              "difficulty": "medium",
+              "explanation": "x = 18 ÷ 3 = 6",
+              "sub_skill": "linear_equations"
+            },
+            {
+              "id": "math_ng_007",
+              "question": "Solve for x: x - 4 = 9",
+              "options": [
+                "11",
+                "12",
+                "13",
+                "14"
+              ],
+              "correct": "13",
+              "difficulty": "medium",
+              "explanation": "x = 9 + 4 = 13",
+              "sub_skill": "linear_equations"
+            },
+            {
+              "id": "math_ng_008",
+              "question": "Solve for x: 2x + 1 = 11",
+              "options": [
+                "4",
+                "5",
+                "6",
+                "7"
+              ],
+              "correct": "5",
+              "difficulty": "hard",
+              "explanation": "2x = 11 - 1 = 10, so x = 5",
+              "sub_skill": "linear_equations"
+            },
+            {
+              "id": "math_ng_009",
               "question": "What is the square root of 16?",
               "options": [
                 "2",
@@ -315,23 +1076,53 @@
               ],
               "correct": "4",
               "difficulty": "medium",
-              "explanation": "4 × 4 = 16"
+              "explanation": "4 × 4 = 16",
+              "sub_skill": "indices_and_roots"
             },
             {
-              "id": "math_ng_004",
-              "question": "What is 10 × 10?",
+              "id": "math_ng_010",
+              "question": "What is the square root of 81?",
               "options": [
-                "50",
-                "100",
-                "150",
-                "200"
+                "7",
+                "8",
+                "9",
+                "10"
               ],
-              "correct": "100",
-              "difficulty": "easy",
-              "explanation": "10 × 10 = 100"
+              "correct": "9",
+              "difficulty": "medium",
+              "explanation": "9 × 9 = 81",
+              "sub_skill": "indices_and_roots"
             },
             {
-              "id": "math_ng_005",
+              "id": "math_ng_011",
+              "question": "What is 6 squared (6²)?",
+              "options": [
+                "12",
+                "24",
+                "36",
+                "42"
+              ],
+              "correct": "36",
+              "difficulty": "easy",
+              "explanation": "6² = 6 × 6 = 36",
+              "sub_skill": "indices_and_roots"
+            },
+            {
+              "id": "math_ng_012",
+              "question": "What is 2 cubed (2³)?",
+              "options": [
+                "4",
+                "6",
+                "8",
+                "16"
+              ],
+              "correct": "8",
+              "difficulty": "medium",
+              "explanation": "2³ = 2 × 2 × 2 = 8",
+              "sub_skill": "indices_and_roots"
+            },
+            {
+              "id": "math_ng_013",
               "question": "What is 20% of 50?",
               "options": [
                 "5",
@@ -341,7 +1132,106 @@
               ],
               "correct": "10",
               "difficulty": "hard",
-              "explanation": "20% of 50 = 10"
+              "explanation": "20% of 50 = 0.20 × 50 = 10",
+              "sub_skill": "percentages"
+            },
+            {
+              "id": "math_ng_014",
+              "question": "What is 25% of 200?",
+              "options": [
+                "25",
+                "40",
+                "50",
+                "60"
+              ],
+              "correct": "50",
+              "difficulty": "hard",
+              "explanation": "25% of 200 = 0.25 × 200 = 50",
+              "sub_skill": "percentages"
+            },
+            {
+              "id": "math_ng_015",
+              "question": "What is 10% of 90?",
+              "options": [
+                "7",
+                "8",
+                "9",
+                "10"
+              ],
+              "correct": "9",
+              "difficulty": "medium",
+              "explanation": "10% of 90 = 0.10 × 90 = 9",
+              "sub_skill": "percentages"
+            },
+            {
+              "id": "math_ng_016",
+              "question": "What is 50% of 64?",
+              "options": [
+                "16",
+                "24",
+                "32",
+                "40"
+              ],
+              "correct": "32",
+              "difficulty": "medium",
+              "explanation": "50% of 64 = 0.50 × 64 = 32",
+              "sub_skill": "percentages"
+            },
+            {
+              "id": "math_ng_017",
+              "question": "What is 15 - 7?",
+              "options": [
+                "6",
+                "7",
+                "8",
+                "9"
+              ],
+              "correct": "8",
+              "difficulty": "easy",
+              "explanation": "15 - 7 = 8",
+              "sub_skill": "simplification"
+            },
+            {
+              "id": "math_ng_018",
+              "question": "What is 4 × 8?",
+              "options": [
+                "28",
+                "30",
+                "32",
+                "34"
+              ],
+              "correct": "32",
+              "difficulty": "medium",
+              "explanation": "4 × 8 = 32",
+              "sub_skill": "simplification"
+            },
+            {
+              "id": "math_ng_019",
+              "question": "What is 144 ÷ 12?",
+              "options": [
+                "10",
+                "11",
+                "12",
+                "13"
+              ],
+              "correct": "12",
+              "difficulty": "medium",
+              "explanation": "144 ÷ 12 = 12",
+              "sub_skill": "simplification"
+            },
+            {
+              "id": "math_ng_020",
+              "question": "What is 100 ÷ 4?",
+              "options": [
+                "20",
+                "25",
+                "30",
+                "40"
+              ],
+              "correct": "25",
+              "difficulty": "easy",
+              "explanation": "100 ÷ 4 = 25",
+              "sub_skill": "simplification"
             }
           ]
         },
@@ -350,7 +1240,63 @@
           "name": "Geometry",
           "questions": [
             {
-              "id": "math_ng_006",
+              "id": "math_ng_021",
+              "question": "What is the sum of angles in a triangle?",
+              "options": [
+                "90°",
+                "180°",
+                "270°",
+                "360°"
+              ],
+              "correct": "180°",
+              "difficulty": "medium",
+              "explanation": "The interior angles of a triangle always add up to 180°",
+              "sub_skill": "angles"
+            },
+            {
+              "id": "math_ng_022",
+              "question": "Angles on a straight line add up to how many degrees?",
+              "options": [
+                "90°",
+                "180°",
+                "270°",
+                "360°"
+              ],
+              "correct": "180°",
+              "difficulty": "medium",
+              "explanation": "Angles on a straight line always sum to 180°",
+              "sub_skill": "angles"
+            },
+            {
+              "id": "math_ng_023",
+              "question": "Angles around a point add up to how many degrees?",
+              "options": [
+                "90°",
+                "180°",
+                "270°",
+                "360°"
+              ],
+              "correct": "360°",
+              "difficulty": "medium",
+              "explanation": "Angles at a single point always sum to 360°",
+              "sub_skill": "angles"
+            },
+            {
+              "id": "math_ng_024",
+              "question": "What is the sum of angles in a quadrilateral?",
+              "options": [
+                "180°",
+                "270°",
+                "360°",
+                "450°"
+              ],
+              "correct": "360°",
+              "difficulty": "medium",
+              "explanation": "The interior angles of any quadrilateral always add up to 360°",
+              "sub_skill": "angles"
+            },
+            {
+              "id": "math_ng_025",
               "question": "How many sides does a triangle have?",
               "options": [
                 "2",
@@ -360,10 +1306,53 @@
               ],
               "correct": "3",
               "difficulty": "easy",
-              "explanation": "A triangle has 3 sides"
+              "explanation": "A triangle has 3 sides",
+              "sub_skill": "shapes_and_properties"
             },
             {
-              "id": "math_ng_007",
+              "id": "math_ng_026",
+              "question": "How many sides does a rectangle have?",
+              "options": [
+                "3",
+                "4",
+                "5",
+                "6"
+              ],
+              "correct": "4",
+              "difficulty": "easy",
+              "explanation": "A rectangle has 4 sides",
+              "sub_skill": "shapes_and_properties"
+            },
+            {
+              "id": "math_ng_027",
+              "question": "How many sides does a pentagon have?",
+              "options": [
+                "4",
+                "5",
+                "6",
+                "7"
+              ],
+              "correct": "5",
+              "difficulty": "easy",
+              "explanation": "A pentagon has 5 sides",
+              "sub_skill": "shapes_and_properties"
+            },
+            {
+              "id": "math_ng_028",
+              "question": "An angle of exactly 90° is called what?",
+              "options": [
+                "Acute angle",
+                "Right angle",
+                "Obtuse angle",
+                "Reflex angle"
+              ],
+              "correct": "Right angle",
+              "difficulty": "easy",
+              "explanation": "An angle of exactly 90° is a right angle",
+              "sub_skill": "shapes_and_properties"
+            },
+            {
+              "id": "math_ng_029",
               "question": "What is the area of a square with side length 4?",
               "options": [
                 "8",
@@ -373,7 +1362,50 @@
               ],
               "correct": "16",
               "difficulty": "medium",
-              "explanation": "Area = 4 × 4 = 16"
+              "explanation": "Area = 4 × 4 = 16",
+              "sub_skill": "perimeter_and_area"
+            },
+            {
+              "id": "math_ng_030",
+              "question": "What is the area of a rectangle 5cm by 3cm?",
+              "options": [
+                "8",
+                "15",
+                "16",
+                "18"
+              ],
+              "correct": "15",
+              "difficulty": "medium",
+              "explanation": "Area = length × width = 5 × 3 = 15",
+              "sub_skill": "perimeter_and_area"
+            },
+            {
+              "id": "math_ng_031",
+              "question": "What is the perimeter of a square with side length 6?",
+              "options": [
+                "12",
+                "18",
+                "24",
+                "36"
+              ],
+              "correct": "24",
+              "difficulty": "medium",
+              "explanation": "Perimeter = 4 × side = 4 × 6 = 24",
+              "sub_skill": "perimeter_and_area"
+            },
+            {
+              "id": "math_ng_032",
+              "question": "What is the perimeter of a rectangle 4cm long and 2cm wide?",
+              "options": [
+                "8",
+                "10",
+                "12",
+                "16"
+              ],
+              "correct": "12",
+              "difficulty": "medium",
+              "explanation": "Perimeter = 2 × (length + width) = 2 × (4 + 2) = 12",
+              "sub_skill": "perimeter_and_area"
             }
           ]
         }
@@ -390,7 +1422,7 @@
           "name": "Grammar",
           "questions": [
             {
-              "id": "eng_ng_001",
+              "id": "eng_ng_004",
               "question": "What is a noun?",
               "options": [
                 "Action word",
@@ -400,10 +1432,11 @@
               ],
               "correct": "Person, place, or thing",
               "difficulty": "easy",
-              "explanation": "A noun is a person, place, or thing"
+              "explanation": "A noun is a person, place, or thing",
+              "sub_skill": "parts_of_speech"
             },
             {
-              "id": "eng_ng_002",
+              "id": "eng_ng_005",
               "question": "What is a verb?",
               "options": [
                 "Action word",
@@ -413,10 +1446,11 @@
               ],
               "correct": "Action word",
               "difficulty": "easy",
-              "explanation": "A verb is an action word"
+              "explanation": "A verb is an action word",
+              "sub_skill": "parts_of_speech"
             },
             {
-              "id": "eng_ng_003",
+              "id": "eng_ng_006",
               "question": "What is an adjective?",
               "options": [
                 "Action word",
@@ -426,7 +1460,190 @@
               ],
               "correct": "Describing word",
               "difficulty": "medium",
-              "explanation": "An adjective describes a noun"
+              "explanation": "An adjective describes a noun",
+              "sub_skill": "parts_of_speech"
+            },
+            {
+              "id": "eng_ng_007",
+              "question": "In 'She ran quickly', what part of speech is 'quickly'?",
+              "options": [
+                "Noun",
+                "Verb",
+                "Adverb",
+                "Preposition"
+              ],
+              "correct": "Adverb",
+              "difficulty": "medium",
+              "explanation": "'Quickly' describes how she ran, so it is an adverb",
+              "sub_skill": "parts_of_speech"
+            },
+            {
+              "id": "eng_ng_008",
+              "question": "Choose the correct sentence.",
+              "options": [
+                "The boys was playing football",
+                "The boys were playing football",
+                "The boys is playing football",
+                "The boys am playing football"
+              ],
+              "correct": "The boys were playing football",
+              "difficulty": "medium",
+              "explanation": "'Boys' is plural, so it takes the plural verb 'were'",
+              "sub_skill": "subject_verb_agreement"
+            },
+            {
+              "id": "eng_ng_009",
+              "question": "Choose the correct sentence.",
+              "options": [
+                "She go to school every day",
+                "She goes to school every day",
+                "She going to school every day",
+                "She gone to school every day"
+              ],
+              "correct": "She goes to school every day",
+              "difficulty": "medium",
+              "explanation": "'She' is third-person singular, so the verb takes an -s: 'goes'",
+              "sub_skill": "subject_verb_agreement"
+            },
+            {
+              "id": "eng_ng_010",
+              "question": "Choose the correct sentence.",
+              "options": [
+                "They is playing football now",
+                "They am playing football now",
+                "They are playing football now",
+                "They be playing football now"
+              ],
+              "correct": "They are playing football now",
+              "difficulty": "easy",
+              "explanation": "'They' is plural, so it takes the plural verb 'are'",
+              "sub_skill": "subject_verb_agreement"
+            },
+            {
+              "id": "eng_ng_011",
+              "question": "Choose the correct sentence.",
+              "options": [
+                "He am a doctor",
+                "He is a doctor",
+                "He are a doctor",
+                "He be a doctor"
+              ],
+              "correct": "He is a doctor",
+              "difficulty": "easy",
+              "explanation": "'He' is third-person singular, so it takes 'is'",
+              "sub_skill": "subject_verb_agreement"
+            },
+            {
+              "id": "eng_ng_012",
+              "question": "What tense is the sentence 'I am eating'?",
+              "options": [
+                "Simple past",
+                "Present continuous",
+                "Simple future",
+                "Present perfect"
+              ],
+              "correct": "Present continuous",
+              "difficulty": "medium",
+              "explanation": "'am eating' describes an action happening now - present continuous tense",
+              "sub_skill": "tenses"
+            },
+            {
+              "id": "eng_ng_013",
+              "question": "What tense is the sentence 'I ate rice'?",
+              "options": [
+                "Simple past",
+                "Simple present",
+                "Simple future",
+                "Past continuous"
+              ],
+              "correct": "Simple past",
+              "difficulty": "easy",
+              "explanation": "'ate' is the past form of 'eat' - simple past tense",
+              "sub_skill": "tenses"
+            },
+            {
+              "id": "eng_ng_014",
+              "question": "What tense is the sentence 'I will go home'?",
+              "options": [
+                "Simple past",
+                "Simple present",
+                "Simple future",
+                "Present continuous"
+              ],
+              "correct": "Simple future",
+              "difficulty": "easy",
+              "explanation": "'will go' describes an action yet to happen - simple future tense",
+              "sub_skill": "tenses"
+            },
+            {
+              "id": "eng_ng_015",
+              "question": "What tense is the sentence 'I have finished my homework'?",
+              "options": [
+                "Simple past",
+                "Present perfect",
+                "Simple future",
+                "Past perfect"
+              ],
+              "correct": "Present perfect",
+              "difficulty": "hard",
+              "explanation": "'have finished' links a past action to the present result - present perfect tense",
+              "sub_skill": "tenses"
+            },
+            {
+              "id": "eng_ng_016",
+              "question": "What is a synonym for 'happy'?",
+              "options": [
+                "Sad",
+                "Angry",
+                "Joyful",
+                "Tired"
+              ],
+              "correct": "Joyful",
+              "difficulty": "easy",
+              "explanation": "'Joyful' has the same meaning as 'happy'",
+              "sub_skill": "vocabulary"
+            },
+            {
+              "id": "eng_ng_017",
+              "question": "What is an antonym for 'hot'?",
+              "options": [
+                "Warm",
+                "Cold",
+                "Dry",
+                "Bright"
+              ],
+              "correct": "Cold",
+              "difficulty": "easy",
+              "explanation": "'Cold' is the opposite of 'hot'",
+              "sub_skill": "vocabulary"
+            },
+            {
+              "id": "eng_ng_018",
+              "question": "What is a synonym for 'big'?",
+              "options": [
+                "Small",
+                "Tiny",
+                "Large",
+                "Short"
+              ],
+              "correct": "Large",
+              "difficulty": "easy",
+              "explanation": "'Large' has the same meaning as 'big'",
+              "sub_skill": "vocabulary"
+            },
+            {
+              "id": "eng_ng_019",
+              "question": "What is an antonym for 'fast'?",
+              "options": [
+                "Quick",
+                "Rapid",
+                "Slow",
+                "Sudden"
+              ],
+              "correct": "Slow",
+              "difficulty": "easy",
+              "explanation": "'Slow' is the opposite of 'fast'",
+              "sub_skill": "vocabulary"
             }
           ]
         }
@@ -443,7 +1660,7 @@
           "name": "Biology",
           "questions": [
             {
-              "id": "sci_ng_001",
+              "id": "sci_ng_003",
               "question": "What is the powerhouse of the cell?",
               "options": [
                 "Nucleus",
@@ -453,10 +1670,53 @@
               ],
               "correct": "Mitochondria",
               "difficulty": "medium",
-              "explanation": "Mitochondria are the powerhouse of the cell"
+              "explanation": "Mitochondria are the powerhouse of the cell",
+              "sub_skill": "cell_biology"
             },
             {
-              "id": "sci_ng_002",
+              "id": "sci_ng_004",
+              "question": "Which part of the cell controls its activities?",
+              "options": [
+                "Cell wall",
+                "Ribosome",
+                "Nucleus",
+                "Cytoplasm"
+              ],
+              "correct": "Nucleus",
+              "difficulty": "medium",
+              "explanation": "The nucleus controls the cell's activities and holds its genetic material",
+              "sub_skill": "cell_biology"
+            },
+            {
+              "id": "sci_ng_005",
+              "question": "What structure gives a plant cell its rigid shape?",
+              "options": [
+                "Cell membrane",
+                "Cell wall",
+                "Nucleus",
+                "Vacuole"
+              ],
+              "correct": "Cell wall",
+              "difficulty": "medium",
+              "explanation": "The cell wall is a rigid layer that supports and shapes a plant cell",
+              "sub_skill": "cell_biology"
+            },
+            {
+              "id": "sci_ng_006",
+              "question": "Which cell structure is the site of protein synthesis?",
+              "options": [
+                "Ribosome",
+                "Nucleus",
+                "Mitochondria",
+                "Cell wall"
+              ],
+              "correct": "Ribosome",
+              "difficulty": "hard",
+              "explanation": "Ribosomes are where proteins are made in a cell",
+              "sub_skill": "cell_biology"
+            },
+            {
+              "id": "sci_ng_007",
               "question": "What is the largest organ in the human body?",
               "options": [
                 "Heart",
@@ -466,7 +1726,162 @@
               ],
               "correct": "Skin",
               "difficulty": "medium",
-              "explanation": "The skin is the largest organ"
+              "explanation": "The skin is the largest organ in the human body",
+              "sub_skill": "human_body_systems"
+            },
+            {
+              "id": "sci_ng_008",
+              "question": "Which organ pumps blood around the body?",
+              "options": [
+                "Lungs",
+                "Heart",
+                "Kidney",
+                "Stomach"
+              ],
+              "correct": "Heart",
+              "difficulty": "easy",
+              "explanation": "The heart pumps blood around the body",
+              "sub_skill": "human_body_systems"
+            },
+            {
+              "id": "sci_ng_009",
+              "question": "Which organ filters waste from the blood?",
+              "options": [
+                "Heart",
+                "Lungs",
+                "Kidney",
+                "Liver"
+              ],
+              "correct": "Kidney",
+              "difficulty": "medium",
+              "explanation": "The kidneys filter waste products out of the blood",
+              "sub_skill": "human_body_systems"
+            },
+            {
+              "id": "sci_ng_010",
+              "question": "Which organs are used for breathing?",
+              "options": [
+                "Heart",
+                "Lungs",
+                "Kidney",
+                "Stomach"
+              ],
+              "correct": "Lungs",
+              "difficulty": "easy",
+              "explanation": "The lungs take in oxygen and remove carbon dioxide during breathing",
+              "sub_skill": "human_body_systems"
+            },
+            {
+              "id": "sci_ng_011",
+              "question": "Which part of a plant carries out photosynthesis?",
+              "options": [
+                "Root",
+                "Stem",
+                "Leaf",
+                "Flower"
+              ],
+              "correct": "Leaf",
+              "difficulty": "medium",
+              "explanation": "The leaf contains chlorophyll, which traps sunlight for photosynthesis",
+              "sub_skill": "plant_biology"
+            },
+            {
+              "id": "sci_ng_012",
+              "question": "Which gas do plants absorb for photosynthesis?",
+              "options": [
+                "Oxygen",
+                "Nitrogen",
+                "Carbon dioxide",
+                "Hydrogen"
+              ],
+              "correct": "Carbon dioxide",
+              "difficulty": "medium",
+              "explanation": "Plants absorb carbon dioxide from the air to use in photosynthesis",
+              "sub_skill": "plant_biology"
+            },
+            {
+              "id": "sci_ng_013",
+              "question": "Which part of a plant absorbs water from the soil?",
+              "options": [
+                "Leaf",
+                "Flower",
+                "Root",
+                "Stem"
+              ],
+              "correct": "Root",
+              "difficulty": "easy",
+              "explanation": "The roots absorb water and minerals from the soil",
+              "sub_skill": "plant_biology"
+            },
+            {
+              "id": "sci_ng_014",
+              "question": "Which gas do plants release during photosynthesis?",
+              "options": [
+                "Carbon dioxide",
+                "Nitrogen",
+                "Oxygen",
+                "Hydrogen"
+              ],
+              "correct": "Oxygen",
+              "difficulty": "medium",
+              "explanation": "Photosynthesis releases oxygen as a byproduct",
+              "sub_skill": "plant_biology"
+            },
+            {
+              "id": "sci_ng_015",
+              "question": "Which food class mainly provides the body with energy?",
+              "options": [
+                "Proteins",
+                "Vitamins",
+                "Carbohydrates",
+                "Minerals"
+              ],
+              "correct": "Carbohydrates",
+              "difficulty": "medium",
+              "explanation": "Carbohydrates are the body's main energy source",
+              "sub_skill": "nutrition_and_health"
+            },
+            {
+              "id": "sci_ng_016",
+              "question": "Which food class is needed for growth and repair of body tissue?",
+              "options": [
+                "Carbohydrates",
+                "Proteins",
+                "Vitamins",
+                "Water"
+              ],
+              "correct": "Proteins",
+              "difficulty": "medium",
+              "explanation": "Proteins build and repair body tissues",
+              "sub_skill": "nutrition_and_health"
+            },
+            {
+              "id": "sci_ng_017",
+              "question": "Which vitamin does the body produce from sunlight?",
+              "options": [
+                "Vitamin A",
+                "Vitamin C",
+                "Vitamin D",
+                "Vitamin K"
+              ],
+              "correct": "Vitamin D",
+              "difficulty": "hard",
+              "explanation": "The skin produces vitamin D when exposed to sunlight",
+              "sub_skill": "nutrition_and_health"
+            },
+            {
+              "id": "sci_ng_018",
+              "question": "A diet containing all necessary food classes in the right amounts is called what?",
+              "options": [
+                "A balanced diet",
+                "A fasting diet",
+                "A liquid diet",
+                "A protein diet"
+              ],
+              "correct": "A balanced diet",
+              "difficulty": "easy",
+              "explanation": "A balanced diet supplies all food classes (carbohydrates, proteins, fats, vitamins, minerals, water) in the right proportions",
+              "sub_skill": "nutrition_and_health"
             }
           ]
         }
@@ -484,32 +1899,62 @@
           "questions": [
             {
               "id": "math_sl_001",
-              "question": "What is 5 + 6?",
+              "question": "Simplify using BODMAS: 3 + 4 × 2",
               "options": [
-                "9",
-                "10",
                 "11",
-                "12"
+                "14",
+                "10",
+                "20"
               ],
               "correct": "11",
-              "difficulty": "easy",
-              "explanation": "5 + 6 = 11"
+              "difficulty": "medium",
+              "explanation": "Multiplication before addition: 4 × 2 = 8, then 3 + 8 = 11",
+              "sub_skill": "order_of_operations"
             },
             {
               "id": "math_sl_002",
-              "question": "What is 4 × 6?",
+              "question": "Simplify using BODMAS: (2 + 3) × 4",
               "options": [
                 "20",
-                "22",
-                "24",
-                "26"
+                "14",
+                "9",
+                "24"
               ],
-              "correct": "24",
-              "difficulty": "easy",
-              "explanation": "4 × 6 = 24"
+              "correct": "20",
+              "difficulty": "medium",
+              "explanation": "Brackets first: 2 + 3 = 5, then 5 × 4 = 20",
+              "sub_skill": "order_of_operations"
             },
             {
               "id": "math_sl_003",
+              "question": "Simplify using BODMAS: 10 - 2 × 3",
+              "options": [
+                "4",
+                "24",
+                "8",
+                "5"
+              ],
+              "correct": "4",
+              "difficulty": "medium",
+              "explanation": "Multiplication before subtraction: 2 × 3 = 6, then 10 - 6 = 4",
+              "sub_skill": "order_of_operations"
+            },
+            {
+              "id": "math_sl_004",
+              "question": "Simplify using BODMAS: 20 ÷ 4 + 3",
+              "options": [
+                "8",
+                "5",
+                "4",
+                "10"
+              ],
+              "correct": "8",
+              "difficulty": "medium",
+              "explanation": "Division before addition: 20 ÷ 4 = 5, then 5 + 3 = 8",
+              "sub_skill": "order_of_operations"
+            },
+            {
+              "id": "math_sl_005",
               "question": "Solve for x: x + 5 = 12",
               "options": [
                 "5",
@@ -519,49 +1964,11 @@
               ],
               "correct": "7",
               "difficulty": "medium",
-              "explanation": "x = 12 - 5 = 7"
-            },
-            {
-              "id": "math_sl_004",
-              "question": "What is the square root of 81?",
-              "options": [
-                "7",
-                "8",
-                "9",
-                "10"
-              ],
-              "correct": "9",
-              "difficulty": "medium",
-              "explanation": "9 × 9 = 81"
-            },
-            {
-              "id": "math_sl_005",
-              "question": "Simplify using BODMAS: 3 + 4 × 2",
-              "options": [
-                "10",
-                "11",
-                "14",
-                "20"
-              ],
-              "correct": "11",
-              "difficulty": "medium",
-              "explanation": "Multiplication before addition: 4 × 2 = 8, then 3 + 8 = 11"
+              "explanation": "x = 12 - 5 = 7",
+              "sub_skill": "linear_equations"
             },
             {
               "id": "math_sl_006",
-              "question": "What is 100 ÷ 4?",
-              "options": [
-                "20",
-                "25",
-                "30",
-                "40"
-              ],
-              "correct": "25",
-              "difficulty": "easy",
-              "explanation": "100 ÷ 4 = 25"
-            },
-            {
-              "id": "math_sl_007",
               "question": "Solve for x: 3x = 18",
               "options": [
                 "4",
@@ -571,36 +1978,67 @@
               ],
               "correct": "6",
               "difficulty": "medium",
-              "explanation": "x = 18 ÷ 3 = 6"
+              "explanation": "x = 18 ÷ 3 = 6",
+              "sub_skill": "linear_equations"
+            },
+            {
+              "id": "math_sl_007",
+              "question": "Solve for x: x - 4 = 9",
+              "options": [
+                "11",
+                "12",
+                "13",
+                "14"
+              ],
+              "correct": "13",
+              "difficulty": "medium",
+              "explanation": "x = 9 + 4 = 13",
+              "sub_skill": "linear_equations"
             },
             {
               "id": "math_sl_008",
-              "question": "What is 9 × 9?",
+              "question": "Solve for x: 2x + 1 = 11",
               "options": [
-                "72",
-                "76",
-                "81",
-                "84"
+                "4",
+                "5",
+                "6",
+                "7"
               ],
-              "correct": "81",
-              "difficulty": "easy",
-              "explanation": "9 × 9 = 81"
+              "correct": "5",
+              "difficulty": "hard",
+              "explanation": "2x = 11 - 1 = 10, so x = 5",
+              "sub_skill": "linear_equations"
             },
             {
               "id": "math_sl_009",
-              "question": "What is 25% of 200?",
+              "question": "What is the square root of 16?",
               "options": [
-                "25",
-                "40",
-                "50",
-                "60"
+                "2",
+                "3",
+                "4",
+                "5"
               ],
-              "correct": "50",
-              "difficulty": "hard",
-              "explanation": "25% of 200 = 0.25 × 200 = 50"
+              "correct": "4",
+              "difficulty": "medium",
+              "explanation": "4 × 4 = 16",
+              "sub_skill": "indices_and_roots"
             },
             {
               "id": "math_sl_010",
+              "question": "What is the square root of 81?",
+              "options": [
+                "7",
+                "8",
+                "9",
+                "10"
+              ],
+              "correct": "9",
+              "difficulty": "medium",
+              "explanation": "9 × 9 = 81",
+              "sub_skill": "indices_and_roots"
+            },
+            {
+              "id": "math_sl_011",
               "question": "What is 6 squared (6²)?",
               "options": [
                 "12",
@@ -610,7 +2048,134 @@
               ],
               "correct": "36",
               "difficulty": "easy",
-              "explanation": "6² = 6 × 6 = 36"
+              "explanation": "6² = 6 × 6 = 36",
+              "sub_skill": "indices_and_roots"
+            },
+            {
+              "id": "math_sl_012",
+              "question": "What is 2 cubed (2³)?",
+              "options": [
+                "4",
+                "6",
+                "8",
+                "16"
+              ],
+              "correct": "8",
+              "difficulty": "medium",
+              "explanation": "2³ = 2 × 2 × 2 = 8",
+              "sub_skill": "indices_and_roots"
+            },
+            {
+              "id": "math_sl_013",
+              "question": "What is 20% of 50?",
+              "options": [
+                "5",
+                "10",
+                "15",
+                "20"
+              ],
+              "correct": "10",
+              "difficulty": "hard",
+              "explanation": "20% of 50 = 0.20 × 50 = 10",
+              "sub_skill": "percentages"
+            },
+            {
+              "id": "math_sl_014",
+              "question": "What is 25% of 200?",
+              "options": [
+                "25",
+                "40",
+                "50",
+                "60"
+              ],
+              "correct": "50",
+              "difficulty": "hard",
+              "explanation": "25% of 200 = 0.25 × 200 = 50",
+              "sub_skill": "percentages"
+            },
+            {
+              "id": "math_sl_015",
+              "question": "What is 10% of 90?",
+              "options": [
+                "7",
+                "8",
+                "9",
+                "10"
+              ],
+              "correct": "9",
+              "difficulty": "medium",
+              "explanation": "10% of 90 = 0.10 × 90 = 9",
+              "sub_skill": "percentages"
+            },
+            {
+              "id": "math_sl_016",
+              "question": "What is 50% of 64?",
+              "options": [
+                "16",
+                "24",
+                "32",
+                "40"
+              ],
+              "correct": "32",
+              "difficulty": "medium",
+              "explanation": "50% of 64 = 0.50 × 64 = 32",
+              "sub_skill": "percentages"
+            },
+            {
+              "id": "math_sl_017",
+              "question": "What is 15 - 7?",
+              "options": [
+                "6",
+                "7",
+                "8",
+                "9"
+              ],
+              "correct": "8",
+              "difficulty": "easy",
+              "explanation": "15 - 7 = 8",
+              "sub_skill": "simplification"
+            },
+            {
+              "id": "math_sl_018",
+              "question": "What is 4 × 8?",
+              "options": [
+                "28",
+                "30",
+                "32",
+                "34"
+              ],
+              "correct": "32",
+              "difficulty": "medium",
+              "explanation": "4 × 8 = 32",
+              "sub_skill": "simplification"
+            },
+            {
+              "id": "math_sl_019",
+              "question": "What is 144 ÷ 12?",
+              "options": [
+                "10",
+                "11",
+                "12",
+                "13"
+              ],
+              "correct": "12",
+              "difficulty": "medium",
+              "explanation": "144 ÷ 12 = 12",
+              "sub_skill": "simplification"
+            },
+            {
+              "id": "math_sl_020",
+              "question": "What is 100 ÷ 4?",
+              "options": [
+                "20",
+                "25",
+                "30",
+                "40"
+              ],
+              "correct": "25",
+              "difficulty": "easy",
+              "explanation": "100 ÷ 4 = 25",
+              "sub_skill": "simplification"
             }
           ]
         },
@@ -619,20 +2184,7 @@
           "name": "Geometry",
           "questions": [
             {
-              "id": "math_sl_011",
-              "question": "How many sides does a rectangle have?",
-              "options": [
-                "3",
-                "4",
-                "5",
-                "6"
-              ],
-              "correct": "4",
-              "difficulty": "easy",
-              "explanation": "A rectangle has 4 sides"
-            },
-            {
-              "id": "math_sl_012",
+              "id": "math_sl_021",
               "question": "What is the sum of angles in a triangle?",
               "options": [
                 "90°",
@@ -642,7 +2194,162 @@
               ],
               "correct": "180°",
               "difficulty": "medium",
-              "explanation": "The interior angles of a triangle always add up to 180°"
+              "explanation": "The interior angles of a triangle always add up to 180°",
+              "sub_skill": "angles"
+            },
+            {
+              "id": "math_sl_022",
+              "question": "Angles on a straight line add up to how many degrees?",
+              "options": [
+                "90°",
+                "180°",
+                "270°",
+                "360°"
+              ],
+              "correct": "180°",
+              "difficulty": "medium",
+              "explanation": "Angles on a straight line always sum to 180°",
+              "sub_skill": "angles"
+            },
+            {
+              "id": "math_sl_023",
+              "question": "Angles around a point add up to how many degrees?",
+              "options": [
+                "90°",
+                "180°",
+                "270°",
+                "360°"
+              ],
+              "correct": "360°",
+              "difficulty": "medium",
+              "explanation": "Angles at a single point always sum to 360°",
+              "sub_skill": "angles"
+            },
+            {
+              "id": "math_sl_024",
+              "question": "What is the sum of angles in a quadrilateral?",
+              "options": [
+                "180°",
+                "270°",
+                "360°",
+                "450°"
+              ],
+              "correct": "360°",
+              "difficulty": "medium",
+              "explanation": "The interior angles of any quadrilateral always add up to 360°",
+              "sub_skill": "angles"
+            },
+            {
+              "id": "math_sl_025",
+              "question": "How many sides does a triangle have?",
+              "options": [
+                "2",
+                "3",
+                "4",
+                "5"
+              ],
+              "correct": "3",
+              "difficulty": "easy",
+              "explanation": "A triangle has 3 sides",
+              "sub_skill": "shapes_and_properties"
+            },
+            {
+              "id": "math_sl_026",
+              "question": "How many sides does a rectangle have?",
+              "options": [
+                "3",
+                "4",
+                "5",
+                "6"
+              ],
+              "correct": "4",
+              "difficulty": "easy",
+              "explanation": "A rectangle has 4 sides",
+              "sub_skill": "shapes_and_properties"
+            },
+            {
+              "id": "math_sl_027",
+              "question": "How many sides does a pentagon have?",
+              "options": [
+                "4",
+                "5",
+                "6",
+                "7"
+              ],
+              "correct": "5",
+              "difficulty": "easy",
+              "explanation": "A pentagon has 5 sides",
+              "sub_skill": "shapes_and_properties"
+            },
+            {
+              "id": "math_sl_028",
+              "question": "An angle of exactly 90° is called what?",
+              "options": [
+                "Acute angle",
+                "Right angle",
+                "Obtuse angle",
+                "Reflex angle"
+              ],
+              "correct": "Right angle",
+              "difficulty": "easy",
+              "explanation": "An angle of exactly 90° is a right angle",
+              "sub_skill": "shapes_and_properties"
+            },
+            {
+              "id": "math_sl_029",
+              "question": "What is the area of a square with side length 4?",
+              "options": [
+                "8",
+                "12",
+                "16",
+                "20"
+              ],
+              "correct": "16",
+              "difficulty": "medium",
+              "explanation": "Area = 4 × 4 = 16",
+              "sub_skill": "perimeter_and_area"
+            },
+            {
+              "id": "math_sl_030",
+              "question": "What is the area of a rectangle 5cm by 3cm?",
+              "options": [
+                "8",
+                "15",
+                "16",
+                "18"
+              ],
+              "correct": "15",
+              "difficulty": "medium",
+              "explanation": "Area = length × width = 5 × 3 = 15",
+              "sub_skill": "perimeter_and_area"
+            },
+            {
+              "id": "math_sl_031",
+              "question": "What is the perimeter of a square with side length 6?",
+              "options": [
+                "12",
+                "18",
+                "24",
+                "36"
+              ],
+              "correct": "24",
+              "difficulty": "medium",
+              "explanation": "Perimeter = 4 × side = 4 × 6 = 24",
+              "sub_skill": "perimeter_and_area"
+            },
+            {
+              "id": "math_sl_032",
+              "question": "What is the perimeter of a rectangle 4cm long and 2cm wide?",
+              "options": [
+                "8",
+                "10",
+                "12",
+                "16"
+              ],
+              "correct": "12",
+              "difficulty": "medium",
+              "explanation": "Perimeter = 2 × (length + width) = 2 × (4 + 2) = 12",
+              "sub_skill": "perimeter_and_area"
             }
           ]
         }
@@ -659,8 +2366,50 @@
           "name": "Grammar",
           "questions": [
             {
-              "id": "eng_sl_001",
-              "question": "What part of speech is the word 'quickly' in 'She ran quickly'?",
+              "id": "eng_sl_004",
+              "question": "What is a noun?",
+              "options": [
+                "Action word",
+                "Person, place, or thing",
+                "Describing word",
+                "Connecting word"
+              ],
+              "correct": "Person, place, or thing",
+              "difficulty": "easy",
+              "explanation": "A noun is a person, place, or thing",
+              "sub_skill": "parts_of_speech"
+            },
+            {
+              "id": "eng_sl_005",
+              "question": "What is a verb?",
+              "options": [
+                "Action word",
+                "Person, place, or thing",
+                "Describing word",
+                "Connecting word"
+              ],
+              "correct": "Action word",
+              "difficulty": "easy",
+              "explanation": "A verb is an action word",
+              "sub_skill": "parts_of_speech"
+            },
+            {
+              "id": "eng_sl_006",
+              "question": "What is an adjective?",
+              "options": [
+                "Action word",
+                "Person, place, or thing",
+                "Describing word",
+                "Connecting word"
+              ],
+              "correct": "Describing word",
+              "difficulty": "medium",
+              "explanation": "An adjective describes a noun",
+              "sub_skill": "parts_of_speech"
+            },
+            {
+              "id": "eng_sl_007",
+              "question": "In 'She ran quickly', what part of speech is 'quickly'?",
               "options": [
                 "Noun",
                 "Verb",
@@ -669,10 +2418,11 @@
               ],
               "correct": "Adverb",
               "difficulty": "medium",
-              "explanation": "'Quickly' describes how she ran, so it is an adverb"
+              "explanation": "'Quickly' describes how she ran, so it is an adverb",
+              "sub_skill": "parts_of_speech"
             },
             {
-              "id": "eng_sl_002",
+              "id": "eng_sl_008",
               "question": "Choose the correct sentence.",
               "options": [
                 "The boys was playing football",
@@ -682,10 +2432,109 @@
               ],
               "correct": "The boys were playing football",
               "difficulty": "medium",
-              "explanation": "'Boys' is plural, so it takes the plural verb 'were' (subject-verb agreement)"
+              "explanation": "'Boys' is plural, so it takes the plural verb 'were'",
+              "sub_skill": "subject_verb_agreement"
             },
             {
-              "id": "eng_sl_003",
+              "id": "eng_sl_009",
+              "question": "Choose the correct sentence.",
+              "options": [
+                "She go to school every day",
+                "She goes to school every day",
+                "She going to school every day",
+                "She gone to school every day"
+              ],
+              "correct": "She goes to school every day",
+              "difficulty": "medium",
+              "explanation": "'She' is third-person singular, so the verb takes an -s: 'goes'",
+              "sub_skill": "subject_verb_agreement"
+            },
+            {
+              "id": "eng_sl_010",
+              "question": "Choose the correct sentence.",
+              "options": [
+                "They is playing football now",
+                "They am playing football now",
+                "They are playing football now",
+                "They be playing football now"
+              ],
+              "correct": "They are playing football now",
+              "difficulty": "easy",
+              "explanation": "'They' is plural, so it takes the plural verb 'are'",
+              "sub_skill": "subject_verb_agreement"
+            },
+            {
+              "id": "eng_sl_011",
+              "question": "Choose the correct sentence.",
+              "options": [
+                "He am a doctor",
+                "He is a doctor",
+                "He are a doctor",
+                "He be a doctor"
+              ],
+              "correct": "He is a doctor",
+              "difficulty": "easy",
+              "explanation": "'He' is third-person singular, so it takes 'is'",
+              "sub_skill": "subject_verb_agreement"
+            },
+            {
+              "id": "eng_sl_012",
+              "question": "What tense is the sentence 'I am eating'?",
+              "options": [
+                "Simple past",
+                "Present continuous",
+                "Simple future",
+                "Present perfect"
+              ],
+              "correct": "Present continuous",
+              "difficulty": "medium",
+              "explanation": "'am eating' describes an action happening now - present continuous tense",
+              "sub_skill": "tenses"
+            },
+            {
+              "id": "eng_sl_013",
+              "question": "What tense is the sentence 'I ate rice'?",
+              "options": [
+                "Simple past",
+                "Simple present",
+                "Simple future",
+                "Past continuous"
+              ],
+              "correct": "Simple past",
+              "difficulty": "easy",
+              "explanation": "'ate' is the past form of 'eat' - simple past tense",
+              "sub_skill": "tenses"
+            },
+            {
+              "id": "eng_sl_014",
+              "question": "What tense is the sentence 'I will go home'?",
+              "options": [
+                "Simple past",
+                "Simple present",
+                "Simple future",
+                "Present continuous"
+              ],
+              "correct": "Simple future",
+              "difficulty": "easy",
+              "explanation": "'will go' describes an action yet to happen - simple future tense",
+              "sub_skill": "tenses"
+            },
+            {
+              "id": "eng_sl_015",
+              "question": "What tense is the sentence 'I have finished my homework'?",
+              "options": [
+                "Simple past",
+                "Present perfect",
+                "Simple future",
+                "Past perfect"
+              ],
+              "correct": "Present perfect",
+              "difficulty": "hard",
+              "explanation": "'have finished' links a past action to the present result - present perfect tense",
+              "sub_skill": "tenses"
+            },
+            {
+              "id": "eng_sl_016",
               "question": "What is a synonym for 'happy'?",
               "options": [
                 "Sad",
@@ -695,7 +2544,50 @@
               ],
               "correct": "Joyful",
               "difficulty": "easy",
-              "explanation": "'Joyful' has the same meaning as 'happy'"
+              "explanation": "'Joyful' has the same meaning as 'happy'",
+              "sub_skill": "vocabulary"
+            },
+            {
+              "id": "eng_sl_017",
+              "question": "What is an antonym for 'hot'?",
+              "options": [
+                "Warm",
+                "Cold",
+                "Dry",
+                "Bright"
+              ],
+              "correct": "Cold",
+              "difficulty": "easy",
+              "explanation": "'Cold' is the opposite of 'hot'",
+              "sub_skill": "vocabulary"
+            },
+            {
+              "id": "eng_sl_018",
+              "question": "What is a synonym for 'big'?",
+              "options": [
+                "Small",
+                "Tiny",
+                "Large",
+                "Short"
+              ],
+              "correct": "Large",
+              "difficulty": "easy",
+              "explanation": "'Large' has the same meaning as 'big'",
+              "sub_skill": "vocabulary"
+            },
+            {
+              "id": "eng_sl_019",
+              "question": "What is an antonym for 'fast'?",
+              "options": [
+                "Quick",
+                "Rapid",
+                "Slow",
+                "Sudden"
+              ],
+              "correct": "Slow",
+              "difficulty": "easy",
+              "explanation": "'Slow' is the opposite of 'fast'",
+              "sub_skill": "vocabulary"
             }
           ]
         }
@@ -712,7 +2604,119 @@
           "name": "Biology",
           "questions": [
             {
-              "id": "sci_sl_001",
+              "id": "sci_sl_003",
+              "question": "What is the powerhouse of the cell?",
+              "options": [
+                "Nucleus",
+                "Mitochondria",
+                "Ribosome",
+                "Golgi"
+              ],
+              "correct": "Mitochondria",
+              "difficulty": "medium",
+              "explanation": "Mitochondria are the powerhouse of the cell",
+              "sub_skill": "cell_biology"
+            },
+            {
+              "id": "sci_sl_004",
+              "question": "Which part of the cell controls its activities?",
+              "options": [
+                "Cell wall",
+                "Ribosome",
+                "Nucleus",
+                "Cytoplasm"
+              ],
+              "correct": "Nucleus",
+              "difficulty": "medium",
+              "explanation": "The nucleus controls the cell's activities and holds its genetic material",
+              "sub_skill": "cell_biology"
+            },
+            {
+              "id": "sci_sl_005",
+              "question": "What structure gives a plant cell its rigid shape?",
+              "options": [
+                "Cell membrane",
+                "Cell wall",
+                "Nucleus",
+                "Vacuole"
+              ],
+              "correct": "Cell wall",
+              "difficulty": "medium",
+              "explanation": "The cell wall is a rigid layer that supports and shapes a plant cell",
+              "sub_skill": "cell_biology"
+            },
+            {
+              "id": "sci_sl_006",
+              "question": "Which cell structure is the site of protein synthesis?",
+              "options": [
+                "Ribosome",
+                "Nucleus",
+                "Mitochondria",
+                "Cell wall"
+              ],
+              "correct": "Ribosome",
+              "difficulty": "hard",
+              "explanation": "Ribosomes are where proteins are made in a cell",
+              "sub_skill": "cell_biology"
+            },
+            {
+              "id": "sci_sl_007",
+              "question": "What is the largest organ in the human body?",
+              "options": [
+                "Heart",
+                "Liver",
+                "Skin",
+                "Brain"
+              ],
+              "correct": "Skin",
+              "difficulty": "medium",
+              "explanation": "The skin is the largest organ in the human body",
+              "sub_skill": "human_body_systems"
+            },
+            {
+              "id": "sci_sl_008",
+              "question": "Which organ pumps blood around the body?",
+              "options": [
+                "Lungs",
+                "Heart",
+                "Kidney",
+                "Stomach"
+              ],
+              "correct": "Heart",
+              "difficulty": "easy",
+              "explanation": "The heart pumps blood around the body",
+              "sub_skill": "human_body_systems"
+            },
+            {
+              "id": "sci_sl_009",
+              "question": "Which organ filters waste from the blood?",
+              "options": [
+                "Heart",
+                "Lungs",
+                "Kidney",
+                "Liver"
+              ],
+              "correct": "Kidney",
+              "difficulty": "medium",
+              "explanation": "The kidneys filter waste products out of the blood",
+              "sub_skill": "human_body_systems"
+            },
+            {
+              "id": "sci_sl_010",
+              "question": "Which organs are used for breathing?",
+              "options": [
+                "Heart",
+                "Lungs",
+                "Kidney",
+                "Stomach"
+              ],
+              "correct": "Lungs",
+              "difficulty": "easy",
+              "explanation": "The lungs take in oxygen and remove carbon dioxide during breathing",
+              "sub_skill": "human_body_systems"
+            },
+            {
+              "id": "sci_sl_011",
               "question": "Which part of a plant carries out photosynthesis?",
               "options": [
                 "Root",
@@ -722,20 +2726,106 @@
               ],
               "correct": "Leaf",
               "difficulty": "medium",
-              "explanation": "The leaf contains chlorophyll, which traps sunlight for photosynthesis"
+              "explanation": "The leaf contains chlorophyll, which traps sunlight for photosynthesis",
+              "sub_skill": "plant_biology"
             },
             {
-              "id": "sci_sl_002",
-              "question": "Which organ in the human body pumps blood?",
+              "id": "sci_sl_012",
+              "question": "Which gas do plants absorb for photosynthesis?",
               "options": [
-                "Lungs",
-                "Heart",
-                "Kidney",
-                "Stomach"
+                "Oxygen",
+                "Nitrogen",
+                "Carbon dioxide",
+                "Hydrogen"
               ],
-              "correct": "Heart",
+              "correct": "Carbon dioxide",
+              "difficulty": "medium",
+              "explanation": "Plants absorb carbon dioxide from the air to use in photosynthesis",
+              "sub_skill": "plant_biology"
+            },
+            {
+              "id": "sci_sl_013",
+              "question": "Which part of a plant absorbs water from the soil?",
+              "options": [
+                "Leaf",
+                "Flower",
+                "Root",
+                "Stem"
+              ],
+              "correct": "Root",
               "difficulty": "easy",
-              "explanation": "The heart pumps blood around the body"
+              "explanation": "The roots absorb water and minerals from the soil",
+              "sub_skill": "plant_biology"
+            },
+            {
+              "id": "sci_sl_014",
+              "question": "Which gas do plants release during photosynthesis?",
+              "options": [
+                "Carbon dioxide",
+                "Nitrogen",
+                "Oxygen",
+                "Hydrogen"
+              ],
+              "correct": "Oxygen",
+              "difficulty": "medium",
+              "explanation": "Photosynthesis releases oxygen as a byproduct",
+              "sub_skill": "plant_biology"
+            },
+            {
+              "id": "sci_sl_015",
+              "question": "Which food class mainly provides the body with energy?",
+              "options": [
+                "Proteins",
+                "Vitamins",
+                "Carbohydrates",
+                "Minerals"
+              ],
+              "correct": "Carbohydrates",
+              "difficulty": "medium",
+              "explanation": "Carbohydrates are the body's main energy source",
+              "sub_skill": "nutrition_and_health"
+            },
+            {
+              "id": "sci_sl_016",
+              "question": "Which food class is needed for growth and repair of body tissue?",
+              "options": [
+                "Carbohydrates",
+                "Proteins",
+                "Vitamins",
+                "Water"
+              ],
+              "correct": "Proteins",
+              "difficulty": "medium",
+              "explanation": "Proteins build and repair body tissues",
+              "sub_skill": "nutrition_and_health"
+            },
+            {
+              "id": "sci_sl_017",
+              "question": "Which vitamin does the body produce from sunlight?",
+              "options": [
+                "Vitamin A",
+                "Vitamin C",
+                "Vitamin D",
+                "Vitamin K"
+              ],
+              "correct": "Vitamin D",
+              "difficulty": "hard",
+              "explanation": "The skin produces vitamin D when exposed to sunlight",
+              "sub_skill": "nutrition_and_health"
+            },
+            {
+              "id": "sci_sl_018",
+              "question": "A diet containing all necessary food classes in the right amounts is called what?",
+              "options": [
+                "A balanced diet",
+                "A fasting diet",
+                "A liquid diet",
+                "A protein diet"
+              ],
+              "correct": "A balanced diet",
+              "difficulty": "easy",
+              "explanation": "A balanced diet supplies all food classes (carbohydrates, proteins, fats, vitamins, minerals, water) in the right proportions",
+              "sub_skill": "nutrition_and_health"
             }
           ]
         }
@@ -753,32 +2843,62 @@
           "questions": [
             {
               "id": "math_lr_001",
-              "question": "What is 5 + 6?",
+              "question": "Simplify using BODMAS: 3 + 4 × 2",
               "options": [
-                "9",
-                "10",
                 "11",
-                "12"
+                "14",
+                "10",
+                "20"
               ],
               "correct": "11",
-              "difficulty": "easy",
-              "explanation": "5 + 6 = 11"
+              "difficulty": "medium",
+              "explanation": "Multiplication before addition: 4 × 2 = 8, then 3 + 8 = 11",
+              "sub_skill": "order_of_operations"
             },
             {
               "id": "math_lr_002",
-              "question": "What is 4 × 6?",
+              "question": "Simplify using BODMAS: (2 + 3) × 4",
               "options": [
                 "20",
-                "22",
-                "24",
-                "26"
+                "14",
+                "9",
+                "24"
               ],
-              "correct": "24",
-              "difficulty": "easy",
-              "explanation": "4 × 6 = 24"
+              "correct": "20",
+              "difficulty": "medium",
+              "explanation": "Brackets first: 2 + 3 = 5, then 5 × 4 = 20",
+              "sub_skill": "order_of_operations"
             },
             {
               "id": "math_lr_003",
+              "question": "Simplify using BODMAS: 10 - 2 × 3",
+              "options": [
+                "4",
+                "24",
+                "8",
+                "5"
+              ],
+              "correct": "4",
+              "difficulty": "medium",
+              "explanation": "Multiplication before subtraction: 2 × 3 = 6, then 10 - 6 = 4",
+              "sub_skill": "order_of_operations"
+            },
+            {
+              "id": "math_lr_004",
+              "question": "Simplify using BODMAS: 20 ÷ 4 + 3",
+              "options": [
+                "8",
+                "5",
+                "4",
+                "10"
+              ],
+              "correct": "8",
+              "difficulty": "medium",
+              "explanation": "Division before addition: 20 ÷ 4 = 5, then 5 + 3 = 8",
+              "sub_skill": "order_of_operations"
+            },
+            {
+              "id": "math_lr_005",
               "question": "Solve for x: x + 5 = 12",
               "options": [
                 "5",
@@ -788,49 +2908,11 @@
               ],
               "correct": "7",
               "difficulty": "medium",
-              "explanation": "x = 12 - 5 = 7"
-            },
-            {
-              "id": "math_lr_004",
-              "question": "What is the square root of 81?",
-              "options": [
-                "7",
-                "8",
-                "9",
-                "10"
-              ],
-              "correct": "9",
-              "difficulty": "medium",
-              "explanation": "9 × 9 = 81"
-            },
-            {
-              "id": "math_lr_005",
-              "question": "Simplify using BODMAS: 3 + 4 × 2",
-              "options": [
-                "10",
-                "11",
-                "14",
-                "20"
-              ],
-              "correct": "11",
-              "difficulty": "medium",
-              "explanation": "Multiplication before addition: 4 × 2 = 8, then 3 + 8 = 11"
+              "explanation": "x = 12 - 5 = 7",
+              "sub_skill": "linear_equations"
             },
             {
               "id": "math_lr_006",
-              "question": "What is 100 ÷ 4?",
-              "options": [
-                "20",
-                "25",
-                "30",
-                "40"
-              ],
-              "correct": "25",
-              "difficulty": "easy",
-              "explanation": "100 ÷ 4 = 25"
-            },
-            {
-              "id": "math_lr_007",
               "question": "Solve for x: 3x = 18",
               "options": [
                 "4",
@@ -840,36 +2922,67 @@
               ],
               "correct": "6",
               "difficulty": "medium",
-              "explanation": "x = 18 ÷ 3 = 6"
+              "explanation": "x = 18 ÷ 3 = 6",
+              "sub_skill": "linear_equations"
+            },
+            {
+              "id": "math_lr_007",
+              "question": "Solve for x: x - 4 = 9",
+              "options": [
+                "11",
+                "12",
+                "13",
+                "14"
+              ],
+              "correct": "13",
+              "difficulty": "medium",
+              "explanation": "x = 9 + 4 = 13",
+              "sub_skill": "linear_equations"
             },
             {
               "id": "math_lr_008",
-              "question": "What is 9 × 9?",
+              "question": "Solve for x: 2x + 1 = 11",
               "options": [
-                "72",
-                "76",
-                "81",
-                "84"
+                "4",
+                "5",
+                "6",
+                "7"
               ],
-              "correct": "81",
-              "difficulty": "easy",
-              "explanation": "9 × 9 = 81"
+              "correct": "5",
+              "difficulty": "hard",
+              "explanation": "2x = 11 - 1 = 10, so x = 5",
+              "sub_skill": "linear_equations"
             },
             {
               "id": "math_lr_009",
-              "question": "What is 25% of 200?",
+              "question": "What is the square root of 16?",
               "options": [
-                "25",
-                "40",
-                "50",
-                "60"
+                "2",
+                "3",
+                "4",
+                "5"
               ],
-              "correct": "50",
-              "difficulty": "hard",
-              "explanation": "25% of 200 = 0.25 × 200 = 50"
+              "correct": "4",
+              "difficulty": "medium",
+              "explanation": "4 × 4 = 16",
+              "sub_skill": "indices_and_roots"
             },
             {
               "id": "math_lr_010",
+              "question": "What is the square root of 81?",
+              "options": [
+                "7",
+                "8",
+                "9",
+                "10"
+              ],
+              "correct": "9",
+              "difficulty": "medium",
+              "explanation": "9 × 9 = 81",
+              "sub_skill": "indices_and_roots"
+            },
+            {
+              "id": "math_lr_011",
               "question": "What is 6 squared (6²)?",
               "options": [
                 "12",
@@ -879,7 +2992,134 @@
               ],
               "correct": "36",
               "difficulty": "easy",
-              "explanation": "6² = 6 × 6 = 36"
+              "explanation": "6² = 6 × 6 = 36",
+              "sub_skill": "indices_and_roots"
+            },
+            {
+              "id": "math_lr_012",
+              "question": "What is 2 cubed (2³)?",
+              "options": [
+                "4",
+                "6",
+                "8",
+                "16"
+              ],
+              "correct": "8",
+              "difficulty": "medium",
+              "explanation": "2³ = 2 × 2 × 2 = 8",
+              "sub_skill": "indices_and_roots"
+            },
+            {
+              "id": "math_lr_013",
+              "question": "What is 20% of 50?",
+              "options": [
+                "5",
+                "10",
+                "15",
+                "20"
+              ],
+              "correct": "10",
+              "difficulty": "hard",
+              "explanation": "20% of 50 = 0.20 × 50 = 10",
+              "sub_skill": "percentages"
+            },
+            {
+              "id": "math_lr_014",
+              "question": "What is 25% of 200?",
+              "options": [
+                "25",
+                "40",
+                "50",
+                "60"
+              ],
+              "correct": "50",
+              "difficulty": "hard",
+              "explanation": "25% of 200 = 0.25 × 200 = 50",
+              "sub_skill": "percentages"
+            },
+            {
+              "id": "math_lr_015",
+              "question": "What is 10% of 90?",
+              "options": [
+                "7",
+                "8",
+                "9",
+                "10"
+              ],
+              "correct": "9",
+              "difficulty": "medium",
+              "explanation": "10% of 90 = 0.10 × 90 = 9",
+              "sub_skill": "percentages"
+            },
+            {
+              "id": "math_lr_016",
+              "question": "What is 50% of 64?",
+              "options": [
+                "16",
+                "24",
+                "32",
+                "40"
+              ],
+              "correct": "32",
+              "difficulty": "medium",
+              "explanation": "50% of 64 = 0.50 × 64 = 32",
+              "sub_skill": "percentages"
+            },
+            {
+              "id": "math_lr_017",
+              "question": "What is 15 - 7?",
+              "options": [
+                "6",
+                "7",
+                "8",
+                "9"
+              ],
+              "correct": "8",
+              "difficulty": "easy",
+              "explanation": "15 - 7 = 8",
+              "sub_skill": "simplification"
+            },
+            {
+              "id": "math_lr_018",
+              "question": "What is 4 × 8?",
+              "options": [
+                "28",
+                "30",
+                "32",
+                "34"
+              ],
+              "correct": "32",
+              "difficulty": "medium",
+              "explanation": "4 × 8 = 32",
+              "sub_skill": "simplification"
+            },
+            {
+              "id": "math_lr_019",
+              "question": "What is 144 ÷ 12?",
+              "options": [
+                "10",
+                "11",
+                "12",
+                "13"
+              ],
+              "correct": "12",
+              "difficulty": "medium",
+              "explanation": "144 ÷ 12 = 12",
+              "sub_skill": "simplification"
+            },
+            {
+              "id": "math_lr_020",
+              "question": "What is 100 ÷ 4?",
+              "options": [
+                "20",
+                "25",
+                "30",
+                "40"
+              ],
+              "correct": "25",
+              "difficulty": "easy",
+              "explanation": "100 ÷ 4 = 25",
+              "sub_skill": "simplification"
             }
           ]
         },
@@ -888,20 +3128,7 @@
           "name": "Geometry",
           "questions": [
             {
-              "id": "math_lr_011",
-              "question": "How many sides does a rectangle have?",
-              "options": [
-                "3",
-                "4",
-                "5",
-                "6"
-              ],
-              "correct": "4",
-              "difficulty": "easy",
-              "explanation": "A rectangle has 4 sides"
-            },
-            {
-              "id": "math_lr_012",
+              "id": "math_lr_021",
               "question": "What is the sum of angles in a triangle?",
               "options": [
                 "90°",
@@ -911,7 +3138,162 @@
               ],
               "correct": "180°",
               "difficulty": "medium",
-              "explanation": "The interior angles of a triangle always add up to 180°"
+              "explanation": "The interior angles of a triangle always add up to 180°",
+              "sub_skill": "angles"
+            },
+            {
+              "id": "math_lr_022",
+              "question": "Angles on a straight line add up to how many degrees?",
+              "options": [
+                "90°",
+                "180°",
+                "270°",
+                "360°"
+              ],
+              "correct": "180°",
+              "difficulty": "medium",
+              "explanation": "Angles on a straight line always sum to 180°",
+              "sub_skill": "angles"
+            },
+            {
+              "id": "math_lr_023",
+              "question": "Angles around a point add up to how many degrees?",
+              "options": [
+                "90°",
+                "180°",
+                "270°",
+                "360°"
+              ],
+              "correct": "360°",
+              "difficulty": "medium",
+              "explanation": "Angles at a single point always sum to 360°",
+              "sub_skill": "angles"
+            },
+            {
+              "id": "math_lr_024",
+              "question": "What is the sum of angles in a quadrilateral?",
+              "options": [
+                "180°",
+                "270°",
+                "360°",
+                "450°"
+              ],
+              "correct": "360°",
+              "difficulty": "medium",
+              "explanation": "The interior angles of any quadrilateral always add up to 360°",
+              "sub_skill": "angles"
+            },
+            {
+              "id": "math_lr_025",
+              "question": "How many sides does a triangle have?",
+              "options": [
+                "2",
+                "3",
+                "4",
+                "5"
+              ],
+              "correct": "3",
+              "difficulty": "easy",
+              "explanation": "A triangle has 3 sides",
+              "sub_skill": "shapes_and_properties"
+            },
+            {
+              "id": "math_lr_026",
+              "question": "How many sides does a rectangle have?",
+              "options": [
+                "3",
+                "4",
+                "5",
+                "6"
+              ],
+              "correct": "4",
+              "difficulty": "easy",
+              "explanation": "A rectangle has 4 sides",
+              "sub_skill": "shapes_and_properties"
+            },
+            {
+              "id": "math_lr_027",
+              "question": "How many sides does a pentagon have?",
+              "options": [
+                "4",
+                "5",
+                "6",
+                "7"
+              ],
+              "correct": "5",
+              "difficulty": "easy",
+              "explanation": "A pentagon has 5 sides",
+              "sub_skill": "shapes_and_properties"
+            },
+            {
+              "id": "math_lr_028",
+              "question": "An angle of exactly 90° is called what?",
+              "options": [
+                "Acute angle",
+                "Right angle",
+                "Obtuse angle",
+                "Reflex angle"
+              ],
+              "correct": "Right angle",
+              "difficulty": "easy",
+              "explanation": "An angle of exactly 90° is a right angle",
+              "sub_skill": "shapes_and_properties"
+            },
+            {
+              "id": "math_lr_029",
+              "question": "What is the area of a square with side length 4?",
+              "options": [
+                "8",
+                "12",
+                "16",
+                "20"
+              ],
+              "correct": "16",
+              "difficulty": "medium",
+              "explanation": "Area = 4 × 4 = 16",
+              "sub_skill": "perimeter_and_area"
+            },
+            {
+              "id": "math_lr_030",
+              "question": "What is the area of a rectangle 5cm by 3cm?",
+              "options": [
+                "8",
+                "15",
+                "16",
+                "18"
+              ],
+              "correct": "15",
+              "difficulty": "medium",
+              "explanation": "Area = length × width = 5 × 3 = 15",
+              "sub_skill": "perimeter_and_area"
+            },
+            {
+              "id": "math_lr_031",
+              "question": "What is the perimeter of a square with side length 6?",
+              "options": [
+                "12",
+                "18",
+                "24",
+                "36"
+              ],
+              "correct": "24",
+              "difficulty": "medium",
+              "explanation": "Perimeter = 4 × side = 4 × 6 = 24",
+              "sub_skill": "perimeter_and_area"
+            },
+            {
+              "id": "math_lr_032",
+              "question": "What is the perimeter of a rectangle 4cm long and 2cm wide?",
+              "options": [
+                "8",
+                "10",
+                "12",
+                "16"
+              ],
+              "correct": "12",
+              "difficulty": "medium",
+              "explanation": "Perimeter = 2 × (length + width) = 2 × (4 + 2) = 12",
+              "sub_skill": "perimeter_and_area"
             }
           ]
         }
@@ -928,8 +3310,50 @@
           "name": "Grammar",
           "questions": [
             {
-              "id": "eng_lr_001",
-              "question": "What part of speech is the word 'quickly' in 'She ran quickly'?",
+              "id": "eng_lr_004",
+              "question": "What is a noun?",
+              "options": [
+                "Action word",
+                "Person, place, or thing",
+                "Describing word",
+                "Connecting word"
+              ],
+              "correct": "Person, place, or thing",
+              "difficulty": "easy",
+              "explanation": "A noun is a person, place, or thing",
+              "sub_skill": "parts_of_speech"
+            },
+            {
+              "id": "eng_lr_005",
+              "question": "What is a verb?",
+              "options": [
+                "Action word",
+                "Person, place, or thing",
+                "Describing word",
+                "Connecting word"
+              ],
+              "correct": "Action word",
+              "difficulty": "easy",
+              "explanation": "A verb is an action word",
+              "sub_skill": "parts_of_speech"
+            },
+            {
+              "id": "eng_lr_006",
+              "question": "What is an adjective?",
+              "options": [
+                "Action word",
+                "Person, place, or thing",
+                "Describing word",
+                "Connecting word"
+              ],
+              "correct": "Describing word",
+              "difficulty": "medium",
+              "explanation": "An adjective describes a noun",
+              "sub_skill": "parts_of_speech"
+            },
+            {
+              "id": "eng_lr_007",
+              "question": "In 'She ran quickly', what part of speech is 'quickly'?",
               "options": [
                 "Noun",
                 "Verb",
@@ -938,10 +3362,11 @@
               ],
               "correct": "Adverb",
               "difficulty": "medium",
-              "explanation": "'Quickly' describes how she ran, so it is an adverb"
+              "explanation": "'Quickly' describes how she ran, so it is an adverb",
+              "sub_skill": "parts_of_speech"
             },
             {
-              "id": "eng_lr_002",
+              "id": "eng_lr_008",
               "question": "Choose the correct sentence.",
               "options": [
                 "The boys was playing football",
@@ -951,10 +3376,109 @@
               ],
               "correct": "The boys were playing football",
               "difficulty": "medium",
-              "explanation": "'Boys' is plural, so it takes the plural verb 'were' (subject-verb agreement)"
+              "explanation": "'Boys' is plural, so it takes the plural verb 'were'",
+              "sub_skill": "subject_verb_agreement"
             },
             {
-              "id": "eng_lr_003",
+              "id": "eng_lr_009",
+              "question": "Choose the correct sentence.",
+              "options": [
+                "She go to school every day",
+                "She goes to school every day",
+                "She going to school every day",
+                "She gone to school every day"
+              ],
+              "correct": "She goes to school every day",
+              "difficulty": "medium",
+              "explanation": "'She' is third-person singular, so the verb takes an -s: 'goes'",
+              "sub_skill": "subject_verb_agreement"
+            },
+            {
+              "id": "eng_lr_010",
+              "question": "Choose the correct sentence.",
+              "options": [
+                "They is playing football now",
+                "They am playing football now",
+                "They are playing football now",
+                "They be playing football now"
+              ],
+              "correct": "They are playing football now",
+              "difficulty": "easy",
+              "explanation": "'They' is plural, so it takes the plural verb 'are'",
+              "sub_skill": "subject_verb_agreement"
+            },
+            {
+              "id": "eng_lr_011",
+              "question": "Choose the correct sentence.",
+              "options": [
+                "He am a doctor",
+                "He is a doctor",
+                "He are a doctor",
+                "He be a doctor"
+              ],
+              "correct": "He is a doctor",
+              "difficulty": "easy",
+              "explanation": "'He' is third-person singular, so it takes 'is'",
+              "sub_skill": "subject_verb_agreement"
+            },
+            {
+              "id": "eng_lr_012",
+              "question": "What tense is the sentence 'I am eating'?",
+              "options": [
+                "Simple past",
+                "Present continuous",
+                "Simple future",
+                "Present perfect"
+              ],
+              "correct": "Present continuous",
+              "difficulty": "medium",
+              "explanation": "'am eating' describes an action happening now - present continuous tense",
+              "sub_skill": "tenses"
+            },
+            {
+              "id": "eng_lr_013",
+              "question": "What tense is the sentence 'I ate rice'?",
+              "options": [
+                "Simple past",
+                "Simple present",
+                "Simple future",
+                "Past continuous"
+              ],
+              "correct": "Simple past",
+              "difficulty": "easy",
+              "explanation": "'ate' is the past form of 'eat' - simple past tense",
+              "sub_skill": "tenses"
+            },
+            {
+              "id": "eng_lr_014",
+              "question": "What tense is the sentence 'I will go home'?",
+              "options": [
+                "Simple past",
+                "Simple present",
+                "Simple future",
+                "Present continuous"
+              ],
+              "correct": "Simple future",
+              "difficulty": "easy",
+              "explanation": "'will go' describes an action yet to happen - simple future tense",
+              "sub_skill": "tenses"
+            },
+            {
+              "id": "eng_lr_015",
+              "question": "What tense is the sentence 'I have finished my homework'?",
+              "options": [
+                "Simple past",
+                "Present perfect",
+                "Simple future",
+                "Past perfect"
+              ],
+              "correct": "Present perfect",
+              "difficulty": "hard",
+              "explanation": "'have finished' links a past action to the present result - present perfect tense",
+              "sub_skill": "tenses"
+            },
+            {
+              "id": "eng_lr_016",
               "question": "What is a synonym for 'happy'?",
               "options": [
                 "Sad",
@@ -964,7 +3488,50 @@
               ],
               "correct": "Joyful",
               "difficulty": "easy",
-              "explanation": "'Joyful' has the same meaning as 'happy'"
+              "explanation": "'Joyful' has the same meaning as 'happy'",
+              "sub_skill": "vocabulary"
+            },
+            {
+              "id": "eng_lr_017",
+              "question": "What is an antonym for 'hot'?",
+              "options": [
+                "Warm",
+                "Cold",
+                "Dry",
+                "Bright"
+              ],
+              "correct": "Cold",
+              "difficulty": "easy",
+              "explanation": "'Cold' is the opposite of 'hot'",
+              "sub_skill": "vocabulary"
+            },
+            {
+              "id": "eng_lr_018",
+              "question": "What is a synonym for 'big'?",
+              "options": [
+                "Small",
+                "Tiny",
+                "Large",
+                "Short"
+              ],
+              "correct": "Large",
+              "difficulty": "easy",
+              "explanation": "'Large' has the same meaning as 'big'",
+              "sub_skill": "vocabulary"
+            },
+            {
+              "id": "eng_lr_019",
+              "question": "What is an antonym for 'fast'?",
+              "options": [
+                "Quick",
+                "Rapid",
+                "Slow",
+                "Sudden"
+              ],
+              "correct": "Slow",
+              "difficulty": "easy",
+              "explanation": "'Slow' is the opposite of 'fast'",
+              "sub_skill": "vocabulary"
             }
           ]
         }
@@ -981,7 +3548,119 @@
           "name": "Biology",
           "questions": [
             {
-              "id": "sci_lr_001",
+              "id": "sci_lr_003",
+              "question": "What is the powerhouse of the cell?",
+              "options": [
+                "Nucleus",
+                "Mitochondria",
+                "Ribosome",
+                "Golgi"
+              ],
+              "correct": "Mitochondria",
+              "difficulty": "medium",
+              "explanation": "Mitochondria are the powerhouse of the cell",
+              "sub_skill": "cell_biology"
+            },
+            {
+              "id": "sci_lr_004",
+              "question": "Which part of the cell controls its activities?",
+              "options": [
+                "Cell wall",
+                "Ribosome",
+                "Nucleus",
+                "Cytoplasm"
+              ],
+              "correct": "Nucleus",
+              "difficulty": "medium",
+              "explanation": "The nucleus controls the cell's activities and holds its genetic material",
+              "sub_skill": "cell_biology"
+            },
+            {
+              "id": "sci_lr_005",
+              "question": "What structure gives a plant cell its rigid shape?",
+              "options": [
+                "Cell membrane",
+                "Cell wall",
+                "Nucleus",
+                "Vacuole"
+              ],
+              "correct": "Cell wall",
+              "difficulty": "medium",
+              "explanation": "The cell wall is a rigid layer that supports and shapes a plant cell",
+              "sub_skill": "cell_biology"
+            },
+            {
+              "id": "sci_lr_006",
+              "question": "Which cell structure is the site of protein synthesis?",
+              "options": [
+                "Ribosome",
+                "Nucleus",
+                "Mitochondria",
+                "Cell wall"
+              ],
+              "correct": "Ribosome",
+              "difficulty": "hard",
+              "explanation": "Ribosomes are where proteins are made in a cell",
+              "sub_skill": "cell_biology"
+            },
+            {
+              "id": "sci_lr_007",
+              "question": "What is the largest organ in the human body?",
+              "options": [
+                "Heart",
+                "Liver",
+                "Skin",
+                "Brain"
+              ],
+              "correct": "Skin",
+              "difficulty": "medium",
+              "explanation": "The skin is the largest organ in the human body",
+              "sub_skill": "human_body_systems"
+            },
+            {
+              "id": "sci_lr_008",
+              "question": "Which organ pumps blood around the body?",
+              "options": [
+                "Lungs",
+                "Heart",
+                "Kidney",
+                "Stomach"
+              ],
+              "correct": "Heart",
+              "difficulty": "easy",
+              "explanation": "The heart pumps blood around the body",
+              "sub_skill": "human_body_systems"
+            },
+            {
+              "id": "sci_lr_009",
+              "question": "Which organ filters waste from the blood?",
+              "options": [
+                "Heart",
+                "Lungs",
+                "Kidney",
+                "Liver"
+              ],
+              "correct": "Kidney",
+              "difficulty": "medium",
+              "explanation": "The kidneys filter waste products out of the blood",
+              "sub_skill": "human_body_systems"
+            },
+            {
+              "id": "sci_lr_010",
+              "question": "Which organs are used for breathing?",
+              "options": [
+                "Heart",
+                "Lungs",
+                "Kidney",
+                "Stomach"
+              ],
+              "correct": "Lungs",
+              "difficulty": "easy",
+              "explanation": "The lungs take in oxygen and remove carbon dioxide during breathing",
+              "sub_skill": "human_body_systems"
+            },
+            {
+              "id": "sci_lr_011",
               "question": "Which part of a plant carries out photosynthesis?",
               "options": [
                 "Root",
@@ -991,20 +3670,106 @@
               ],
               "correct": "Leaf",
               "difficulty": "medium",
-              "explanation": "The leaf contains chlorophyll, which traps sunlight for photosynthesis"
+              "explanation": "The leaf contains chlorophyll, which traps sunlight for photosynthesis",
+              "sub_skill": "plant_biology"
             },
             {
-              "id": "sci_lr_002",
-              "question": "Which organ in the human body pumps blood?",
+              "id": "sci_lr_012",
+              "question": "Which gas do plants absorb for photosynthesis?",
               "options": [
-                "Lungs",
-                "Heart",
-                "Kidney",
-                "Stomach"
+                "Oxygen",
+                "Nitrogen",
+                "Carbon dioxide",
+                "Hydrogen"
               ],
-              "correct": "Heart",
+              "correct": "Carbon dioxide",
+              "difficulty": "medium",
+              "explanation": "Plants absorb carbon dioxide from the air to use in photosynthesis",
+              "sub_skill": "plant_biology"
+            },
+            {
+              "id": "sci_lr_013",
+              "question": "Which part of a plant absorbs water from the soil?",
+              "options": [
+                "Leaf",
+                "Flower",
+                "Root",
+                "Stem"
+              ],
+              "correct": "Root",
               "difficulty": "easy",
-              "explanation": "The heart pumps blood around the body"
+              "explanation": "The roots absorb water and minerals from the soil",
+              "sub_skill": "plant_biology"
+            },
+            {
+              "id": "sci_lr_014",
+              "question": "Which gas do plants release during photosynthesis?",
+              "options": [
+                "Carbon dioxide",
+                "Nitrogen",
+                "Oxygen",
+                "Hydrogen"
+              ],
+              "correct": "Oxygen",
+              "difficulty": "medium",
+              "explanation": "Photosynthesis releases oxygen as a byproduct",
+              "sub_skill": "plant_biology"
+            },
+            {
+              "id": "sci_lr_015",
+              "question": "Which food class mainly provides the body with energy?",
+              "options": [
+                "Proteins",
+                "Vitamins",
+                "Carbohydrates",
+                "Minerals"
+              ],
+              "correct": "Carbohydrates",
+              "difficulty": "medium",
+              "explanation": "Carbohydrates are the body's main energy source",
+              "sub_skill": "nutrition_and_health"
+            },
+            {
+              "id": "sci_lr_016",
+              "question": "Which food class is needed for growth and repair of body tissue?",
+              "options": [
+                "Carbohydrates",
+                "Proteins",
+                "Vitamins",
+                "Water"
+              ],
+              "correct": "Proteins",
+              "difficulty": "medium",
+              "explanation": "Proteins build and repair body tissues",
+              "sub_skill": "nutrition_and_health"
+            },
+            {
+              "id": "sci_lr_017",
+              "question": "Which vitamin does the body produce from sunlight?",
+              "options": [
+                "Vitamin A",
+                "Vitamin C",
+                "Vitamin D",
+                "Vitamin K"
+              ],
+              "correct": "Vitamin D",
+              "difficulty": "hard",
+              "explanation": "The skin produces vitamin D when exposed to sunlight",
+              "sub_skill": "nutrition_and_health"
+            },
+            {
+              "id": "sci_lr_018",
+              "question": "A diet containing all necessary food classes in the right amounts is called what?",
+              "options": [
+                "A balanced diet",
+                "A fasting diet",
+                "A liquid diet",
+                "A protein diet"
+              ],
+              "correct": "A balanced diet",
+              "difficulty": "easy",
+              "explanation": "A balanced diet supplies all food classes (carbohydrates, proteins, fats, vitamins, minerals, water) in the right proportions",
+              "sub_skill": "nutrition_and_health"
             }
           ]
         }
@@ -1022,32 +3787,62 @@
           "questions": [
             {
               "id": "math_gm_001",
-              "question": "What is 5 + 6?",
+              "question": "Simplify using BODMAS: 3 + 4 × 2",
               "options": [
-                "9",
-                "10",
                 "11",
-                "12"
+                "14",
+                "10",
+                "20"
               ],
               "correct": "11",
-              "difficulty": "easy",
-              "explanation": "5 + 6 = 11"
+              "difficulty": "medium",
+              "explanation": "Multiplication before addition: 4 × 2 = 8, then 3 + 8 = 11",
+              "sub_skill": "order_of_operations"
             },
             {
               "id": "math_gm_002",
-              "question": "What is 4 × 6?",
+              "question": "Simplify using BODMAS: (2 + 3) × 4",
               "options": [
                 "20",
-                "22",
-                "24",
-                "26"
+                "14",
+                "9",
+                "24"
               ],
-              "correct": "24",
-              "difficulty": "easy",
-              "explanation": "4 × 6 = 24"
+              "correct": "20",
+              "difficulty": "medium",
+              "explanation": "Brackets first: 2 + 3 = 5, then 5 × 4 = 20",
+              "sub_skill": "order_of_operations"
             },
             {
               "id": "math_gm_003",
+              "question": "Simplify using BODMAS: 10 - 2 × 3",
+              "options": [
+                "4",
+                "24",
+                "8",
+                "5"
+              ],
+              "correct": "4",
+              "difficulty": "medium",
+              "explanation": "Multiplication before subtraction: 2 × 3 = 6, then 10 - 6 = 4",
+              "sub_skill": "order_of_operations"
+            },
+            {
+              "id": "math_gm_004",
+              "question": "Simplify using BODMAS: 20 ÷ 4 + 3",
+              "options": [
+                "8",
+                "5",
+                "4",
+                "10"
+              ],
+              "correct": "8",
+              "difficulty": "medium",
+              "explanation": "Division before addition: 20 ÷ 4 = 5, then 5 + 3 = 8",
+              "sub_skill": "order_of_operations"
+            },
+            {
+              "id": "math_gm_005",
               "question": "Solve for x: x + 5 = 12",
               "options": [
                 "5",
@@ -1057,49 +3852,11 @@
               ],
               "correct": "7",
               "difficulty": "medium",
-              "explanation": "x = 12 - 5 = 7"
-            },
-            {
-              "id": "math_gm_004",
-              "question": "What is the square root of 81?",
-              "options": [
-                "7",
-                "8",
-                "9",
-                "10"
-              ],
-              "correct": "9",
-              "difficulty": "medium",
-              "explanation": "9 × 9 = 81"
-            },
-            {
-              "id": "math_gm_005",
-              "question": "Simplify using BODMAS: 3 + 4 × 2",
-              "options": [
-                "10",
-                "11",
-                "14",
-                "20"
-              ],
-              "correct": "11",
-              "difficulty": "medium",
-              "explanation": "Multiplication before addition: 4 × 2 = 8, then 3 + 8 = 11"
+              "explanation": "x = 12 - 5 = 7",
+              "sub_skill": "linear_equations"
             },
             {
               "id": "math_gm_006",
-              "question": "What is 100 ÷ 4?",
-              "options": [
-                "20",
-                "25",
-                "30",
-                "40"
-              ],
-              "correct": "25",
-              "difficulty": "easy",
-              "explanation": "100 ÷ 4 = 25"
-            },
-            {
-              "id": "math_gm_007",
               "question": "Solve for x: 3x = 18",
               "options": [
                 "4",
@@ -1109,36 +3866,67 @@
               ],
               "correct": "6",
               "difficulty": "medium",
-              "explanation": "x = 18 ÷ 3 = 6"
+              "explanation": "x = 18 ÷ 3 = 6",
+              "sub_skill": "linear_equations"
+            },
+            {
+              "id": "math_gm_007",
+              "question": "Solve for x: x - 4 = 9",
+              "options": [
+                "11",
+                "12",
+                "13",
+                "14"
+              ],
+              "correct": "13",
+              "difficulty": "medium",
+              "explanation": "x = 9 + 4 = 13",
+              "sub_skill": "linear_equations"
             },
             {
               "id": "math_gm_008",
-              "question": "What is 9 × 9?",
+              "question": "Solve for x: 2x + 1 = 11",
               "options": [
-                "72",
-                "76",
-                "81",
-                "84"
+                "4",
+                "5",
+                "6",
+                "7"
               ],
-              "correct": "81",
-              "difficulty": "easy",
-              "explanation": "9 × 9 = 81"
+              "correct": "5",
+              "difficulty": "hard",
+              "explanation": "2x = 11 - 1 = 10, so x = 5",
+              "sub_skill": "linear_equations"
             },
             {
               "id": "math_gm_009",
-              "question": "What is 25% of 200?",
+              "question": "What is the square root of 16?",
               "options": [
-                "25",
-                "40",
-                "50",
-                "60"
+                "2",
+                "3",
+                "4",
+                "5"
               ],
-              "correct": "50",
-              "difficulty": "hard",
-              "explanation": "25% of 200 = 0.25 × 200 = 50"
+              "correct": "4",
+              "difficulty": "medium",
+              "explanation": "4 × 4 = 16",
+              "sub_skill": "indices_and_roots"
             },
             {
               "id": "math_gm_010",
+              "question": "What is the square root of 81?",
+              "options": [
+                "7",
+                "8",
+                "9",
+                "10"
+              ],
+              "correct": "9",
+              "difficulty": "medium",
+              "explanation": "9 × 9 = 81",
+              "sub_skill": "indices_and_roots"
+            },
+            {
+              "id": "math_gm_011",
               "question": "What is 6 squared (6²)?",
               "options": [
                 "12",
@@ -1148,7 +3936,134 @@
               ],
               "correct": "36",
               "difficulty": "easy",
-              "explanation": "6² = 6 × 6 = 36"
+              "explanation": "6² = 6 × 6 = 36",
+              "sub_skill": "indices_and_roots"
+            },
+            {
+              "id": "math_gm_012",
+              "question": "What is 2 cubed (2³)?",
+              "options": [
+                "4",
+                "6",
+                "8",
+                "16"
+              ],
+              "correct": "8",
+              "difficulty": "medium",
+              "explanation": "2³ = 2 × 2 × 2 = 8",
+              "sub_skill": "indices_and_roots"
+            },
+            {
+              "id": "math_gm_013",
+              "question": "What is 20% of 50?",
+              "options": [
+                "5",
+                "10",
+                "15",
+                "20"
+              ],
+              "correct": "10",
+              "difficulty": "hard",
+              "explanation": "20% of 50 = 0.20 × 50 = 10",
+              "sub_skill": "percentages"
+            },
+            {
+              "id": "math_gm_014",
+              "question": "What is 25% of 200?",
+              "options": [
+                "25",
+                "40",
+                "50",
+                "60"
+              ],
+              "correct": "50",
+              "difficulty": "hard",
+              "explanation": "25% of 200 = 0.25 × 200 = 50",
+              "sub_skill": "percentages"
+            },
+            {
+              "id": "math_gm_015",
+              "question": "What is 10% of 90?",
+              "options": [
+                "7",
+                "8",
+                "9",
+                "10"
+              ],
+              "correct": "9",
+              "difficulty": "medium",
+              "explanation": "10% of 90 = 0.10 × 90 = 9",
+              "sub_skill": "percentages"
+            },
+            {
+              "id": "math_gm_016",
+              "question": "What is 50% of 64?",
+              "options": [
+                "16",
+                "24",
+                "32",
+                "40"
+              ],
+              "correct": "32",
+              "difficulty": "medium",
+              "explanation": "50% of 64 = 0.50 × 64 = 32",
+              "sub_skill": "percentages"
+            },
+            {
+              "id": "math_gm_017",
+              "question": "What is 15 - 7?",
+              "options": [
+                "6",
+                "7",
+                "8",
+                "9"
+              ],
+              "correct": "8",
+              "difficulty": "easy",
+              "explanation": "15 - 7 = 8",
+              "sub_skill": "simplification"
+            },
+            {
+              "id": "math_gm_018",
+              "question": "What is 4 × 8?",
+              "options": [
+                "28",
+                "30",
+                "32",
+                "34"
+              ],
+              "correct": "32",
+              "difficulty": "medium",
+              "explanation": "4 × 8 = 32",
+              "sub_skill": "simplification"
+            },
+            {
+              "id": "math_gm_019",
+              "question": "What is 144 ÷ 12?",
+              "options": [
+                "10",
+                "11",
+                "12",
+                "13"
+              ],
+              "correct": "12",
+              "difficulty": "medium",
+              "explanation": "144 ÷ 12 = 12",
+              "sub_skill": "simplification"
+            },
+            {
+              "id": "math_gm_020",
+              "question": "What is 100 ÷ 4?",
+              "options": [
+                "20",
+                "25",
+                "30",
+                "40"
+              ],
+              "correct": "25",
+              "difficulty": "easy",
+              "explanation": "100 ÷ 4 = 25",
+              "sub_skill": "simplification"
             }
           ]
         },
@@ -1157,20 +4072,7 @@
           "name": "Geometry",
           "questions": [
             {
-              "id": "math_gm_011",
-              "question": "How many sides does a rectangle have?",
-              "options": [
-                "3",
-                "4",
-                "5",
-                "6"
-              ],
-              "correct": "4",
-              "difficulty": "easy",
-              "explanation": "A rectangle has 4 sides"
-            },
-            {
-              "id": "math_gm_012",
+              "id": "math_gm_021",
               "question": "What is the sum of angles in a triangle?",
               "options": [
                 "90°",
@@ -1180,7 +4082,162 @@
               ],
               "correct": "180°",
               "difficulty": "medium",
-              "explanation": "The interior angles of a triangle always add up to 180°"
+              "explanation": "The interior angles of a triangle always add up to 180°",
+              "sub_skill": "angles"
+            },
+            {
+              "id": "math_gm_022",
+              "question": "Angles on a straight line add up to how many degrees?",
+              "options": [
+                "90°",
+                "180°",
+                "270°",
+                "360°"
+              ],
+              "correct": "180°",
+              "difficulty": "medium",
+              "explanation": "Angles on a straight line always sum to 180°",
+              "sub_skill": "angles"
+            },
+            {
+              "id": "math_gm_023",
+              "question": "Angles around a point add up to how many degrees?",
+              "options": [
+                "90°",
+                "180°",
+                "270°",
+                "360°"
+              ],
+              "correct": "360°",
+              "difficulty": "medium",
+              "explanation": "Angles at a single point always sum to 360°",
+              "sub_skill": "angles"
+            },
+            {
+              "id": "math_gm_024",
+              "question": "What is the sum of angles in a quadrilateral?",
+              "options": [
+                "180°",
+                "270°",
+                "360°",
+                "450°"
+              ],
+              "correct": "360°",
+              "difficulty": "medium",
+              "explanation": "The interior angles of any quadrilateral always add up to 360°",
+              "sub_skill": "angles"
+            },
+            {
+              "id": "math_gm_025",
+              "question": "How many sides does a triangle have?",
+              "options": [
+                "2",
+                "3",
+                "4",
+                "5"
+              ],
+              "correct": "3",
+              "difficulty": "easy",
+              "explanation": "A triangle has 3 sides",
+              "sub_skill": "shapes_and_properties"
+            },
+            {
+              "id": "math_gm_026",
+              "question": "How many sides does a rectangle have?",
+              "options": [
+                "3",
+                "4",
+                "5",
+                "6"
+              ],
+              "correct": "4",
+              "difficulty": "easy",
+              "explanation": "A rectangle has 4 sides",
+              "sub_skill": "shapes_and_properties"
+            },
+            {
+              "id": "math_gm_027",
+              "question": "How many sides does a pentagon have?",
+              "options": [
+                "4",
+                "5",
+                "6",
+                "7"
+              ],
+              "correct": "5",
+              "difficulty": "easy",
+              "explanation": "A pentagon has 5 sides",
+              "sub_skill": "shapes_and_properties"
+            },
+            {
+              "id": "math_gm_028",
+              "question": "An angle of exactly 90° is called what?",
+              "options": [
+                "Acute angle",
+                "Right angle",
+                "Obtuse angle",
+                "Reflex angle"
+              ],
+              "correct": "Right angle",
+              "difficulty": "easy",
+              "explanation": "An angle of exactly 90° is a right angle",
+              "sub_skill": "shapes_and_properties"
+            },
+            {
+              "id": "math_gm_029",
+              "question": "What is the area of a square with side length 4?",
+              "options": [
+                "8",
+                "12",
+                "16",
+                "20"
+              ],
+              "correct": "16",
+              "difficulty": "medium",
+              "explanation": "Area = 4 × 4 = 16",
+              "sub_skill": "perimeter_and_area"
+            },
+            {
+              "id": "math_gm_030",
+              "question": "What is the area of a rectangle 5cm by 3cm?",
+              "options": [
+                "8",
+                "15",
+                "16",
+                "18"
+              ],
+              "correct": "15",
+              "difficulty": "medium",
+              "explanation": "Area = length × width = 5 × 3 = 15",
+              "sub_skill": "perimeter_and_area"
+            },
+            {
+              "id": "math_gm_031",
+              "question": "What is the perimeter of a square with side length 6?",
+              "options": [
+                "12",
+                "18",
+                "24",
+                "36"
+              ],
+              "correct": "24",
+              "difficulty": "medium",
+              "explanation": "Perimeter = 4 × side = 4 × 6 = 24",
+              "sub_skill": "perimeter_and_area"
+            },
+            {
+              "id": "math_gm_032",
+              "question": "What is the perimeter of a rectangle 4cm long and 2cm wide?",
+              "options": [
+                "8",
+                "10",
+                "12",
+                "16"
+              ],
+              "correct": "12",
+              "difficulty": "medium",
+              "explanation": "Perimeter = 2 × (length + width) = 2 × (4 + 2) = 12",
+              "sub_skill": "perimeter_and_area"
             }
           ]
         }
@@ -1197,8 +4254,50 @@
           "name": "Grammar",
           "questions": [
             {
-              "id": "eng_gm_001",
-              "question": "What part of speech is the word 'quickly' in 'She ran quickly'?",
+              "id": "eng_gm_004",
+              "question": "What is a noun?",
+              "options": [
+                "Action word",
+                "Person, place, or thing",
+                "Describing word",
+                "Connecting word"
+              ],
+              "correct": "Person, place, or thing",
+              "difficulty": "easy",
+              "explanation": "A noun is a person, place, or thing",
+              "sub_skill": "parts_of_speech"
+            },
+            {
+              "id": "eng_gm_005",
+              "question": "What is a verb?",
+              "options": [
+                "Action word",
+                "Person, place, or thing",
+                "Describing word",
+                "Connecting word"
+              ],
+              "correct": "Action word",
+              "difficulty": "easy",
+              "explanation": "A verb is an action word",
+              "sub_skill": "parts_of_speech"
+            },
+            {
+              "id": "eng_gm_006",
+              "question": "What is an adjective?",
+              "options": [
+                "Action word",
+                "Person, place, or thing",
+                "Describing word",
+                "Connecting word"
+              ],
+              "correct": "Describing word",
+              "difficulty": "medium",
+              "explanation": "An adjective describes a noun",
+              "sub_skill": "parts_of_speech"
+            },
+            {
+              "id": "eng_gm_007",
+              "question": "In 'She ran quickly', what part of speech is 'quickly'?",
               "options": [
                 "Noun",
                 "Verb",
@@ -1207,10 +4306,11 @@
               ],
               "correct": "Adverb",
               "difficulty": "medium",
-              "explanation": "'Quickly' describes how she ran, so it is an adverb"
+              "explanation": "'Quickly' describes how she ran, so it is an adverb",
+              "sub_skill": "parts_of_speech"
             },
             {
-              "id": "eng_gm_002",
+              "id": "eng_gm_008",
               "question": "Choose the correct sentence.",
               "options": [
                 "The boys was playing football",
@@ -1220,10 +4320,109 @@
               ],
               "correct": "The boys were playing football",
               "difficulty": "medium",
-              "explanation": "'Boys' is plural, so it takes the plural verb 'were' (subject-verb agreement)"
+              "explanation": "'Boys' is plural, so it takes the plural verb 'were'",
+              "sub_skill": "subject_verb_agreement"
             },
             {
-              "id": "eng_gm_003",
+              "id": "eng_gm_009",
+              "question": "Choose the correct sentence.",
+              "options": [
+                "She go to school every day",
+                "She goes to school every day",
+                "She going to school every day",
+                "She gone to school every day"
+              ],
+              "correct": "She goes to school every day",
+              "difficulty": "medium",
+              "explanation": "'She' is third-person singular, so the verb takes an -s: 'goes'",
+              "sub_skill": "subject_verb_agreement"
+            },
+            {
+              "id": "eng_gm_010",
+              "question": "Choose the correct sentence.",
+              "options": [
+                "They is playing football now",
+                "They am playing football now",
+                "They are playing football now",
+                "They be playing football now"
+              ],
+              "correct": "They are playing football now",
+              "difficulty": "easy",
+              "explanation": "'They' is plural, so it takes the plural verb 'are'",
+              "sub_skill": "subject_verb_agreement"
+            },
+            {
+              "id": "eng_gm_011",
+              "question": "Choose the correct sentence.",
+              "options": [
+                "He am a doctor",
+                "He is a doctor",
+                "He are a doctor",
+                "He be a doctor"
+              ],
+              "correct": "He is a doctor",
+              "difficulty": "easy",
+              "explanation": "'He' is third-person singular, so it takes 'is'",
+              "sub_skill": "subject_verb_agreement"
+            },
+            {
+              "id": "eng_gm_012",
+              "question": "What tense is the sentence 'I am eating'?",
+              "options": [
+                "Simple past",
+                "Present continuous",
+                "Simple future",
+                "Present perfect"
+              ],
+              "correct": "Present continuous",
+              "difficulty": "medium",
+              "explanation": "'am eating' describes an action happening now - present continuous tense",
+              "sub_skill": "tenses"
+            },
+            {
+              "id": "eng_gm_013",
+              "question": "What tense is the sentence 'I ate rice'?",
+              "options": [
+                "Simple past",
+                "Simple present",
+                "Simple future",
+                "Past continuous"
+              ],
+              "correct": "Simple past",
+              "difficulty": "easy",
+              "explanation": "'ate' is the past form of 'eat' - simple past tense",
+              "sub_skill": "tenses"
+            },
+            {
+              "id": "eng_gm_014",
+              "question": "What tense is the sentence 'I will go home'?",
+              "options": [
+                "Simple past",
+                "Simple present",
+                "Simple future",
+                "Present continuous"
+              ],
+              "correct": "Simple future",
+              "difficulty": "easy",
+              "explanation": "'will go' describes an action yet to happen - simple future tense",
+              "sub_skill": "tenses"
+            },
+            {
+              "id": "eng_gm_015",
+              "question": "What tense is the sentence 'I have finished my homework'?",
+              "options": [
+                "Simple past",
+                "Present perfect",
+                "Simple future",
+                "Past perfect"
+              ],
+              "correct": "Present perfect",
+              "difficulty": "hard",
+              "explanation": "'have finished' links a past action to the present result - present perfect tense",
+              "sub_skill": "tenses"
+            },
+            {
+              "id": "eng_gm_016",
               "question": "What is a synonym for 'happy'?",
               "options": [
                 "Sad",
@@ -1233,7 +4432,50 @@
               ],
               "correct": "Joyful",
               "difficulty": "easy",
-              "explanation": "'Joyful' has the same meaning as 'happy'"
+              "explanation": "'Joyful' has the same meaning as 'happy'",
+              "sub_skill": "vocabulary"
+            },
+            {
+              "id": "eng_gm_017",
+              "question": "What is an antonym for 'hot'?",
+              "options": [
+                "Warm",
+                "Cold",
+                "Dry",
+                "Bright"
+              ],
+              "correct": "Cold",
+              "difficulty": "easy",
+              "explanation": "'Cold' is the opposite of 'hot'",
+              "sub_skill": "vocabulary"
+            },
+            {
+              "id": "eng_gm_018",
+              "question": "What is a synonym for 'big'?",
+              "options": [
+                "Small",
+                "Tiny",
+                "Large",
+                "Short"
+              ],
+              "correct": "Large",
+              "difficulty": "easy",
+              "explanation": "'Large' has the same meaning as 'big'",
+              "sub_skill": "vocabulary"
+            },
+            {
+              "id": "eng_gm_019",
+              "question": "What is an antonym for 'fast'?",
+              "options": [
+                "Quick",
+                "Rapid",
+                "Slow",
+                "Sudden"
+              ],
+              "correct": "Slow",
+              "difficulty": "easy",
+              "explanation": "'Slow' is the opposite of 'fast'",
+              "sub_skill": "vocabulary"
             }
           ]
         }
@@ -1250,7 +4492,119 @@
           "name": "Biology",
           "questions": [
             {
-              "id": "sci_gm_001",
+              "id": "sci_gm_003",
+              "question": "What is the powerhouse of the cell?",
+              "options": [
+                "Nucleus",
+                "Mitochondria",
+                "Ribosome",
+                "Golgi"
+              ],
+              "correct": "Mitochondria",
+              "difficulty": "medium",
+              "explanation": "Mitochondria are the powerhouse of the cell",
+              "sub_skill": "cell_biology"
+            },
+            {
+              "id": "sci_gm_004",
+              "question": "Which part of the cell controls its activities?",
+              "options": [
+                "Cell wall",
+                "Ribosome",
+                "Nucleus",
+                "Cytoplasm"
+              ],
+              "correct": "Nucleus",
+              "difficulty": "medium",
+              "explanation": "The nucleus controls the cell's activities and holds its genetic material",
+              "sub_skill": "cell_biology"
+            },
+            {
+              "id": "sci_gm_005",
+              "question": "What structure gives a plant cell its rigid shape?",
+              "options": [
+                "Cell membrane",
+                "Cell wall",
+                "Nucleus",
+                "Vacuole"
+              ],
+              "correct": "Cell wall",
+              "difficulty": "medium",
+              "explanation": "The cell wall is a rigid layer that supports and shapes a plant cell",
+              "sub_skill": "cell_biology"
+            },
+            {
+              "id": "sci_gm_006",
+              "question": "Which cell structure is the site of protein synthesis?",
+              "options": [
+                "Ribosome",
+                "Nucleus",
+                "Mitochondria",
+                "Cell wall"
+              ],
+              "correct": "Ribosome",
+              "difficulty": "hard",
+              "explanation": "Ribosomes are where proteins are made in a cell",
+              "sub_skill": "cell_biology"
+            },
+            {
+              "id": "sci_gm_007",
+              "question": "What is the largest organ in the human body?",
+              "options": [
+                "Heart",
+                "Liver",
+                "Skin",
+                "Brain"
+              ],
+              "correct": "Skin",
+              "difficulty": "medium",
+              "explanation": "The skin is the largest organ in the human body",
+              "sub_skill": "human_body_systems"
+            },
+            {
+              "id": "sci_gm_008",
+              "question": "Which organ pumps blood around the body?",
+              "options": [
+                "Lungs",
+                "Heart",
+                "Kidney",
+                "Stomach"
+              ],
+              "correct": "Heart",
+              "difficulty": "easy",
+              "explanation": "The heart pumps blood around the body",
+              "sub_skill": "human_body_systems"
+            },
+            {
+              "id": "sci_gm_009",
+              "question": "Which organ filters waste from the blood?",
+              "options": [
+                "Heart",
+                "Lungs",
+                "Kidney",
+                "Liver"
+              ],
+              "correct": "Kidney",
+              "difficulty": "medium",
+              "explanation": "The kidneys filter waste products out of the blood",
+              "sub_skill": "human_body_systems"
+            },
+            {
+              "id": "sci_gm_010",
+              "question": "Which organs are used for breathing?",
+              "options": [
+                "Heart",
+                "Lungs",
+                "Kidney",
+                "Stomach"
+              ],
+              "correct": "Lungs",
+              "difficulty": "easy",
+              "explanation": "The lungs take in oxygen and remove carbon dioxide during breathing",
+              "sub_skill": "human_body_systems"
+            },
+            {
+              "id": "sci_gm_011",
               "question": "Which part of a plant carries out photosynthesis?",
               "options": [
                 "Root",
@@ -1260,20 +4614,106 @@
               ],
               "correct": "Leaf",
               "difficulty": "medium",
-              "explanation": "The leaf contains chlorophyll, which traps sunlight for photosynthesis"
+              "explanation": "The leaf contains chlorophyll, which traps sunlight for photosynthesis",
+              "sub_skill": "plant_biology"
             },
             {
-              "id": "sci_gm_002",
-              "question": "Which organ in the human body pumps blood?",
+              "id": "sci_gm_012",
+              "question": "Which gas do plants absorb for photosynthesis?",
               "options": [
-                "Lungs",
-                "Heart",
-                "Kidney",
-                "Stomach"
+                "Oxygen",
+                "Nitrogen",
+                "Carbon dioxide",
+                "Hydrogen"
               ],
-              "correct": "Heart",
+              "correct": "Carbon dioxide",
+              "difficulty": "medium",
+              "explanation": "Plants absorb carbon dioxide from the air to use in photosynthesis",
+              "sub_skill": "plant_biology"
+            },
+            {
+              "id": "sci_gm_013",
+              "question": "Which part of a plant absorbs water from the soil?",
+              "options": [
+                "Leaf",
+                "Flower",
+                "Root",
+                "Stem"
+              ],
+              "correct": "Root",
               "difficulty": "easy",
-              "explanation": "The heart pumps blood around the body"
+              "explanation": "The roots absorb water and minerals from the soil",
+              "sub_skill": "plant_biology"
+            },
+            {
+              "id": "sci_gm_014",
+              "question": "Which gas do plants release during photosynthesis?",
+              "options": [
+                "Carbon dioxide",
+                "Nitrogen",
+                "Oxygen",
+                "Hydrogen"
+              ],
+              "correct": "Oxygen",
+              "difficulty": "medium",
+              "explanation": "Photosynthesis releases oxygen as a byproduct",
+              "sub_skill": "plant_biology"
+            },
+            {
+              "id": "sci_gm_015",
+              "question": "Which food class mainly provides the body with energy?",
+              "options": [
+                "Proteins",
+                "Vitamins",
+                "Carbohydrates",
+                "Minerals"
+              ],
+              "correct": "Carbohydrates",
+              "difficulty": "medium",
+              "explanation": "Carbohydrates are the body's main energy source",
+              "sub_skill": "nutrition_and_health"
+            },
+            {
+              "id": "sci_gm_016",
+              "question": "Which food class is needed for growth and repair of body tissue?",
+              "options": [
+                "Carbohydrates",
+                "Proteins",
+                "Vitamins",
+                "Water"
+              ],
+              "correct": "Proteins",
+              "difficulty": "medium",
+              "explanation": "Proteins build and repair body tissues",
+              "sub_skill": "nutrition_and_health"
+            },
+            {
+              "id": "sci_gm_017",
+              "question": "Which vitamin does the body produce from sunlight?",
+              "options": [
+                "Vitamin A",
+                "Vitamin C",
+                "Vitamin D",
+                "Vitamin K"
+              ],
+              "correct": "Vitamin D",
+              "difficulty": "hard",
+              "explanation": "The skin produces vitamin D when exposed to sunlight",
+              "sub_skill": "nutrition_and_health"
+            },
+            {
+              "id": "sci_gm_018",
+              "question": "A diet containing all necessary food classes in the right amounts is called what?",
+              "options": [
+                "A balanced diet",
+                "A fasting diet",
+                "A liquid diet",
+                "A protein diet"
+              ],
+              "correct": "A balanced diet",
+              "difficulty": "easy",
+              "explanation": "A balanced diet supplies all food classes (carbohydrates, proteins, fats, vitamins, minerals, water) in the right proportions",
+              "sub_skill": "nutrition_and_health"
             }
           ]
         }

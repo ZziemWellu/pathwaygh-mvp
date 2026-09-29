@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta, timezone
 
 from models.skill_mastery import SkillMastery
+from models.sub_skill_mastery import SubSkillMastery
 from modules.practice.mastery import (
     DEFAULT_PRIOR,
     FORGETTING_HALF_LIFE_DAYS,
@@ -8,7 +9,9 @@ from modules.practice.mastery import (
     decay_mastery,
     effective_mastery,
     load_questions,
+    record_sub_skill_attempt,
     update_mastery,
+    weak_skills_for_subject,
     weak_topics_for_subject,
 )
 from tests.conftest import register_user
@@ -128,6 +131,73 @@ def test_weak_topics_for_subject_returns_only_below_threshold_weakest_first(clie
     assert all(mastery < 0.5 for _, mastery in weak)
 
 
+def test_weak_skills_for_subject_falls_back_to_topic_level_when_no_subskill_data(client, db_session):
+    """No SubSkillMastery rows exist yet for this student+subject (e.g. no
+    attempts since sub_skill tagging was added) - weak_skills_for_subject
+    must fall back to the same result weak_topics_for_subject gives,
+    rather than reporting nothing."""
+    headers, user = _register(client, "mastery_skills_fallback@test.com")
+    db_session.add(
+        SkillMastery(user_id=user["id"], subject_id="mathematics", topic_id="algebra", mastery_probability=0.2, attempts_count=3)
+    )
+    db_session.commit()
+
+    topic_level = weak_topics_for_subject(db_session, user["id"], "mathematics")
+    skill_level = weak_skills_for_subject(db_session, user["id"], "mathematics")
+    assert len(skill_level) == len(topic_level) == 1
+    # Each call independently computes elapsed-time decay against "now",
+    # so the two results can differ by microsecond-scale floating noise -
+    # compare labels exactly and mastery values within a tight tolerance.
+    assert skill_level[0][0] == topic_level[0][0]
+    assert abs(skill_level[0][1] - topic_level[0][1]) < 1e-6
+
+
+def test_weak_skills_for_subject_prefers_subskill_granularity_when_available(client, db_session):
+    headers, user = _register(client, "mastery_skills_granular@test.com")
+    # A topic-level row also exists (as it always would alongside real
+    # sub-skill attempts) but must be ignored once sub-skill data exists -
+    # otherwise the tutor would get both a coarse and a fine-grained label
+    # for the same underlying weakness.
+    db_session.add(SkillMastery(user_id=user["id"], subject_id="mathematics", topic_id="algebra", mastery_probability=0.2, attempts_count=6))
+    db_session.add_all(
+        [
+            SubSkillMastery(user_id=user["id"], subject_id="mathematics", topic_id="algebra", sub_skill="linear_equations", mastery_probability=0.1, attempts_count=3),
+            SubSkillMastery(user_id=user["id"], subject_id="mathematics", topic_id="algebra", sub_skill="percentages", mastery_probability=0.3, attempts_count=3),
+            SubSkillMastery(user_id=user["id"], subject_id="mathematics", topic_id="algebra", sub_skill="simplification", mastery_probability=0.9, attempts_count=3),
+        ]
+    )
+    db_session.commit()
+
+    weak = weak_skills_for_subject(db_session, user["id"], "mathematics")
+    labels = [label for label, _ in weak]
+    assert labels == ["Algebra: Linear equations", "Algebra: Percentages"]
+    assert all(mastery < 0.5 for _, mastery in weak)
+
+
+def test_record_sub_skill_attempt_is_a_noop_without_a_sub_skill_tag(db_session):
+    result = record_sub_skill_attempt(db_session, {}, user_id=1, subject_id="mathematics", topic_id="algebra", sub_skill=None, is_correct=True, num_options=4)
+    assert result is None
+    assert db_session.query(SubSkillMastery).count() == 0
+
+
+def test_record_sub_skill_attempt_creates_and_updates_a_row(db_session):
+    cache = {}
+    first = record_sub_skill_attempt(
+        db_session, cache, user_id=1, subject_id="mathematics", topic_id="algebra", sub_skill="linear_equations", is_correct=True, num_options=4
+    )
+    assert first is not None
+    assert first.attempts_count == 1
+    assert first.mastery_probability > DEFAULT_PRIOR
+
+    second = record_sub_skill_attempt(
+        db_session, cache, user_id=1, subject_id="mathematics", topic_id="algebra", sub_skill="linear_equations", is_correct=True, num_options=4
+    )
+    # Same cache, same key - must reuse the same not-yet-flushed row rather
+    # than trying to insert a duplicate.
+    assert second is first
+    assert second.attempts_count == 2
+
+
 def test_effective_mastery_reads_decay_off_the_row(db_session):
     now = datetime.now(timezone.utc)
     old_row = SkillMastery(
@@ -211,6 +281,22 @@ def test_quiz_submission_creates_skill_mastery_rows_for_touched_topics_only(clie
     assert len(rows) > 0
     for row in rows:
         assert row.subject_id == "mathematics"
+        assert row.attempts_count > 0
+        assert 0.0 <= row.mastery_probability <= 1.0
+
+
+def test_quiz_submission_also_creates_sub_skill_mastery_rows(client, db_session):
+    """Real end-to-end check that the practice bank's sub_skill tags
+    actually flow through quiz submission into SubSkillMastery rows, not
+    just that record_sub_skill_attempt works in isolation."""
+    headers, _ = _register(client, "mastery_subskill_e2e@test.com")
+    _take_quiz(client, headers, "mathematics", question_count=5)
+
+    rows = db_session.query(SubSkillMastery).all()
+    assert len(rows) > 0
+    for row in rows:
+        assert row.subject_id == "mathematics"
+        assert row.sub_skill  # every question in the bank is tagged today
         assert row.attempts_count > 0
         assert 0.0 <= row.mastery_probability <= 1.0
 

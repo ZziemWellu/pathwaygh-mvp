@@ -14,7 +14,7 @@ from core.database import get_db
 from core.rate_limit import limiter
 from core.security import get_current_user
 from models.user import User
-from modules.practice.mastery import weak_topics_for_subject
+from modules.practice.mastery import weak_skills_for_subject
 from modules.tutor.grounding import build_grounding_context
 from modules.tutor.mathtool import compute_math
 
@@ -171,7 +171,7 @@ async def chat(
 
     if body.subject_id:
         try:
-            weak_topics = weak_topics_for_subject(db, current_user.id, body.subject_id)
+            weak_topics = weak_skills_for_subject(db, current_user.id, body.subject_id)
         except Exception:
             weak_topics = []
         if weak_topics:

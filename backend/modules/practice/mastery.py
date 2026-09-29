@@ -21,6 +21,7 @@ from typing import Dict, Optional
 from sqlalchemy.orm import Session
 
 from models.skill_mastery import SkillMastery
+from models.sub_skill_mastery import SubSkillMastery
 
 logger = logging.getLogger(__name__)
 
@@ -135,6 +136,36 @@ def weak_topics_for_subject(db: Session, user_id: int, subject_id: str, threshol
     return weak
 
 
+def _humanize_sub_skill(sub_skill: str) -> str:
+    words = sub_skill.replace("_", " ")
+    return words[:1].upper() + words[1:]
+
+
+def weak_skills_for_subject(db: Session, user_id: int, subject_id: str, threshold: float = 0.5) -> list:
+    """Sub-skill-level weak areas for this student in `subject_id` (weakest
+    first, labeled "{topic name}: {sub-skill}") when tagged attempt data
+    exists - falling back to whole-topic granularity via
+    weak_topics_for_subject when it doesn't (a subject/country whose
+    content predates sub_skill tagging, or a student who hasn't attempted
+    anything since it was added). This is what the AI tutor's
+    prerequisite-check instruction should call instead of
+    weak_topics_for_subject directly, so it gets the more precise signal
+    the moment it's actually available."""
+    rows = (
+        db.query(SubSkillMastery).filter(SubSkillMastery.user_id == user_id, SubSkillMastery.subject_id == subject_id).all()
+    )
+    if not rows:
+        return weak_topics_for_subject(db, user_id, subject_id, threshold)
+
+    names = topic_names_by_id()
+    weak = [
+        (f"{names.get(m.topic_id, m.topic_id)}: {_humanize_sub_skill(m.sub_skill)}", effective_mastery(m)) for m in rows
+    ]
+    weak = [(label, mastery) for label, mastery in weak if mastery < threshold]
+    weak.sort(key=lambda item: item[1])
+    return weak
+
+
 def update_mastery(prior: float, is_correct: bool, num_options: int) -> float:
     """One Bayesian Knowledge Tracing step: a Bayes update on the observed
     answer (reflecting the knowledge state as it existed BEFORE this
@@ -197,6 +228,60 @@ def record_topic_attempt(
             # without a flush.
             mastery = SkillMastery(
                 user_id=user_id, subject_id=subject_id, topic_id=topic_id, mastery_probability=DEFAULT_PRIOR, attempts_count=0
+            )
+            db.add(mastery)
+        cache[key] = mastery
+
+    decayed_prior = decay_mastery(mastery.mastery_probability, mastery.last_updated)
+    mastery.mastery_probability = update_mastery(decayed_prior, is_correct, num_options)
+    mastery.attempts_count += 1
+    return mastery
+
+
+def record_sub_skill_attempt(
+    db: Session,
+    cache: Dict[tuple, SubSkillMastery],
+    user_id: int,
+    subject_id: str,
+    topic_id: Optional[str],
+    sub_skill: Optional[str],
+    is_correct: bool,
+    num_options: int,
+) -> Optional[SubSkillMastery]:
+    """Same get-or-create-and-update-one-BKT-step as record_topic_attempt,
+    but keyed on (user_id, subject_id, topic_id, sub_skill) instead of
+    just (user_id, subject_id, topic_id). A no-op (returns None) when the
+    attempted question has no sub_skill tag, which is the case for any
+    content authored before sub-skill tagging existed - those attempts
+    still update the topic-level SkillMastery row via record_topic_attempt
+    as before, they just don't also get a sub-skill-level row.
+
+    `cache` follows the same per-request-fresh-dict contract as
+    record_topic_attempt's, for the same not-yet-flushed-row reason."""
+    if not topic_id or not sub_skill:
+        return None
+
+    key = (user_id, subject_id, topic_id, sub_skill)
+    mastery = cache.get(key)
+    if mastery is None:
+        mastery = (
+            db.query(SubSkillMastery)
+            .filter(
+                SubSkillMastery.user_id == user_id,
+                SubSkillMastery.subject_id == subject_id,
+                SubSkillMastery.topic_id == topic_id,
+                SubSkillMastery.sub_skill == sub_skill,
+            )
+            .first()
+        )
+        if not mastery:
+            mastery = SubSkillMastery(
+                user_id=user_id,
+                subject_id=subject_id,
+                topic_id=topic_id,
+                sub_skill=sub_skill,
+                mastery_probability=DEFAULT_PRIOR,
+                attempts_count=0,
             )
             db.add(mastery)
         cache[key] = mastery

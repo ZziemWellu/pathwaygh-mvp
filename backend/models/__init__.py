@@ -8,6 +8,7 @@ from models.progress import LessonProgress
 from models.quiz_attempt import QuizAttempt
 from models.school import School
 from models.skill_mastery import SkillMastery
+from models.sub_skill_mastery import SubSkillMastery
 from models.user import User
 
 __all__ = [
@@ -23,5 +24,6 @@ __all__ = [
     "School",
     "Certificate",
     "SkillMastery",
+    "SubSkillMastery",
     "PaymentTransaction",
 ]
