@@ -4,8 +4,10 @@ import ReactPlayer from 'react-player';
 import ReactMarkdown from 'react-markdown';
 import api from '../../services/api';
 import ExerciseSection from './ExerciseSection';
+import { useLanguage } from '../../contexts/LanguageContext';
 
 const LessonView = () => {
+  const { t } = useLanguage();
   const { courseId, lessonId } = useParams();
   const [lesson, setLesson] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -25,7 +27,7 @@ const LessonView = () => {
       setLesson(response.data);
     } catch (err) {
       console.error('Lesson error:', err);
-      setError(err.response?.status === 404 ? 'Lesson not found' : 'Failed to load lesson');
+      setError(err.response?.status === 404 ? t('learnLessonNotFound') : t('learnFailedToLoadLesson'));
     } finally {
       setLoading(false);
     }
@@ -46,12 +48,12 @@ const LessonView = () => {
     }
   };
 
-  if (loading) return <div style={{ textAlign: 'center', padding: '40px' }}>Loading lesson...</div>;
+  if (loading) return <div style={{ textAlign: 'center', padding: '40px' }}>{t('learnLoadingLesson')}</div>;
   if (error || !lesson) {
     return (
       <div style={{ textAlign: 'center', padding: '40px' }}>
-        <p style={{ color: 'red' }}>⚠️ {error || 'Lesson not found'}</p>
-        <Link to={`/learn/${courseId}`}>← Back to course</Link>
+        <p style={{ color: 'red' }}>⚠️ {error || t('learnLessonNotFound')}</p>
+        <Link to={`/learn/${courseId}`}>{t('learnBackToCourse')}</Link>
       </div>
     );
   }
@@ -60,7 +62,7 @@ const LessonView = () => {
 
   return (
     <div style={{ maxWidth: '800px', margin: '0 auto', padding: '20px' }}>
-      <Link to={`/learn/${courseId}`} style={{ color: '#1a5f2b', fontSize: '14px' }}>← Back to course</Link>
+      <Link to={`/learn/${courseId}`} style={{ color: '#1a5f2b', fontSize: '14px' }}>{t('learnBackToCourse')}</Link>
 
       <h2 style={{ color: '#1a5f2b', margin: '12px 0 16px 0' }}>{lesson.title}</h2>
 
@@ -78,18 +80,18 @@ const LessonView = () => {
           </div>
         ) : (
           <div style={{ padding: '60px 20px', textAlign: 'center', background: '#f8f9fa', borderRadius: '12px', color: '#666666' }}>
-            🎬 Video coming soon for this lesson.
+            {t('learnVideoComingSoon')}
           </div>
         )
       ) : lesson.lesson_type === 'text' ? (
         <div style={{ padding: '24px', background: 'white', border: '1px solid #e0e0e0', borderRadius: '12px', lineHeight: 1.7 }}>
-          <ReactMarkdown>{lesson.content || 'Content coming soon for this lesson.'}</ReactMarkdown>
+          <ReactMarkdown>{lesson.content || t('learnContentComingSoon')}</ReactMarkdown>
         </div>
       ) : (
         <div style={{ padding: '40px 20px', textAlign: 'center', background: '#fff3e0', borderRadius: '12px' }}>
-          <p style={{ margin: 0, color: '#e65100' }}>📝 This is a practice/quiz lesson.</p>
+          <p style={{ margin: 0, color: '#e65100' }}>{t('learnPracticeQuizLesson')}</p>
           <Link to="/practice" style={{ display: 'inline-block', marginTop: '12px', color: '#1a5f2b', fontWeight: 'bold' }}>
-            Go to Practice →
+            {t('learnGoToPractice')}
           </Link>
         </div>
       )}
@@ -98,23 +100,23 @@ const LessonView = () => {
 
       <div style={{ marginTop: '20px', display: 'flex', alignItems: 'center', gap: '12px' }}>
         {lesson.watched ? (
-          <span style={{ color: '#1a5f2b', fontWeight: 'bold' }}>✅ {lesson.lesson_type === 'text' ? 'Completed' : 'Watched'}</span>
+          <span style={{ color: '#1a5f2b', fontWeight: 'bold' }}>{lesson.lesson_type === 'text' ? t('learnCompleted') : t('learnWatched')}</span>
         ) : (
           <button
             onClick={markWatched}
             disabled={marking}
             style={{ padding: '10px 20px', background: marking ? '#ccc' : '#1a5f2b', color: 'white', border: 'none', borderRadius: '8px', cursor: marking ? 'not-allowed' : 'pointer' }}
           >
-            {marking ? 'Marking...' : lesson.lesson_type === 'text' ? 'Mark as read' : 'Mark as watched'}
+            {marking ? t('learnMarking') : lesson.lesson_type === 'text' ? t('learnMarkAsRead') : t('learnMarkAsWatched')}
           </button>
         )}
       </div>
 
       {justCompleted && (
         <div style={{ marginTop: '16px', padding: '16px', background: '#e8f5e9', border: '1px solid #a5d6a7', borderRadius: '12px', textAlign: 'center' }}>
-          <p style={{ margin: '0 0 8px 0', fontWeight: 'bold', color: '#1a5f2b' }}>🎉 Course complete! Your certificate is ready.</p>
+          <p style={{ margin: '0 0 8px 0', fontWeight: 'bold', color: '#1a5f2b' }}>{t('learnCourseCompleteBanner')}</p>
           <Link to={`/certificates/${courseId}`} style={{ color: '#1a5f2b', fontWeight: 'bold', textDecoration: 'underline' }}>
-            View certificate
+            {t('learnViewCertificateLink')}
           </Link>
         </div>
       )}

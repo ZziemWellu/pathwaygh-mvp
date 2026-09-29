@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { CheckCircle2, XCircle, Award } from 'lucide-react';
 import api from '../../services/api';
+import { useLanguage } from '../../contexts/LanguageContext';
 
 const ExerciseSection = ({ lessonId, exercises, bestScore }) => {
+  const { t } = useLanguage();
   const [answers, setAnswers] = useState({});
   const [submitting, setSubmitting] = useState(false);
   const [result, setResult] = useState(null);
@@ -21,7 +23,7 @@ const ExerciseSection = ({ lessonId, exercises, bestScore }) => {
       setResult(response.data);
     } catch (err) {
       console.error('Exercise submit error:', err);
-      setError('Failed to submit. Please try again.');
+      setError(t('learnSubmitFailed'));
     } finally {
       setSubmitting(false);
     }
@@ -38,10 +40,10 @@ const ExerciseSection = ({ lessonId, exercises, bestScore }) => {
   return (
     <div style={{ marginTop: '32px', padding: '24px', background: 'white', border: '1px solid #e0e0e0', borderRadius: '16px' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '18px', flexWrap: 'wrap', gap: '8px' }}>
-        <h3 style={{ margin: 0, fontSize: '17px' }}>Practice Exercises</h3>
+        <h3 style={{ margin: 0, fontSize: '17px' }}>{t('learnPracticeExercises')}</h3>
         {bestScore !== null && bestScore !== undefined && !result && (
           <span style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontSize: '13px', color: '#1a5f2b', fontWeight: 'bold' }}>
-            <Award size={15} /> Best score: {bestScore}%
+            <Award size={15} /> {t('learnBestScore').replace('{pct}', bestScore)}
           </span>
         )}
       </div>
@@ -59,7 +61,7 @@ const ExerciseSection = ({ lessonId, exercises, bestScore }) => {
         >
           <div style={{ fontSize: '26px', fontWeight: 'bold', color: result.score >= 70 ? '#1a5f2b' : '#e65100' }}>{result.score}%</div>
           <div style={{ fontSize: '13px', color: '#555' }}>
-            {result.correct_count} of {result.total_questions} correct
+            {t('learnCorrectCount').replace('{correct}', result.correct_count).replace('{total}', result.total_questions)}
           </div>
         </div>
       )}
@@ -130,7 +132,7 @@ const ExerciseSection = ({ lessonId, exercises, bestScore }) => {
           onClick={handleRetry}
           style={{ padding: '10px 22px', background: '#f0f0f0', color: '#333', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: 'bold' }}
         >
-          Try Again
+          {t('learnTryAgain')}
         </button>
       ) : (
         <button
@@ -147,7 +149,7 @@ const ExerciseSection = ({ lessonId, exercises, bestScore }) => {
             fontWeight: 'bold',
           }}
         >
-          {submitting ? 'Grading...' : 'Submit Answers'}
+          {submitting ? t('learnGrading') : t('learnSubmitAnswers')}
         </button>
       )}
     </div>

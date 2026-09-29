@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../../services/api';
+import { useLanguage } from '../../contexts/LanguageContext';
 
 const CourseGrid = ({ user }) => {
+  const { t } = useLanguage();
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -23,7 +25,7 @@ const CourseGrid = ({ user }) => {
       setCourses(Array.isArray(response.data) ? response.data : []);
     } catch (err) {
       console.error('Learn error:', err);
-      setError(err.message || 'Failed to load courses');
+      setError(err.message || t('learnFailedToLoadCourses'));
     } finally {
       setLoading(false);
     }
@@ -32,8 +34,8 @@ const CourseGrid = ({ user }) => {
   if (loading) {
     return (
       <div style={{ textAlign: 'center', padding: '40px' }}>
-        <h2>📚 Learn</h2>
-        <p>Loading courses...</p>
+        <h2>{t('learnHeading')}</h2>
+        <p>{t('learnLoadingCourses')}</p>
       </div>
     );
   }
@@ -41,9 +43,9 @@ const CourseGrid = ({ user }) => {
   if (error) {
     return (
       <div style={{ textAlign: 'center', padding: '40px' }}>
-        <h2>📚 Learn</h2>
+        <h2>{t('learnHeading')}</h2>
         <p style={{ color: 'red' }}>⚠️ {error}</p>
-        <button onClick={fetchCourses} style={{ padding: '8px 16px', background: '#1a5f2b', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer' }}>Retry</button>
+        <button onClick={fetchCourses} style={{ padding: '8px 16px', background: '#1a5f2b', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer' }}>{t('retry')}</button>
       </div>
     );
   }
@@ -51,7 +53,7 @@ const CourseGrid = ({ user }) => {
   return (
     <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '20px' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-        <h2>📚 Learn</h2>
+        <h2>{t('learnHeading')}</h2>
         <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
           <button
             onClick={() => setShowEnrolledOnly(!showEnrolledOnly)}
@@ -65,9 +67,9 @@ const CourseGrid = ({ user }) => {
               fontWeight: showEnrolledOnly ? 'bold' : 'normal',
             }}
           >
-            {showEnrolledOnly ? '📚 My Courses' : '📚 All Courses'}
+            {showEnrolledOnly ? t('learnMyCourses') : t('learnAllCourses')}
           </button>
-          <span style={{ color: '#666666', fontSize: '14px' }}>{courses.length} courses</span>
+          <span style={{ color: '#666666', fontSize: '14px' }}>{t('learnCoursesCount').replace('{count}', courses.length)}</span>
         </div>
       </div>
 
@@ -75,16 +77,16 @@ const CourseGrid = ({ user }) => {
         <div style={{ textAlign: 'center', padding: '60px 20px', color: '#666666' }}>
           {showEnrolledOnly ? (
             <div>
-              <p>You haven't enrolled in any courses yet.</p>
+              <p>{t('learnNoEnrolledCourses')}</p>
               <button
                 onClick={() => setShowEnrolledOnly(false)}
                 style={{ marginTop: '12px', padding: '8px 20px', background: '#1a5f2b', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer' }}
               >
-                Browse All Courses
+                {t('learnBrowseAllCourses')}
               </button>
             </div>
           ) : (
-            <p>No courses available yet. Check back soon!</p>
+            <p>{t('learnNoCoursesAvailable')}</p>
           )}
         </div>
       ) : (
@@ -114,7 +116,7 @@ const CourseGrid = ({ user }) => {
             >
               {course.enrolled && (
                 <div style={{ position: 'absolute', top: '12px', right: '12px', background: '#1a5f2b', color: 'white', padding: '2px 10px', borderRadius: '12px', fontSize: '11px', fontWeight: 'bold' }}>
-                  ✅ Enrolled
+                  {t('learnEnrolledBadge')}
                 </div>
               )}
               <h3 style={{ color: '#1a5f2b', margin: '0 0 8px 0', paddingRight: '80px' }}>{course.title}</h3>
@@ -124,9 +126,9 @@ const CourseGrid = ({ user }) => {
                 </span>
               )}
               <p style={{ color: '#555', fontSize: '14px', margin: '12px 0' }}>{course.description}</p>
-              <div style={{ fontSize: '12px', color: '#666666' }}>📖 {course.lesson_count || 0} lessons</div>
+              <div style={{ fontSize: '12px', color: '#666666' }}>{t('learnLessonsCount').replace('{count}', course.lesson_count || 0)}</div>
               <div style={{ marginTop: '12px', fontSize: '12px', color: '#1a5f2b', textAlign: 'center' }}>
-                {course.enrolled ? '📖 Continue Learning →' : '👆 View course'}
+                {course.enrolled ? t('learnContinueLearning') : t('learnViewCourse')}
               </div>
             </div>
           ))}
