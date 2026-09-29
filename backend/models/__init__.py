@@ -2,6 +2,7 @@ from models.certificate import Certificate
 from models.course import Course, Exercise, Lesson
 from models.enrollment import Enrollment
 from models.exercise_result import ExerciseResult
+from models.gamification import EarnedAchievement, GamificationProfile
 from models.payment_transaction import PaymentTransaction
 from models.plan import Plan
 from models.practice_sms_subscriber import PracticeSmsSubscriber
@@ -28,4 +29,6 @@ __all__ = [
     "SubSkillMastery",
     "PaymentTransaction",
     "PracticeSmsSubscriber",
+    "GamificationProfile",
+    "EarnedAchievement",
 ]

@@ -15,6 +15,7 @@ from core.security import get_current_user
 from models.quiz_attempt import QuizAttempt
 from models.skill_mastery import SkillMastery
 from models.user import User
+from modules.gamification.service import award_for_quiz_completed
 from modules.practice.mastery import (
     allocate_adaptive_slots,
     effective_mastery,
@@ -224,6 +225,7 @@ async def submit_quiz(
             time_spent=request.time_spent,
         )
     )
+    gamification = award_for_quiz_completed(db, current_user, correct_count) if total > 0 else None
     db.commit()
 
     del active_quizzes[request.quiz_id]
@@ -236,6 +238,7 @@ async def submit_quiz(
         "total": total,
         "results": results,
         "time_spent": request.time_spent or 30,
+        "gamification": gamification,
     }
 
 

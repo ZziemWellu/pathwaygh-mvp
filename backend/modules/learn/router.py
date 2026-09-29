@@ -17,6 +17,7 @@ from models.exercise_result import ExerciseResult
 from models.progress import LessonProgress
 from models.user import User
 from modules.certificates.service import check_and_issue_certificate
+from modules.gamification.service import award_for_lesson_completed
 
 router = APIRouter()
 
@@ -241,8 +242,16 @@ async def update_lesson_progress(
         progress = LessonProgress(user_id=current_user.id, lesson_id=lesson.id)
         db.add(progress)
 
+    is_new_watch = payload.watched and not progress.watched
     progress.watched = payload.watched
     progress.watched_at = datetime.now(timezone.utc) if payload.watched else None
+
+    gamification = None
+    if is_new_watch:
+        # Only on the transition to watched, not every time the endpoint
+        # is called with watched=True - otherwise re-marking an already-
+        # watched lesson would award XP again.
+        gamification = award_for_lesson_completed(db, current_user)
     db.commit()
 
     certificate_issued = False
@@ -258,4 +267,5 @@ async def update_lesson_progress(
         "watched": progress.watched,
         "certificate_issued": certificate_issued,
         "certificate_code": certificate_code,
+        "gamification": gamification,
     }
