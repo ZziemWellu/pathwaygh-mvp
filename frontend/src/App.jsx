@@ -147,6 +147,8 @@ const App = () => {
             <CountrySelector onSelect={handleCountrySelect} />
           </main>
           <footer style={{ textAlign: 'center', marginTop: '24px' }}>
+            <p style={{ color: 'var(--gray-500)', fontSize: '13px', margin: '0 0 4px 0' }}>{t('copyright')}</p>
+            <p style={{ color: 'var(--gray-500)', fontSize: '12px', margin: '0 0 8px 0' }}>{t('poweredBy')}</p>
             <button onClick={() => setShowPrivacy(true)} style={{ background: 'none', border: 'none', color: 'var(--gray-500)', cursor: 'pointer', textDecoration: 'underline', fontSize: '12px' }}>
               {t('footerPrivacyPolicy')}
             </button>
