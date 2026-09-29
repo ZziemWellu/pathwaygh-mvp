@@ -12,6 +12,7 @@ from models.school import School
 from models.skill_mastery import SkillMastery
 from models.sub_skill_mastery import SubSkillMastery
 from models.user import User
+from models.vocabulary_progress import VocabularyProgress
 
 __all__ = [
     "User",
@@ -31,4 +32,5 @@ __all__ = [
     "PracticeSmsSubscriber",
     "GamificationProfile",
     "EarnedAchievement",
+    "VocabularyProgress",
 ]

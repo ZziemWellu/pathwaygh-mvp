@@ -149,6 +149,7 @@ modules = [
     ("payment", "modules.payment.router", "/api/payment"),
     ("practice_sms", "modules.practice_sms.router", "/api/practice-sms"),
     ("gamification", "modules.gamification.router", "/api/gamification"),
+    ("vocabulary", "modules.vocabulary.router", "/api/vocabulary"),
     ("live", "modules.live.router", "/api/live"),
     ("dashboard", "modules.dashboard.router", "/api/dashboard"),
     ("impact", "modules.impact.router", "/api/impact"),

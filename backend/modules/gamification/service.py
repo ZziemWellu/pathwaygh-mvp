@@ -19,6 +19,7 @@ from modules.gamification.achievements import ACHIEVEMENTS
 XP_PER_LESSON = 10
 XP_PER_QUIZ_BASE = 5
 XP_PER_CORRECT_ANSWER = 1
+XP_PER_WORD_LEARNED = 3
 
 
 def get_or_create_profile(db: Session, user_id: int) -> GamificationProfile:
@@ -53,7 +54,16 @@ def check_and_award_achievements(db: Session, user: User, profile: GamificationP
     """Returns the achievements newly unlocked by this call (empty list if
     none) - the caller surfaces these as an "unlocked!" moment in the
     response. Does not commit - the caller commits alongside whatever
-    else it changed in the same request."""
+    else it changed in the same request.
+
+    Flushes first: achievement conditions query real rows (QuizAttempt,
+    VocabularyProgress, etc.) that this same request typically just
+    db.add()-ed moments earlier (e.g. the quiz attempt or the vocabulary-
+    learned row) - without a flush those inserts aren't visible to a
+    query yet under this app's autoflush=False session config, so a
+    count-based condition like "5 words learned" would silently undercount
+    by exactly the row this request itself just added."""
+    db.flush()
     already_earned = {
         row.achievement_id for row in db.query(EarnedAchievement).filter(EarnedAchievement.user_id == user.id).all()
     }
@@ -89,3 +99,13 @@ def award_for_quiz_completed(db: Session, user: User, correct_count: int) -> dic
     _record_activity(profile)
     newly_earned = check_and_award_achievements(db, user, profile)
     return {"xp_awarded": xp, "total_xp": profile.xp_points, "new_achievements": newly_earned}
+
+
+def award_for_word_learned(db: Session, user: User) -> dict:
+    """Does not commit - the caller (modules/vocabulary/router.py) commits
+    alongside the VocabularyProgress row already in that request."""
+    profile = get_or_create_profile(db, user.id)
+    profile.xp_points += XP_PER_WORD_LEARNED
+    _record_activity(profile)
+    newly_earned = check_and_award_achievements(db, user, profile)
+    return {"xp_awarded": XP_PER_WORD_LEARNED, "total_xp": profile.xp_points, "new_achievements": newly_earned}

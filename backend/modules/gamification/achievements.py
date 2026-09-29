@@ -23,6 +23,7 @@ from models.progress import LessonProgress
 from models.quiz_attempt import QuizAttempt
 from models.skill_mastery import SkillMastery
 from models.user import User
+from models.vocabulary_progress import VocabularyProgress
 from modules.practice.mastery import effective_mastery
 
 
@@ -49,6 +50,10 @@ def _mastery_achieved(db: Session, user: User, profile: GamificationProfile) -> 
 
 def _course_complete(db: Session, user: User, profile: GamificationProfile) -> bool:
     return db.query(Certificate).filter(Certificate.user_id == user.id, Certificate.is_revoked.is_(False)).count() >= 1
+
+
+def _wordsmith(db: Session, user: User, profile: GamificationProfile) -> bool:
+    return db.query(VocabularyProgress).filter(VocabularyProgress.user_id == user.id).count() >= 5
 
 
 def _streak(days: int) -> Callable[[Session, User, GamificationProfile], bool]:
@@ -112,5 +117,11 @@ ACHIEVEMENTS: Dict[str, dict] = {
         "description": "Finish every lesson in a course",
         "icon": "\U0001F393",
         "condition": _course_complete,
+    },
+    "wordsmith": {
+        "name": "Wordsmith",
+        "description": "Learn 5 Word of the Day entries",
+        "icon": "\U0001F4DA",
+        "condition": _wordsmith,
     },
 }
