@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Copy } from 'lucide-react';
-import api from '../../services/api';
+import api, { extractErrorMessage } from '../../services/api';
+
+const CURRENCY_SYMBOLS = { GHS: 'GHS', NGN: '₦' };
 
 const SchoolAdminDashboard = () => {
   const [data, setData] = useState(null);
@@ -8,10 +10,41 @@ const SchoolAdminDashboard = () => {
   const [error, setError] = useState(null);
   const [copied, setCopied] = useState(false);
   const [attesting, setAttesting] = useState(false);
+  const [paying, setPaying] = useState(false);
+  const [paymentError, setPaymentError] = useState(null);
+  const [paymentStatus, setPaymentStatus] = useState(null);
 
   useEffect(() => {
     fetchDashboard();
+    checkPendingPaymentReturn();
   }, []);
+
+  const checkPendingPaymentReturn = async () => {
+    const reference = new URLSearchParams(window.location.search).get('payment_reference');
+    if (!reference) return;
+
+    // Clear the query param immediately so a page refresh doesn't
+    // re-trigger a verify call against an already-settled reference.
+    window.history.replaceState({}, '', window.location.pathname);
+    try {
+      const response = await api.get(`/api/payment/verify/${reference}`);
+      setPaymentStatus(response.data);
+    } catch (err) {
+      setPaymentError(extractErrorMessage(err, 'Could not confirm payment status. Check back shortly.'));
+    }
+  };
+
+  const handleSubscribe = async () => {
+    setPaying(true);
+    setPaymentError(null);
+    try {
+      const response = await api.post('/api/payment/initialize', { provider: 'paystack' });
+      window.location.href = response.data.checkout_url;
+    } catch (err) {
+      setPaymentError(extractErrorMessage(err, 'Could not start payment. Please try again.'));
+      setPaying(false);
+    }
+  };
 
   const fetchDashboard = async () => {
     setLoading(true);
@@ -84,6 +117,47 @@ const SchoolAdminDashboard = () => {
             Confirmed {new Date(school.parent_consent_attested_at).toLocaleDateString()}
           </p>
         )}
+      </div>
+
+      <div style={{ background: 'white', border: '1px solid #e0e0e0', borderRadius: '12px', padding: '16px', marginBottom: '24px' }}>
+        <h3 style={{ margin: '0 0 8px 0', fontSize: '15px' }}>School license</h3>
+        {paymentStatus && (
+          <div
+            style={{
+              padding: '10px 14px',
+              borderRadius: '8px',
+              marginBottom: '12px',
+              fontSize: '13px',
+              background: paymentStatus.status === 'success' ? 'var(--primary-bg)' : '#fff3e0',
+              color: paymentStatus.status === 'success' ? 'var(--primary-dark)' : '#e65100',
+            }}
+          >
+            {paymentStatus.status === 'success'
+              ? `Payment confirmed - ${CURRENCY_SYMBOLS[paymentStatus.currency] || paymentStatus.currency} ${(paymentStatus.amount_minor_units / 100).toFixed(2)}.`
+              : `Payment status: ${paymentStatus.status}. If you completed checkout, this may take a moment to confirm - refresh to check again.`}
+          </div>
+        )}
+        {paymentError && <p style={{ color: 'var(--danger)', fontSize: '13px', marginBottom: '12px' }}>{paymentError}</p>}
+        <p style={{ fontSize: '13px', color: 'var(--gray-500)', margin: '0 0 12px 0' }}>
+          {summary.student_count} student{summary.student_count === 1 ? '' : 's'} enrolled. The annual institutional
+          license is billed per student.
+        </p>
+        <button
+          onClick={handleSubscribe}
+          disabled={paying}
+          style={{
+            padding: '10px 20px',
+            background: paying ? '#ccc' : 'var(--primary)',
+            color: 'white',
+            border: 'none',
+            borderRadius: '8px',
+            cursor: paying ? 'not-allowed' : 'pointer',
+            fontWeight: 'bold',
+            fontSize: '14px',
+          }}
+        >
+          {paying ? 'Redirecting to checkout...' : 'Pay / renew school license'}
+        </button>
       </div>
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: '16px', marginBottom: '24px' }}>

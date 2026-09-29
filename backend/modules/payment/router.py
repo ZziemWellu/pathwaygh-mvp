@@ -100,7 +100,7 @@ async def initialize_payment(
             amount_minor_units=amount_minor_units,
             currency=currency,
             email=current_user.email,
-            callback_url=f"{frontend_url}/school-admin/payment-callback?reference={reference}",
+            callback_url=f"{frontend_url}/school-admin?payment_reference={reference}",
             metadata={"school_id": school.id, "purpose": "school_license_annual"},
         )
     except ProviderNotIntegrated as e:
