@@ -15,7 +15,13 @@ from core.security import get_current_user
 from models.quiz_attempt import QuizAttempt
 from models.skill_mastery import SkillMastery
 from models.user import User
-from modules.practice.mastery import allocate_adaptive_slots, load_questions, record_topic_attempt, topic_names_by_id
+from modules.practice.mastery import (
+    allocate_adaptive_slots,
+    effective_mastery,
+    load_questions,
+    record_topic_attempt,
+    topic_names_by_id,
+)
 
 router = APIRouter(tags=["practice"])
 
@@ -136,7 +142,7 @@ async def start_quiz(
             .filter(SkillMastery.user_id == current_user.id, SkillMastery.subject_id == request.subject_id)
             .all()
         )
-        masteries = {m.topic_id: m.mastery_probability for m in mastery_rows}
+        masteries = {m.topic_id: effective_mastery(m) for m in mastery_rows}
         topic_question_counts = {topic_id: len(qs) for topic_id, qs in questions_by_topic.items()}
         slots = allocate_adaptive_slots(topic_question_counts, masteries, count)
 
@@ -252,18 +258,23 @@ async def get_quiz_history(
 
 
 def _topic_mastery_for(db: Session, user_id: int) -> list:
-    rows = db.query(SkillMastery).filter(SkillMastery.user_id == user_id).order_by(SkillMastery.mastery_probability.asc()).all()
+    # Sorted/rounded on the decayed (effective) value, not the raw stored
+    # one, so a topic left untouched for weeks shows its actual current
+    # mastery rather than a stale high-water mark - see mastery.py's
+    # decay_mastery/effective_mastery.
+    rows = db.query(SkillMastery).filter(SkillMastery.user_id == user_id).all()
     topic_names = topic_names_by_id()
-    return [
+    entries = [
         {
             "subject_id": m.subject_id,
             "topic_id": m.topic_id,
             "topic_name": topic_names.get(m.topic_id, m.topic_id),
-            "mastery_probability": round(m.mastery_probability, 3),
+            "mastery_probability": round(effective_mastery(m), 3),
             "attempts_count": m.attempts_count,
         }
         for m in rows
     ]
+    return sorted(entries, key=lambda e: e["mastery_probability"])
 
 
 @router.get("/statistics")

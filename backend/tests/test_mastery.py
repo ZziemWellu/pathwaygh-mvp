@@ -1,5 +1,15 @@
+from datetime import datetime, timedelta, timezone
+
 from models.skill_mastery import SkillMastery
-from modules.practice.mastery import DEFAULT_PRIOR, allocate_adaptive_slots, load_questions, update_mastery
+from modules.practice.mastery import (
+    DEFAULT_PRIOR,
+    FORGETTING_HALF_LIFE_DAYS,
+    allocate_adaptive_slots,
+    decay_mastery,
+    effective_mastery,
+    load_questions,
+    update_mastery,
+)
 from tests.conftest import register_user
 from tests.test_practice import KNOWN_ANSWERS
 
@@ -51,6 +61,65 @@ def test_consistent_correct_answers_trend_upward_but_never_reach_one():
     assert all(b >= a - 1e-9 for a, b in zip(history, history[1:], strict=False))
     assert history[-1] > 0.9
     assert history[-1] < 1.0
+
+
+# --- Forgetting/decay ----------------------------------------------------
+
+
+def test_no_elapsed_time_means_no_decay():
+    now = datetime.now(timezone.utc)
+    assert abs(decay_mastery(0.9, now, now=now) - 0.9) < 1e-9
+
+
+def test_decay_moves_toward_default_prior_not_toward_zero():
+    now = datetime.now(timezone.utc)
+    long_ago = now - timedelta(days=365 * 10)
+    # After enough elapsed time, mastery should have decayed almost all
+    # the way to the "no information" baseline, not to 0 - forgetting
+    # means "no longer confident," not "definitely doesn't know this."
+    result = decay_mastery(0.95, long_ago, now=now)
+    assert abs(result - DEFAULT_PRIOR) < 0.01
+
+
+def test_decay_at_exactly_one_half_life_is_halfway_to_the_prior():
+    now = datetime.now(timezone.utc)
+    one_half_life_ago = now - timedelta(days=FORGETTING_HALF_LIFE_DAYS)
+    start = 0.9
+    result = decay_mastery(start, one_half_life_ago, now=now)
+    expected_midpoint = DEFAULT_PRIOR + (start - DEFAULT_PRIOR) / 2
+    assert abs(result - expected_midpoint) < 1e-6
+
+
+def test_decay_never_overshoots_past_the_prior():
+    now = datetime.now(timezone.utc)
+    long_ago = now - timedelta(days=365 * 50)
+    # A below-prior mastery decaying "up" toward the prior must not
+    # overshoot past it either - decay is symmetric.
+    result = decay_mastery(0.05, long_ago, now=now)
+    assert abs(result - DEFAULT_PRIOR) < 0.01
+
+
+def test_naive_datetime_is_treated_as_utc_not_rejected():
+    # SQLite round-trips DateTime columns as naive (no tzinfo) even though
+    # the model writes tz-aware values - decay_mastery must not crash on
+    # a naive last_updated the way a naive-vs-aware comparison would.
+    now = datetime.now(timezone.utc)
+    naive_last_updated = (now - timedelta(days=5)).replace(tzinfo=None)
+    result = decay_mastery(0.9, naive_last_updated, now=now)
+    assert 0.0 <= result < 0.9
+
+
+def test_effective_mastery_reads_decay_off_the_row(db_session):
+    now = datetime.now(timezone.utc)
+    old_row = SkillMastery(
+        user_id=1,
+        subject_id="mathematics",
+        topic_id="algebra",
+        mastery_probability=0.9,
+        attempts_count=5,
+        last_updated=now - timedelta(days=FORGETTING_HALF_LIFE_DAYS * 4),
+    )
+    assert effective_mastery(old_row, now=now) < old_row.mastery_probability
 
 
 # --- Pure adaptive slot allocation --------------------------------------
@@ -211,3 +280,27 @@ def test_statistics_includes_topic_mastery_even_with_no_attempts(client):
     response = client.get("/api/practice/statistics", headers=headers)
     assert response.status_code == 200
     assert response.json()["topic_mastery"] == []
+
+
+def test_stale_mastery_reads_as_decayed_through_the_real_endpoint(client, db_session):
+    """A topic last practiced long ago must show its current (decayed)
+    mastery through /api/practice/statistics, not the stale high-water
+    mark from whenever it was last attempted."""
+    headers, user = _register(client, "mastery_stale@test.com")
+    stale_probability = 0.95
+    db_session.add(
+        SkillMastery(
+            user_id=user["id"],
+            subject_id="mathematics",
+            topic_id="algebra",
+            mastery_probability=stale_probability,
+            attempts_count=5,
+            last_updated=datetime.now(timezone.utc) - timedelta(days=FORGETTING_HALF_LIFE_DAYS * 4),
+        )
+    )
+    db_session.commit()
+
+    stats = client.get("/api/practice/statistics", headers=headers).json()
+    reported = next(m["mastery_probability"] for m in stats["topic_mastery"] if m["topic_id"] == "algebra")
+    assert reported < stale_probability
+    assert abs(reported - DEFAULT_PRIOR) < 0.05

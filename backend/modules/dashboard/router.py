@@ -15,7 +15,7 @@ from models.quiz_attempt import QuizAttempt
 from models.skill_mastery import SkillMastery
 from models.user import User
 from modules.dashboard.aggregation import overview_for_users
-from modules.practice.mastery import topic_names_by_id
+from modules.practice.mastery import effective_mastery, topic_names_by_id
 
 router = APIRouter(tags=["dashboard"])
 
@@ -81,12 +81,16 @@ async def get_dashboard_summary(current_user: User = Depends(get_current_user), 
 
     # Additive to weak_subjects above (kept unchanged) - real per-skill
     # mastery from the adaptive learning engine, once attempts exist.
+    # Filtered/sorted on the decayed (effective) mastery, not the raw
+    # stored value - a topic not practiced in months may have decayed
+    # below the threshold even though it was last recorded above it, so
+    # this must fetch every row and decide in Python rather than filter
+    # in SQL on the stale stored column.
     topic_names = topic_names_by_id()
-    weak_masteries = (
-        db.query(SkillMastery)
-        .filter(SkillMastery.user_id == current_user.id, SkillMastery.mastery_probability < 0.5)
-        .order_by(SkillMastery.mastery_probability.asc())
-        .all()
+    all_masteries = db.query(SkillMastery).filter(SkillMastery.user_id == current_user.id).all()
+    weak_masteries = sorted(
+        (m for m in all_masteries if effective_mastery(m) < 0.5),
+        key=effective_mastery,
     )
     weak_topics = [
         {"subject_id": m.subject_id, "topic_id": m.topic_id, "topic_name": topic_names.get(m.topic_id, m.topic_id)}

@@ -13,6 +13,8 @@ every question has the same number of options.
 
 import json
 import logging
+import math
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Dict, Optional
 
@@ -28,6 +30,46 @@ QUESTIONS_FILE = PROJECT_ROOT / "data" / "practice" / "questions.json"
 DEFAULT_PRIOR = 0.3
 P_TRANSIT = 0.1
 P_SLIP = 0.1
+
+# Forgetting/decay: published research (JEDM's BKT-vs-DKT comparison; the
+# 2026 concept-drift study on knowledge tracing) finds that extending BKT
+# with a time-decay term closes most of the gap with full deep knowledge
+# tracing, while staying more stable than deep models as the student
+# population shifts - without needing any training pipeline. 21 days is a
+# literature-plausible starting half-life (comparable to short-term-
+# retention constants used in spaced-repetition systems), not fitted from
+# PathwayGH's own data - same documented-default status as P_TRANSIT/
+# P_SLIP above. Decay reverts toward DEFAULT_PRIOR (the "no information"
+# baseline) rather than toward zero, since forgetting means "we're no
+# longer confident," not "definitely doesn't know this."
+FORGETTING_HALF_LIFE_DAYS = 21.0
+
+
+def decay_mastery(probability: float, last_updated: Optional[datetime], now: Optional[datetime] = None) -> float:
+    """Applies exponential decay toward DEFAULT_PRIOR based on elapsed time
+    since last_updated. A pure function of stored state - callers store
+    the un-decayed probability and last_updated timestamp as usual; this
+    is applied at read time (and again as the starting point for the next
+    Bayes update), never written back as a lazy background job."""
+    if last_updated is None:
+        return probability
+
+    if last_updated.tzinfo is None:
+        last_updated = last_updated.replace(tzinfo=timezone.utc)
+    reference = now or datetime.now(timezone.utc)
+    elapsed_days = max((reference - last_updated).total_seconds() / 86400, 0.0)
+
+    retention = math.exp(-elapsed_days / FORGETTING_HALF_LIFE_DAYS * math.log(2))
+    return DEFAULT_PRIOR + (probability - DEFAULT_PRIOR) * retention
+
+
+def effective_mastery(mastery: SkillMastery, now: Optional[datetime] = None) -> float:
+    """Decayed mastery for a stored SkillMastery row - what every read-only
+    consumer (dashboard weak-topics, adaptive slot allocation, the
+    student-facing mastery summary) should show instead of the raw stored
+    value, so a topic not practiced in months doesn't still read as
+    mastered."""
+    return decay_mastery(mastery.mastery_probability, mastery.last_updated, now)
 
 
 def load_questions() -> dict:
@@ -142,7 +184,8 @@ def record_topic_attempt(
             db.add(mastery)
         cache[key] = mastery
 
-    mastery.mastery_probability = update_mastery(mastery.mastery_probability, is_correct, num_options)
+    decayed_prior = decay_mastery(mastery.mastery_probability, mastery.last_updated)
+    mastery.mastery_probability = update_mastery(decayed_prior, is_correct, num_options)
     mastery.attempts_count += 1
     return mastery
 
