@@ -15,7 +15,7 @@ const ExploreLanding = ({ user }) => {
       icon: '💼',
       title: 'Careers',
       description: 'Explore career opportunities and pathways',
-      color: '#1a5f2b',
+      color: 'var(--primary)',
       path: '/explore/careers',
       buttonText: 'Explore Careers'
     },
@@ -24,7 +24,7 @@ const ExploreLanding = ({ user }) => {
       icon: '🏛️',
       title: 'Universities',
       description: 'Browse universities and their admission requirements',
-      color: '#1565c0',
+      color: 'var(--secondary)',
       path: '/explore/universities',
       buttonText: 'View Universities'
     },
@@ -54,7 +54,7 @@ const ExploreLanding = ({ user }) => {
   return (
     <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '20px' }}>
       <header style={{ marginBottom: '30px' }}>
-        <h1 style={{ color: '#1a5f2b', marginBottom: '8px' }}>🔍 Explore</h1>
+        <h1 style={{ color: 'var(--primary)', marginBottom: '8px' }}>🔍 Explore</h1>
         <p style={{ color: '#666', fontSize: '16px' }}>
           Discover careers, universities, scholarships, and find your perfect path
         </p>
@@ -122,7 +122,7 @@ const ExploreLanding = ({ user }) => {
         ))}
       </div>
 
-      <footer style={{ textAlign: 'center', marginTop: '40px', padding: '20px', color: '#666666', borderTop: '1px solid #e0e0e0' }}>
+      <footer style={{ textAlign: 'center', marginTop: '40px', padding: '20px', color: 'var(--gray-500)', borderTop: '1px solid #e0e0e0' }}>
         <p>Discover your path with Pathway AI</p>
       </footer>
     </div>

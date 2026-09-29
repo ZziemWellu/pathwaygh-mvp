@@ -55,7 +55,7 @@ const AdminLessonEditor = () => {
 
   return (
     <div style={{ maxWidth: '1000px', margin: '0 auto', padding: '20px' }}>
-      <Link to={`/admin/courses/${lesson.course_id}`} style={{ color: '#1a5f2b', fontSize: '14px' }}>← Back to course</Link>
+      <Link to={`/admin/courses/${lesson.course_id}`} style={{ color: 'var(--primary)', fontSize: '14px' }}>← Back to course</Link>
 
       <div style={{ background: 'white', border: '1px solid #e0e0e0', borderRadius: '12px', padding: '18px', margin: '16px 0', display: 'flex', flexDirection: 'column', gap: '10px' }}>
         <label style={labelStyle}>Title</label>
@@ -114,7 +114,7 @@ const AdminLessonEditor = () => {
           </>
         )}
 
-        <button onClick={handleSave} disabled={saving} style={{ padding: '10px', background: saving ? '#ccc' : '#1a5f2b', color: 'white', border: 'none', borderRadius: '8px', cursor: saving ? 'not-allowed' : 'pointer', fontWeight: 'bold' }}>
+        <button onClick={handleSave} disabled={saving} style={{ padding: '10px', background: saving ? '#ccc' : 'var(--primary)', color: 'white', border: 'none', borderRadius: '8px', cursor: saving ? 'not-allowed' : 'pointer', fontWeight: 'bold' }}>
           {saving ? 'Saving...' : 'Save Lesson'}
         </button>
       </div>

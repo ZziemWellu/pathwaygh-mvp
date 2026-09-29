@@ -296,7 +296,7 @@ const ProfileModule = () => {
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '400px' }}>
         <div style={{ textAlign: 'center' }}>
           <div style={{ fontSize: '24px', marginBottom: '12px' }}>⏳</div>
-          <p style={{ color: '#666666' }}>Loading profile...</p>
+          <p style={{ color: 'var(--gray-500)' }}>Loading profile...</p>
         </div>
       </div>
     );
@@ -309,8 +309,8 @@ const ProfileModule = () => {
           padding: '12px 20px',
           borderRadius: '8px',
           marginBottom: '16px',
-          background: notification.type === 'error' ? '#ffebee' : '#e8f5e9',
-          color: notification.type === 'error' ? '#c62828' : '#1a5f2b',
+          background: notification.type === 'error' ? '#ffebee' : 'var(--primary-bg)',
+          color: notification.type === 'error' ? 'var(--danger)' : 'var(--primary)',
           border: `1px solid ${notification.type === 'error' ? '#ef9a9a' : '#a5d6a7'}`,
           display: 'flex',
           justifyContent: 'space-between',
@@ -322,9 +322,9 @@ const ProfileModule = () => {
       )}
 
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
-        <h2 style={{ margin: 0, color: '#1a5f2b' }}>👤 Profile</h2>
+        <h2 style={{ margin: 0, color: 'var(--primary)' }}>👤 Profile</h2>
         {!editing && (
-          <button onClick={handleEdit} style={{ padding: '8px 20px', background: '#1a5f2b', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer', fontSize: '14px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <button onClick={handleEdit} style={{ padding: '8px 20px', background: 'var(--primary)', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer', fontSize: '14px', display: 'flex', alignItems: 'center', gap: '8px' }}>
             ✏️ Edit Profile
           </button>
         )}
@@ -451,19 +451,19 @@ const ProfileModule = () => {
             <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
                 <div>
-                  <label style={{ display: 'block', fontSize: '13px', color: '#666666', marginBottom: '4px' }}>Full Name</label>
+                  <label style={{ display: 'block', fontSize: '13px', color: 'var(--gray-500)', marginBottom: '4px' }}>Full Name</label>
                   <input name="full_name" value={formData.full_name || ''} onChange={handleChange} style={{ width: '100%', padding: '10px', border: '1px solid #e0e0e0', borderRadius: '8px' }} />
                 </div>
                 <div>
-                  <label style={{ display: 'block', fontSize: '13px', color: '#666666', marginBottom: '4px' }}>Email</label>
+                  <label style={{ display: 'block', fontSize: '13px', color: 'var(--gray-500)', marginBottom: '4px' }}>Email</label>
                   <input name="email" value={formData.email || ''} onChange={handleChange} style={{ width: '100%', padding: '10px', border: '1px solid #e0e0e0', borderRadius: '8px' }} disabled />
                 </div>
                 <div>
-                  <label style={{ display: 'block', fontSize: '13px', color: '#666666', marginBottom: '4px' }}>School</label>
+                  <label style={{ display: 'block', fontSize: '13px', color: 'var(--gray-500)', marginBottom: '4px' }}>School</label>
                   <input name="school" value={formData.school || ''} onChange={handleChange} placeholder="Your school name" style={{ width: '100%', padding: '10px', border: '1px solid #e0e0e0', borderRadius: '8px' }} />
                 </div>
                 <div>
-                  <label style={{ display: 'block', fontSize: '13px', color: '#666666', marginBottom: '4px' }}>Grade/Level</label>
+                  <label style={{ display: 'block', fontSize: '13px', color: 'var(--gray-500)', marginBottom: '4px' }}>Grade/Level</label>
                   <select name="grade" value={formData.grade || ''} onChange={handleChange} style={{ width: '100%', padding: '10px', border: '1px solid #e0e0e0', borderRadius: '8px' }}>
                     <option value="">Select Grade</option>
                     <option value="JHS 1">JHS 1</option>
@@ -476,57 +476,57 @@ const ProfileModule = () => {
                   </select>
                 </div>
                 <div>
-                  <label style={{ display: 'block', fontSize: '13px', color: '#666666', marginBottom: '4px' }}>Bio / About Me</label>
+                  <label style={{ display: 'block', fontSize: '13px', color: 'var(--gray-500)', marginBottom: '4px' }}>Bio / About Me</label>
                   <textarea name="bio" value={formData.bio || ''} onChange={handleChange} placeholder="Tell us about yourself..." rows="3" style={{ width: '100%', padding: '10px', border: '1px solid #e0e0e0', borderRadius: '8px', resize: 'vertical' }} />
                 </div>
                 <div>
-                  <label style={{ display: 'block', fontSize: '13px', color: '#666666', marginBottom: '4px' }}>Phone Number</label>
+                  <label style={{ display: 'block', fontSize: '13px', color: 'var(--gray-500)', marginBottom: '4px' }}>Phone Number</label>
                   <input name="phone" value={formData.phone || ''} onChange={handleChange} placeholder="+233 XX XXX XXXX" style={{ width: '100%', padding: '10px', border: '1px solid #e0e0e0', borderRadius: '8px' }} />
                 </div>
                 <div>
-                  <label style={{ display: 'block', fontSize: '13px', color: '#666666', marginBottom: '4px' }}>Location</label>
+                  <label style={{ display: 'block', fontSize: '13px', color: 'var(--gray-500)', marginBottom: '4px' }}>Location</label>
                   <input name="location" value={formData.location || ''} onChange={handleChange} placeholder="Accra, Kumasi, ..." style={{ width: '100%', padding: '10px', border: '1px solid #e0e0e0', borderRadius: '8px' }} />
                 </div>
                 <div>
-                  <label style={{ display: 'block', fontSize: '13px', color: '#666666', marginBottom: '4px' }}>Career Interests (comma separated)</label>
+                  <label style={{ display: 'block', fontSize: '13px', color: 'var(--gray-500)', marginBottom: '4px' }}>Career Interests (comma separated)</label>
                   <input name="interests" value={formData.interests?.join(', ') || ''} onChange={(e) => handleArrayChange(e, 'interests')} placeholder="Engineering, Medicine, Technology, ..." style={{ width: '100%', padding: '10px', border: '1px solid #e0e0e0', borderRadius: '8px' }} />
                 </div>
                 <div>
-                  <label style={{ display: 'block', fontSize: '13px', color: '#666666', marginBottom: '4px' }}>Learning Goals (comma separated)</label>
+                  <label style={{ display: 'block', fontSize: '13px', color: 'var(--gray-500)', marginBottom: '4px' }}>Learning Goals (comma separated)</label>
                   <input name="goals" value={formData.goals?.join(', ') || ''} onChange={(e) => handleArrayChange(e, 'goals')} placeholder="Pass WASSCE, Study Engineering, ..." style={{ width: '100%', padding: '10px', border: '1px solid #e0e0e0', borderRadius: '8px' }} />
                 </div>
               </div>
               <div style={{ display: 'flex', gap: '12px', justifyContent: 'flex-end' }}>
                 <button onClick={handleCancel} style={{ padding: '10px 24px', background: '#f0f0f0', border: 'none', borderRadius: '8px', cursor: 'pointer' }}>Cancel</button>
-                <button onClick={handleSave} disabled={saving} style={{ padding: '10px 24px', background: '#1a5f2b', color: 'white', border: 'none', borderRadius: '8px', cursor: saving ? 'not-allowed' : 'pointer', opacity: saving ? 0.6 : 1 }}>{saving ? 'Saving...' : '💾 Save Changes'}</button>
+                <button onClick={handleSave} disabled={saving} style={{ padding: '10px 24px', background: 'var(--primary)', color: 'white', border: 'none', borderRadius: '8px', cursor: saving ? 'not-allowed' : 'pointer', opacity: saving ? 0.6 : 1 }}>{saving ? 'Saving...' : '💾 Save Changes'}</button>
               </div>
             </div>
           ) : (
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(120px, 1fr))', gap: '16px' }}>
               <div style={{ textAlign: 'center', padding: '12px', background: '#f8f9fa', borderRadius: '8px' }}>
                 <div style={{ fontSize: '24px' }}>📚</div>
-                <div style={{ fontSize: '20px', fontWeight: 'bold', color: '#1a5f2b' }}>{stats.coursesCompleted || 0}</div>
-                <div style={{ fontSize: '12px', color: '#666666' }}>Courses</div>
+                <div style={{ fontSize: '20px', fontWeight: 'bold', color: 'var(--primary)' }}>{stats.coursesCompleted || 0}</div>
+                <div style={{ fontSize: '12px', color: 'var(--gray-500)' }}>Courses</div>
               </div>
               <div style={{ textAlign: 'center', padding: '12px', background: '#f8f9fa', borderRadius: '8px' }}>
                 <div style={{ fontSize: '24px' }}>📖</div>
-                <div style={{ fontSize: '20px', fontWeight: 'bold', color: '#1a5f2b' }}>{stats.totalLessons || 0}</div>
-                <div style={{ fontSize: '12px', color: '#666666' }}>Lessons</div>
+                <div style={{ fontSize: '20px', fontWeight: 'bold', color: 'var(--primary)' }}>{stats.totalLessons || 0}</div>
+                <div style={{ fontSize: '12px', color: 'var(--gray-500)' }}>Lessons</div>
               </div>
               <div style={{ textAlign: 'center', padding: '12px', background: '#f8f9fa', borderRadius: '8px' }}>
                 <div style={{ fontSize: '24px' }}>📝</div>
-                <div style={{ fontSize: '20px', fontWeight: 'bold', color: '#1a5f2b' }}>{stats.quizzesTaken || 0}</div>
-                <div style={{ fontSize: '12px', color: '#666666' }}>Quizzes</div>
+                <div style={{ fontSize: '20px', fontWeight: 'bold', color: 'var(--primary)' }}>{stats.quizzesTaken || 0}</div>
+                <div style={{ fontSize: '12px', color: 'var(--gray-500)' }}>Quizzes</div>
               </div>
               <div style={{ textAlign: 'center', padding: '12px', background: '#f8f9fa', borderRadius: '8px' }}>
                 <div style={{ fontSize: '24px' }}>🔥</div>
-                <div style={{ fontSize: '20px', fontWeight: 'bold', color: '#1a5f2b' }}>{stats.studyStreak || 0}</div>
-                <div style={{ fontSize: '12px', color: '#666666' }}>Day Streak</div>
+                <div style={{ fontSize: '20px', fontWeight: 'bold', color: 'var(--primary)' }}>{stats.studyStreak || 0}</div>
+                <div style={{ fontSize: '12px', color: 'var(--gray-500)' }}>Day Streak</div>
               </div>
               <div style={{ textAlign: 'center', padding: '12px', background: '#f8f9fa', borderRadius: '8px' }}>
                 <div style={{ fontSize: '24px' }}>⭐</div>
-                <div style={{ fontSize: '20px', fontWeight: 'bold', color: '#1a5f2b' }}>{stats.xp || 0}</div>
-                <div style={{ fontSize: '12px', color: '#666666' }}>XP</div>
+                <div style={{ fontSize: '20px', fontWeight: 'bold', color: 'var(--primary)' }}>{stats.xp || 0}</div>
+                <div style={{ fontSize: '12px', color: 'var(--gray-500)' }}>XP</div>
               </div>
             </div>
           )}
@@ -553,7 +553,7 @@ const ProfileModule = () => {
               cursor: 'pointer',
               fontSize: '14px',
               fontWeight: activeTab === tab.id ? 'bold' : 'normal',
-              color: activeTab === tab.id ? '#1a5f2b' : '#666',
+              color: activeTab === tab.id ? 'var(--primary)' : '#666',
               transition: 'all 0.2s ease',
               whiteSpace: 'nowrap'
             }}
@@ -616,10 +616,10 @@ const ProfileModule = () => {
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginTop: '4px' }}>
                   {profile?.interests?.length > 0 ? (
                     profile.interests.map((interest, i) => (
-                      <span key={i} style={{ background: '#e8f5e9', padding: '4px 12px', borderRadius: '12px', fontSize: '13px', color: '#1a5f2b' }}>{interest}</span>
+                      <span key={i} style={{ background: 'var(--primary-bg)', padding: '4px 12px', borderRadius: '12px', fontSize: '13px', color: 'var(--primary)' }}>{interest}</span>
                     ))
                   ) : (
-                    <span style={{ color: '#666666' }}>No interests added yet</span>
+                    <span style={{ color: 'var(--gray-500)' }}>No interests added yet</span>
                   )}
                 </div>
               </div>
@@ -631,7 +631,7 @@ const ProfileModule = () => {
                       <span key={i} style={{ background: '#fff3e0', padding: '4px 12px', borderRadius: '12px', fontSize: '13px', color: '#e65100' }}>{goal}</span>
                     ))
                   ) : (
-                    <span style={{ color: '#666666' }}>No goals added yet</span>
+                    <span style={{ color: 'var(--gray-500)' }}>No goals added yet</span>
                   )}
                 </div>
               </div>
@@ -644,27 +644,27 @@ const ProfileModule = () => {
             <h3 style={{ color: '#333', marginBottom: '16px' }}>💾 Saved Items</h3>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '16px' }}>
               <div style={{ background: '#f8f9fa', borderRadius: '8px', padding: '16px' }}>
-                <h4 style={{ margin: '0 0 8px 0', color: '#1a5f2b' }}>💼 Careers ({savedCareers.length})</h4>
+                <h4 style={{ margin: '0 0 8px 0', color: 'var(--primary)' }}>💼 Careers ({savedCareers.length})</h4>
                 {savedCareers.length > 0 ? (
                   savedCareers.map((career, i) => <div key={i} style={{ fontSize: '13px', color: '#555', padding: '4px 0' }}>• {career}</div>)
                 ) : (
-                  <span style={{ color: '#666666', fontSize: '13px' }}>No saved careers</span>
+                  <span style={{ color: 'var(--gray-500)', fontSize: '13px' }}>No saved careers</span>
                 )}
               </div>
               <div style={{ background: '#f8f9fa', borderRadius: '8px', padding: '16px' }}>
-                <h4 style={{ margin: '0 0 8px 0', color: '#1a5f2b' }}>🏛️ Universities ({savedUniversities.length})</h4>
+                <h4 style={{ margin: '0 0 8px 0', color: 'var(--primary)' }}>🏛️ Universities ({savedUniversities.length})</h4>
                 {savedUniversities.length > 0 ? (
                   savedUniversities.map((uni, i) => <div key={i} style={{ fontSize: '13px', color: '#555', padding: '4px 0' }}>• {uni}</div>)
                 ) : (
-                  <span style={{ color: '#666666', fontSize: '13px' }}>No saved universities</span>
+                  <span style={{ color: 'var(--gray-500)', fontSize: '13px' }}>No saved universities</span>
                 )}
               </div>
               <div style={{ background: '#f8f9fa', borderRadius: '8px', padding: '16px' }}>
-                <h4 style={{ margin: '0 0 8px 0', color: '#1a5f2b' }}>💰 Scholarships ({savedScholarships.length})</h4>
+                <h4 style={{ margin: '0 0 8px 0', color: 'var(--primary)' }}>💰 Scholarships ({savedScholarships.length})</h4>
                 {savedScholarships.length > 0 ? (
                   savedScholarships.map((sch, i) => <div key={i} style={{ fontSize: '13px', color: '#555', padding: '4px 0' }}>• {sch}</div>)
                 ) : (
-                  <span style={{ color: '#666666', fontSize: '13px' }}>No saved scholarships</span>
+                  <span style={{ color: 'var(--gray-500)', fontSize: '13px' }}>No saved scholarships</span>
                 )}
               </div>
             </div>
@@ -675,18 +675,18 @@ const ProfileModule = () => {
           <div>
             <h3 style={{ color: '#333', marginBottom: '16px' }}>🏆 Certificates</h3>
             {certificates.length === 0 ? (
-              <p style={{ color: '#666666', fontSize: '13px' }}>Complete a course to earn your first certificate.</p>
+              <p style={{ color: 'var(--gray-500)', fontSize: '13px' }}>Complete a course to earn your first certificate.</p>
             ) : (
               certificates.map((cert) => {
                 const verifyUrl = `${window.location.origin}/certificates/verify/${cert.code}`;
                 return (
                   <div key={cert.code} style={{ background: '#f8f9fa', borderRadius: '8px', padding: '16px', marginBottom: '12px' }}>
-                    <h4 style={{ margin: '0 0 4px 0', color: '#1a5f2b' }}>{cert.course_title}</h4>
-                    <p style={{ margin: '0 0 8px 0', fontSize: '13px', color: '#666666' }}>
+                    <h4 style={{ margin: '0 0 4px 0', color: 'var(--primary)' }}>{cert.course_title}</h4>
+                    <p style={{ margin: '0 0 8px 0', fontSize: '13px', color: 'var(--gray-500)' }}>
                       Issued {new Date(cert.issued_at).toLocaleDateString()} · {cert.lesson_count} lessons
                     </p>
                     <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', alignItems: 'center' }}>
-                      <Link to={`/certificates/${cert.course_slug}`} style={{ color: '#1a5f2b', fontSize: '13px', fontWeight: 'bold' }}>
+                      <Link to={`/certificates/${cert.course_slug}`} style={{ color: 'var(--primary)', fontSize: '13px', fontWeight: 'bold' }}>
                         View / Print
                       </Link>
                       <button
@@ -695,7 +695,7 @@ const ProfileModule = () => {
                           setCopiedCertCode(cert.code);
                           setTimeout(() => setCopiedCertCode(null), 2000);
                         }}
-                        style={{ padding: '4px 10px', background: 'none', border: '1px solid #1a5f2b', color: '#1a5f2b', borderRadius: '6px', cursor: 'pointer', fontSize: '12px' }}
+                        style={{ padding: '4px 10px', background: 'none', border: '1px solid #1a5f2b', color: 'var(--primary)', borderRadius: '6px', cursor: 'pointer', fontSize: '12px' }}
                       >
                         {copiedCertCode === cert.code ? 'Copied!' : 'Copy verification link'}
                       </button>
@@ -720,19 +720,19 @@ const ProfileModule = () => {
                   </button>
                 </p>
                 {schoolInfo.is_school_admin && (
-                  <a href="/school-admin" style={{ display: 'inline-block', marginTop: '12px', padding: '10px 20px', background: '#1a5f2b', color: 'white', borderRadius: '8px', textDecoration: 'none' }}>
+                  <a href="/school-admin" style={{ display: 'inline-block', marginTop: '12px', padding: '10px 20px', background: 'var(--primary)', color: 'white', borderRadius: '8px', textDecoration: 'none' }}>
                     Open School Admin Dashboard →
                   </a>
                 )}
               </div>
             ) : (
               <div>
-                <p style={{ color: '#666666', marginBottom: '16px' }}>You're not linked to a school yet.</p>
+                <p style={{ color: 'var(--gray-500)', marginBottom: '16px' }}>You're not linked to a school yet.</p>
                 <div style={{ display: 'flex', gap: '12px', marginBottom: '16px' }}>
-                  <button onClick={() => { setSchoolFormMode('join'); setSchoolFormValue(''); }} style={{ padding: '8px 16px', background: schoolFormMode === 'join' ? '#1a5f2b' : '#f0f0f0', color: schoolFormMode === 'join' ? 'white' : '#333', border: 'none', borderRadius: '8px', cursor: 'pointer' }}>
+                  <button onClick={() => { setSchoolFormMode('join'); setSchoolFormValue(''); }} style={{ padding: '8px 16px', background: schoolFormMode === 'join' ? 'var(--primary)' : '#f0f0f0', color: schoolFormMode === 'join' ? 'white' : '#333', border: 'none', borderRadius: '8px', cursor: 'pointer' }}>
                     Join a School
                   </button>
-                  <button onClick={() => { setSchoolFormMode('create'); setSchoolFormValue(''); }} style={{ padding: '8px 16px', background: schoolFormMode === 'create' ? '#1a5f2b' : '#f0f0f0', color: schoolFormMode === 'create' ? 'white' : '#333', border: 'none', borderRadius: '8px', cursor: 'pointer' }}>
+                  <button onClick={() => { setSchoolFormMode('create'); setSchoolFormValue(''); }} style={{ padding: '8px 16px', background: schoolFormMode === 'create' ? 'var(--primary)' : '#f0f0f0', color: schoolFormMode === 'create' ? 'white' : '#333', border: 'none', borderRadius: '8px', cursor: 'pointer' }}>
                     Create a School
                   </button>
                 </div>
@@ -744,7 +744,7 @@ const ProfileModule = () => {
                       placeholder="Enter join code"
                       style={{ flex: 1, padding: '10px', border: '1px solid #e0e0e0', borderRadius: '8px' }}
                     />
-                    <button onClick={handleJoinSchool} disabled={schoolSaving} style={{ padding: '10px 20px', background: '#1a5f2b', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer' }}>
+                    <button onClick={handleJoinSchool} disabled={schoolSaving} style={{ padding: '10px 20px', background: 'var(--primary)', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer' }}>
                       {schoolSaving ? 'Joining...' : 'Join'}
                     </button>
                   </div>
@@ -757,7 +757,7 @@ const ProfileModule = () => {
                       placeholder="School name"
                       style={{ flex: 1, padding: '10px', border: '1px solid #e0e0e0', borderRadius: '8px' }}
                     />
-                    <button onClick={handleCreateSchool} disabled={schoolSaving} style={{ padding: '10px 20px', background: '#1a5f2b', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer' }}>
+                    <button onClick={handleCreateSchool} disabled={schoolSaving} style={{ padding: '10px 20px', background: 'var(--primary)', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer' }}>
                       {schoolSaving ? 'Creating...' : 'Create'}
                     </button>
                   </div>
@@ -791,15 +791,15 @@ const ProfileModule = () => {
                   placeholder="parent@email.com"
                   style={{ flex: 1, padding: '10px', border: '1px solid #e0e0e0', borderRadius: '8px' }}
                 />
-                <button onClick={handleSaveGuardianEmail} disabled={guardianEmailSaving} style={{ padding: '10px 20px', background: '#1a5f2b', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer' }}>
+                <button onClick={handleSaveGuardianEmail} disabled={guardianEmailSaving} style={{ padding: '10px 20px', background: 'var(--primary)', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer' }}>
                   {guardianEmailSaving ? 'Saving...' : 'Save'}
                 </button>
               </div>
-              <p style={{ color: '#666666', fontSize: '13px' }}>
+              <p style={{ color: 'var(--gray-500)', fontSize: '13px' }}>
                 Consent given: {profile?.consent_given_at ? new Date(profile.consent_given_at).toLocaleDateString() : 'Not recorded (account predates consent tracking)'}
                 {profile?.consent_version && ` · version ${profile.consent_version}`}
               </p>
-              <Link to="/privacy" style={{ color: '#1a5f2b', fontSize: '13px' }}>View Privacy Policy</Link>
+              <Link to="/privacy" style={{ color: 'var(--primary)', fontSize: '13px' }}>View Privacy Policy</Link>
             </div>
 
             <div style={{ marginTop: '24px', paddingTop: '16px', borderTop: '1px solid #eee' }}>
@@ -822,7 +822,7 @@ const ProfileModule = () => {
                 />
                 <span>My guardian has agreed to receive a periodic WhatsApp study update at this number.</span>
               </label>
-              <button onClick={handleSaveGuardianWhatsapp} disabled={guardianPhoneSaving} style={{ padding: '10px 20px', background: '#1a5f2b', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer' }}>
+              <button onClick={handleSaveGuardianWhatsapp} disabled={guardianPhoneSaving} style={{ padding: '10px 20px', background: 'var(--primary)', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer' }}>
                 {guardianPhoneSaving ? 'Saving...' : 'Save'}
               </button>
             </div>

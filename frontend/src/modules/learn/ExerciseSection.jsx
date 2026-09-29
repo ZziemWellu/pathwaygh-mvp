@@ -42,7 +42,7 @@ const ExerciseSection = ({ lessonId, exercises, bestScore }) => {
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '18px', flexWrap: 'wrap', gap: '8px' }}>
         <h3 style={{ margin: 0, fontSize: '17px' }}>{t('learnPracticeExercises')}</h3>
         {bestScore !== null && bestScore !== undefined && !result && (
-          <span style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontSize: '13px', color: '#1a5f2b', fontWeight: 'bold' }}>
+          <span style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontSize: '13px', color: 'var(--primary)', fontWeight: 'bold' }}>
             <Award size={15} /> {t('learnBestScore').replace('{pct}', bestScore)}
           </span>
         )}
@@ -54,12 +54,12 @@ const ExerciseSection = ({ lessonId, exercises, bestScore }) => {
             padding: '16px',
             marginBottom: '20px',
             borderRadius: '12px',
-            background: result.score >= 70 ? '#e8f5e9' : '#fff3e0',
+            background: result.score >= 70 ? 'var(--primary-bg)' : '#fff3e0',
             border: `1px solid ${result.score >= 70 ? '#a5d6a7' : '#ffcc80'}`,
             textAlign: 'center',
           }}
         >
-          <div style={{ fontSize: '26px', fontWeight: 'bold', color: result.score >= 70 ? '#1a5f2b' : '#e65100' }}>{result.score}%</div>
+          <div style={{ fontSize: '26px', fontWeight: 'bold', color: result.score >= 70 ? 'var(--primary)' : '#e65100' }}>{result.score}%</div>
           <div style={{ fontSize: '13px', color: '#555' }}>
             {t('learnCorrectCount').replace('{correct}', result.correct_count).replace('{total}', result.total_questions)}
           </div>
@@ -80,15 +80,15 @@ const ExerciseSection = ({ lessonId, exercises, bestScore }) => {
                 let border = '#e0e0e0';
                 if (graded) {
                   if (oi === graded.correct_index) {
-                    bg = '#e8f5e9';
+                    bg = 'var(--primary-bg)';
                     border = '#a5d6a7';
                   } else if (oi === graded.selected && !graded.is_correct) {
                     bg = '#ffebee';
                     border = '#ef9a9a';
                   }
                 } else if (isSelected) {
-                  bg = '#e8f5e9';
-                  border = '#1a5f2b';
+                  bg = 'var(--primary-bg)';
+                  border = 'var(--primary)';
                 }
                 return (
                   <button
@@ -110,8 +110,8 @@ const ExerciseSection = ({ lessonId, exercises, bestScore }) => {
                     }}
                   >
                     <span>{option}</span>
-                    {graded && oi === graded.correct_index && <CheckCircle2 size={16} color="#1a5f2b" />}
-                    {graded && oi === graded.selected && !graded.is_correct && <XCircle size={16} color="#c62828" />}
+                    {graded && oi === graded.correct_index && <CheckCircle2 size={16} color="var(--primary)" />}
+                    {graded && oi === graded.selected && !graded.is_correct && <XCircle size={16} color="var(--danger)" />}
                   </button>
                 );
               })}
@@ -125,7 +125,7 @@ const ExerciseSection = ({ lessonId, exercises, bestScore }) => {
         );
       })}
 
-      {error && <p style={{ color: '#c62828', fontSize: '13px' }}>{error}</p>}
+      {error && <p style={{ color: 'var(--danger)', fontSize: '13px' }}>{error}</p>}
 
       {result ? (
         <button
@@ -141,7 +141,7 @@ const ExerciseSection = ({ lessonId, exercises, bestScore }) => {
           disabled={!allAnswered || submitting}
           style={{
             padding: '10px 22px',
-            background: !allAnswered || submitting ? '#ccc' : '#1a5f2b',
+            background: !allAnswered || submitting ? '#ccc' : 'var(--primary)',
             color: 'white',
             border: 'none',
             borderRadius: '8px',

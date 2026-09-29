@@ -138,7 +138,7 @@ const PracticeModule = () => {
     if (score >= 80) return '#2e7d32';
     if (score >= 60) return '#f9a825';
     if (score >= 40) return '#ef6c00';
-    return '#c62828';
+    return 'var(--danger)';
   };
 
   const getScoreEmoji = (score) => {
@@ -175,7 +175,7 @@ const PracticeModule = () => {
       <div style={{ textAlign: 'center', padding: '40px' }}>
         <h2>✍️ Practice</h2>
         <p style={{ color: 'red' }}>⚠️ {error}</p>
-        <button onClick={fetchSubjects} style={{ padding: '8px 16px', background: '#1a5f2b', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer' }}>Retry</button>
+        <button onClick={fetchSubjects} style={{ padding: '8px 16px', background: 'var(--primary)', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer' }}>Retry</button>
       </div>
     );
   }
@@ -194,7 +194,7 @@ const PracticeModule = () => {
 
       return (
         <div style={{ maxWidth: '600px', margin: '0 auto', padding: '20px' }}>
-          <h2 style={{ textAlign: 'center', color: '#1a5f2b' }}>📊 Quiz Results</h2>
+          <h2 style={{ textAlign: 'center', color: 'var(--primary)' }}>📊 Quiz Results</h2>
           <div style={{ background: 'white', padding: '30px', borderRadius: '16px', border: '1px solid #e0e0e0', textAlign: 'center' }}>
             <div style={{ fontSize: '64px' }}>{emoji}</div>
             <div style={{ fontSize: '48px', fontWeight: 'bold', color: scoreColor }}>{score}%</div>
@@ -204,20 +204,20 @@ const PracticeModule = () => {
             </div>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '12px', margin: '16px 0' }}>
               <div style={{ padding: '12px', background: '#f8f9fa', borderRadius: '8px' }}>
-                <span style={{ display: 'block', fontSize: '12px', color: '#666666' }}>✅ Correct</span>
-                <span style={{ display: 'block', fontSize: '20px', fontWeight: 'bold', color: '#1a5f2b' }}>{quizResults.correct || 0}/{totalQuestions}</span>
+                <span style={{ display: 'block', fontSize: '12px', color: 'var(--gray-500)' }}>✅ Correct</span>
+                <span style={{ display: 'block', fontSize: '20px', fontWeight: 'bold', color: 'var(--primary)' }}>{quizResults.correct || 0}/{totalQuestions}</span>
               </div>
               <div style={{ padding: '12px', background: '#f8f9fa', borderRadius: '8px' }}>
-                <span style={{ display: 'block', fontSize: '12px', color: '#666666' }}>❌ Incorrect</span>
+                <span style={{ display: 'block', fontSize: '12px', color: 'var(--gray-500)' }}>❌ Incorrect</span>
                 <span style={{ display: 'block', fontSize: '20px', fontWeight: 'bold', color: '#d32f2f' }}>{quizResults.incorrect || 0}/{totalQuestions}</span>
               </div>
               <div style={{ padding: '12px', background: '#f8f9fa', borderRadius: '8px' }}>
-                <span style={{ display: 'block', fontSize: '12px', color: '#666666' }}>⏱️ Time</span>
+                <span style={{ display: 'block', fontSize: '12px', color: 'var(--gray-500)' }}>⏱️ Time</span>
                 <span style={{ display: 'block', fontSize: '20px', fontWeight: 'bold' }}>{formatTime(quizResults.time_spent || 0)}</span>
               </div>
             </div>
             <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', justifyContent: 'center' }}>
-              <button onClick={resetQuiz} style={{ padding: '10px 20px', background: '#1a5f2b', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: 'bold' }}>🔄 Retry Quiz</button>
+              <button onClick={resetQuiz} style={{ padding: '10px 20px', background: 'var(--primary)', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: 'bold' }}>🔄 Retry Quiz</button>
               <button onClick={() => setShowStats(true)} style={{ padding: '10px 20px', background: '#f0f0f0', border: 'none', borderRadius: '8px', cursor: 'pointer' }}>📊 Stats</button>
               <button onClick={resetQuiz} style={{ padding: '10px 20px', background: '#f0f0f0', border: 'none', borderRadius: '8px', cursor: 'pointer' }}>🏠 Back</button>
             </div>
@@ -229,25 +229,25 @@ const PracticeModule = () => {
     return (
       <div style={{ maxWidth: '800px', margin: '0 auto', padding: '20px' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', flexWrap: 'wrap', gap: '10px' }}>
-          <h2 style={{ margin: 0, color: '#1a5f2b' }}>📝 Quiz</h2>
+          <h2 style={{ margin: 0, color: 'var(--primary)' }}>📝 Quiz</h2>
           <div style={{ display: 'flex', gap: '16px', alignItems: 'center', flexWrap: 'wrap' }}>
-            <span style={{ fontWeight: 'bold', color: '#1a5f2b' }}>⏱️ {formatTime(timeSpent)}</span>
-            <span style={{ fontSize: '13px', color: '#666666' }}>{answeredCount} of {totalQuestions} answered</span>
+            <span style={{ fontWeight: 'bold', color: 'var(--primary)' }}>⏱️ {formatTime(timeSpent)}</span>
+            <span style={{ fontSize: '13px', color: 'var(--gray-500)' }}>{answeredCount} of {totalQuestions} answered</span>
             <button onClick={resetQuiz} style={{ padding: '6px 14px', background: '#f0f0f0', border: 'none', borderRadius: '6px', cursor: 'pointer' }}>✕ Quit</button>
           </div>
         </div>
 
         <div style={{ marginBottom: '20px' }}>
-          <span style={{ fontSize: '14px', color: '#666666' }}>Question {currentQuestion + 1} of {totalQuestions}</span>
+          <span style={{ fontSize: '14px', color: 'var(--gray-500)' }}>Question {currentQuestion + 1} of {totalQuestions}</span>
           <div style={{ height: '6px', background: '#f0f0f0', borderRadius: '3px', marginTop: '8px', overflow: 'hidden' }}>
-            <div style={{ width: `${((currentQuestion + 1) / totalQuestions) * 100}%`, height: '100%', background: '#1a5f2b', borderRadius: '3px', transition: 'width 0.5s ease' }} />
+            <div style={{ width: `${((currentQuestion + 1) / totalQuestions) * 100}%`, height: '100%', background: 'var(--primary)', borderRadius: '3px', transition: 'width 0.5s ease' }} />
           </div>
         </div>
 
         {currentQ && (
           <div style={{ background: 'white', padding: '24px', borderRadius: '12px', border: '1px solid #e0e0e0' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
-              <span style={{ fontSize: '12px', color: '#666666' }}>Question {currentQuestion + 1}</span>
+              <span style={{ fontSize: '12px', color: 'var(--gray-500)' }}>Question {currentQuestion + 1}</span>
               <span style={{ fontSize: '11px', padding: '2px 10px', borderRadius: '12px', background: '#ff9800', color: 'white' }}>{currentQ.difficulty || 'Medium'}</span>
             </div>
             <h3 style={{ margin: '0 0 16px 0', fontSize: '18px', color: '#333' }}>{currentQ.question}</h3>
@@ -258,7 +258,7 @@ const PracticeModule = () => {
                   onClick={() => handleAnswer(currentQuestion, option)}
                   style={{
                     padding: '12px 16px',
-                    background: quizAnswers[currentQuestion] === option ? '#e8f5e9' : '#f5f5f5',
+                    background: quizAnswers[currentQuestion] === option ? 'var(--primary-bg)' : '#f5f5f5',
                     border: quizAnswers[currentQuestion] === option ? '2px solid #1a5f2b' : '1px solid #e0e0e0',
                     borderRadius: '8px',
                     cursor: 'pointer',
@@ -277,8 +277,8 @@ const PracticeModule = () => {
                 disabled={currentQuestion === 0}
                 style={{
                   padding: '10px 24px',
-                  background: currentQuestion === 0 ? '#f0f0f0' : '#1a5f2b',
-                  color: currentQuestion === 0 ? '#666666' : 'white',
+                  background: currentQuestion === 0 ? '#f0f0f0' : 'var(--primary)',
+                  color: currentQuestion === 0 ? 'var(--gray-500)' : 'white',
                   border: 'none',
                   borderRadius: '8px',
                   cursor: currentQuestion === 0 ? 'not-allowed' : 'pointer',
@@ -288,9 +288,9 @@ const PracticeModule = () => {
                 ← Previous
               </button>
               {currentQuestion === totalQuestions - 1 ? (
-                <button onClick={submitQuiz} style={{ padding: '10px 24px', background: '#1a5f2b', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: 'bold' }}>Submit Quiz ✓</button>
+                <button onClick={submitQuiz} style={{ padding: '10px 24px', background: 'var(--primary)', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: 'bold' }}>Submit Quiz ✓</button>
               ) : (
-                <button onClick={() => setCurrentQuestion(prev => Math.min(totalQuestions - 1, prev + 1))} style={{ padding: '10px 24px', background: '#1a5f2b', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: 'bold' }}>Next →</button>
+                <button onClick={() => setCurrentQuestion(prev => Math.min(totalQuestions - 1, prev + 1))} style={{ padding: '10px 24px', background: 'var(--primary)', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: 'bold' }}>Next →</button>
               )}
             </div>
           </div>
@@ -302,7 +302,7 @@ const PracticeModule = () => {
   return (
     <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '20px' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px', flexWrap: 'wrap', gap: '12px' }}>
-        <h2 style={{ margin: 0, color: '#1a5f2b' }}>✍️ Practice</h2>
+        <h2 style={{ margin: 0, color: 'var(--primary)' }}>✍️ Practice</h2>
         <div style={{ display: 'flex', gap: '12px', alignItems: 'center', flexWrap: 'wrap' }}>
           <button
             onClick={() => setShowHistory(!showHistory)}
@@ -310,7 +310,7 @@ const PracticeModule = () => {
               padding: '8px 16px',
               border: '1px solid #e0e0e0',
               borderRadius: '8px',
-              background: showHistory ? '#1a5f2b' : 'white',
+              background: showHistory ? 'var(--primary)' : 'white',
               color: showHistory ? 'white' : '#333',
               cursor: 'pointer',
               fontSize: '14px'
@@ -331,35 +331,35 @@ const PracticeModule = () => {
           >
             📈 Stats
           </button>
-          <span style={{ color: '#666666', fontSize: '14px' }}>📚 {subjects.length} subjects</span>
+          <span style={{ color: 'var(--gray-500)', fontSize: '14px' }}>📚 {subjects.length} subjects</span>
         </div>
       </div>
 
       {showStats && statistics && (
         <div style={{ background: 'white', borderRadius: '12px', border: '1px solid #e0e0e0', padding: '24px', marginBottom: '24px' }}>
-          <h3 style={{ color: '#1a5f2b', margin: '0 0 16px 0' }}>📈 Your Statistics</h3>
+          <h3 style={{ color: 'var(--primary)', margin: '0 0 16px 0' }}>📈 Your Statistics</h3>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', gap: '16px' }}>
             <div style={{ textAlign: 'center', padding: '12px', background: '#f8f9fa', borderRadius: '8px' }}>
-              <span style={{ display: 'block', fontSize: '28px', fontWeight: 'bold', color: '#1a5f2b' }}>{statistics.total_quizzes || 0}</span>
-              <span style={{ display: 'block', fontSize: '12px', color: '#666666' }}>Total Quizzes</span>
+              <span style={{ display: 'block', fontSize: '28px', fontWeight: 'bold', color: 'var(--primary)' }}>{statistics.total_quizzes || 0}</span>
+              <span style={{ display: 'block', fontSize: '12px', color: 'var(--gray-500)' }}>Total Quizzes</span>
             </div>
             <div style={{ textAlign: 'center', padding: '12px', background: '#f8f9fa', borderRadius: '8px' }}>
-              <span style={{ display: 'block', fontSize: '28px', fontWeight: 'bold', color: '#1a5f2b' }}>{statistics.average_score || 0}%</span>
-              <span style={{ display: 'block', fontSize: '12px', color: '#666666' }}>Average Score</span>
+              <span style={{ display: 'block', fontSize: '28px', fontWeight: 'bold', color: 'var(--primary)' }}>{statistics.average_score || 0}%</span>
+              <span style={{ display: 'block', fontSize: '12px', color: 'var(--gray-500)' }}>Average Score</span>
             </div>
             <div style={{ textAlign: 'center', padding: '12px', background: '#f8f9fa', borderRadius: '8px' }}>
-              <span style={{ display: 'block', fontSize: '28px', fontWeight: 'bold', color: '#1a5f2b' }}>{statistics.best_score || 0}%</span>
-              <span style={{ display: 'block', fontSize: '12px', color: '#666666' }}>Best Score</span>
+              <span style={{ display: 'block', fontSize: '28px', fontWeight: 'bold', color: 'var(--primary)' }}>{statistics.best_score || 0}%</span>
+              <span style={{ display: 'block', fontSize: '12px', color: 'var(--gray-500)' }}>Best Score</span>
             </div>
             <div style={{ textAlign: 'center', padding: '12px', background: '#f8f9fa', borderRadius: '8px' }}>
-              <span style={{ display: 'block', fontSize: '28px', fontWeight: 'bold', color: '#1a5f2b' }}>{statistics.accuracy || 0}%</span>
-              <span style={{ display: 'block', fontSize: '12px', color: '#666666' }}>Accuracy</span>
+              <span style={{ display: 'block', fontSize: '28px', fontWeight: 'bold', color: 'var(--primary)' }}>{statistics.accuracy || 0}%</span>
+              <span style={{ display: 'block', fontSize: '12px', color: 'var(--gray-500)' }}>Accuracy</span>
             </div>
           </div>
 
           {statistics.topic_mastery && statistics.topic_mastery.length > 0 && (
             <div style={{ marginTop: '20px' }}>
-              <h4 style={{ color: '#1a5f2b', margin: '0 0 12px 0', fontSize: '14px' }}>Your topic mastery</h4>
+              <h4 style={{ color: 'var(--primary)', margin: '0 0 12px 0', fontSize: '14px' }}>Your topic mastery</h4>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                 {statistics.topic_mastery.map((topic) => {
                   const pct = Math.round(topic.mastery_probability * 100);
@@ -367,16 +367,16 @@ const PracticeModule = () => {
                     <div key={`${topic.subject_id}-${topic.topic_id}`}>
                       <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px', marginBottom: '4px' }}>
                         <span>{topic.topic_name}</span>
-                        <span style={{ color: '#666666' }}>{pct}%</span>
+                        <span style={{ color: 'var(--gray-500)' }}>{pct}%</span>
                       </div>
                       <div style={{ height: '6px', background: '#f0f0f0', borderRadius: '3px', overflow: 'hidden' }}>
-                        <div style={{ width: `${pct}%`, height: '100%', background: pct < 50 ? '#ef6c00' : '#1a5f2b', borderRadius: '3px' }} />
+                        <div style={{ width: `${pct}%`, height: '100%', background: pct < 50 ? '#ef6c00' : 'var(--primary)', borderRadius: '3px' }} />
                       </div>
                     </div>
                   );
                 })}
               </div>
-              <p style={{ fontSize: '11px', color: '#999999', marginTop: '10px' }}>
+              <p style={{ fontSize: '11px', color: 'var(--gray-500)', marginTop: '10px' }}>
                 Practice quizzes automatically focus more on your weaker topics.
               </p>
             </div>
@@ -388,9 +388,9 @@ const PracticeModule = () => {
 
       {showHistory ? (
         <div style={{ background: 'white', borderRadius: '12px', border: '1px solid #e0e0e0', padding: '24px' }}>
-          <h3 style={{ color: '#1a5f2b', margin: '0 0 16px 0' }}>📊 Quiz History</h3>
+          <h3 style={{ color: 'var(--primary)', margin: '0 0 16px 0' }}>📊 Quiz History</h3>
           {quizHistory.length === 0 ? (
-            <p style={{ textAlign: 'center', padding: '40px', color: '#666666' }}>No quiz attempts yet. Start your first quiz!</p>
+            <p style={{ textAlign: 'center', padding: '40px', color: 'var(--gray-500)' }}>No quiz attempts yet. Start your first quiz!</p>
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
               {quizHistory.slice().reverse().map((attempt, i) => {
@@ -399,11 +399,11 @@ const PracticeModule = () => {
                   <div key={i} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px 16px', background: '#f8f9fa', borderRadius: '8px', border: '1px solid #e0e0e0', flexWrap: 'wrap', gap: '8px' }}>
                     <div>
                       <div style={{ fontWeight: 'bold', fontSize: '14px' }}>{attempt.subject || 'Quiz'}</div>
-                      <div style={{ fontSize: '12px', color: '#666666' }}>{attempt.date ? new Date(attempt.date).toLocaleDateString() : 'Recently'}</div>
+                      <div style={{ fontSize: '12px', color: 'var(--gray-500)' }}>{attempt.date ? new Date(attempt.date).toLocaleDateString() : 'Recently'}</div>
                     </div>
                     <div style={{ textAlign: 'right' }}>
                       <div style={{ fontSize: '20px', fontWeight: 'bold', color: scoreColor }}>{attempt.score || 0}%</div>
-                      <div style={{ fontSize: '12px', color: '#666666' }}>{attempt.correct || 0}/{attempt.total || 0} correct</div>
+                      <div style={{ fontSize: '12px', color: 'var(--gray-500)' }}>{attempt.correct || 0}/{attempt.total || 0} correct</div>
                     </div>
                   </div>
                 );
@@ -414,7 +414,7 @@ const PracticeModule = () => {
       ) : (
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', gap: '20px' }}>
           {subjects.length === 0 ? (
-            <p style={{ gridColumn: '1 / -1', textAlign: 'center', padding: '40px', color: '#666666' }}>No practice subjects available.</p>
+            <p style={{ gridColumn: '1 / -1', textAlign: 'center', padding: '40px', color: 'var(--gray-500)' }}>No practice subjects available.</p>
           ) : (
             subjects.map((subject) => (
               <div
@@ -439,7 +439,7 @@ const PracticeModule = () => {
                 }}
               >
                 <div style={{ fontSize: '48px' }}>{subject.icon || '📚'}</div>
-                <h3 style={{ color: '#1a5f2b', margin: '12px 0' }}>{subject.name}</h3>
+                <h3 style={{ color: 'var(--primary)', margin: '12px 0' }}>{subject.name}</h3>
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', justifyContent: 'center', marginBottom: '12px' }}>
                   {subject.topics?.slice(0, 3).map((topic, i) => (
                     <span key={i} style={{ background: '#f0f0f0', padding: '4px 10px', borderRadius: '12px', fontSize: '11px', color: '#666' }}>
@@ -447,12 +447,12 @@ const PracticeModule = () => {
                     </span>
                   ))}
                   {subject.topics?.length > 3 && (
-                    <span style={{ background: '#e8f5e9', padding: '4px 10px', borderRadius: '12px', fontSize: '11px', color: '#1a5f2b' }}>
+                    <span style={{ background: 'var(--primary-bg)', padding: '4px 10px', borderRadius: '12px', fontSize: '11px', color: 'var(--primary)' }}>
                       +{subject.topics.length - 3} more
                     </span>
                   )}
                 </div>
-                <div style={{ fontSize: '12px', color: '#666666', marginBottom: '16px' }}>
+                <div style={{ fontSize: '12px', color: 'var(--gray-500)', marginBottom: '16px' }}>
                   {subject.question_count || 0} questions available
                 </div>
                 <button
@@ -462,7 +462,7 @@ const PracticeModule = () => {
                   }}
                   style={{
                     padding: '10px 24px',
-                    background: '#1a5f2b',
+                    background: 'var(--primary)',
                     color: 'white',
                     border: 'none',
                     borderRadius: '8px',

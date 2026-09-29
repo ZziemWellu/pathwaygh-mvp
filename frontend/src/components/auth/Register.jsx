@@ -111,13 +111,13 @@ const Register = ({ onSuccess, onShowPrivacy }) => {
   if (success) {
     return (
       <div style={{ maxWidth: '400px', margin: '0 auto', textAlign: 'center' }}>
-        <h2 style={{ color: '#1a5f2b' }}>{t('registrationSuccessful')}</h2>
+        <h2 style={{ color: 'var(--primary)' }}>{t('registrationSuccessful')}</h2>
         <p>{t('registrationSuccessfulBody')}</p>
         <button
           onClick={onSuccess}
           style={{
             padding: '10px 24px',
-            background: '#1a5f2b',
+            background: 'var(--primary)',
             color: 'white',
             border: 'none',
             borderRadius: '8px',
@@ -133,12 +133,12 @@ const Register = ({ onSuccess, onShowPrivacy }) => {
 
   return (
     <div style={{ maxWidth: '400px', margin: '0 auto' }}>
-      <h2 style={{ color: '#1a5f2b', textAlign: 'center' }}>{t('createAccount')}</h2>
+      <h2 style={{ color: 'var(--primary)', textAlign: 'center' }}>{t('createAccount')}</h2>
       
       {error && (
         <div style={{ 
           background: '#ffebee', 
-          color: '#c62828', 
+          color: 'var(--danger)', 
           padding: '12px', 
           borderRadius: '8px', 
           marginBottom: '16px',
@@ -265,7 +265,7 @@ const Register = ({ onSuccess, onShowPrivacy }) => {
               <button
                 type="button"
                 onClick={onShowPrivacy}
-                style={{ background: 'none', border: 'none', color: '#1a5f2b', cursor: 'pointer', textDecoration: 'underline', padding: 0, font: 'inherit' }}
+                style={{ background: 'none', border: 'none', color: 'var(--primary)', cursor: 'pointer', textDecoration: 'underline', padding: 0, font: 'inherit' }}
               >
                 {t('privacyPolicyLinkText')}
               </button>
@@ -280,7 +280,7 @@ const Register = ({ onSuccess, onShowPrivacy }) => {
           style={{
             width: '100%',
             padding: '12px',
-            background: loading ? '#ccc' : '#1a5f2b',
+            background: loading ? '#ccc' : 'var(--primary)',
             color: 'white',
             border: 'none',
             borderRadius: '8px',
@@ -290,10 +290,10 @@ const Register = ({ onSuccess, onShowPrivacy }) => {
             transition: 'background 0.2s ease'
           }}
           onMouseEnter={(e) => {
-            if (!loading) e.currentTarget.style.background = '#144d21';
+            if (!loading) e.currentTarget.style.background = 'var(--primary-dark)';
           }}
           onMouseLeave={(e) => {
-            if (!loading) e.currentTarget.style.background = '#1a5f2b';
+            if (!loading) e.currentTarget.style.background = 'var(--primary)';
           }}
         >
           {loading ? t('creatingAccount') : t('register')}

@@ -194,7 +194,7 @@ const AIChat = ({ user }) => {
                 maxWidth: '80%',
                 padding: '10px 14px',
                 borderRadius: '12px',
-                background: msg.role === 'user' ? '#1a5f2b' : 'white',
+                background: msg.role === 'user' ? 'var(--primary)' : 'white',
                 color: msg.role === 'user' ? 'white' : '#333',
                 border: msg.role === 'assistant' ? '1px solid #e0e0e0' : 'none',
                 boxShadow: '0 1px 4px rgba(0,0,0,0.06)',
@@ -206,12 +206,12 @@ const AIChat = ({ user }) => {
                   {(msg.grounded || msg.computedMath) && (
                     <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginTop: '4px' }}>
                       {msg.grounded && (
-                        <span style={{ fontSize: '11px', color: '#1a5f2b', background: '#eaf5ee', padding: '2px 8px', borderRadius: '10px' }}>
+                        <span style={{ fontSize: '11px', color: 'var(--primary)', background: '#eaf5ee', padding: '2px 8px', borderRadius: '10px' }}>
                           📚 grounded in curriculum
                         </span>
                       )}
                       {msg.computedMath && (
-                        <span style={{ fontSize: '11px', color: '#1a5f2b', background: '#eaf5ee', padding: '2px 8px', borderRadius: '10px' }}>
+                        <span style={{ fontSize: '11px', color: 'var(--primary)', background: '#eaf5ee', padding: '2px 8px', borderRadius: '10px' }}>
                           🧮 verified: {msg.computedMath.expression} = {msg.computedMath.result}
                         </span>
                       )}
@@ -275,7 +275,7 @@ const AIChat = ({ user }) => {
           disabled={loading || !input.trim()}
           style={{
             padding: '10px 16px',
-            background: loading || !input.trim() ? '#ccc' : '#1a5f2b',
+            background: loading || !input.trim() ? '#ccc' : 'var(--primary)',
             color: 'white',
             border: 'none',
             borderRadius: '8px',

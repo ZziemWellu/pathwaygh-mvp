@@ -1,7 +1,7 @@
 import React from 'react';
 
 const sectionStyle = { marginBottom: '24px' };
-const headingStyle = { color: '#1a5f2b', fontSize: '17px', marginBottom: '8px' };
+const headingStyle = { color: 'var(--primary)', fontSize: '17px', marginBottom: '8px' };
 const bodyStyle = { color: '#333', fontSize: '14px', lineHeight: '1.6' };
 
 const PrivacyPolicy = ({ onBack }) => {
@@ -11,13 +11,13 @@ const PrivacyPolicy = ({ onBack }) => {
     <div style={{ maxWidth: '700px', margin: '0 auto', padding: '20px' }}>
       <button
         onClick={handleBack}
-        style={{ background: 'none', border: 'none', color: '#1a5f2b', cursor: 'pointer', textDecoration: 'underline', marginBottom: '20px', padding: 0, fontSize: '14px' }}
+        style={{ background: 'none', border: 'none', color: 'var(--primary)', cursor: 'pointer', textDecoration: 'underline', marginBottom: '20px', padding: 0, fontSize: '14px' }}
       >
         ← Back
       </button>
 
-      <h1 style={{ color: '#1a5f2b', marginBottom: '4px' }}>Privacy Policy</h1>
-      <p style={{ color: '#666666', fontSize: '13px', marginBottom: '28px' }}>Version 2026-09-v1 · Last updated September 2026</p>
+      <h1 style={{ color: 'var(--primary)', marginBottom: '4px' }}>Privacy Policy</h1>
+      <p style={{ color: 'var(--gray-500)', fontSize: '13px', marginBottom: '28px' }}>Version 2026-09-v1 · Last updated September 2026</p>
 
       <section style={sectionStyle}>
         <h2 style={headingStyle}>What we collect</h2>
@@ -92,7 +92,7 @@ const PrivacyPolicy = ({ onBack }) => {
         <p style={bodyStyle}>
           If you'd like to access, correct, or delete your data, or if you have any questions
           about this policy, contact us at{' '}
-          <a href="mailto:privacy@pathwaygh.com" style={{ color: '#1a5f2b' }}>privacy@pathwaygh.com</a>.
+          <a href="mailto:privacy@pathwaygh.com" style={{ color: 'var(--primary)' }}>privacy@pathwaygh.com</a>.
         </p>
       </section>
     </div>

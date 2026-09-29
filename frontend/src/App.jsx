@@ -137,8 +137,8 @@ const App = () => {
       return (
         <div style={{ maxWidth: '400px', margin: '40px auto', padding: '20px' }}>
           <header style={{ textAlign: 'center', marginBottom: '30px' }}>
-            <h1 style={{ color: '#1a5f2b' }}>Pathway AI</h1>
-            <p style={{ color: '#666666' }}>{t('tagline')}</p>
+            <h1 style={{ color: 'var(--primary)' }}>Pathway AI</h1>
+            <p style={{ color: 'var(--gray-500)' }}>{t('tagline')}</p>
           </header>
           <main>
             <div style={{ textAlign: 'center', marginBottom: '16px' }}>
@@ -147,7 +147,7 @@ const App = () => {
             <CountrySelector onSelect={handleCountrySelect} />
           </main>
           <footer style={{ textAlign: 'center', marginTop: '24px' }}>
-            <button onClick={() => setShowPrivacy(true)} style={{ background: 'none', border: 'none', color: '#666666', cursor: 'pointer', textDecoration: 'underline', fontSize: '12px' }}>
+            <button onClick={() => setShowPrivacy(true)} style={{ background: 'none', border: 'none', color: 'var(--gray-500)', cursor: 'pointer', textDecoration: 'underline', fontSize: '12px' }}>
               {t('footerPrivacyPolicy')}
             </button>
           </footer>
@@ -159,8 +159,8 @@ const App = () => {
     return (
       <div style={{ maxWidth: '400px', margin: '40px auto', padding: '20px' }}>
         <header style={{ textAlign: 'center', marginBottom: '30px' }}>
-          <h1 style={{ color: '#1a5f2b', display: 'flex', alignItems: 'center', gap: '8px', justifyContent: 'center' }}><CountryFlag size={24} /> Pathway AI</h1>
-          <p style={{ color: '#666666' }}>{t('tagline')} • {COUNTRY_NAMES[country]}</p>
+          <h1 style={{ color: 'var(--primary)', display: 'flex', alignItems: 'center', gap: '8px', justifyContent: 'center' }}><CountryFlag size={24} /> Pathway AI</h1>
+          <p style={{ color: 'var(--gray-500)' }}>{t('tagline')} • {COUNTRY_NAMES[country]}</p>
         </header>
         <main>
           {showForgotPassword ? (
@@ -172,20 +172,20 @@ const App = () => {
           )}
           {!showForgotPassword && (
             <p style={{ textAlign: 'center', marginTop: '16px' }}>
-              <button onClick={() => setShowLogin(!showLogin)} style={{ background: 'none', border: 'none', color: '#1a5f2b', cursor: 'pointer', textDecoration: 'underline' }}>
+              <button onClick={() => setShowLogin(!showLogin)} style={{ background: 'none', border: 'none', color: 'var(--primary)', cursor: 'pointer', textDecoration: 'underline' }}>
                 {showLogin ? t('needAccountRegister') : t('alreadyHaveAccountLogin')}
               </button>
             </p>
           )}
           {showLogin && !showForgotPassword && (
             <p style={{ textAlign: 'center', marginTop: '8px' }}>
-              <button onClick={() => setShowForgotPassword(true)} style={{ background: 'none', border: 'none', color: '#666666', cursor: 'pointer', textDecoration: 'underline', fontSize: '13px' }}>
+              <button onClick={() => setShowForgotPassword(true)} style={{ background: 'none', border: 'none', color: 'var(--gray-500)', cursor: 'pointer', textDecoration: 'underline', fontSize: '13px' }}>
                 {t('forgotPasswordLink')}
               </button>
             </p>
           )}
           <p style={{ textAlign: 'center', marginTop: '8px' }}>
-            <button onClick={handleChangeCountry} style={{ background: 'none', border: 'none', color: '#666666', cursor: 'pointer', textDecoration: 'underline', fontSize: '13px' }}>
+            <button onClick={handleChangeCountry} style={{ background: 'none', border: 'none', color: 'var(--gray-500)', cursor: 'pointer', textDecoration: 'underline', fontSize: '13px' }}>
               {t('changeCountry')}
             </button>
           </p>
@@ -193,9 +193,9 @@ const App = () => {
             <LanguageSwitcher />
           </p>
         </main>
-        <footer style={{ textAlign: 'center', marginTop: '40px', padding: '20px', color: '#666666', borderTop: '1px solid #eee' }}>
+        <footer style={{ textAlign: 'center', marginTop: '40px', padding: '20px', color: 'var(--gray-500)', borderTop: '1px solid #eee' }}>
           <p>{t('copyright')}</p>
-          <button onClick={() => setShowPrivacy(true)} style={{ background: 'none', border: 'none', color: '#666666', cursor: 'pointer', textDecoration: 'underline', fontSize: '12px' }}>
+          <button onClick={() => setShowPrivacy(true)} style={{ background: 'none', border: 'none', color: 'var(--gray-500)', cursor: 'pointer', textDecoration: 'underline', fontSize: '12px' }}>
             {t('footerPrivacyPolicy')}
           </button>
         </footer>
@@ -224,15 +224,15 @@ const App = () => {
           gap: '8px'
         }}>
           <div>
-            <h1 style={{ color: '#1a5f2b', fontSize: '22px', margin: 0, display: 'flex', alignItems: 'center', gap: '8px' }}><UserCountryFlag size={22} /> Pathway AI</h1>
-            <span style={{ fontSize: '11px', color: '#666666' }}>{t('tagline')} • {COUNTRY_NAMES[user?.country] || ''}</span>
+            <h1 style={{ color: 'var(--primary)', fontSize: '22px', margin: 0, display: 'flex', alignItems: 'center', gap: '8px' }}><UserCountryFlag size={22} /> Pathway AI</h1>
+            <span style={{ fontSize: '11px', color: 'var(--gray-500)' }}>{t('tagline')} • {COUNTRY_NAMES[user?.country] || ''}</span>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
             <span style={{ color: '#555', fontSize: '13px', display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
               <User size={14} aria-hidden="true" /> {user?.full_name || user?.name || t('student')}
             </span>
             {user?.is_admin && (
-              <span style={{ fontSize: '11px', fontWeight: 'bold', color: '#1a5f2b', background: '#e8f5e9', border: '1px solid #a5d6a7', borderRadius: '999px', padding: '3px 10px' }}>
+              <span style={{ fontSize: '11px', fontWeight: 'bold', color: 'var(--primary)', background: 'var(--primary-bg)', border: '1px solid #a5d6a7', borderRadius: '999px', padding: '3px 10px' }}>
                 {t('admin')}
               </span>
             )}
@@ -298,12 +298,12 @@ const App = () => {
         <footer style={{ 
           textAlign: 'center', 
           padding: '16px 0', 
-          color: '#666666', 
+          color: 'var(--gray-500)', 
           borderTop: '1px solid #e0e0e0', 
           fontSize: '13px' 
         }}>
           <p>{t('copyright')}</p>
-          <Link to="/privacy" style={{ color: '#666666', fontSize: '12px', textDecoration: 'underline' }}>
+          <Link to="/privacy" style={{ color: 'var(--gray-500)', fontSize: '12px', textDecoration: 'underline' }}>
             {t('footerPrivacyPolicy')}
           </Link>
         </footer>

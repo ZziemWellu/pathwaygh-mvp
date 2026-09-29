@@ -57,11 +57,11 @@ const ForgotPassword = ({ onBackToLogin }) => {
   if (step === 'done') {
     return (
       <div style={{ maxWidth: '400px', margin: '0 auto', textAlign: 'center' }}>
-        <h2 style={{ color: '#1a5f2b' }}>{t('resetPasswordSuccessTitle')}</h2>
+        <h2 style={{ color: 'var(--primary)' }}>{t('resetPasswordSuccessTitle')}</h2>
         <p>{t('resetPasswordSuccessBody')}</p>
         <button
           onClick={onBackToLogin}
-          style={{ padding: '10px 24px', background: '#1a5f2b', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer', marginTop: '16px' }}
+          style={{ padding: '10px 24px', background: 'var(--primary)', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer', marginTop: '16px' }}
         >
           {t('goToLoginNow')}
         </button>
@@ -71,9 +71,9 @@ const ForgotPassword = ({ onBackToLogin }) => {
 
   return (
     <div style={{ maxWidth: '400px', margin: '0 auto' }}>
-      <h2 style={{ color: '#1a5f2b', textAlign: 'center' }}>{t('forgotPasswordTitle')}</h2>
+      <h2 style={{ color: 'var(--primary)', textAlign: 'center' }}>{t('forgotPasswordTitle')}</h2>
       {error && <p style={{ color: 'red', textAlign: 'center' }}>{error}</p>}
-      {info && step === 'reset' && <p style={{ color: '#1a5f2b', textAlign: 'center', fontSize: '14px' }}>{info}</p>}
+      {info && step === 'reset' && <p style={{ color: 'var(--primary)', textAlign: 'center', fontSize: '14px' }}>{info}</p>}
 
       {step === 'request' ? (
         <form onSubmit={handleRequestCode}>
@@ -92,7 +92,7 @@ const ForgotPassword = ({ onBackToLogin }) => {
           <button
             type="submit"
             disabled={loading}
-            style={{ width: '100%', padding: '12px', background: loading ? '#ccc' : '#1a5f2b', color: 'white', border: 'none', borderRadius: '8px', fontSize: '16px', cursor: loading ? 'not-allowed' : 'pointer' }}
+            style={{ width: '100%', padding: '12px', background: loading ? '#ccc' : 'var(--primary)', color: 'white', border: 'none', borderRadius: '8px', fontSize: '16px', cursor: loading ? 'not-allowed' : 'pointer' }}
           >
             {loading ? t('forgotPasswordSending') : t('forgotPasswordSendCode')}
           </button>
@@ -139,7 +139,7 @@ const ForgotPassword = ({ onBackToLogin }) => {
           <button
             type="submit"
             disabled={loading}
-            style={{ width: '100%', padding: '12px', background: loading ? '#ccc' : '#1a5f2b', color: 'white', border: 'none', borderRadius: '8px', fontSize: '16px', cursor: loading ? 'not-allowed' : 'pointer' }}
+            style={{ width: '100%', padding: '12px', background: loading ? '#ccc' : 'var(--primary)', color: 'white', border: 'none', borderRadius: '8px', fontSize: '16px', cursor: loading ? 'not-allowed' : 'pointer' }}
           >
             {loading ? t('resetPasswordSaving') : t('resetPasswordSubmit')}
           </button>
@@ -147,7 +147,7 @@ const ForgotPassword = ({ onBackToLogin }) => {
       )}
 
       <p style={{ textAlign: 'center', marginTop: '16px' }}>
-        <button onClick={onBackToLogin} style={{ background: 'none', border: 'none', color: '#1a5f2b', cursor: 'pointer', textDecoration: 'underline' }}>
+        <button onClick={onBackToLogin} style={{ background: 'none', border: 'none', color: 'var(--primary)', cursor: 'pointer', textDecoration: 'underline' }}>
           {t('backToLogin')}
         </button>
       </p>

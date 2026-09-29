@@ -49,18 +49,18 @@ const ExerciseForm = ({ initial, onSave, onCancel }) => {
           />
           <input required value={option} onChange={(e) => setOption(i, e.target.value)} style={{ ...inputStyle, flex: 1 }} placeholder={`Option ${i + 1}`} />
           {form.options.length > 2 && (
-            <button type="button" onClick={() => removeOption(i)} style={{ background: 'none', border: 'none', color: '#c62828', cursor: 'pointer' }}>
+            <button type="button" onClick={() => removeOption(i)} style={{ background: 'none', border: 'none', color: 'var(--danger)', cursor: 'pointer' }}>
               <X size={16} />
             </button>
           )}
         </div>
       ))}
-      <button type="button" onClick={addOption} style={{ alignSelf: 'flex-start', display: 'inline-flex', alignItems: 'center', gap: '4px', background: 'none', border: 'none', color: '#1a5f2b', cursor: 'pointer', fontSize: '13px', padding: '4px 0' }}>
+      <button type="button" onClick={addOption} style={{ alignSelf: 'flex-start', display: 'inline-flex', alignItems: 'center', gap: '4px', background: 'none', border: 'none', color: 'var(--primary)', cursor: 'pointer', fontSize: '13px', padding: '4px 0' }}>
         <Plus size={14} /> Add option
       </button>
       <textarea placeholder="Explanation (shown after grading)" value={form.explanation || ''} onChange={(e) => setForm({ ...form, explanation: e.target.value })} style={{ ...inputStyle, minHeight: '50px' }} />
       <div style={{ display: 'flex', gap: '8px' }}>
-        <button type="submit" disabled={saving} style={{ padding: '8px 16px', background: '#1a5f2b', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: 'bold', fontSize: '13px' }}>
+        <button type="submit" disabled={saving} style={{ padding: '8px 16px', background: 'var(--primary)', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: 'bold', fontSize: '13px' }}>
           {saving ? 'Saving...' : 'Save Exercise'}
         </button>
         <button type="button" onClick={onCancel} style={{ padding: '8px 16px', background: '#f0f0f0', border: 'none', borderRadius: '8px', cursor: 'pointer', fontSize: '13px' }}>
@@ -108,7 +108,7 @@ const AdminExerciseEditor = ({ lessonId, exercises, onChange }) => {
         <h4 style={{ margin: 0 }}>Exercises</h4>
         <button
           onClick={() => setAdding((s) => !s)}
-          style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', padding: '6px 12px', background: '#1a5f2b', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer', fontSize: '13px' }}
+          style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', padding: '6px 12px', background: 'var(--primary)', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer', fontSize: '13px' }}
         >
           <Plus size={14} /> Add Exercise
         </button>
@@ -129,9 +129,9 @@ const AdminExerciseEditor = ({ lessonId, exercises, onChange }) => {
             </div>
             <div style={{ flex: 1 }} onClick={() => setEditingId(exercise.id)}>
               <div style={{ fontWeight: 600, cursor: 'pointer' }}>{i + 1}. {exercise.question}</div>
-              <div style={{ fontSize: '12px', color: '#666666' }}>Correct: {exercise.options[exercise.correct_index]}</div>
+              <div style={{ fontSize: '12px', color: 'var(--gray-500)' }}>Correct: {exercise.options[exercise.correct_index]}</div>
             </div>
-            <button onClick={() => handleDelete(exercise)} style={{ background: 'none', border: 'none', color: '#c62828', cursor: 'pointer' }}><Trash2 size={16} /></button>
+            <button onClick={() => handleDelete(exercise)} style={{ background: 'none', border: 'none', color: 'var(--danger)', cursor: 'pointer' }}><Trash2 size={16} /></button>
           </div>
         )
       )}

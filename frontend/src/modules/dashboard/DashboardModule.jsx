@@ -10,8 +10,8 @@ import { getUser } from '../../constants/auth';
 import './DashboardModule.css';
 
 const navItems = [
-  { icon: BookOpen, label: 'Learn', path: '/learn', description: 'Browse courses', bg: '#e8f5e9', fg: '#1a5f2b' },
-  { icon: Target, label: 'Career Match', path: '/explore/career-match', description: 'Find your path', bg: '#e3f2fd', fg: '#1565c0' },
+  { icon: BookOpen, label: 'Learn', path: '/learn', description: 'Browse courses', bg: 'var(--primary-bg)', fg: 'var(--primary)' },
+  { icon: Target, label: 'Career Match', path: '/explore/career-match', description: 'Find your path', bg: '#e3f2fd', fg: 'var(--secondary)' },
   { icon: Landmark, label: 'Universities', path: '/explore/universities', description: 'Explore schools', bg: '#fce4ec', fg: '#ad1457' },
   { icon: Coins, label: 'Scholarships', path: '/explore/scholarships', description: 'Find funding', bg: '#fef6e0', fg: '#a06c00' },
   { icon: Users, label: 'Community', path: '/community', description: 'Connect', bg: '#ede7f6', fg: '#5e35b1' },
@@ -73,7 +73,7 @@ const DashboardModule = ({ setActiveModule }) => {
     return (
       <div className="dash" style={{ textAlign: 'center' }}>
         <h2>Dashboard</h2>
-        <p style={{ color: '#c62828' }}>{error}</p>
+        <p style={{ color: 'var(--danger)' }}>{error}</p>
         <button className="dash-btn" onClick={fetchSummary}>Retry</button>
       </div>
     );
@@ -107,7 +107,7 @@ const DashboardModule = ({ setActiveModule }) => {
           {/* Overview */}
           <div className="dash-card dash-overview">
             <div className="dash-ring-wrap">
-              <RadialBarChart width={168} height={168} cx={84} cy={84} innerRadius={58} outerRadius={78} barSize={15} data={[{ value: completionPct, fill: '#1a5f2b' }]} startAngle={90} endAngle={-270}>
+              <RadialBarChart width={168} height={168} cx={84} cy={84} innerRadius={58} outerRadius={78} barSize={15} data={[{ value: completionPct, fill: 'var(--primary)' }]} startAngle={90} endAngle={-270}>
                 <PolarAngleAxis type="number" domain={[0, 100]} angleAxisId={0} tick={false} />
                 <RadialBar background={{ fill: 'var(--gray-100)' }} dataKey="value" cornerRadius={8} />
               </RadialBarChart>

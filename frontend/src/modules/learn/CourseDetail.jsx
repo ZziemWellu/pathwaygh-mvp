@@ -72,11 +72,11 @@ const CourseDetail = () => {
 
   return (
     <div style={{ maxWidth: '800px', margin: '0 auto', padding: '20px' }}>
-      <Link to="/learn" style={{ color: '#1a5f2b', fontSize: '14px' }}>{t('learnAllCoursesLink')}</Link>
+      <Link to="/learn" style={{ color: 'var(--primary)', fontSize: '14px' }}>{t('learnAllCoursesLink')}</Link>
 
-      <h2 style={{ color: '#1a5f2b', margin: '12px 0 4px 0' }}>{course.title}</h2>
+      <h2 style={{ color: 'var(--primary)', margin: '12px 0 4px 0' }}>{course.title}</h2>
       {course.level && (
-        <span style={{ background: '#e8f5e9', padding: '2px 10px', borderRadius: '12px', fontSize: '12px' }}>
+        <span style={{ background: 'var(--primary-bg)', padding: '2px 10px', borderRadius: '12px', fontSize: '12px' }}>
           {course.level.toUpperCase()}
         </span>
       )}
@@ -89,12 +89,12 @@ const CourseDetail = () => {
             <span>{t('learnProgressSummary').replace('{watched}', watchedCount).replace('{total}', course.lessons.length).replace('{pct}', progressPct)}</span>
           </div>
           <div style={{ height: '6px', background: '#f0f0f0', borderRadius: '3px' }}>
-            <div style={{ width: `${progressPct}%`, height: '100%', background: '#1a5f2b', borderRadius: '3px', transition: 'width 0.4s ease' }} />
+            <div style={{ width: `${progressPct}%`, height: '100%', background: 'var(--primary)', borderRadius: '3px', transition: 'width 0.4s ease' }} />
           </div>
           {isComplete && (
             <Link
               to={`/certificates/${courseId}`}
-              style={{ display: 'inline-block', marginTop: '10px', color: '#1a5f2b', fontWeight: 'bold', textDecoration: 'underline' }}
+              style={{ display: 'inline-block', marginTop: '10px', color: 'var(--primary)', fontWeight: 'bold', textDecoration: 'underline' }}
             >
               {t('learnViewCertificate')}
             </Link>
@@ -104,7 +104,7 @@ const CourseDetail = () => {
         <button
           onClick={handleEnroll}
           disabled={enrolling}
-          style={{ padding: '12px 24px', background: enrolling ? '#ccc' : '#1a5f2b', color: 'white', border: 'none', borderRadius: '8px', cursor: enrolling ? 'not-allowed' : 'pointer', fontWeight: 'bold', marginBottom: '20px' }}
+          style={{ padding: '12px 24px', background: enrolling ? '#ccc' : 'var(--primary)', color: 'white', border: 'none', borderRadius: '8px', cursor: enrolling ? 'not-allowed' : 'pointer', fontWeight: 'bold', marginBottom: '20px' }}
         >
           {enrolling ? t('learnEnrolling') : t('learnEnrollInCourse')}
         </button>
@@ -133,7 +133,7 @@ const CourseDetail = () => {
               <span style={{ fontSize: '20px' }}>{lesson.watched ? '✅' : LESSON_ICON[lesson.lesson_type] || '📄'}</span>
               <div style={{ flex: 1 }}>
                 <div style={{ fontWeight: 500 }}>{lesson.title}</div>
-                <div style={{ fontSize: '12px', color: '#666666' }}>
+                <div style={{ fontSize: '12px', color: 'var(--gray-500)' }}>
                   {lesson.duration_minutes ? t('learnMinutes').replace('{count}', lesson.duration_minutes) : ''}
                   {lesson.is_free_preview && ` ${t('learnFreePreview')}`}
                 </div>

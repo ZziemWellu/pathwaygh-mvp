@@ -56,7 +56,7 @@ const AdminCourseList = () => {
   };
 
   if (loading) return <div style={{ textAlign: 'center', padding: '40px' }}>Loading...</div>;
-  if (error) return <div style={{ textAlign: 'center', padding: '40px', color: '#c62828' }}>{error}</div>;
+  if (error) return <div style={{ textAlign: 'center', padding: '40px', color: 'var(--danger)' }}>{error}</div>;
 
   return (
     <div style={{ maxWidth: '800px', margin: '0 auto', padding: '20px' }}>
@@ -64,7 +64,7 @@ const AdminCourseList = () => {
         <h2 style={{ margin: 0 }}>Manage Courses</h2>
         <button
           onClick={() => setShowForm((s) => !s)}
-          style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', padding: '10px 18px', background: '#1a5f2b', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: 'bold' }}
+          style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', padding: '10px 18px', background: 'var(--primary)', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: 'bold' }}
         >
           <Plus size={16} /> New Course
         </button>
@@ -90,7 +90,7 @@ const AdminCourseList = () => {
             <option value="LR">Liberia</option>
             <option value="GM">The Gambia</option>
           </select>
-          <button type="submit" disabled={saving} style={{ padding: '10px', background: saving ? '#ccc' : '#1a5f2b', color: 'white', border: 'none', borderRadius: '8px', cursor: saving ? 'not-allowed' : 'pointer', fontWeight: 'bold' }}>
+          <button type="submit" disabled={saving} style={{ padding: '10px', background: saving ? '#ccc' : 'var(--primary)', color: 'white', border: 'none', borderRadius: '8px', cursor: saving ? 'not-allowed' : 'pointer', fontWeight: 'bold' }}>
             {saving ? 'Creating...' : 'Create Course'}
           </button>
         </form>
@@ -104,15 +104,15 @@ const AdminCourseList = () => {
         >
           <div style={{ flex: 1 }}>
             <div style={{ fontWeight: 'bold' }}>{course.title}</div>
-            <div style={{ fontSize: '12px', color: '#666666' }}>{course.slug} · {course.level?.toUpperCase()} · {course.country} · {course.lesson_count} lessons</div>
+            <div style={{ fontSize: '12px', color: 'var(--gray-500)' }}>{course.slug} · {course.level?.toUpperCase()} · {course.country} · {course.lesson_count} lessons</div>
           </div>
           <button
             onClick={(e) => { e.stopPropagation(); handleDelete(course); }}
-            style={{ background: 'none', border: 'none', color: '#c62828', cursor: 'pointer', padding: '6px' }}
+            style={{ background: 'none', border: 'none', color: 'var(--danger)', cursor: 'pointer', padding: '6px' }}
           >
             <Trash2 size={16} />
           </button>
-          <ChevronRight size={18} color="#666666" />
+          <ChevronRight size={18} color="var(--gray-500)" />
         </div>
       ))}
     </div>

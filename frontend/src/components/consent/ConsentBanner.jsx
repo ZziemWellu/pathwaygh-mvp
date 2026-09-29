@@ -63,7 +63,7 @@ const ConsentBanner = ({ user, onVerified }) => {
         {!showForm && (
           <button
             onClick={() => setShowForm(true)}
-            style={{ padding: '6px 12px', background: '#1a5f2b', color: 'white', border: 'none', borderRadius: '6px', cursor: 'pointer', fontSize: '13px' }}
+            style={{ padding: '6px 12px', background: 'var(--primary)', color: 'white', border: 'none', borderRadius: '6px', cursor: 'pointer', fontSize: '13px' }}
           >
             {t('consentBannerEnterCode')}
           </button>
@@ -84,7 +84,7 @@ const ConsentBanner = ({ user, onVerified }) => {
           <button
             type="submit"
             disabled={loading || code.trim().length !== 6}
-            style={{ padding: '8px 14px', background: loading ? '#ccc' : '#1a5f2b', color: 'white', border: 'none', borderRadius: '6px', cursor: loading ? 'not-allowed' : 'pointer' }}
+            style={{ padding: '8px 14px', background: loading ? '#ccc' : 'var(--primary)', color: 'white', border: 'none', borderRadius: '6px', cursor: loading ? 'not-allowed' : 'pointer' }}
           >
             {t('consentBannerVerify')}
           </button>
@@ -99,8 +99,8 @@ const ConsentBanner = ({ user, onVerified }) => {
         </form>
       )}
 
-      {error && <p style={{ color: '#c62828', marginTop: '8px', marginBottom: 0 }}>{error}</p>}
-      {message && !error && <p style={{ color: '#1a5f2b', marginTop: '8px', marginBottom: 0 }}>{message}</p>}
+      {error && <p style={{ color: 'var(--danger)', marginTop: '8px', marginBottom: 0 }}>{error}</p>}
+      {message && !error && <p style={{ color: 'var(--primary)', marginTop: '8px', marginBottom: 0 }}>{message}</p>}
     </div>
   );
 };

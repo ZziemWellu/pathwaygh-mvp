@@ -48,7 +48,7 @@ const EcosystemNavigation = ({ activeModule, setActiveModule, user }) => {
               alignItems: 'center',
               gap: '6px',
               padding: '6px 14px',
-              background: active ? '#1a5f2b' : 'transparent',
+              background: active ? 'var(--primary)' : 'transparent',
               color: active ? 'white' : '#333',
               border: active ? 'none' : '1px solid #e0e0e0',
               borderRadius: '8px',

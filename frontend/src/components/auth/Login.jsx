@@ -33,7 +33,7 @@ const Login = ({ onSuccess }) => {
 
   return (
     <div style={{ maxWidth: '400px', margin: '0 auto' }}>
-      <h2 style={{ color: '#1a5f2b', textAlign: 'center' }}>{t('welcomeBack')}</h2>
+      <h2 style={{ color: 'var(--primary)', textAlign: 'center' }}>{t('welcomeBack')}</h2>
       {error && <p style={{ color: 'red', textAlign: 'center' }}>{error}</p>}
       <form onSubmit={handleSubmit}>
         <div style={{ marginBottom: '16px' }}>
@@ -66,7 +66,7 @@ const Login = ({ onSuccess }) => {
           style={{
             width: '100%',
             padding: '12px',
-            background: '#1a5f2b',
+            background: 'var(--primary)',
             color: 'white',
             border: 'none',
             borderRadius: '8px',

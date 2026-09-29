@@ -46,7 +46,7 @@ const SchoolAdminDashboard = () => {
   };
 
   if (loading) return <div style={{ textAlign: 'center', padding: '40px' }}>Loading...</div>;
-  if (error) return <div style={{ textAlign: 'center', padding: '40px', color: '#c62828' }}>{error}</div>;
+  if (error) return <div style={{ textAlign: 'center', padding: '40px', color: 'var(--danger)' }}>{error}</div>;
   if (!data) return null;
 
   const { school, roster, summary } = data;
@@ -56,13 +56,13 @@ const SchoolAdminDashboard = () => {
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', flexWrap: 'wrap', gap: '10px' }}>
         <h2 style={{ margin: 0 }}>{school?.name || 'School'} Dashboard</h2>
         <div
-          style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '8px 14px', background: '#e8f5e9', border: '1px solid #a5d6a7', borderRadius: '8px', fontSize: '13px', cursor: 'pointer' }}
+          style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '8px 14px', background: 'var(--primary-bg)', border: '1px solid #a5d6a7', borderRadius: '8px', fontSize: '13px', cursor: 'pointer' }}
           onClick={copyJoinCode}
           title="Click to copy"
         >
           Join code: <strong>{school?.join_code}</strong>
           <Copy size={14} />
-          {copied && <span style={{ color: '#1a5f2b' }}>Copied!</span>}
+          {copied && <span style={{ color: 'var(--primary)' }}>Copied!</span>}
         </div>
       </div>
 
@@ -88,21 +88,21 @@ const SchoolAdminDashboard = () => {
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: '16px', marginBottom: '24px' }}>
         <div style={{ background: 'white', border: '1px solid #e0e0e0', borderRadius: '12px', padding: '16px', textAlign: 'center' }}>
-          <div style={{ fontSize: '28px', fontWeight: 'bold', color: '#1a5f2b' }}>{summary.student_count}</div>
-          <div style={{ fontSize: '12px', color: '#666666' }}>Students</div>
+          <div style={{ fontSize: '28px', fontWeight: 'bold', color: 'var(--primary)' }}>{summary.student_count}</div>
+          <div style={{ fontSize: '12px', color: 'var(--gray-500)' }}>Students</div>
         </div>
         <div style={{ background: 'white', border: '1px solid #e0e0e0', borderRadius: '12px', padding: '16px', textAlign: 'center' }}>
-          <div style={{ fontSize: '28px', fontWeight: 'bold', color: '#1a5f2b' }}>{summary.average_completion_rate}%</div>
-          <div style={{ fontSize: '12px', color: '#666666' }}>Avg. Completion</div>
+          <div style={{ fontSize: '28px', fontWeight: 'bold', color: 'var(--primary)' }}>{summary.average_completion_rate}%</div>
+          <div style={{ fontSize: '12px', color: 'var(--gray-500)' }}>Avg. Completion</div>
         </div>
         <div style={{ background: 'white', border: '1px solid #e0e0e0', borderRadius: '12px', padding: '16px', textAlign: 'center' }}>
-          <div style={{ fontSize: '28px', fontWeight: 'bold', color: '#1a5f2b' }}>{summary.average_quiz_score}%</div>
-          <div style={{ fontSize: '12px', color: '#666666' }}>Avg. Quiz Score</div>
+          <div style={{ fontSize: '28px', fontWeight: 'bold', color: 'var(--primary)' }}>{summary.average_quiz_score}%</div>
+          <div style={{ fontSize: '12px', color: 'var(--gray-500)' }}>Avg. Quiz Score</div>
         </div>
       </div>
 
       {roster.length === 0 ? (
-        <div style={{ textAlign: 'center', padding: '40px', color: '#666666', background: 'white', border: '1px solid #e0e0e0', borderRadius: '12px' }}>
+        <div style={{ textAlign: 'center', padding: '40px', color: 'var(--gray-500)', background: 'white', border: '1px solid #e0e0e0', borderRadius: '12px' }}>
           No students yet. Share the join code above so students can link themselves to {school?.name}.
         </div>
       ) : (
@@ -125,7 +125,7 @@ const SchoolAdminDashboard = () => {
                   <td style={cellStyle}>
                     {student.full_name}
                     {student.is_school_admin && (
-                      <span style={{ marginLeft: '6px', fontSize: '10px', fontWeight: 'bold', color: '#1a5f2b', background: '#e8f5e9', padding: '2px 8px', borderRadius: '999px' }}>
+                      <span style={{ marginLeft: '6px', fontSize: '10px', fontWeight: 'bold', color: 'var(--primary)', background: 'var(--primary-bg)', padding: '2px 8px', borderRadius: '999px' }}>
                         Admin
                       </span>
                     )}

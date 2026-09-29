@@ -2,15 +2,15 @@ import React from 'react';
 
 const CommunityModule = () => {
   const features = [
-    { icon: '💬', title: 'Discussion Forums', description: 'Join conversations with fellow students and educators', color: '#1a5f2b' },
-    { icon: '👥', title: 'Study Groups', description: 'Form study groups and learn together', color: '#2d8a4e' },
-    { icon: '🧑‍🏫', title: 'Mentorship', description: 'Connect with mentors in your field of interest', color: '#1565c0' },
+    { icon: '💬', title: 'Discussion Forums', description: 'Join conversations with fellow students and educators', color: 'var(--primary)' },
+    { icon: '👥', title: 'Study Groups', description: 'Form study groups and learn together', color: 'var(--primary-light)' },
+    { icon: '🧑‍🏫', title: 'Mentorship', description: 'Connect with mentors in your field of interest', color: 'var(--secondary)' },
     { icon: '🎓', title: 'Alumni Network', description: 'Connect with alumni from your school', color: '#6a1b9a' },
   ];
 
   return (
     <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '20px' }}>
-      <h2 style={{ color: '#1a5f2b', marginBottom: '8px' }}>🤝 Community</h2>
+      <h2 style={{ color: 'var(--primary)', marginBottom: '8px' }}>🤝 Community</h2>
       <p style={{ color: '#666', marginBottom: '24px' }}>
         Connect, learn, and grow with the Pathway AI community.
       </p>
@@ -55,11 +55,11 @@ const CommunityModule = () => {
         border: '1px solid #e0e0e0',
         borderRadius: '12px',
         textAlign: 'center',
-        color: '#666666'
+        color: 'var(--gray-500)'
       }}>
         <p style={{ margin: '0 0 12px 0' }}>🌱 Community features coming soon. Connect with other learners!</p>
         <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', flexWrap: 'wrap' }}>
-          <button style={{ padding: '10px 20px', background: '#1a5f2b', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer' }}>
+          <button style={{ padding: '10px 20px', background: 'var(--primary)', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer' }}>
             + Start Discussion
           </button>
           <button style={{ padding: '10px 20px', background: 'white', color: '#333', border: '1px solid #e0e0e0', borderRadius: '8px', cursor: 'pointer' }}>

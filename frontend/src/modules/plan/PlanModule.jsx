@@ -142,7 +142,7 @@ const PlanModule = () => {
       <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '20px' }}>
         <h2>📋 Plan</h2>
         <p style={{ color: 'red' }}>⚠️ {error}</p>
-        <button onClick={fetchPlans} style={{ padding: '8px 16px', background: '#1a5f2b', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer' }}>Retry</button>
+        <button onClick={fetchPlans} style={{ padding: '8px 16px', background: 'var(--primary)', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer' }}>Retry</button>
       </div>
     );
   }
@@ -155,7 +155,7 @@ const PlanModule = () => {
           onClick={handleOpenModal}
           style={{
             padding: '10px 20px',
-            background: '#1a5f2b',
+            background: 'var(--primary)',
             color: 'white',
             border: 'none',
             borderRadius: '8px',
@@ -172,7 +172,7 @@ const PlanModule = () => {
       </div>
 
       {plans.length === 0 ? (
-        <div style={{ textAlign: 'center', padding: '60px 20px', color: '#666666' }}>
+        <div style={{ textAlign: 'center', padding: '60px 20px', color: 'var(--gray-500)' }}>
           <p>No study plans yet. Create your first plan!</p>
         </div>
       ) : (
@@ -191,20 +191,20 @@ const PlanModule = () => {
             >
               <div style={{ position: 'absolute', top: '12px', right: '12px' }}>
                 <button
-                  style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#666666', fontSize: '16px' }}
+                  style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--gray-500)', fontSize: '16px' }}
                   onClick={() => handleDelete(plan.id)}
                   aria-label={`Delete ${plan.name}`}
                 >
                   ✕
                 </button>
               </div>
-              <h3 style={{ color: '#1a5f2b', margin: '0 0 8px 0', paddingRight: '24px' }}>
+              <h3 style={{ color: 'var(--primary)', margin: '0 0 8px 0', paddingRight: '24px' }}>
                 {plan.name}
               </h3>
               <p style={{ color: '#666', fontSize: '14px', margin: '0 0 8px 0' }}>
                 {plan.description}
               </p>
-              <div style={{ display: 'flex', gap: '12px', fontSize: '12px', color: '#666666', flexWrap: 'wrap' }}>
+              <div style={{ display: 'flex', gap: '12px', fontSize: '12px', color: 'var(--gray-500)', flexWrap: 'wrap' }}>
                 <span>📅 {plan.duration_months || plan.duration || 'N/A'} months</span>
                 <span>📊 {plan.progress || 0}% complete</span>
               </div>
@@ -218,7 +218,7 @@ const PlanModule = () => {
                 </div>
               )}
               {plan.goal && (
-                <div style={{ marginTop: '8px', fontSize: '11px', color: '#666666' }}>
+                <div style={{ marginTop: '8px', fontSize: '11px', color: 'var(--gray-500)' }}>
                   🎯 {plan.goal}
                 </div>
               )}
@@ -227,7 +227,7 @@ const PlanModule = () => {
                   style={{
                     width: `${plan.progress || 0}%`,
                     height: '100%',
-                    background: '#1a5f2b',
+                    background: 'var(--primary)',
                     borderRadius: '3px',
                   }}
                 />
@@ -268,10 +268,10 @@ const PlanModule = () => {
             onClick={(e) => e.stopPropagation()}
           >
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-              <h2 style={{ color: '#1a5f2b', margin: 0 }}>📋 Create Study Plan</h2>
+              <h2 style={{ color: 'var(--primary)', margin: 0 }}>📋 Create Study Plan</h2>
               <button
                 onClick={handleCloseModal}
-                style={{ background: 'none', border: 'none', fontSize: '24px', cursor: 'pointer', color: '#666666' }}
+                style={{ background: 'none', border: 'none', fontSize: '24px', cursor: 'pointer', color: 'var(--gray-500)' }}
               >
                 ✕
               </button>
@@ -372,7 +372,7 @@ const PlanModule = () => {
                   style={{
                     width: '100%',
                     padding: '12px',
-                    background: formData.name ? '#1a5f2b' : '#ccc',
+                    background: formData.name ? 'var(--primary)' : '#ccc',
                     color: 'white',
                     border: 'none',
                     borderRadius: '8px',
@@ -401,7 +401,7 @@ const PlanModule = () => {
                           alignItems: 'center',
                           gap: '8px',
                           padding: '8px 12px',
-                          background: formData.subjects.includes(subject) ? '#e8f5e9' : '#f8f9fa',
+                          background: formData.subjects.includes(subject) ? 'var(--primary-bg)' : '#f8f9fa',
                           borderRadius: '6px',
                           cursor: 'pointer',
                           border: formData.subjects.includes(subject) ? '1px solid #1a5f2b' : '1px solid #e0e0e0',
@@ -411,7 +411,7 @@ const PlanModule = () => {
                           type="checkbox"
                           checked={formData.subjects.includes(subject)}
                           onChange={() => handleSubjectToggle(subject)}
-                          style={{ accentColor: '#1a5f2b' }}
+                          style={{ accentColor: 'var(--primary)' }}
                         />
                         {subject}
                       </label>
@@ -440,7 +440,7 @@ const PlanModule = () => {
                     style={{
                       flex: 2,
                       padding: '12px',
-                      background: saving ? '#ccc' : '#1a5f2b',
+                      background: saving ? '#ccc' : 'var(--primary)',
                       color: 'white',
                       border: 'none',
                       borderRadius: '8px',

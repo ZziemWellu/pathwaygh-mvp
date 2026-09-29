@@ -108,7 +108,7 @@ const ExploreModule = () => {
       <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '20px' }}>
         <h2>🔍 Explore</h2>
         <p style={{ color: 'red' }}>⚠️ {error}</p>
-        <button onClick={fetchExploreData} style={{ padding: '8px 16px', background: '#1a5f2b', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer' }}>Retry</button>
+        <button onClick={fetchExploreData} style={{ padding: '8px 16px', background: 'var(--primary)', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer' }}>Retry</button>
       </div>
     );
   }
@@ -118,7 +118,7 @@ const ExploreModule = () => {
       {/* Header */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
         <h2 style={{ margin: 0 }}>🔍 Explore</h2>
-        <span style={{ color: '#666666' }}>
+        <span style={{ color: 'var(--gray-500)' }}>
           {careers.length} careers • {universities.length} universities
         </span>
       </div>
@@ -129,7 +129,7 @@ const ExploreModule = () => {
           onClick={() => setActiveTab('careers')}
           style={{
             padding: '8px 20px',
-            background: activeTab === 'careers' ? '#1a5f2b' : 'transparent',
+            background: activeTab === 'careers' ? 'var(--primary)' : 'transparent',
             color: activeTab === 'careers' ? 'white' : '#333',
             border: activeTab === 'careers' ? 'none' : '1px solid #e0e0e0',
             borderRadius: '8px',
@@ -143,7 +143,7 @@ const ExploreModule = () => {
           onClick={() => setActiveTab('universities')}
           style={{
             padding: '8px 20px',
-            background: activeTab === 'universities' ? '#1a5f2b' : 'transparent',
+            background: activeTab === 'universities' ? 'var(--primary)' : 'transparent',
             color: activeTab === 'universities' ? 'white' : '#333',
             border: activeTab === 'universities' ? 'none' : '1px solid #e0e0e0',
             borderRadius: '8px',
@@ -159,7 +159,7 @@ const ExploreModule = () => {
       {activeTab === 'careers' && (
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '20px' }}>
           {careers.length === 0 ? (
-            <p style={{ gridColumn: '1 / -1', textAlign: 'center', padding: '40px', color: '#666666' }}>No careers available.</p>
+            <p style={{ gridColumn: '1 / -1', textAlign: 'center', padding: '40px', color: 'var(--gray-500)' }}>No careers available.</p>
           ) : (
             careers.map((career) => (
               <div
@@ -184,11 +184,11 @@ const ExploreModule = () => {
                 }}
               >
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                  <h3 style={{ color: '#1a5f2b', margin: '0 0 8px 0', fontSize: '18px' }}>{career.title}</h3>
+                  <h3 style={{ color: 'var(--primary)', margin: '0 0 8px 0', fontSize: '18px' }}>{career.title}</h3>
                   {career.category && (
                     <span style={{
-                      background: '#e8f5e9',
-                      color: '#1a5f2b',
+                      background: 'var(--primary-bg)',
+                      color: 'var(--primary)',
                       padding: '2px 10px',
                       borderRadius: '12px',
                       fontSize: '11px',
@@ -199,11 +199,11 @@ const ExploreModule = () => {
                   )}
                 </div>
                 <p style={{ color: '#666', fontSize: '14px', margin: '8px 0' }}>{career.description}</p>
-                <div style={{ display: 'flex', gap: '12px', fontSize: '12px', color: '#666666', marginTop: '8px' }}>
+                <div style={{ display: 'flex', gap: '12px', fontSize: '12px', color: 'var(--gray-500)', marginTop: '8px' }}>
                   {career.salary_range && <span>💰 {career.salary_range}</span>}
                   {career.demand && <span>📊 {career.demand}</span>}
                 </div>
-                <div style={{ marginTop: '12px', fontSize: '12px', color: '#1a5f2b', textAlign: 'center' }}>
+                <div style={{ marginTop: '12px', fontSize: '12px', color: 'var(--primary)', textAlign: 'center' }}>
                   Click for full details →
                 </div>
               </div>
@@ -216,7 +216,7 @@ const ExploreModule = () => {
       {activeTab === 'universities' && (
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '20px' }}>
           {universities.length === 0 ? (
-            <p style={{ gridColumn: '1 / -1', textAlign: 'center', padding: '40px', color: '#666666' }}>No universities available.</p>
+            <p style={{ gridColumn: '1 / -1', textAlign: 'center', padding: '40px', color: 'var(--gray-500)' }}>No universities available.</p>
           ) : (
             universities.map((uni) => (
               <div
@@ -240,9 +240,9 @@ const ExploreModule = () => {
                   e.currentTarget.style.transform = 'translateY(0)';
                 }}
               >
-                <h3 style={{ color: '#1a5f2b', margin: '0 0 8px 0', fontSize: '18px' }}>{uni.name}</h3>
+                <h3 style={{ color: 'var(--primary)', margin: '0 0 8px 0', fontSize: '18px' }}>{uni.name}</h3>
                 {uni.location && <div style={{ color: '#666', fontSize: '14px' }}>📍 {uni.location}</div>}
-                {uni.cutoff && <div style={{ color: '#666666', fontSize: '13px' }}>Cutoff: {uni.cutoff}</div>}
+                {uni.cutoff && <div style={{ color: 'var(--gray-500)', fontSize: '13px' }}>Cutoff: {uni.cutoff}</div>}
                 {uni.programs && uni.programs.length > 0 && (
                   <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginTop: '8px' }}>
                     {uni.programs.slice(0, 2).map((p, i) => (
@@ -269,7 +269,7 @@ const ExploreModule = () => {
                     )}
                   </div>
                 )}
-                <div style={{ marginTop: '12px', fontSize: '12px', color: '#1a5f2b', textAlign: 'center' }}>
+                <div style={{ marginTop: '12px', fontSize: '12px', color: 'var(--primary)', textAlign: 'center' }}>
                   Click for full details →
                 </div>
               </div>

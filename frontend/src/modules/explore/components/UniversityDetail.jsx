@@ -79,17 +79,17 @@ const UniversityDetail = ({ university, onClose }) => {
             border: 'none',
             fontSize: '24px',
             cursor: 'pointer',
-            color: '#666666',
+            color: 'var(--gray-500)',
           }}
           onMouseEnter={(e) => e.currentTarget.style.color = '#333'}
-          onMouseLeave={(e) => e.currentTarget.style.color = '#666666'}
+          onMouseLeave={(e) => e.currentTarget.style.color = 'var(--gray-500)'}
         >
           ✕
         </button>
 
         {/* Header */}
         <div style={{ marginBottom: '24px' }}>
-          <h2 style={{ color: '#1a5f2b', margin: '0 0 8px 0', fontSize: '24px' }}>
+          <h2 style={{ color: 'var(--primary)', margin: '0 0 8px 0', fontSize: '24px' }}>
             🏛️ {university.name}
           </h2>
           {university.location && (
@@ -106,7 +106,7 @@ const UniversityDetail = ({ university, onClose }) => {
             border: '1px solid #ffcdd2',
             borderRadius: '8px',
             marginBottom: '16px',
-            color: '#c62828',
+            color: 'var(--danger)',
             textAlign: 'center',
           }}>
             ⚠️ {error}
@@ -122,20 +122,20 @@ const UniversityDetail = ({ university, onClose }) => {
         }}>
           {university.cutoff && (
             <div style={{ padding: '14px', background: '#f8f9fa', borderRadius: '10px' }}>
-              <div style={{ fontSize: '11px', color: '#666666' }}>📊 Cutoff</div>
-              <div style={{ fontSize: '16px', fontWeight: 'bold', color: '#1a5f2b' }}>{university.cutoff}</div>
+              <div style={{ fontSize: '11px', color: 'var(--gray-500)' }}>📊 Cutoff</div>
+              <div style={{ fontSize: '16px', fontWeight: 'bold', color: 'var(--primary)' }}>{university.cutoff}</div>
             </div>
           )}
           {university.ranking && (
             <div style={{ padding: '14px', background: '#f8f9fa', borderRadius: '10px' }}>
-              <div style={{ fontSize: '11px', color: '#666666' }}>🏆 Ranking</div>
-              <div style={{ fontSize: '16px', fontWeight: 'bold', color: '#1a5f2b' }}>#{university.ranking}</div>
+              <div style={{ fontSize: '11px', color: 'var(--gray-500)' }}>🏆 Ranking</div>
+              <div style={{ fontSize: '16px', fontWeight: 'bold', color: 'var(--primary)' }}>#{university.ranking}</div>
             </div>
           )}
           {university.type && (
             <div style={{ padding: '14px', background: '#f8f9fa', borderRadius: '10px' }}>
-              <div style={{ fontSize: '11px', color: '#666666' }}>🏛️ Type</div>
-              <div style={{ fontSize: '16px', fontWeight: 'bold', color: '#1a5f2b' }}>{university.type}</div>
+              <div style={{ fontSize: '11px', color: 'var(--gray-500)' }}>🏛️ Type</div>
+              <div style={{ fontSize: '16px', fontWeight: 'bold', color: 'var(--primary)' }}>{university.type}</div>
             </div>
           )}
         </div>
@@ -156,7 +156,7 @@ const UniversityDetail = ({ university, onClose }) => {
               {university.programs.map((program, i) => (
                 <span key={i} style={{
                   background: '#e3f2fd',
-                  color: '#1565c0',
+                  color: 'var(--secondary)',
                   padding: '4px 14px',
                   borderRadius: '16px',
                   fontSize: '13px',
@@ -184,12 +184,12 @@ const UniversityDetail = ({ university, onClose }) => {
         {university.admission_info && (
           <div style={{
             padding: '16px',
-            background: '#e8f5e9',
+            background: 'var(--primary-bg)',
             borderRadius: '10px',
             marginBottom: '20px',
             border: '1px solid #c8e6c9',
           }}>
-            <h4 style={{ color: '#1a5f2b', margin: '0 0 8px 0' }}>🎓 Admission Information</h4>
+            <h4 style={{ color: 'var(--primary)', margin: '0 0 8px 0' }}>🎓 Admission Information</h4>
             <p style={{ color: '#555', margin: 0 }}>{university.admission_info}</p>
           </div>
         )}
@@ -200,7 +200,7 @@ const UniversityDetail = ({ university, onClose }) => {
             onClick={onClose}
             style={{
               padding: '10px 24px',
-              background: '#1a5f2b',
+              background: 'var(--primary)',
               color: 'white',
               border: 'none',
               borderRadius: '8px',
@@ -209,8 +209,8 @@ const UniversityDetail = ({ university, onClose }) => {
               flex: 1,
               transition: 'background 0.2s ease',
             }}
-            onMouseEnter={(e) => e.currentTarget.style.background = '#144d21'}
-            onMouseLeave={(e) => e.currentTarget.style.background = '#1a5f2b'}
+            onMouseEnter={(e) => e.currentTarget.style.background = 'var(--primary-dark)'}
+            onMouseLeave={(e) => e.currentTarget.style.background = 'var(--primary)'}
           >
             Close
           </button>
@@ -219,8 +219,8 @@ const UniversityDetail = ({ university, onClose }) => {
             disabled={saving}
             style={{
               padding: '10px 24px',
-              background: saved ? '#e8f5e9' : 'white',
-              color: saved ? '#1a5f2b' : '#1a5f2b',
+              background: saved ? 'var(--primary-bg)' : 'white',
+              color: saved ? 'var(--primary)' : 'var(--primary)',
               border: saved ? '2px solid #1a5f2b' : '1px solid #1a5f2b',
               borderRadius: '8px',
               cursor: saving ? 'default' : 'pointer',
@@ -232,7 +232,7 @@ const UniversityDetail = ({ university, onClose }) => {
             }}
             onMouseEnter={(e) => {
               if (!saving && !saved) {
-                e.currentTarget.style.background = '#e8f5e9';
+                e.currentTarget.style.background = 'var(--primary-bg)';
               }
             }}
             onMouseLeave={(e) => {

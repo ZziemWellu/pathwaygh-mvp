@@ -43,8 +43,8 @@ const CertificateVerify = ({ code: initialCode }) => {
 
   return (
     <div style={{ maxWidth: '500px', margin: '40px auto', padding: '20px' }}>
-      <h1 style={{ color: '#1a5f2b', textAlign: 'center' }}>Certificate Verification</h1>
-      <p style={{ color: '#666666', textAlign: 'center', marginBottom: '24px' }}>
+      <h1 style={{ color: 'var(--primary)', textAlign: 'center' }}>Certificate Verification</h1>
+      <p style={{ color: 'var(--gray-500)', textAlign: 'center', marginBottom: '24px' }}>
         Check whether a PathwayGH certificate code is genuine.
       </p>
 
@@ -57,31 +57,31 @@ const CertificateVerify = ({ code: initialCode }) => {
         />
         <button
           type="submit"
-          style={{ padding: '10px 20px', background: '#1a5f2b', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer' }}
+          style={{ padding: '10px 20px', background: 'var(--primary)', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer' }}
         >
           Verify
         </button>
       </form>
 
       {loading && <p style={{ textAlign: 'center' }}>Checking...</p>}
-      {error && <p style={{ textAlign: 'center', color: '#c62828' }}>{error}</p>}
+      {error && <p style={{ textAlign: 'center', color: 'var(--danger)' }}>{error}</p>}
 
       {result && !loading && (
         result.valid ? (
-          <div style={{ background: '#e8f5e9', border: '1px solid #a5d6a7', borderRadius: '12px', padding: '24px', textAlign: 'center' }}>
+          <div style={{ background: 'var(--primary-bg)', border: '1px solid #a5d6a7', borderRadius: '12px', padding: '24px', textAlign: 'center' }}>
             <div style={{ fontSize: '32px', marginBottom: '8px' }}>✅</div>
-            <h2 style={{ color: '#1a5f2b', margin: '0 0 12px 0' }}>Certificate Verified</h2>
+            <h2 style={{ color: 'var(--primary)', margin: '0 0 12px 0' }}>Certificate Verified</h2>
             <p style={{ margin: '4px 0' }}><strong>{result.certificate.recipient_name}</strong></p>
             <p style={{ margin: '4px 0', color: '#333' }}>completed <strong>{result.certificate.course_title}</strong></p>
-            <p style={{ margin: '4px 0', color: '#666666', fontSize: '13px' }}>
+            <p style={{ margin: '4px 0', color: 'var(--gray-500)', fontSize: '13px' }}>
               {result.certificate.lesson_count} lessons · issued {new Date(result.certificate.issued_at).toLocaleDateString()}
             </p>
-            <p style={{ marginTop: '12px', color: '#999999', fontSize: '12px' }}>Code: {result.certificate.code_display}</p>
+            <p style={{ marginTop: '12px', color: 'var(--gray-500)', fontSize: '12px' }}>Code: {result.certificate.code_display}</p>
           </div>
         ) : (
           <div style={{ background: '#ffebee', border: '1px solid #ef9a9a', borderRadius: '12px', padding: '24px', textAlign: 'center' }}>
             <div style={{ fontSize: '32px', marginBottom: '8px' }}>❌</div>
-            <h2 style={{ color: '#c62828', margin: 0 }}>No certificate found for this code</h2>
+            <h2 style={{ color: 'var(--danger)', margin: 0 }}>No certificate found for this code</h2>
           </div>
         )
       )}

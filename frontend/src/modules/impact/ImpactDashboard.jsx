@@ -57,7 +57,7 @@ const ImpactDashboard = () => {
   };
 
   if (loading) return <div style={{ textAlign: 'center', padding: '40px' }}>Loading...</div>;
-  if (error) return <div style={{ textAlign: 'center', padding: '40px', color: '#c62828' }}>{error}</div>;
+  if (error) return <div style={{ textAlign: 'center', padding: '40px', color: 'var(--danger)' }}>{error}</div>;
   if (!overview || !trends) return null;
 
   const { totals, by_school, by_country } = overview;
@@ -67,11 +67,11 @@ const ImpactDashboard = () => {
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', flexWrap: 'wrap', gap: '10px' }}>
         <h2 style={{ margin: 0 }}>Impact Dashboard</h2>
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          {exportError && <span style={{ color: '#c62828', fontSize: '13px' }}>{exportError}</span>}
+          {exportError && <span style={{ color: 'var(--danger)', fontSize: '13px' }}>{exportError}</span>}
           <button
             onClick={handleExport}
             disabled={exporting}
-            style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', padding: '8px 16px', background: '#1a5f2b', color: 'white', border: 'none', borderRadius: '8px', fontSize: '13px', cursor: exporting ? 'not-allowed' : 'pointer' }}
+            style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', padding: '8px 16px', background: 'var(--primary)', color: 'white', border: 'none', borderRadius: '8px', fontSize: '13px', cursor: exporting ? 'not-allowed' : 'pointer' }}
           >
             <Download size={14} aria-hidden="true" /> {exporting ? 'Exporting...' : 'Export CSV'}
           </button>
@@ -101,7 +101,7 @@ const ImpactDashboard = () => {
               <YAxis allowDecimals={false} tick={{ fontSize: 12 }} />
               <Tooltip />
               <Legend />
-              <Line type="monotone" dataKey="enrollments" stroke="#1a5f2b" name="Enrollments" />
+              <Line type="monotone" dataKey="enrollments" stroke="var(--primary)" name="Enrollments" />
             </LineChart>
           </ResponsiveContainer>
         </div>
@@ -188,14 +188,14 @@ const ImpactDashboard = () => {
 
 const StatCard = ({ value, label, note }) => (
   <div style={{ background: 'white', border: '1px solid #e0e0e0', borderRadius: '12px', padding: '16px', textAlign: 'center' }}>
-    <div style={{ fontSize: '24px', fontWeight: 'bold', color: '#1a5f2b' }}>{value}</div>
-    <div style={{ fontSize: '12px', color: '#666666' }}>{label}</div>
-    {note && <div style={{ fontSize: '10px', color: '#999999', marginTop: '2px' }}>{note}</div>}
+    <div style={{ fontSize: '24px', fontWeight: 'bold', color: 'var(--primary)' }}>{value}</div>
+    <div style={{ fontSize: '12px', color: 'var(--gray-500)' }}>{label}</div>
+    {note && <div style={{ fontSize: '10px', color: 'var(--gray-500)', marginTop: '2px' }}>{note}</div>}
   </div>
 );
 
 const EmptyState = ({ text }) => (
-  <div style={{ textAlign: 'center', padding: '30px', color: '#666666', background: 'white', border: '1px solid #e0e0e0', borderRadius: '12px' }}>
+  <div style={{ textAlign: 'center', padding: '30px', color: 'var(--gray-500)', background: 'white', border: '1px solid #e0e0e0', borderRadius: '12px' }}>
     {text}
   </div>
 );

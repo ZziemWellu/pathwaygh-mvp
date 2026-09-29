@@ -38,8 +38,8 @@ const UniversitiesPage = ({ user }) => {
     return (
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '300px' }}>
         <div style={{ textAlign: 'center' }}>
-          <div style={{ width: '40px', height: '40px', border: '4px solid #f0f0f0', borderTopColor: '#1a5f2b', borderRadius: '50%', animation: 'spin 0.8s linear infinite', margin: '0 auto 16px' }} />
-          <p style={{ color: '#666666' }}>Loading universities...</p>
+          <div style={{ width: '40px', height: '40px', border: '4px solid #f0f0f0', borderTopColor: 'var(--primary)', borderRadius: '50%', animation: 'spin 0.8s linear infinite', margin: '0 auto 16px' }} />
+          <p style={{ color: 'var(--gray-500)' }}>Loading universities...</p>
         </div>
       </div>
     );
@@ -48,9 +48,9 @@ const UniversitiesPage = ({ user }) => {
   if (error) {
     return (
       <div style={{ textAlign: 'center', padding: '40px' }}>
-        <h2 style={{ color: '#1a5f2b' }}>🏛️ Universities</h2>
-        <p style={{ color: '#c62828' }}>⚠️ {error}</p>
-        <button onClick={fetchUniversities} style={{ padding: '8px 20px', background: '#1a5f2b', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer' }}>Retry</button>
+        <h2 style={{ color: 'var(--primary)' }}>🏛️ Universities</h2>
+        <p style={{ color: 'var(--danger)' }}>⚠️ {error}</p>
+        <button onClick={fetchUniversities} style={{ padding: '8px 20px', background: 'var(--primary)', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer' }}>Retry</button>
       </div>
     );
   }
@@ -58,8 +58,8 @@ const UniversitiesPage = ({ user }) => {
   return (
     <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '20px' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', flexWrap: 'wrap', gap: '10px' }}>
-        <h2 style={{ color: '#1a5f2b' }}>🏛️ Universities</h2>
-        <span style={{ color: '#666666' }}>{universities.length} universities available</span>
+        <h2 style={{ color: 'var(--primary)' }}>🏛️ Universities</h2>
+        <span style={{ color: 'var(--gray-500)' }}>{universities.length} universities available</span>
       </div>
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '20px' }}>
@@ -87,7 +87,7 @@ const UniversitiesPage = ({ user }) => {
             onMouseEnter={(e) => { e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.1)'; }}
             onMouseLeave={(e) => { e.currentTarget.style.boxShadow = '0 2px 4px rgba(0,0,0,0.04)'; }}
           >
-            <h3 style={{ color: '#1a5f2b', margin: '0 0 8px 0' }}>{uni.name}</h3>
+            <h3 style={{ color: 'var(--primary)', margin: '0 0 8px 0' }}>{uni.name}</h3>
             {uni.location && <div style={{ fontSize: '13px', color: '#666' }}>📍 {uni.location}</div>}
             {uni.cutoff && <div style={{ fontSize: '13px', color: '#666' }}>Cutoff: {uni.cutoff}</div>}
             {uni.programs && (
@@ -104,7 +104,7 @@ const UniversitiesPage = ({ user }) => {
                 )}
               </div>
             )}
-            <div style={{ fontSize: '12px', color: '#666666', marginTop: '12px' }}>Click for full details →</div>
+            <div style={{ fontSize: '12px', color: 'var(--gray-500)', marginTop: '12px' }}>Click for full details →</div>
           </div>
         ))}
       </div>
@@ -146,12 +146,12 @@ const UniversitiesPage = ({ user }) => {
           >
             <button
               aria-label="Close"
-              style={{ float: 'right', background: 'none', border: 'none', fontSize: '24px', cursor: 'pointer', color: '#666666' }}
+              style={{ float: 'right', background: 'none', border: 'none', fontSize: '24px', cursor: 'pointer', color: 'var(--gray-500)' }}
               onClick={() => setSelectedUniversity(null)}
             >
               ✕
             </button>
-            <h2 id="university-modal-title" style={{ color: '#1a5f2b' }}>{selectedUniversity.name}</h2>
+            <h2 id="university-modal-title" style={{ color: 'var(--primary)' }}>{selectedUniversity.name}</h2>
             {selectedUniversity.location && <div style={{ fontSize: '14px', color: '#666' }}>📍 {selectedUniversity.location}</div>}
             {selectedUniversity.cutoff && <div style={{ fontSize: '14px', color: '#666' }}>📊 Cutoff: {selectedUniversity.cutoff}</div>}
             {selectedUniversity.ranking && <div style={{ fontSize: '14px', color: '#666' }}>🏆 Ranking: {selectedUniversity.ranking}</div>}
@@ -169,7 +169,7 @@ const UniversitiesPage = ({ user }) => {
               </div>
             )}
             <button
-              style={{ marginTop: '20px', padding: '10px 20px', background: '#1a5f2b', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer', width: '100%' }}
+              style={{ marginTop: '20px', padding: '10px 20px', background: 'var(--primary)', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer', width: '100%' }}
               onClick={() => setSelectedUniversity(null)}
             >
               Close

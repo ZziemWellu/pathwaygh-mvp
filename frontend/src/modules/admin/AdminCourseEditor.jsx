@@ -75,7 +75,7 @@ const AdminCourseEditor = () => {
 
   return (
     <div style={{ maxWidth: '800px', margin: '0 auto', padding: '20px' }}>
-      <Link to="/admin" style={{ color: '#1a5f2b', fontSize: '14px' }}>← All courses</Link>
+      <Link to="/admin" style={{ color: 'var(--primary)', fontSize: '14px' }}>← All courses</Link>
 
       <div style={{ background: 'white', border: '1px solid #e0e0e0', borderRadius: '12px', padding: '18px', margin: '16px 0', display: 'flex', flexDirection: 'column', gap: '10px' }}>
         <label htmlFor="course-title" style={labelStyle}>Title</label>
@@ -97,7 +97,7 @@ const AdminCourseEditor = () => {
           <option value="LR">Liberia</option>
           <option value="GM">The Gambia</option>
         </select>
-        <button onClick={handleSave} disabled={saving} style={{ padding: '10px', background: saving ? '#ccc' : '#1a5f2b', color: 'white', border: 'none', borderRadius: '8px', cursor: saving ? 'not-allowed' : 'pointer', fontWeight: 'bold' }}>
+        <button onClick={handleSave} disabled={saving} style={{ padding: '10px', background: saving ? '#ccc' : 'var(--primary)', color: 'white', border: 'none', borderRadius: '8px', cursor: saving ? 'not-allowed' : 'pointer', fontWeight: 'bold' }}>
           {saving ? 'Saving...' : 'Save Course'}
         </button>
       </div>
@@ -106,7 +106,7 @@ const AdminCourseEditor = () => {
         <h3 style={{ margin: 0 }}>Lessons</h3>
         <button
           onClick={() => setShowLessonForm((s) => !s)}
-          style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', padding: '8px 14px', background: '#1a5f2b', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer', fontSize: '13px', fontWeight: 'bold' }}
+          style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', padding: '8px 14px', background: 'var(--primary)', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer', fontSize: '13px', fontWeight: 'bold' }}
         >
           <Plus size={14} /> New Lesson
         </button>
@@ -121,7 +121,7 @@ const AdminCourseEditor = () => {
             <option value="text">Text</option>
             <option value="quiz">Quiz</option>
           </select>
-          <button type="submit" style={{ padding: '10px', background: '#1a5f2b', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: 'bold' }}>
+          <button type="submit" style={{ padding: '10px', background: 'var(--primary)', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: 'bold' }}>
             Create Lesson
           </button>
         </form>
@@ -135,12 +135,12 @@ const AdminCourseEditor = () => {
         >
           <div style={{ flex: 1 }}>
             <div style={{ fontWeight: 'bold' }}>{lesson.title}</div>
-            <div style={{ fontSize: '12px', color: '#666666' }}>{lesson.lesson_type} · {lesson.exercise_count} exercises</div>
+            <div style={{ fontSize: '12px', color: 'var(--gray-500)' }}>{lesson.lesson_type} · {lesson.exercise_count} exercises</div>
           </div>
-          <button onClick={(e) => { e.stopPropagation(); handleDeleteLesson(lesson); }} style={{ background: 'none', border: 'none', color: '#c62828', cursor: 'pointer', padding: '6px' }}>
+          <button onClick={(e) => { e.stopPropagation(); handleDeleteLesson(lesson); }} style={{ background: 'none', border: 'none', color: 'var(--danger)', cursor: 'pointer', padding: '6px' }}>
             <Trash2 size={16} />
           </button>
-          <ChevronRight size={18} color="#666666" />
+          <ChevronRight size={18} color="var(--gray-500)" />
         </div>
       ))}
     </div>
