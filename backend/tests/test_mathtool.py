@@ -1,6 +1,6 @@
 import asyncio
 
-from modules.tutor.mathtool import compute_math, looks_like_math
+from modules.tutor.mathtool import compute_math, evaluate_expression, looks_like_math
 
 
 def _run(message):
@@ -58,3 +58,29 @@ def test_adversarial_attribute_chain_is_blocked():
 def test_oversized_expression_is_rejected_not_hung():
     huge = "1+" * 200 + "1"
     assert _run(f"calculate {huge}") is None
+
+
+# --- evaluate_expression (used by modules/ai_questions/generator.py to
+# verify an AI-generated question's self-reported answer) -----------------
+
+
+def test_evaluate_expression_computes_plain_arithmetic():
+    assert evaluate_expression("6+7") == 13.0
+    assert evaluate_expression("3*4") == 12.0
+
+
+def test_evaluate_expression_rejects_an_equation():
+    assert evaluate_expression("x+5=12") is None
+
+
+def test_evaluate_expression_rejects_an_expression_with_a_free_variable():
+    assert evaluate_expression("x+5") is None
+
+
+def test_evaluate_expression_rejects_adversarial_input():
+    assert evaluate_expression("__import__('os').system('echo pwned')") is None
+
+
+def test_evaluate_expression_rejects_garbage():
+    assert evaluate_expression("not a math expression") is None
+    assert evaluate_expression("") is None

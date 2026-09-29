@@ -151,6 +151,7 @@ modules = [
     ("gamification", "modules.gamification.router", "/api/gamification"),
     ("vocabulary", "modules.vocabulary.router", "/api/vocabulary"),
     ("flashcards", "modules.flashcards.router", "/api/flashcards"),
+    ("ai_questions", "modules.ai_questions.router", "/api/ai-questions"),
     ("live", "modules.live.router", "/api/live"),
     ("dashboard", "modules.dashboard.router", "/api/dashboard"),
     ("impact", "modules.impact.router", "/api/impact"),

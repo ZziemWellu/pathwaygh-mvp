@@ -116,6 +116,29 @@ def _compute_sync(candidate: str) -> Optional[dict]:
         return None
 
 
+def evaluate_expression(expression: str) -> Optional[float]:
+    """Safely evaluates a plain arithmetic expression (no equations, no
+    solving) and returns its numeric value, or None if it isn't a valid,
+    safe, computable expression. Reuses the exact character allowlist and
+    restricted-namespace sandbox _compute_sync uses for chat-message math -
+    the safety properties needed are identical whether the expression came
+    from a student's message or (modules/ai_questions/generator.py) an
+    AI-generated question's self-reported verification expression, since
+    neither is trusted input."""
+    candidate = expression.strip().lower()
+    if not candidate or len(candidate) > MAX_EXPRESSION_LENGTH or "=" in candidate:
+        return None
+    if not ALLOWED_CHARS.match(candidate):
+        return None
+    try:
+        expr = parse_expr(candidate, transformations=_TRANSFORMATIONS, global_dict=_GLOBAL_DICT)
+        if expr.free_symbols:
+            return None
+        return float(expr.evalf())
+    except Exception:
+        return None
+
+
 async def compute_math(message: str) -> Optional[dict]:
     if not looks_like_math(message):
         return None

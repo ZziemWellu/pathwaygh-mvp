@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import api, { extractData } from '../../services/api';
 import { getUser } from '../../constants/auth';
+import AIBonusQuestion from './AIBonusQuestion';
 
 const PracticeModule = () => {
   const [subjects, setSubjects] = useState([]);
@@ -334,6 +335,8 @@ const PracticeModule = () => {
           <span style={{ color: 'var(--gray-500)', fontSize: '14px' }}>📚 {subjects.length} subjects</span>
         </div>
       </div>
+
+      <AIBonusQuestion />
 
       {showStats && statistics && (
         <div style={{ background: 'white', borderRadius: '12px', border: '1px solid #e0e0e0', padding: '24px', marginBottom: '24px' }}>
