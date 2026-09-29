@@ -85,7 +85,22 @@ SYSTEM_PROMPT_BY_COUNTRY = {
 LANGUAGE_INSTRUCTION = {
     "en": "",
     "tw": " Respond in Twi (the Akan language spoken in Ghana).",
-    "pcm": " Respond in Nigerian Pidgin English.",
+    # Grounded in Nigerian Pidgin's own documented tense-particle grammar
+    # (dey/don/go/bin) rather than just "respond in Pidgin" - the common
+    # LLM failure mode for lower-resource creoles is standard-English
+    # sentence structure with a few Pidgin words swapped in, not the
+    # language's actual grammar. Evaluated N-ATLaS (NCAIR/Awarri) as a
+    # purpose-built alternative first - it doesn't cover Pidgin at all
+    # (only English/Hausa/Igbo/Yoruba per its own model card) and would
+    # have needed self-hosted GPU infrastructure regardless, so this
+    # prompt-level grounding is the actual zero-infrastructure fix.
+    "pcm": (
+        " Respond in Nigerian Pidgin English - use its own grammar, not English sentences with a few Pidgin "
+        "words swapped in. Real tense markers: 'dey' for present/ongoing ('I dey learn' = I am learning), "
+        "'don' for completed action ('you don finish' = you have finished), 'go' for future ('we go check am' "
+        "= we will check it), 'bin' for past. Natural phrasing: 'wetin' (what), 'abeg' (please), 'make we' "
+        "(let's), 'no wahala' (no problem), 'small small' (little by little)."
+    ),
 }
 
 

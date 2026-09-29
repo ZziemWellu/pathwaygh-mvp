@@ -35,6 +35,19 @@ def test_twi_and_pidgin_instructions_are_distinct_and_non_empty():
     assert "Pidgin" in LANGUAGE_INSTRUCTION["pcm"]
 
 
+def test_pidgin_instruction_grounds_real_grammar_not_just_vocabulary():
+    """Regression test for the N-ATLaS evaluation: since no purpose-built
+    Pidgin model was usable (not covered by N-ATLaS at all, and would
+    have needed self-hosted GPU infra regardless), the fix was grounding
+    the prompt in Nigerian Pidgin's own documented tense-particle system
+    rather than leaving it as a vague "respond in Pidgin" instruction -
+    the common LLM failure mode for lower-resource creoles is English
+    syntax with a few Pidgin words swapped in."""
+    instruction = LANGUAGE_INSTRUCTION["pcm"]
+    for marker in ("dey", "don", "go", "bin"):
+        assert marker in instruction
+
+
 def test_chat_requires_auth(client):
     response = client.post("/api/tutor/chat", json={"message": "hi"})
     assert response.status_code == 401
