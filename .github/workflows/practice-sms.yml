@@ -1,0 +1,40 @@
+name: Send practice SMS batch
+
+# Roadmap item #6, Phase 1 pilot: outbound-only daily practice-question
+# SMS for feature-phone students the smartphone PWA can't reach (see
+# the Sept 2026 feature-phone-fallback scoping doc). Daily, unlike the
+# weekly WhatsApp parent-digest workflow, since a once-a-week question
+# doesn't build a practice habit - kept as its own workflow rather than
+# folded into parent-digest.yml so the two different cadences and
+# concerns don't get tangled together.
+
+on:
+  schedule:
+    - cron: '0 7 * * *' # daily, 07:00 UTC
+  workflow_dispatch: {}
+
+permissions:
+  issues: write
+
+jobs:
+  send-practice-sms:
+    runs-on: ubuntu-latest
+    steps:
+      # --max-time covers a Render free-tier cold start (30-60s); --retry
+      # gives one extra chance if a transient network/cold-start hiccup
+      # still trips it - same reasoning as parent-digest.yml.
+      - name: Send practice SMS batch
+        run: |
+          curl -f --max-time 90 --retry 2 --retry-delay 30 -X POST https://pathwaygh-backend.onrender.com/api/practice-sms/send-batch \
+            -H "X-Digest-Secret: ${{ secrets.DIGEST_TRIGGER_SECRET }}"
+
+      - name: Open an alert issue if the send failed
+        if: failure()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          BODY="The scheduled practice-SMS batch send failed on $(date -u '+%Y-%m-%d %H:%M UTC')."
+          BODY="$BODY See the failed run for which step and why: $RUN_URL"
+          BODY="$BODY This was not retried automatically beyond curl's built-in --retry - re-run the workflow manually (workflow_dispatch) once the underlying issue is fixed, since today's practice SMS was not sent."
+          gh issue create --title "🔴 Daily practice-SMS batch failed to send" --body "$BODY"

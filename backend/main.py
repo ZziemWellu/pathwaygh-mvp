@@ -147,6 +147,7 @@ modules = [
     ("parent", "modules.parent.router", "/api/parent"),
     ("school", "modules.school.router", "/api/school"),
     ("payment", "modules.payment.router", "/api/payment"),
+    ("practice_sms", "modules.practice_sms.router", "/api/practice-sms"),
     ("live", "modules.live.router", "/api/live"),
     ("dashboard", "modules.dashboard.router", "/api/dashboard"),
     ("impact", "modules.impact.router", "/api/impact"),

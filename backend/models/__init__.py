@@ -4,6 +4,7 @@ from models.enrollment import Enrollment
 from models.exercise_result import ExerciseResult
 from models.payment_transaction import PaymentTransaction
 from models.plan import Plan
+from models.practice_sms_subscriber import PracticeSmsSubscriber
 from models.progress import LessonProgress
 from models.quiz_attempt import QuizAttempt
 from models.school import School
@@ -26,4 +27,5 @@ __all__ = [
     "SkillMastery",
     "SubSkillMastery",
     "PaymentTransaction",
+    "PracticeSmsSubscriber",
 ]
