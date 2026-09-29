@@ -2,6 +2,7 @@ from models.certificate import Certificate
 from models.course import Course, Exercise, Lesson
 from models.enrollment import Enrollment
 from models.exercise_result import ExerciseResult
+from models.payment_transaction import PaymentTransaction
 from models.plan import Plan
 from models.progress import LessonProgress
 from models.quiz_attempt import QuizAttempt
@@ -22,4 +23,5 @@ __all__ = [
     "School",
     "Certificate",
     "SkillMastery",
+    "PaymentTransaction",
 ]
