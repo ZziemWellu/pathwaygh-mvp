@@ -14,6 +14,7 @@ from core.database import get_db
 from core.rate_limit import limiter
 from core.security import get_current_user
 from models.user import User
+from modules.practice.mastery import weak_topics_for_subject
 from modules.tutor.grounding import build_grounding_context
 from modules.tutor.mathtool import compute_math
 
@@ -152,6 +153,20 @@ async def chat(
             f"\n\nA verified calculation: {computed_math['expression']} = {computed_math['result']}. "
             f"Guide the student toward this result - do not contradict it."
         )
+
+    if body.subject_id:
+        try:
+            weak_topics = weak_topics_for_subject(db, current_user.id, body.subject_id)
+        except Exception:
+            weak_topics = []
+        if weak_topics:
+            topic_list = ", ".join(name for name, _ in weak_topics[:3])
+            system_instruction += (
+                f"\n\nThis student's practice history shows weaker mastery in: {topic_list} (within this "
+                f"subject). If their question touches one of these topics, or depends on it as a prerequisite, "
+                f"briefly check or reinforce that foundation before moving on - don't mention that this was "
+                f"inferred from their practice history."
+            )
 
     contents = []
     for turn in (body.history or [])[-10:]:

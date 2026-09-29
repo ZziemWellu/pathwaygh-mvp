@@ -9,6 +9,7 @@ from modules.practice.mastery import (
     effective_mastery,
     load_questions,
     update_mastery,
+    weak_topics_for_subject,
 )
 from tests.conftest import register_user
 from tests.test_practice import KNOWN_ANSWERS
@@ -107,6 +108,24 @@ def test_naive_datetime_is_treated_as_utc_not_rejected():
     naive_last_updated = (now - timedelta(days=5)).replace(tzinfo=None)
     result = decay_mastery(0.9, naive_last_updated, now=now)
     assert 0.0 <= result < 0.9
+
+
+def test_weak_topics_for_subject_returns_only_below_threshold_weakest_first(client, db_session):
+    headers, user = _register(client, "mastery_weak_topics@test.com")
+    db_session.add_all(
+        [
+            SkillMastery(user_id=user["id"], subject_id="mathematics", topic_id="algebra", mastery_probability=0.2, attempts_count=3),
+            SkillMastery(user_id=user["id"], subject_id="mathematics", topic_id="geometry", mastery_probability=0.4, attempts_count=3),
+            SkillMastery(user_id=user["id"], subject_id="mathematics", topic_id="trigonometry", mastery_probability=0.9, attempts_count=3),
+        ]
+    )
+    db_session.commit()
+
+    weak = weak_topics_for_subject(db_session, user["id"], "mathematics")
+    names = [name for name, _ in weak]
+    assert len(weak) == 2
+    assert names == sorted(names, key=lambda n: dict(weak)[n])  # weakest first
+    assert all(mastery < 0.5 for _, mastery in weak)
 
 
 def test_effective_mastery_reads_decay_off_the_row(db_session):

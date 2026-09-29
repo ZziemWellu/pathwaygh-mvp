@@ -118,6 +118,23 @@ def topic_names_by_id() -> Dict[str, str]:
     return names
 
 
+def weak_topics_for_subject(db: Session, user_id: int, subject_id: str, threshold: float = 0.5) -> list:
+    """This student's topics in `subject_id` with effective (decayed)
+    mastery below `threshold`, weakest first. Feeds the AI tutor's
+    prerequisite-check instruction (see modules/tutor/router.py) -
+    atama+'s approach is to trace a struggling student back to the
+    earliest unmastered prerequisite and remediate there first, rather
+    than only re-serving harder/easier items on the current topic. This
+    reuses the exact mastery data the practice-quiz adaptive engine
+    already computes - no new model, no new ML."""
+    rows = db.query(SkillMastery).filter(SkillMastery.user_id == user_id, SkillMastery.subject_id == subject_id).all()
+    names = topic_names_by_id()
+    weak = [(names.get(m.topic_id, m.topic_id), effective_mastery(m)) for m in rows]
+    weak = [(name, mastery) for name, mastery in weak if mastery < threshold]
+    weak.sort(key=lambda item: item[1])
+    return weak
+
+
 def update_mastery(prior: float, is_correct: bool, num_options: int) -> float:
     """One Bayesian Knowledge Tracing step: a Bayes update on the observed
     answer (reflecting the knowledge state as it existed BEFORE this
