@@ -70,6 +70,40 @@
   --transition-slow: 0.5s ease;
 }
 
+/* ---------- Accessibility overrides ----------
+   Set via AccessibilityContext (contexts/AccessibilityContext.jsx) as
+   data attributes on <html>, not a class, so they compose independently
+   of whatever theme/module classes are already applied. Font choices are
+   system fonts already installed on virtually every device rather than
+   a web-font dependency (e.g. OpenDyslexic) this app doesn't currently
+   self-host or have a verified CDN source for. */
+[data-dyslexia-font="true"] {
+  --font-family: 'Comic Sans MS', Verdana, Arial, sans-serif;
+  --font-display: 'Comic Sans MS', Verdana, Arial, sans-serif;
+}
+
+[data-text-scale="large"] {
+  --font-size-xs: 13px;
+  --font-size-sm: 15px;
+  --font-size-base: 17px;
+  --font-size-md: 19px;
+  --font-size-lg: 23px;
+  --font-size-xl: 28px;
+  --font-size-2xl: 34px;
+  --font-size-3xl: 41px;
+}
+
+[data-text-scale="larger"] {
+  --font-size-xs: 15px;
+  --font-size-sm: 17px;
+  --font-size-base: 19px;
+  --font-size-md: 22px;
+  --font-size-lg: 26px;
+  --font-size-xl: 32px;
+  --font-size-2xl: 39px;
+  --font-size-3xl: 47px;
+}
+
 /* ---------- Reset & Base ---------- */
 * {
   margin: 0;

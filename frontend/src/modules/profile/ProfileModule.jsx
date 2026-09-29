@@ -3,8 +3,10 @@ import { Link } from 'react-router-dom';
 import api from '../../services/api';
 import { getUser, setUser } from '../../constants/auth';
 import LanguageSwitcher from '../../components/LanguageSwitcher';
+import { useAccessibility } from '../../contexts/AccessibilityContext';
 
 const ProfileModule = () => {
+  const { dyslexiaFont, setDyslexiaFont, textScale, setTextScale, textScales } = useAccessibility();
   const [user, setUserState] = useState(getUser());
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -825,6 +827,39 @@ const ProfileModule = () => {
               <button onClick={handleSaveGuardianWhatsapp} disabled={guardianPhoneSaving} style={{ padding: '10px 20px', background: 'var(--primary)', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer' }}>
                 {guardianPhoneSaving ? 'Saving...' : 'Save'}
               </button>
+            </div>
+
+            <div style={{ marginTop: '24px', paddingTop: '16px', borderTop: '1px solid #eee' }}>
+              <p style={{ marginBottom: '8px' }}><strong style={{ color: '#666' }}>Accessibility:</strong></p>
+              <label style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '13px', cursor: 'pointer', marginBottom: '12px' }}>
+                <input
+                  type="checkbox"
+                  checked={dyslexiaFont}
+                  onChange={(e) => setDyslexiaFont(e.target.checked)}
+                />
+                <span>Use a dyslexia-friendly font</span>
+              </label>
+              <p style={{ marginBottom: '8px', fontSize: '13px', color: '#666' }}>Text size:</p>
+              <div style={{ display: 'flex', gap: '8px' }}>
+                {textScales.map((scale) => (
+                  <button
+                    key={scale}
+                    onClick={() => setTextScale(scale)}
+                    style={{
+                      padding: '8px 16px',
+                      borderRadius: '8px',
+                      border: textScale === scale ? '2px solid var(--primary)' : '1px solid #e0e0e0',
+                      background: textScale === scale ? 'var(--primary-bg, #e8f5e9)' : 'white',
+                      color: '#333',
+                      cursor: 'pointer',
+                      fontWeight: textScale === scale ? 'bold' : 'normal',
+                      textTransform: 'capitalize',
+                    }}
+                  >
+                    {scale}
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
         )}

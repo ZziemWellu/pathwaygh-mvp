@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import ReactMarkdown from 'react-markdown';
+import ReadAloudButton from '../common/ReadAloudButton';
 import api from '../../services/api';
 
 const markdownComponents = {
@@ -203,20 +204,19 @@ const AIChat = ({ user }) => {
               {msg.role === 'assistant' ? (
                 <>
                   <ReactMarkdown components={markdownComponents}>{msg.content}</ReactMarkdown>
-                  {(msg.grounded || msg.computedMath) && (
-                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginTop: '4px' }}>
-                      {msg.grounded && (
-                        <span style={{ fontSize: '11px', color: 'var(--primary)', background: '#eaf5ee', padding: '2px 8px', borderRadius: '10px' }}>
-                          📚 grounded in curriculum
-                        </span>
-                      )}
-                      {msg.computedMath && (
-                        <span style={{ fontSize: '11px', color: 'var(--primary)', background: '#eaf5ee', padding: '2px 8px', borderRadius: '10px' }}>
-                          🧮 verified: {msg.computedMath.expression} = {msg.computedMath.result}
-                        </span>
-                      )}
-                    </div>
-                  )}
+                  <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '6px', marginTop: '4px' }}>
+                    <ReadAloudButton text={msg.content} />
+                    {msg.grounded && (
+                      <span style={{ fontSize: '11px', color: 'var(--primary)', background: '#eaf5ee', padding: '2px 8px', borderRadius: '10px' }}>
+                        📚 grounded in curriculum
+                      </span>
+                    )}
+                    {msg.computedMath && (
+                      <span style={{ fontSize: '11px', color: 'var(--primary)', background: '#eaf5ee', padding: '2px 8px', borderRadius: '10px' }}>
+                        🧮 verified: {msg.computedMath.expression} = {msg.computedMath.result}
+                      </span>
+                    )}
+                  </div>
                 </>
               ) : (
                 msg.content

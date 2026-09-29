@@ -1,6 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App'
+import { AccessibilityProvider } from './contexts/AccessibilityContext'
 import { LanguageProvider } from './contexts/LanguageContext'
 import './styles/globals.css'
 
@@ -19,8 +20,10 @@ if ('serviceWorker' in navigator) {
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <LanguageProvider>
-      <App />
-    </LanguageProvider>
+    <AccessibilityProvider>
+      <LanguageProvider>
+        <App />
+      </LanguageProvider>
+    </AccessibilityProvider>
   </React.StrictMode>
 )
