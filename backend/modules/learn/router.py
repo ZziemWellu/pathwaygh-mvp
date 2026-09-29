@@ -183,7 +183,6 @@ async def submit_exercises(
     if not lesson or not lesson.exercises:
         raise HTTPException(status_code=404, detail="Lesson or exercises not found")
 
-    exercises_by_id = {e.id: e for e in lesson.exercises}
     correct_count = 0
     results = []
     for exercise in lesson.exercises:

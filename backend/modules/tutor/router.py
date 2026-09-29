@@ -169,6 +169,6 @@ async def chat(
         )
         reply = response.text or "I'm not sure how to answer that - could you rephrase your question?"
     except Exception as e:
-        raise HTTPException(status_code=502, detail=f"AI tutor request failed: {e}")
+        raise HTTPException(status_code=502, detail=f"AI tutor request failed: {e}") from e
 
     return {"success": True, "response": reply, "grounded": bool(grounding), "computed_math": computed_math}

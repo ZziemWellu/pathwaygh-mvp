@@ -59,8 +59,8 @@ def _decode_token(token: str) -> int:
         if user_id is None:
             raise credentials_exception
         return int(user_id)
-    except JWTError:
-        raise credentials_exception
+    except JWTError as e:
+        raise credentials_exception from e
 
 
 def get_current_user(

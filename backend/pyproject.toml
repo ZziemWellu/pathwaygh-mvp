@@ -1,0 +1,22 @@
+[tool.ruff]
+line-length = 120
+target-version = "py311"
+exclude = ["venv", "alembic/versions"]
+
+[tool.ruff.lint]
+# Pragmatic starting set for an existing codebase with no prior lint
+# history: real-bug rules (undefined names, unused imports/variables,
+# bare excepts) rather than style nitpicks that would produce a huge
+# reformat diff with no behavioral value. Widen this over time.
+select = [
+    "F",   # pyflakes - unused imports/variables, undefined names, etc.
+    "E9",  # syntax errors
+    "B",   # flake8-bugbear - common real-bug patterns (mutable defaults, etc.)
+]
+ignore = [
+    "F401",  # unused imports - the codebase has several re-exported names (models/__init__.py); revisit per-file later
+    "B008",  # Depends(...) as a default arg is FastAPI's required DI pattern, not a bug - this fires on ~120 completely correct endpoint signatures
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["F401", "F811"]

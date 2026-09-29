@@ -46,7 +46,9 @@ def test_consistent_correct_answers_trend_upward_but_never_reach_one():
     for _ in range(15):
         prob = update_mastery(prob, True, 4)
         history.append(prob)
-    assert all(b >= a - 1e-9 for a, b in zip(history, history[1:]))
+    # strict=False is intentional here: history and history[1:] differ in
+    # length by design (this pairs each element with its successor).
+    assert all(b >= a - 1e-9 for a, b in zip(history, history[1:], strict=False))
     assert history[-1] > 0.9
     assert history[-1] < 1.0
 

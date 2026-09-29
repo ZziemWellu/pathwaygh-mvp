@@ -166,7 +166,7 @@ failed = []
 for module_name, import_path, prefix in modules:
     try:
         module = __import__(import_path, fromlist=["router"])
-        router = getattr(module, "router")
+        router = module.router
         app.include_router(router, prefix=prefix, tags=[module_name.capitalize()])
         loaded.append(module_name)
         print(f"  ✅ {module_name.capitalize()} loaded at {prefix}")

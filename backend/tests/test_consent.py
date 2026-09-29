@@ -3,6 +3,7 @@ import re
 from datetime import datetime, timedelta
 
 import pytest
+from fastapi import HTTPException
 
 from models.user import User
 from modules.auth.consent import can_resend, issue_consent_otp, verify_consent_otp
@@ -289,7 +290,7 @@ def test_verify_consent_otp_service_rejects_wrong_code(caplog):
     user = _bare_user()
     issue_consent_otp(user)
 
-    with pytest.raises(Exception):
+    with pytest.raises(HTTPException):
         verify_consent_otp(user, "000000")
     assert user.consent_otp_attempts == 1
     assert user.consent_given_at is None
