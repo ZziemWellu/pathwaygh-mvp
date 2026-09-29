@@ -90,3 +90,4 @@ class User(Base):
     gamification_profile = relationship("GamificationProfile", back_populates="user", uselist=False, cascade="all, delete-orphan")
     earned_achievements = relationship("EarnedAchievement", back_populates="user", cascade="all, delete-orphan")
     vocabulary_progress = relationship("VocabularyProgress", back_populates="user", cascade="all, delete-orphan")
+    flashcards = relationship("Flashcard", back_populates="user", cascade="all, delete-orphan")

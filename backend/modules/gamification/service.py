@@ -20,6 +20,7 @@ XP_PER_LESSON = 10
 XP_PER_QUIZ_BASE = 5
 XP_PER_CORRECT_ANSWER = 1
 XP_PER_WORD_LEARNED = 3
+XP_PER_FLASHCARD_REVIEW = 2
 
 
 def get_or_create_profile(db: Session, user_id: int) -> GamificationProfile:
@@ -109,3 +110,13 @@ def award_for_word_learned(db: Session, user: User) -> dict:
     _record_activity(profile)
     newly_earned = check_and_award_achievements(db, user, profile)
     return {"xp_awarded": XP_PER_WORD_LEARNED, "total_xp": profile.xp_points, "new_achievements": newly_earned}
+
+
+def award_for_flashcard_reviewed(db: Session, user: User) -> dict:
+    """Does not commit - the caller (modules/flashcards/router.py) commits
+    alongside the Flashcard state update already in that request."""
+    profile = get_or_create_profile(db, user.id)
+    profile.xp_points += XP_PER_FLASHCARD_REVIEW
+    _record_activity(profile)
+    newly_earned = check_and_award_achievements(db, user, profile)
+    return {"xp_awarded": XP_PER_FLASHCARD_REVIEW, "total_xp": profile.xp_points, "new_achievements": newly_earned}

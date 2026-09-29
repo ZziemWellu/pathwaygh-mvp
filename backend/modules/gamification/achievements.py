@@ -18,6 +18,7 @@ from typing import Callable, Dict
 from sqlalchemy.orm import Session
 
 from models.certificate import Certificate
+from models.flashcard import Flashcard
 from models.gamification import GamificationProfile
 from models.progress import LessonProgress
 from models.quiz_attempt import QuizAttempt
@@ -54,6 +55,12 @@ def _course_complete(db: Session, user: User, profile: GamificationProfile) -> b
 
 def _wordsmith(db: Session, user: User, profile: GamificationProfile) -> bool:
     return db.query(VocabularyProgress).filter(VocabularyProgress.user_id == user.id).count() >= 5
+
+
+def _flashcard_habit(db: Session, user: User, profile: GamificationProfile) -> bool:
+    return (
+        db.query(Flashcard).filter(Flashcard.user_id == user.id, Flashcard.last_reviewed_at.isnot(None)).count() >= 5
+    )
 
 
 def _streak(days: int) -> Callable[[Session, User, GamificationProfile], bool]:
@@ -123,5 +130,11 @@ ACHIEVEMENTS: Dict[str, dict] = {
         "description": "Learn 5 Word of the Day entries",
         "icon": "\U0001F4DA",
         "condition": _wordsmith,
+    },
+    "flashcard_habit": {
+        "name": "Card Sharp",
+        "description": "Review 5 flashcards",
+        "icon": "\U0001F5C2",
+        "condition": _flashcard_habit,
     },
 }
