@@ -195,6 +195,7 @@ const App = () => {
         </main>
         <footer style={{ textAlign: 'center', marginTop: '40px', padding: '20px', color: 'var(--gray-500)', borderTop: '1px solid #eee' }}>
           <p>{t('copyright')}</p>
+          <p style={{ fontSize: '12px', margin: '4px 0 8px 0' }}>{t('poweredBy')}</p>
           <button onClick={() => setShowPrivacy(true)} style={{ background: 'none', border: 'none', color: 'var(--gray-500)', cursor: 'pointer', textDecoration: 'underline', fontSize: '12px' }}>
             {t('footerPrivacyPolicy')}
           </button>
@@ -303,6 +304,7 @@ const App = () => {
           fontSize: '13px' 
         }}>
           <p>{t('copyright')}</p>
+          <p style={{ fontSize: '12px', margin: '4px 0 8px 0' }}>{t('poweredBy')}</p>
           <Link to="/privacy" style={{ color: 'var(--gray-500)', fontSize: '12px', textDecoration: 'underline' }}>
             {t('footerPrivacyPolicy')}
           </Link>
