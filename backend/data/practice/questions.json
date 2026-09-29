@@ -472,6 +472,813 @@
         }
       ],
       "country": "NG"
+    },
+    {
+      "id": "mathematics_sl",
+      "name": "Mathematics",
+      "icon": "📐",
+      "topics": [
+        {
+          "id": "algebra_sl",
+          "name": "Algebra",
+          "questions": [
+            {
+              "id": "math_sl_001",
+              "question": "What is 5 + 6?",
+              "options": [
+                "9",
+                "10",
+                "11",
+                "12"
+              ],
+              "correct": "11",
+              "difficulty": "easy",
+              "explanation": "5 + 6 = 11"
+            },
+            {
+              "id": "math_sl_002",
+              "question": "What is 4 × 6?",
+              "options": [
+                "20",
+                "22",
+                "24",
+                "26"
+              ],
+              "correct": "24",
+              "difficulty": "easy",
+              "explanation": "4 × 6 = 24"
+            },
+            {
+              "id": "math_sl_003",
+              "question": "Solve for x: x + 5 = 12",
+              "options": [
+                "5",
+                "6",
+                "7",
+                "8"
+              ],
+              "correct": "7",
+              "difficulty": "medium",
+              "explanation": "x = 12 - 5 = 7"
+            },
+            {
+              "id": "math_sl_004",
+              "question": "What is the square root of 81?",
+              "options": [
+                "7",
+                "8",
+                "9",
+                "10"
+              ],
+              "correct": "9",
+              "difficulty": "medium",
+              "explanation": "9 × 9 = 81"
+            },
+            {
+              "id": "math_sl_005",
+              "question": "Simplify using BODMAS: 3 + 4 × 2",
+              "options": [
+                "10",
+                "11",
+                "14",
+                "20"
+              ],
+              "correct": "11",
+              "difficulty": "medium",
+              "explanation": "Multiplication before addition: 4 × 2 = 8, then 3 + 8 = 11"
+            },
+            {
+              "id": "math_sl_006",
+              "question": "What is 100 ÷ 4?",
+              "options": [
+                "20",
+                "25",
+                "30",
+                "40"
+              ],
+              "correct": "25",
+              "difficulty": "easy",
+              "explanation": "100 ÷ 4 = 25"
+            },
+            {
+              "id": "math_sl_007",
+              "question": "Solve for x: 3x = 18",
+              "options": [
+                "4",
+                "5",
+                "6",
+                "7"
+              ],
+              "correct": "6",
+              "difficulty": "medium",
+              "explanation": "x = 18 ÷ 3 = 6"
+            },
+            {
+              "id": "math_sl_008",
+              "question": "What is 9 × 9?",
+              "options": [
+                "72",
+                "76",
+                "81",
+                "84"
+              ],
+              "correct": "81",
+              "difficulty": "easy",
+              "explanation": "9 × 9 = 81"
+            },
+            {
+              "id": "math_sl_009",
+              "question": "What is 25% of 200?",
+              "options": [
+                "25",
+                "40",
+                "50",
+                "60"
+              ],
+              "correct": "50",
+              "difficulty": "hard",
+              "explanation": "25% of 200 = 0.25 × 200 = 50"
+            },
+            {
+              "id": "math_sl_010",
+              "question": "What is 6 squared (6²)?",
+              "options": [
+                "12",
+                "24",
+                "36",
+                "42"
+              ],
+              "correct": "36",
+              "difficulty": "easy",
+              "explanation": "6² = 6 × 6 = 36"
+            }
+          ]
+        },
+        {
+          "id": "geometry_sl",
+          "name": "Geometry",
+          "questions": [
+            {
+              "id": "math_sl_011",
+              "question": "How many sides does a rectangle have?",
+              "options": [
+                "3",
+                "4",
+                "5",
+                "6"
+              ],
+              "correct": "4",
+              "difficulty": "easy",
+              "explanation": "A rectangle has 4 sides"
+            },
+            {
+              "id": "math_sl_012",
+              "question": "What is the sum of angles in a triangle?",
+              "options": [
+                "90°",
+                "180°",
+                "270°",
+                "360°"
+              ],
+              "correct": "180°",
+              "difficulty": "medium",
+              "explanation": "The interior angles of a triangle always add up to 180°"
+            }
+          ]
+        }
+      ],
+      "country": "SL"
+    },
+    {
+      "id": "english_sl",
+      "name": "English Language",
+      "icon": "📝",
+      "topics": [
+        {
+          "id": "grammar_sl",
+          "name": "Grammar",
+          "questions": [
+            {
+              "id": "eng_sl_001",
+              "question": "What part of speech is the word 'quickly' in 'She ran quickly'?",
+              "options": [
+                "Noun",
+                "Verb",
+                "Adverb",
+                "Preposition"
+              ],
+              "correct": "Adverb",
+              "difficulty": "medium",
+              "explanation": "'Quickly' describes how she ran, so it is an adverb"
+            },
+            {
+              "id": "eng_sl_002",
+              "question": "Choose the correct sentence.",
+              "options": [
+                "The boys was playing football",
+                "The boys were playing football",
+                "The boys is playing football",
+                "The boys am playing football"
+              ],
+              "correct": "The boys were playing football",
+              "difficulty": "medium",
+              "explanation": "'Boys' is plural, so it takes the plural verb 'were' (subject-verb agreement)"
+            },
+            {
+              "id": "eng_sl_003",
+              "question": "What is a synonym for 'happy'?",
+              "options": [
+                "Sad",
+                "Angry",
+                "Joyful",
+                "Tired"
+              ],
+              "correct": "Joyful",
+              "difficulty": "easy",
+              "explanation": "'Joyful' has the same meaning as 'happy'"
+            }
+          ]
+        }
+      ],
+      "country": "SL"
+    },
+    {
+      "id": "science_sl",
+      "name": "Integrated Science",
+      "icon": "🔬",
+      "topics": [
+        {
+          "id": "biology_sl",
+          "name": "Biology",
+          "questions": [
+            {
+              "id": "sci_sl_001",
+              "question": "Which part of a plant carries out photosynthesis?",
+              "options": [
+                "Root",
+                "Stem",
+                "Leaf",
+                "Flower"
+              ],
+              "correct": "Leaf",
+              "difficulty": "medium",
+              "explanation": "The leaf contains chlorophyll, which traps sunlight for photosynthesis"
+            },
+            {
+              "id": "sci_sl_002",
+              "question": "Which organ in the human body pumps blood?",
+              "options": [
+                "Lungs",
+                "Heart",
+                "Kidney",
+                "Stomach"
+              ],
+              "correct": "Heart",
+              "difficulty": "easy",
+              "explanation": "The heart pumps blood around the body"
+            }
+          ]
+        }
+      ],
+      "country": "SL"
+    },
+    {
+      "id": "mathematics_lr",
+      "name": "Mathematics",
+      "icon": "📐",
+      "topics": [
+        {
+          "id": "algebra_lr",
+          "name": "Algebra",
+          "questions": [
+            {
+              "id": "math_lr_001",
+              "question": "What is 5 + 6?",
+              "options": [
+                "9",
+                "10",
+                "11",
+                "12"
+              ],
+              "correct": "11",
+              "difficulty": "easy",
+              "explanation": "5 + 6 = 11"
+            },
+            {
+              "id": "math_lr_002",
+              "question": "What is 4 × 6?",
+              "options": [
+                "20",
+                "22",
+                "24",
+                "26"
+              ],
+              "correct": "24",
+              "difficulty": "easy",
+              "explanation": "4 × 6 = 24"
+            },
+            {
+              "id": "math_lr_003",
+              "question": "Solve for x: x + 5 = 12",
+              "options": [
+                "5",
+                "6",
+                "7",
+                "8"
+              ],
+              "correct": "7",
+              "difficulty": "medium",
+              "explanation": "x = 12 - 5 = 7"
+            },
+            {
+              "id": "math_lr_004",
+              "question": "What is the square root of 81?",
+              "options": [
+                "7",
+                "8",
+                "9",
+                "10"
+              ],
+              "correct": "9",
+              "difficulty": "medium",
+              "explanation": "9 × 9 = 81"
+            },
+            {
+              "id": "math_lr_005",
+              "question": "Simplify using BODMAS: 3 + 4 × 2",
+              "options": [
+                "10",
+                "11",
+                "14",
+                "20"
+              ],
+              "correct": "11",
+              "difficulty": "medium",
+              "explanation": "Multiplication before addition: 4 × 2 = 8, then 3 + 8 = 11"
+            },
+            {
+              "id": "math_lr_006",
+              "question": "What is 100 ÷ 4?",
+              "options": [
+                "20",
+                "25",
+                "30",
+                "40"
+              ],
+              "correct": "25",
+              "difficulty": "easy",
+              "explanation": "100 ÷ 4 = 25"
+            },
+            {
+              "id": "math_lr_007",
+              "question": "Solve for x: 3x = 18",
+              "options": [
+                "4",
+                "5",
+                "6",
+                "7"
+              ],
+              "correct": "6",
+              "difficulty": "medium",
+              "explanation": "x = 18 ÷ 3 = 6"
+            },
+            {
+              "id": "math_lr_008",
+              "question": "What is 9 × 9?",
+              "options": [
+                "72",
+                "76",
+                "81",
+                "84"
+              ],
+              "correct": "81",
+              "difficulty": "easy",
+              "explanation": "9 × 9 = 81"
+            },
+            {
+              "id": "math_lr_009",
+              "question": "What is 25% of 200?",
+              "options": [
+                "25",
+                "40",
+                "50",
+                "60"
+              ],
+              "correct": "50",
+              "difficulty": "hard",
+              "explanation": "25% of 200 = 0.25 × 200 = 50"
+            },
+            {
+              "id": "math_lr_010",
+              "question": "What is 6 squared (6²)?",
+              "options": [
+                "12",
+                "24",
+                "36",
+                "42"
+              ],
+              "correct": "36",
+              "difficulty": "easy",
+              "explanation": "6² = 6 × 6 = 36"
+            }
+          ]
+        },
+        {
+          "id": "geometry_lr",
+          "name": "Geometry",
+          "questions": [
+            {
+              "id": "math_lr_011",
+              "question": "How many sides does a rectangle have?",
+              "options": [
+                "3",
+                "4",
+                "5",
+                "6"
+              ],
+              "correct": "4",
+              "difficulty": "easy",
+              "explanation": "A rectangle has 4 sides"
+            },
+            {
+              "id": "math_lr_012",
+              "question": "What is the sum of angles in a triangle?",
+              "options": [
+                "90°",
+                "180°",
+                "270°",
+                "360°"
+              ],
+              "correct": "180°",
+              "difficulty": "medium",
+              "explanation": "The interior angles of a triangle always add up to 180°"
+            }
+          ]
+        }
+      ],
+      "country": "LR"
+    },
+    {
+      "id": "english_lr",
+      "name": "English Language",
+      "icon": "📝",
+      "topics": [
+        {
+          "id": "grammar_lr",
+          "name": "Grammar",
+          "questions": [
+            {
+              "id": "eng_lr_001",
+              "question": "What part of speech is the word 'quickly' in 'She ran quickly'?",
+              "options": [
+                "Noun",
+                "Verb",
+                "Adverb",
+                "Preposition"
+              ],
+              "correct": "Adverb",
+              "difficulty": "medium",
+              "explanation": "'Quickly' describes how she ran, so it is an adverb"
+            },
+            {
+              "id": "eng_lr_002",
+              "question": "Choose the correct sentence.",
+              "options": [
+                "The boys was playing football",
+                "The boys were playing football",
+                "The boys is playing football",
+                "The boys am playing football"
+              ],
+              "correct": "The boys were playing football",
+              "difficulty": "medium",
+              "explanation": "'Boys' is plural, so it takes the plural verb 'were' (subject-verb agreement)"
+            },
+            {
+              "id": "eng_lr_003",
+              "question": "What is a synonym for 'happy'?",
+              "options": [
+                "Sad",
+                "Angry",
+                "Joyful",
+                "Tired"
+              ],
+              "correct": "Joyful",
+              "difficulty": "easy",
+              "explanation": "'Joyful' has the same meaning as 'happy'"
+            }
+          ]
+        }
+      ],
+      "country": "LR"
+    },
+    {
+      "id": "science_lr",
+      "name": "Integrated Science",
+      "icon": "🔬",
+      "topics": [
+        {
+          "id": "biology_lr",
+          "name": "Biology",
+          "questions": [
+            {
+              "id": "sci_lr_001",
+              "question": "Which part of a plant carries out photosynthesis?",
+              "options": [
+                "Root",
+                "Stem",
+                "Leaf",
+                "Flower"
+              ],
+              "correct": "Leaf",
+              "difficulty": "medium",
+              "explanation": "The leaf contains chlorophyll, which traps sunlight for photosynthesis"
+            },
+            {
+              "id": "sci_lr_002",
+              "question": "Which organ in the human body pumps blood?",
+              "options": [
+                "Lungs",
+                "Heart",
+                "Kidney",
+                "Stomach"
+              ],
+              "correct": "Heart",
+              "difficulty": "easy",
+              "explanation": "The heart pumps blood around the body"
+            }
+          ]
+        }
+      ],
+      "country": "LR"
+    },
+    {
+      "id": "mathematics_gm",
+      "name": "Mathematics",
+      "icon": "📐",
+      "topics": [
+        {
+          "id": "algebra_gm",
+          "name": "Algebra",
+          "questions": [
+            {
+              "id": "math_gm_001",
+              "question": "What is 5 + 6?",
+              "options": [
+                "9",
+                "10",
+                "11",
+                "12"
+              ],
+              "correct": "11",
+              "difficulty": "easy",
+              "explanation": "5 + 6 = 11"
+            },
+            {
+              "id": "math_gm_002",
+              "question": "What is 4 × 6?",
+              "options": [
+                "20",
+                "22",
+                "24",
+                "26"
+              ],
+              "correct": "24",
+              "difficulty": "easy",
+              "explanation": "4 × 6 = 24"
+            },
+            {
+              "id": "math_gm_003",
+              "question": "Solve for x: x + 5 = 12",
+              "options": [
+                "5",
+                "6",
+                "7",
+                "8"
+              ],
+              "correct": "7",
+              "difficulty": "medium",
+              "explanation": "x = 12 - 5 = 7"
+            },
+            {
+              "id": "math_gm_004",
+              "question": "What is the square root of 81?",
+              "options": [
+                "7",
+                "8",
+                "9",
+                "10"
+              ],
+              "correct": "9",
+              "difficulty": "medium",
+              "explanation": "9 × 9 = 81"
+            },
+            {
+              "id": "math_gm_005",
+              "question": "Simplify using BODMAS: 3 + 4 × 2",
+              "options": [
+                "10",
+                "11",
+                "14",
+                "20"
+              ],
+              "correct": "11",
+              "difficulty": "medium",
+              "explanation": "Multiplication before addition: 4 × 2 = 8, then 3 + 8 = 11"
+            },
+            {
+              "id": "math_gm_006",
+              "question": "What is 100 ÷ 4?",
+              "options": [
+                "20",
+                "25",
+                "30",
+                "40"
+              ],
+              "correct": "25",
+              "difficulty": "easy",
+              "explanation": "100 ÷ 4 = 25"
+            },
+            {
+              "id": "math_gm_007",
+              "question": "Solve for x: 3x = 18",
+              "options": [
+                "4",
+                "5",
+                "6",
+                "7"
+              ],
+              "correct": "6",
+              "difficulty": "medium",
+              "explanation": "x = 18 ÷ 3 = 6"
+            },
+            {
+              "id": "math_gm_008",
+              "question": "What is 9 × 9?",
+              "options": [
+                "72",
+                "76",
+                "81",
+                "84"
+              ],
+              "correct": "81",
+              "difficulty": "easy",
+              "explanation": "9 × 9 = 81"
+            },
+            {
+              "id": "math_gm_009",
+              "question": "What is 25% of 200?",
+              "options": [
+                "25",
+                "40",
+                "50",
+                "60"
+              ],
+              "correct": "50",
+              "difficulty": "hard",
+              "explanation": "25% of 200 = 0.25 × 200 = 50"
+            },
+            {
+              "id": "math_gm_010",
+              "question": "What is 6 squared (6²)?",
+              "options": [
+                "12",
+                "24",
+                "36",
+                "42"
+              ],
+              "correct": "36",
+              "difficulty": "easy",
+              "explanation": "6² = 6 × 6 = 36"
+            }
+          ]
+        },
+        {
+          "id": "geometry_gm",
+          "name": "Geometry",
+          "questions": [
+            {
+              "id": "math_gm_011",
+              "question": "How many sides does a rectangle have?",
+              "options": [
+                "3",
+                "4",
+                "5",
+                "6"
+              ],
+              "correct": "4",
+              "difficulty": "easy",
+              "explanation": "A rectangle has 4 sides"
+            },
+            {
+              "id": "math_gm_012",
+              "question": "What is the sum of angles in a triangle?",
+              "options": [
+                "90°",
+                "180°",
+                "270°",
+                "360°"
+              ],
+              "correct": "180°",
+              "difficulty": "medium",
+              "explanation": "The interior angles of a triangle always add up to 180°"
+            }
+          ]
+        }
+      ],
+      "country": "GM"
+    },
+    {
+      "id": "english_gm",
+      "name": "English Language",
+      "icon": "📝",
+      "topics": [
+        {
+          "id": "grammar_gm",
+          "name": "Grammar",
+          "questions": [
+            {
+              "id": "eng_gm_001",
+              "question": "What part of speech is the word 'quickly' in 'She ran quickly'?",
+              "options": [
+                "Noun",
+                "Verb",
+                "Adverb",
+                "Preposition"
+              ],
+              "correct": "Adverb",
+              "difficulty": "medium",
+              "explanation": "'Quickly' describes how she ran, so it is an adverb"
+            },
+            {
+              "id": "eng_gm_002",
+              "question": "Choose the correct sentence.",
+              "options": [
+                "The boys was playing football",
+                "The boys were playing football",
+                "The boys is playing football",
+                "The boys am playing football"
+              ],
+              "correct": "The boys were playing football",
+              "difficulty": "medium",
+              "explanation": "'Boys' is plural, so it takes the plural verb 'were' (subject-verb agreement)"
+            },
+            {
+              "id": "eng_gm_003",
+              "question": "What is a synonym for 'happy'?",
+              "options": [
+                "Sad",
+                "Angry",
+                "Joyful",
+                "Tired"
+              ],
+              "correct": "Joyful",
+              "difficulty": "easy",
+              "explanation": "'Joyful' has the same meaning as 'happy'"
+            }
+          ]
+        }
+      ],
+      "country": "GM"
+    },
+    {
+      "id": "science_gm",
+      "name": "Integrated Science",
+      "icon": "🔬",
+      "topics": [
+        {
+          "id": "biology_gm",
+          "name": "Biology",
+          "questions": [
+            {
+              "id": "sci_gm_001",
+              "question": "Which part of a plant carries out photosynthesis?",
+              "options": [
+                "Root",
+                "Stem",
+                "Leaf",
+                "Flower"
+              ],
+              "correct": "Leaf",
+              "difficulty": "medium",
+              "explanation": "The leaf contains chlorophyll, which traps sunlight for photosynthesis"
+            },
+            {
+              "id": "sci_gm_002",
+              "question": "Which organ in the human body pumps blood?",
+              "options": [
+                "Lungs",
+                "Heart",
+                "Kidney",
+                "Stomach"
+              ],
+              "correct": "Heart",
+              "difficulty": "easy",
+              "explanation": "The heart pumps blood around the body"
+            }
+          ]
+        }
+      ],
+      "country": "GM"
     }
   ]
 }
