@@ -48,6 +48,18 @@ def test_pidgin_instruction_grounds_real_grammar_not_just_vocabulary():
         assert marker in instruction
 
 
+def test_twi_instruction_grounds_real_tense_prefixes_not_just_vocabulary():
+    """Regression test for a rigor inconsistency: the Pidgin instruction
+    was grounded in real grammar (see above) while Twi was left as a bare
+    "respond in Twi" - the exact shallow-instruction failure mode already
+    identified and fixed for Pidgin. Twi's future/progressive/perfect
+    pre-verbal prefixes are independently documented (learnakan.com,
+    Akan verbal-morphology literature), not guessed."""
+    instruction = LANGUAGE_INSTRUCTION["tw"]
+    for prefix in ("bɛ-", "re-", "a-"):
+        assert prefix in instruction
+
+
 def test_chat_requires_auth(client):
     response = client.post("/api/tutor/chat", json={"message": "hi"})
     assert response.status_code == 401

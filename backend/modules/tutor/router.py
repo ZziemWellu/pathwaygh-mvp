@@ -84,7 +84,18 @@ SYSTEM_PROMPT_BY_COUNTRY = {
 
 LANGUAGE_INSTRUCTION = {
     "en": "",
-    "tw": " Respond in Twi (the Akan language spoken in Ghana).",
+    # Grounded in Twi's own documented pre-verbal tense/aspect prefixes,
+    # not just "respond in Twi" - the same shallow-instruction failure
+    # mode the Pidgin instruction below was fixed for (a model defaults
+    # to English sentence structure with a few Twi words swapped in
+    # unless the grammar itself is named). Akan generally doesn't combine
+    # two of these prefixes on one verb in a simple clause.
+    "tw": (
+        " Respond in Twi (Akan) - use its own grammar, not English sentences with a few Twi words swapped in. "
+        "Real tense/aspect prefixes on the verb: 'bɛ-' for future ('mɛbɛkɔ' = I will go), 're-' for an ongoing "
+        "action ('merekɔ' = I am going), 'a-' for a completed action ('makɔ' = I have gone). Natural phrasing: "
+        "'medaase' (thank you), 'akwaaba' (welcome), 'ɛte sɛn?' (how are you), 'yɛbɛyɛ' (we will do it)."
+    ),
     # Grounded in Nigerian Pidgin's own documented tense-particle grammar
     # (dey/don/go/bin) rather than just "respond in Pidgin" - the common
     # LLM failure mode for lower-resource creoles is standard-English

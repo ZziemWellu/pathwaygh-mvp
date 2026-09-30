@@ -17,6 +17,15 @@ know about them, but calling either raises ProviderNotIntegrated rather
 than faking success - same honesty principle already applied to every
 stub module elsewhere in this app (see modules/activity, /analytics,
 etc. from the September 2026 audit).
+
+Verified (not assumed) before treating "mtn_momo" as an urgent gap:
+Paystack's own Ghana checkout already offers Mobile Money (MTN, Telecel/
+Vodafone, AirtelTigo) as a payment channel within its hosted flow - a
+Ghanaian school admin can already pay by mobile money today through the
+existing Paystack integration, without this direct adapter. A standalone
+mtn_momo integration would only add value for a flow that bypasses
+Paystack's checkout entirely (e.g. a USSD-initiated payment), not as a
+prerequisite for Ghanaian mobile money support in general.
 """
 
 from modules.payment.providers import paystack

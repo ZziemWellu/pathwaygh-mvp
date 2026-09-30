@@ -31,7 +31,19 @@ const AIChat = ({ user }) => {
 
   useEffect(() => {
     api.get('/api/practice/subjects')
-      .then(response => setSubjects(response.data.subjects || []))
+      .then(response => {
+        const loaded = response.data.subjects || [];
+        setSubjects(loaded);
+        // Defaults to the student's first subject rather than "General":
+        // the tutor's prerequisite-check feature (surfacing this
+        // student's actual weak topics, see backend/modules/tutor/
+        // router.py) only activates when a subject_id is sent, and most
+        // students never touch this dropdown - leaving it on "General"
+        // left that feature dormant for almost everyone.
+        if (loaded.length > 0) {
+          setSelectedSubject((prev) => prev || loaded[0].id);
+        }
+      })
       .catch(err => console.error('Failed to load subjects:', err));
   }, []);
 
@@ -165,7 +177,7 @@ const AIChat = ({ user }) => {
             color: '#333',
           }}
         >
-          <option value="">General</option>
+          <option value="">General (no personalized help)</option>
           {subjects.map((s) => (
             <option key={s.id} value={s.id}>{s.name}</option>
           ))}
