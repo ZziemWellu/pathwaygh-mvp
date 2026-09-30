@@ -7,6 +7,8 @@ import {
 } from 'lucide-react';
 import api from '../../services/api';
 import { getUser } from '../../constants/auth';
+import GamificationSummary from './GamificationSummary';
+import WordOfTheDayCard from './WordOfTheDayCard';
 import './DashboardModule.css';
 
 const navItems = [
@@ -90,8 +92,11 @@ const DashboardModule = ({ setActiveModule }) => {
         <p className="dash-hero-eyebrow">Your learning journey</p>
         <h1>{getGreeting()}, {user?.full_name?.split(' ')[0] || 'Student'}</h1>
         <p>Pick up where you left off, or explore something new today.</p>
+        <GamificationSummary />
         <div className="dash-hero-pattern" />
       </div>
+
+      <WordOfTheDayCard />
 
       {!hasCourses ? (
         <div className="dash-card dash-empty" style={{ marginBottom: '24px' }}>

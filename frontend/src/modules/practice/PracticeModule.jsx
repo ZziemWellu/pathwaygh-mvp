@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import api, { extractData } from '../../services/api';
 import { getUser } from '../../constants/auth';
+import { useGamificationNotify } from '../../contexts/GamificationNotifyContext';
 import AIBonusQuestion from './AIBonusQuestion';
 
 const PracticeModule = () => {
+  const { notify } = useGamificationNotify();
   const [subjects, setSubjects] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -111,6 +113,7 @@ const PracticeModule = () => {
       });
       console.log('📊 Quiz results:', response.data);
       setQuizResults(response.data);
+      notify(response.data.gamification);
       await fetchQuizHistory();
       await fetchStatistics();
     } catch (err) {

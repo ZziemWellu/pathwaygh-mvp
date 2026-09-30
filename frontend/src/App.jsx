@@ -53,6 +53,8 @@ const UniversitiesPage = lazy(() => import('./modules/explore-new/pages/Universi
 const ScholarshipsPage = lazy(() => import('./modules/explore-new/pages/ScholarshipsPage'));
 const CareerMatchPage = lazy(() => import('./modules/explore-new/pages/CareerMatchPage'));
 const PracticeModule = lazy(() => import('./modules/practice/PracticeModule'));
+const FlashcardsModule = lazy(() => import('./modules/flashcards/FlashcardsModule'));
+const GamificationPage = lazy(() => import('./modules/gamification/GamificationPage'));
 const PlanModule = lazy(() => import('./modules/plan/PlanModule'));
 const ProfileModule = lazy(() => import('./modules/profile/ProfileModule'));
 const CommunityModule = lazy(() => import('./modules/community/CommunityModule'));
@@ -278,6 +280,8 @@ const App = () => {
             <Route path="/explore-old" element={<ExploreModule />} />
             
             <Route path="/practice" element={<PracticeModule />} />
+            <Route path="/flashcards" element={<FlashcardsModule />} />
+            <Route path="/progress" element={<GamificationPage />} />
             <Route path="/plan" element={<PlanModule />} />
             <Route path="/profile" element={<ProfileModule />} />
             <Route path="/community" element={<CommunityModule />} />

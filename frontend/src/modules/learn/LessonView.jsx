@@ -5,9 +5,11 @@ import ReactMarkdown from 'react-markdown';
 import api from '../../services/api';
 import ExerciseSection from './ExerciseSection';
 import { useLanguage } from '../../contexts/LanguageContext';
+import { useGamificationNotify } from '../../contexts/GamificationNotifyContext';
 
 const LessonView = () => {
   const { t } = useLanguage();
+  const { notify } = useGamificationNotify();
   const { courseId, lessonId } = useParams();
   const [lesson, setLesson] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -38,6 +40,7 @@ const LessonView = () => {
     try {
       const response = await api.post(`/api/learn/lessons/${lessonId}/progress`, { watched: true });
       setLesson((prev) => ({ ...prev, watched: true }));
+      notify(response.data.gamification);
       if (response.data.certificate_issued) {
         setJustCompleted({ code: response.data.certificate_code });
       }

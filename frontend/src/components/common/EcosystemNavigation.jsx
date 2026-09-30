@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Home, BookOpen, Search, PencilLine, ListChecks, User, Users, Shield, Building2, BarChart3 } from 'lucide-react';
+import { Home, BookOpen, Search, PencilLine, ListChecks, User, Users, Shield, Building2, BarChart3, Layers } from 'lucide-react';
 import { useLanguage } from '../../contexts/LanguageContext';
 
 const EcosystemNavigation = ({ activeModule, setActiveModule, user }) => {
@@ -12,6 +12,7 @@ const EcosystemNavigation = ({ activeModule, setActiveModule, user }) => {
     { id: 'learn', icon: BookOpen, label: t('navLearn'), path: '/learn' },
     { id: 'explore', icon: Search, label: t('navExplore'), path: '/explore' },
     { id: 'practice', icon: PencilLine, label: t('navPractice'), path: '/practice' },
+    { id: 'flashcards', icon: Layers, label: t('navFlashcards'), path: '/flashcards' },
     { id: 'plan', icon: ListChecks, label: t('navPlan'), path: '/plan' },
     { id: 'profile', icon: User, label: t('navProfile'), path: '/profile' },
     { id: 'community', icon: Users, label: t('navCommunity'), path: '/community' },
