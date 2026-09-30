@@ -73,5 +73,10 @@ def build_practice_sms_text(subscriber: PracticeSmsSubscriber) -> Optional[Tuple
     letters = "ABCD"
     lines.append(f"New practice question: {question['question']}")
     lines.extend(f"{letters[i]}) {opt}" for i, opt in enumerate(question.get("options", [])))
+    # Only honest to say once the inbound webhook (modules/practice_sms/
+    # router.py's inbound_sms) is actually wired up to act on it - before
+    # that existed, this line would have been a promise the app couldn't
+    # keep.
+    lines.append("Reply STOP to opt out.")
 
     return "\n".join(lines), question["id"]

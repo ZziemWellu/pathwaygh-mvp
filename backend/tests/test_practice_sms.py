@@ -14,6 +14,120 @@ def _extract_code(caplog_text: str) -> str:
     return match.group(1)
 
 
+# --- /inbound (Africa's Talking incoming-SMS webhook) ---------------------
+
+
+def test_inbound_sms_verifies_with_the_correct_code(client, db_session, caplog):
+    caplog.set_level(logging.INFO)
+    client.post("/api/practice-sms/subscribe", json={"phone_number": "+233241119001", "country": "GH"})
+    code = _extract_code(caplog.text)
+
+    response = client.post("/api/practice-sms/inbound", data={"from": "+233241119001", "text": code})
+    assert response.status_code == 200
+
+    subscriber = db_session.query(PracticeSmsSubscriber).filter(PracticeSmsSubscriber.phone_number == "+233241119001").first()
+    assert subscriber.verified is True
+
+
+def test_inbound_sms_extracts_a_code_surrounded_by_other_words(client, db_session, caplog):
+    """A real reply is rarely just the bare digits - confirms the code is
+    found even inside a full sentence."""
+    caplog.set_level(logging.INFO)
+    client.post("/api/practice-sms/subscribe", json={"phone_number": "+233241119002", "country": "GH"})
+    code = _extract_code(caplog.text)
+
+    client.post("/api/practice-sms/inbound", data={"from": "+233241119002", "text": f"my code is {code} thanks"})
+
+    subscriber = db_session.query(PracticeSmsSubscriber).filter(PracticeSmsSubscriber.phone_number == "+233241119002").first()
+    assert subscriber.verified is True
+
+
+def test_inbound_sms_with_wrong_code_does_not_verify_but_still_returns_200(client, db_session, caplog):
+    caplog.set_level(logging.INFO)
+    client.post("/api/practice-sms/subscribe", json={"phone_number": "+233241119003", "country": "GH"})
+
+    response = client.post("/api/practice-sms/inbound", data={"from": "+233241119003", "text": "000000"})
+    assert response.status_code == 200
+
+    subscriber = db_session.query(PracticeSmsSubscriber).filter(PracticeSmsSubscriber.phone_number == "+233241119003").first()
+    assert subscriber.verified is False
+
+
+def test_inbound_sms_wrong_code_increments_the_attempt_counter_for_real(client, db_session, caplog):
+    """Regression test: a rollback after a failed verify_code() call would
+    silently erase the verification_attempts increment, defeating brute-
+    force protection on this specific (inbound-SMS) path."""
+    caplog.set_level(logging.INFO)
+    client.post("/api/practice-sms/subscribe", json={"phone_number": "+233241119004", "country": "GH"})
+
+    client.post("/api/practice-sms/inbound", data={"from": "+233241119004", "text": "000000"})
+
+    subscriber = db_session.query(PracticeSmsSubscriber).filter(PracticeSmsSubscriber.phone_number == "+233241119004").first()
+    assert subscriber.verification_attempts == 1
+
+
+def test_inbound_sms_stop_unsubscribes(client, db_session, caplog):
+    caplog.set_level(logging.INFO)
+    client.post("/api/practice-sms/subscribe", json={"phone_number": "+233241119005", "country": "GH"})
+
+    response = client.post("/api/practice-sms/inbound", data={"from": "+233241119005", "text": "STOP"})
+    assert response.status_code == 200
+
+    subscriber = db_session.query(PracticeSmsSubscriber).filter(PracticeSmsSubscriber.phone_number == "+233241119005").first()
+    assert subscriber.opted_in is False
+
+
+def test_inbound_sms_stop_is_case_insensitive(client, db_session, caplog):
+    caplog.set_level(logging.INFO)
+    client.post("/api/practice-sms/subscribe", json={"phone_number": "+233241119006", "country": "GH"})
+
+    client.post("/api/practice-sms/inbound", data={"from": "+233241119006", "text": "stop"})
+
+    subscriber = db_session.query(PracticeSmsSubscriber).filter(PracticeSmsSubscriber.phone_number == "+233241119006").first()
+    assert subscriber.opted_in is False
+
+
+def test_inbound_sms_for_an_unknown_number_is_a_safe_noop(client):
+    response = client.post("/api/practice-sms/inbound", data={"from": "+233240000000", "text": "123456"})
+    assert response.status_code == 200
+
+
+def test_inbound_sms_does_nothing_for_an_already_verified_subscriber(client, db_session, caplog):
+    caplog.set_level(logging.INFO)
+    client.post("/api/practice-sms/subscribe", json={"phone_number": "+233241119007", "country": "GH"})
+    code = _extract_code(caplog.text)
+    client.post("/api/practice-sms/verify", json={"phone_number": "+233241119007", "code": code})
+
+    # Replying again after already being verified must not error or
+    # re-trigger verification logic.
+    response = client.post("/api/practice-sms/inbound", data={"from": "+233241119007", "text": code})
+    assert response.status_code == 200
+
+
+def test_inbound_sms_rejects_a_wrong_token_when_a_secret_is_configured(client, monkeypatch, db_session, caplog):
+    caplog.set_level(logging.INFO)
+    client.post("/api/practice-sms/subscribe", json={"phone_number": "+233241119008", "country": "GH"})
+    code = _extract_code(caplog.text)
+    monkeypatch.setenv("PRACTICE_SMS_INBOUND_SECRET", "real-secret")
+
+    client.post("/api/practice-sms/inbound", data={"from": "+233241119008", "text": code}, params={"token": "wrong"})
+
+    subscriber = db_session.query(PracticeSmsSubscriber).filter(PracticeSmsSubscriber.phone_number == "+233241119008").first()
+    assert subscriber.verified is False
+
+
+def test_inbound_sms_accepts_the_correct_token_when_a_secret_is_configured(client, monkeypatch, db_session, caplog):
+    caplog.set_level(logging.INFO)
+    client.post("/api/practice-sms/subscribe", json={"phone_number": "+233241119009", "country": "GH"})
+    code = _extract_code(caplog.text)
+    monkeypatch.setenv("PRACTICE_SMS_INBOUND_SECRET", "real-secret")
+
+    client.post("/api/practice-sms/inbound", data={"from": "+233241119009", "text": code}, params={"token": "real-secret"})
+
+    subscriber = db_session.query(PracticeSmsSubscriber).filter(PracticeSmsSubscriber.phone_number == "+233241119009").first()
+    assert subscriber.verified is True
+
+
 # --- /subscribe, /verify, /resend-code, /unsubscribe -----------------------
 
 

@@ -10,11 +10,13 @@ mirroring modules/parent/router.py's send-digests (shared-secret header,
 not user auth).
 """
 
+import logging
 import os
+import re
 from datetime import datetime
 from typing import Literal, Optional
 
-from fastapi import APIRouter, Depends, Header, HTTPException, Request
+from fastapi import APIRouter, Depends, Form, Header, HTTPException, Request
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
 
@@ -25,7 +27,11 @@ from modules.practice_sms.eligibility import build_practice_sms_text, eligible_s
 from modules.practice_sms.providers import ProviderNotIntegrated, get_provider_for_country
 from modules.practice_sms.verification import can_resend, issue_verification_code, verify_code
 
+logger = logging.getLogger(__name__)
+
 router = APIRouter(tags=["practice_sms"])
+
+_CODE_RE = re.compile(r"\b(\d{6})\b")
 
 # Only these 3 have a real, wired-up SMS provider today (Africa's
 # Talking) - Sierra Leone and Liberia aren't covered by it and need a
@@ -126,6 +132,69 @@ async def unsubscribe(request: Request, body: UnsubscribeRequest, db: Session = 
     if subscriber:
         subscriber.opted_in = False
         db.commit()
+    return {"success": True}
+
+
+@router.post("/inbound")
+async def inbound_sms(
+    from_: str = Form(..., alias="from"),
+    text: str = Form(""),
+    token: Optional[str] = None,
+    db: Session = Depends(get_db),
+):
+    """Africa's Talking's incoming-SMS webhook target - configure this
+    exact URL (with ?token=... appended, see PRACTICE_SMS_INBOUND_SECRET
+    below) under SMS > Callback URLs > Incoming Messages in the AT
+    dashboard. This is the piece that was previously missing entirely:
+    the verification SMS tells a student to "reply with this code," but
+    without this endpoint wired up in AT's dashboard, no inbound reply
+    was ever actually received or acted on - subscribe/verify only
+    worked if something else called POST /verify directly. Handles the
+    two things a student might actually send back: a 6-digit code, or
+    STOP to unsubscribe (the minimal compliance-required opt-out, not
+    full two-way quiz support - see the feature-phone-fallback doc's
+    Tier 1 vs Tier 2 distinction).
+
+    Always returns 200: Africa's Talking retries a webhook that doesn't
+    return 2xx, and an unmatched or already-verified reply is not an
+    error worth surfacing to the telco - it's logged instead.
+
+    Payload shape (form-encoded from/to/text/date/id) is Africa's
+    Talking's documented incoming-SMS webhook format, not guessed.
+    """
+    expected_token = os.getenv("PRACTICE_SMS_INBOUND_SECRET")
+    if expected_token and token != expected_token:
+        logger.warning("Rejected an inbound SMS webhook call with a missing/incorrect token")
+        return {"success": True}
+
+    phone_number = from_.strip()
+    body = text.strip()
+
+    subscriber = db.query(PracticeSmsSubscriber).filter(PracticeSmsSubscriber.phone_number == phone_number).first()
+    if not subscriber:
+        return {"success": True}
+
+    if body.upper() in {"STOP", "UNSUBSCRIBE"}:
+        subscriber.opted_in = False
+        db.commit()
+        return {"success": True}
+
+    if subscriber.verified:
+        return {"success": True}
+
+    match = _CODE_RE.search(body)
+    if match:
+        try:
+            verify_code(subscriber, match.group(1))
+        except HTTPException as e:
+            # Deliberately still commits below on failure too: an
+            # incorrect-code attempt increments verification_attempts in
+            # place before raising, and that increment must persist -
+            # a rollback here would silently erase the brute-force
+            # attempt counter on every failed guess sent by SMS.
+            logger.info(f"Inbound SMS verification attempt failed for a subscriber: {e.detail}")
+        db.commit()
+
     return {"success": True}
 
 
