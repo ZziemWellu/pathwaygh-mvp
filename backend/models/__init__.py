@@ -5,6 +5,9 @@ from models.exercise_result import ExerciseResult
 from models.flashcard import Flashcard
 from models.gamification import EarnedAchievement, GamificationProfile
 from models.payment_transaction import PaymentTransaction
+from models.peer_answer import PeerAnswer
+from models.peer_content_report import PeerContentReport
+from models.peer_question import PeerQuestion
 from models.plan import Plan
 from models.practice_sms_subscriber import PracticeSmsSubscriber
 from models.progress import LessonProgress
@@ -35,4 +38,7 @@ __all__ = [
     "EarnedAchievement",
     "VocabularyProgress",
     "Flashcard",
+    "PeerQuestion",
+    "PeerAnswer",
+    "PeerContentReport",
 ]

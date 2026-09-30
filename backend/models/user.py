@@ -91,3 +91,6 @@ class User(Base):
     earned_achievements = relationship("EarnedAchievement", back_populates="user", cascade="all, delete-orphan")
     vocabulary_progress = relationship("VocabularyProgress", back_populates="user", cascade="all, delete-orphan")
     flashcards = relationship("Flashcard", back_populates="user", cascade="all, delete-orphan")
+    peer_questions = relationship("PeerQuestion", back_populates="user", cascade="all, delete-orphan")
+    peer_answers = relationship("PeerAnswer", back_populates="user", cascade="all, delete-orphan")
+    peer_content_reports = relationship("PeerContentReport", back_populates="reporter", cascade="all, delete-orphan")
