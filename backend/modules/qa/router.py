@@ -229,14 +229,39 @@ async def report_answer(
 # --- Admin moderation queue ------------------------------------------------
 
 
+def _report_reasons(db: Session, target_type: str, target_id: int) -> list:
+    rows = (
+        db.query(PeerContentReport)
+        .filter(PeerContentReport.target_type == target_type, PeerContentReport.target_id == target_id, PeerContentReport.reason.isnot(None))
+        .all()
+    )
+    return [r.reason for r in rows]
+
+
 @router.get("/admin/pending")
 async def list_pending(current_user: User = Depends(require_admin), db: Session = Depends(get_db)):
     questions = db.query(PeerQuestion).filter(PeerQuestion.status == "pending_review").order_by(PeerQuestion.created_at).all()
     answers = db.query(PeerAnswer).filter(PeerAnswer.status == "pending_review").order_by(PeerAnswer.created_at).all()
     return {
         "success": True,
-        "questions": [{**_question_out(q, include_answer_count=False), "moderation_reason": q.moderation_reason, "flagged_count": q.flagged_count} for q in questions],
-        "answers": [{**_answer_out(a), "moderation_reason": a.moderation_reason, "flagged_count": a.flagged_count} for a in answers],
+        "questions": [
+            {
+                **_question_out(q, include_answer_count=False),
+                "moderation_reason": q.moderation_reason,
+                "flagged_count": q.flagged_count,
+                "report_reasons": _report_reasons(db, "question", q.id),
+            }
+            for q in questions
+        ],
+        "answers": [
+            {
+                **_answer_out(a),
+                "moderation_reason": a.moderation_reason,
+                "flagged_count": a.flagged_count,
+                "report_reasons": _report_reasons(db, "answer", a.id),
+            }
+            for a in answers
+        ],
     }
 
 

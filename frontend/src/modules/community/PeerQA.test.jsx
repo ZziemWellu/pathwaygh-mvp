@@ -96,8 +96,9 @@ describe('PeerQA', () => {
     expect(screen.getByText(/1 Answer/)).toBeInTheDocument();
   });
 
-  it('reports a question without navigating into it', async () => {
+  it('reports a question (with an optional reason) without navigating into it', async () => {
     const user = userEvent.setup();
+    const promptSpy = vi.spyOn(window, 'prompt').mockReturnValue('Spam');
     api.get.mockResolvedValueOnce({ data: questionsResponse });
     api.post.mockResolvedValueOnce({ data: { success: true } });
     api.get.mockResolvedValueOnce({ data: questionsResponse });
@@ -107,8 +108,9 @@ describe('PeerQA', () => {
 
     await user.click(screen.getByRole('button', { name: /report/i }));
 
-    await waitFor(() => expect(api.post).toHaveBeenCalledWith('/api/qa/questions/1/report'));
+    await waitFor(() => expect(api.post).toHaveBeenCalledWith('/api/qa/questions/1/report', { reason: 'Spam' }));
     // Reporting must not open the question detail view.
     expect(screen.queryByText(/back to questions/i)).not.toBeInTheDocument();
+    promptSpy.mockRestore();
   });
 });

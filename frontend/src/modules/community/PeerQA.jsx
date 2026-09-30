@@ -68,8 +68,12 @@ const PeerQA = () => {
   };
 
   const reportQuestion = async (questionId) => {
+    // The backend accepts an optional reason (shown to admins in the
+    // review queue) - a bare click with no context was a real gap, since
+    // "someone reported this" alone tells a moderator very little.
+    const reason = window.prompt('Optional: why are you reporting this question?') || undefined;
     try {
-      await api.post(`/api/qa/questions/${questionId}/report`);
+      await api.post(`/api/qa/questions/${questionId}/report`, reason ? { reason } : undefined);
       fetchQuestions();
     } catch {
       // A duplicate report (400) or any other failure is a safe no-op
@@ -165,6 +169,9 @@ const ModerationQueue = ({ pending, onChange }) => {
         <div key={`q-${q.id}`} style={{ padding: '8px 0', borderBottom: '1px solid #ffe0b2' }}>
           <p style={{ margin: '0 0 4px 0', fontSize: '13px' }}>{q.body}</p>
           <p style={{ margin: '0 0 6px 0', fontSize: '11px', color: '#b8791a' }}>{q.moderation_reason} · {q.flagged_count} report(s)</p>
+          {q.report_reasons?.length > 0 && (
+            <p style={{ margin: '0 0 6px 0', fontSize: '11px', color: '#8d6e63', fontStyle: 'italic' }}>"{q.report_reasons.join('", "')}"</p>
+          )}
           <div style={{ display: 'flex', gap: '8px' }}>
             <button onClick={() => act('questions', q.id, 'approve')} style={{ padding: '4px 10px', fontSize: '12px', background: 'var(--primary)', color: 'white', border: 'none', borderRadius: '6px', cursor: 'pointer' }}>Approve</button>
             <button onClick={() => act('questions', q.id, 'remove')} style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', padding: '4px 10px', fontSize: '12px', background: 'white', border: '1px solid #e0e0e0', borderRadius: '6px', cursor: 'pointer' }}><Trash2 size={12} /> Remove</button>
@@ -175,6 +182,9 @@ const ModerationQueue = ({ pending, onChange }) => {
         <div key={`a-${a.id}`} style={{ padding: '8px 0', borderBottom: '1px solid #ffe0b2' }}>
           <p style={{ margin: '0 0 4px 0', fontSize: '13px' }}>{a.body}</p>
           <p style={{ margin: '0 0 6px 0', fontSize: '11px', color: '#b8791a' }}>{a.moderation_reason} · {a.flagged_count} report(s)</p>
+          {a.report_reasons?.length > 0 && (
+            <p style={{ margin: '0 0 6px 0', fontSize: '11px', color: '#8d6e63', fontStyle: 'italic' }}>"{a.report_reasons.join('", "')}"</p>
+          )}
           <div style={{ display: 'flex', gap: '8px' }}>
             <button onClick={() => act('answers', a.id, 'approve')} style={{ padding: '4px 10px', fontSize: '12px', background: 'var(--primary)', color: 'white', border: 'none', borderRadius: '6px', cursor: 'pointer' }}>Approve</button>
             <button onClick={() => act('answers', a.id, 'remove')} style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', padding: '4px 10px', fontSize: '12px', background: 'white', border: '1px solid #e0e0e0', borderRadius: '6px', cursor: 'pointer' }}><Trash2 size={12} /> Remove</button>
@@ -230,8 +240,9 @@ const QuestionDetail = ({ questionId, currentUserId, onBack }) => {
   };
 
   const reportAnswer = async (answerId) => {
+    const reason = window.prompt('Optional: why are you reporting this answer?') || undefined;
     try {
-      await api.post(`/api/qa/answers/${answerId}/report`);
+      await api.post(`/api/qa/answers/${answerId}/report`, reason ? { reason } : undefined);
       fetchQuestion();
     } catch {
       // Same safe no-op reasoning as reportQuestion above.

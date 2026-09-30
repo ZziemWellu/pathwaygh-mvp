@@ -211,6 +211,29 @@ def test_admin_can_see_pending_questions_and_answers(client, db_session):
     assert body["questions"][0]["moderation_reason"] is not None
 
 
+def test_admin_sees_the_reasons_reporters_gave_not_just_the_count(client, db_session):
+    headers, _ = _register(client, "qa_report_reason_owner@test.com")
+    created = client.post("/api/qa/questions", json={"body": "A clean question"}, headers=headers)
+    question_id = created.json()["question"]["id"]
+
+    reporter1, _ = _register(client, "qa_report_reason_1@test.com")
+    reporter2, _ = _register(client, "qa_report_reason_2@test.com")
+    reporter3, _ = _register(client, "qa_report_reason_3@test.com")
+    client.post(f"/api/qa/questions/{question_id}/report", json={"reason": "This looks like spam"}, headers=reporter1)
+    client.post(f"/api/qa/questions/{question_id}/report", json={"reason": "Off-topic"}, headers=reporter2)
+    # A third, reason-less report - crosses COMMUNITY_FLAG_THRESHOLD (3)
+    # so the question actually reaches pending_review and shows up below;
+    # report_reasons must still only include the two that gave one.
+    client.post(f"/api/qa/questions/{question_id}/report", headers=reporter3)
+
+    admin_headers = _admin_headers(client, db_session, email="qa_report_reason_admin@test.com")
+    response = client.get("/api/qa/admin/pending", headers=admin_headers)
+    body = response.json()
+
+    assert len(body["questions"]) == 1
+    assert set(body["questions"][0]["report_reasons"]) == {"This looks like spam", "Off-topic"}
+
+
 def test_admin_can_approve_a_pending_question(client, db_session):
     headers, _ = _register(client, "qa_approve@test.com")
     created = client.post("/api/qa/questions", json={"body": "Email me at test@example.com please"}, headers=headers)
