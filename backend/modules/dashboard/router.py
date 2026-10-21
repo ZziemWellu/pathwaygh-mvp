@@ -21,12 +21,12 @@ router = APIRouter(tags=["dashboard"])
 
 
 @router.get("/")
-async def dashboard_root():
+def dashboard_root():
     return {"module": "dashboard", "status": "active"}
 
 
 @router.get("/summary")
-async def get_dashboard_summary(current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+def get_dashboard_summary(current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
     enrollments = db.query(Enrollment).filter(Enrollment.user_id == current_user.id).all()
     watched_lesson_ids = {
         r[0]

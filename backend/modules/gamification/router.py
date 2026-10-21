@@ -29,12 +29,12 @@ class LeaderboardOptInRequest(BaseModel):
 
 
 @router.get("/")
-async def gamification_root():
+def gamification_root():
     return {"module": "gamification", "status": "active"}
 
 
 @router.get("/profile")
-async def get_profile(current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+def get_profile(current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
     profile = get_or_create_profile(db, current_user.id)
     db.commit()
 
@@ -53,7 +53,7 @@ async def get_profile(current_user: User = Depends(get_current_user), db: Sessio
 
 
 @router.get("/achievements")
-async def get_achievements(current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+def get_achievements(current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
     earned = {
         row.achievement_id: row.earned_at
         for row in db.query(EarnedAchievement).filter(EarnedAchievement.user_id == current_user.id).all()
@@ -75,7 +75,7 @@ async def get_achievements(current_user: User = Depends(get_current_user), db: S
 
 
 @router.patch("/leaderboard-opt-in")
-async def set_leaderboard_opt_in(
+def set_leaderboard_opt_in(
     body: LeaderboardOptInRequest, current_user: User = Depends(get_current_user), db: Session = Depends(get_db)
 ):
     profile = get_or_create_profile(db, current_user.id)
@@ -91,7 +91,7 @@ async def set_leaderboard_opt_in(
 
 
 @router.get("/leaderboard")
-async def get_leaderboard(current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+def get_leaderboard(current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
     if not current_user.school_id:
         return {"success": True, "leaderboard": [], "reason": "You're not linked to a school yet"}
 

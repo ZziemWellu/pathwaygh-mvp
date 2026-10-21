@@ -54,12 +54,12 @@ def _annual_license_price_for_school(school: School, student_count: int) -> tupl
 
 
 @router.get("/")
-async def payment_root():
+def payment_root():
     return {"module": "payment", "status": "active"}
 
 
 @router.post("/initialize")
-async def initialize_payment(
+def initialize_payment(
     request: InitializePaymentRequest,
     current_user: User = Depends(require_school_admin),
     db: Session = Depends(get_db),
@@ -125,7 +125,7 @@ async def initialize_payment(
 
 
 @router.get("/verify/{reference}")
-async def verify_payment(
+def verify_payment(
     reference: str,
     current_user: User = Depends(require_school_admin),
     db: Session = Depends(get_db),

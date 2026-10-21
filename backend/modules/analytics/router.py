@@ -10,9 +10,9 @@ from fastapi import APIRouter, HTTPException
 router = APIRouter(tags=["analytics"])
 
 @router.get("/")
-async def analytics_root():
+def analytics_root():
     return {"module": "analytics", "status": "not_implemented"}
 
 @router.get("/user/{user_id}")
-async def get_user_analytics(user_id: str):
+def get_user_analytics(user_id: str):
     raise HTTPException(status_code=501, detail="Standalone analytics is not yet available - see /api/dashboard.")

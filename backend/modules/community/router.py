@@ -9,9 +9,9 @@ from fastapi import APIRouter, HTTPException
 router = APIRouter(tags=["community"])
 
 @router.get("/")
-async def community_root():
+def community_root():
     return {"module": "community", "status": "not_implemented"}
 
 @router.get("/forums")
-async def get_forums():
+def get_forums():
     raise HTTPException(status_code=501, detail="Community forums are not yet available.")

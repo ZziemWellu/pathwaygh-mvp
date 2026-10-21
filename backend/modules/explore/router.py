@@ -58,7 +58,7 @@ def load_scholarships(country: Optional[str] = None):
 # ============================================================
 
 @router.get("/")
-async def explore_root():
+def explore_root():
     return {
         "module": "explore",
         "status": "active",
@@ -74,11 +74,11 @@ async def explore_root():
 # ============================================================
 
 @router.get("/careers")
-async def get_careers(country: Optional[str] = None):
+def get_careers(country: Optional[str] = None):
     return {"success": True, "careers": load_careers(country)}
 
 @router.get("/career/{career_id}")
-async def get_career(career_id: str):
+def get_career(career_id: str):
     careers = load_careers()
     for c in careers:
         if c.get("id") == career_id:
@@ -90,11 +90,11 @@ async def get_career(career_id: str):
 # ============================================================
 
 @router.get("/universities")
-async def get_universities(country: Optional[str] = None):
+def get_universities(country: Optional[str] = None):
     return {"success": True, "universities": load_universities(country)}
 
 @router.get("/university/{university_id}")
-async def get_university(university_id: str):
+def get_university(university_id: str):
     universities = load_universities()
     for u in universities:
         if u.get("id") == university_id:
@@ -106,7 +106,7 @@ async def get_university(university_id: str):
 # ============================================================
 
 @router.get("/scholarships")
-async def get_scholarships(
+def get_scholarships(
     type: Optional[str] = None,
     status: Optional[str] = None,
     search: Optional[str] = None,
@@ -131,7 +131,7 @@ async def get_scholarships(
     return {"success": True, "scholarships": scholarships, "total": len(scholarships)}
 
 @router.get("/scholarship/{scholarship_id}")
-async def get_scholarship(scholarship_id: str):
+def get_scholarship(scholarship_id: str):
     scholarships = load_scholarships()
     for s in scholarships:
         if s.get("id") == scholarship_id:

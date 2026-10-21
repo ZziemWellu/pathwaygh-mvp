@@ -8,9 +8,9 @@ from fastapi import APIRouter, HTTPException
 router = APIRouter(tags=["activity"])
 
 @router.get("/")
-async def activity_root():
+def activity_root():
     return {"module": "activity", "status": "not_implemented"}
 
 @router.get("/{user_id}")
-async def get_activities(user_id: str):
+def get_activities(user_id: str):
     raise HTTPException(status_code=501, detail="Activity feed is not yet available.")

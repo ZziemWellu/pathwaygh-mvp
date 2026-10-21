@@ -11,12 +11,12 @@ from pydantic import BaseModel
 from sqlalchemy.orm import Session
 
 from core.database import get_db
-from core.rate_limit import limiter
+from core.rate_limit import limiter, user_or_ip
 from core.security import get_current_user
 from models.user import User
 from modules.practice.mastery import weak_skills_for_subject
 from modules.tutor.grounding import build_grounding_context
-from modules.tutor.mathtool import compute_math
+from modules.tutor.mathtool import compute_math_sync
 
 router = APIRouter(tags=["tutor"])
 
@@ -137,13 +137,13 @@ class ChatRequest(BaseModel):
 
 
 @router.get("/")
-async def tutor_root():
+def tutor_root():
     return {"module": "tutor", "status": "active"}
 
 
 @router.post("/chat")
-@limiter.limit("20/hour")
-async def chat(
+@limiter.limit("20/hour", key_func=user_or_ip)
+def chat(
     request: Request,
     body: ChatRequest,
     current_user: User = Depends(get_current_user),
@@ -162,7 +162,7 @@ async def chat(
     except Exception:
         grounding = None
 
-    computed_math = await compute_math(body.message)
+    computed_math = compute_math_sync(body.message)
 
     system_instruction = (
         SYSTEM_PROMPT_BY_COUNTRY.get(current_user.country, SYSTEM_PROMPT_BY_COUNTRY["GH"])

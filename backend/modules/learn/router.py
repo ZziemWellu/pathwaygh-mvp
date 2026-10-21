@@ -71,7 +71,7 @@ def _enrolled_course_ids(db: Session, user: Optional[User]) -> set:
 
 
 @router.get("/")
-async def learn_root(db: Session = Depends(get_db)):
+def learn_root(db: Session = Depends(get_db)):
     courses = db.query(Course).all()
     return {
         "message": "Learn module is active",
@@ -83,7 +83,7 @@ async def learn_root(db: Session = Depends(get_db)):
 
 
 @router.get("/courses")
-async def get_courses(
+def get_courses(
     level: Optional[str] = None,
     search: Optional[str] = None,
     country: Optional[str] = None,
@@ -104,14 +104,14 @@ async def get_courses(
 
 
 @router.get("/enrolled")
-async def get_enrolled_courses(db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
+def get_enrolled_courses(db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
     enrolled_ids = _enrolled_course_ids(db, current_user)
     courses = db.query(Course).filter(Course.id.in_(enrolled_ids)).all() if enrolled_ids else []
     return [_course_out(c, enrolled_ids) for c in courses]
 
 
 @router.get("/courses/{course_slug}")
-async def get_course(
+def get_course(
     course_slug: str,
     db: Session = Depends(get_db),
     current_user: Optional[User] = Depends(get_current_user_optional),
@@ -129,7 +129,7 @@ async def get_course(
 
 
 @router.post("/courses/{course_slug}/enroll")
-async def enroll_in_course(course_slug: str, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
+def enroll_in_course(course_slug: str, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
     course = db.query(Course).filter(Course.slug == course_slug).first()
     if not course:
         raise HTTPException(status_code=404, detail="Course not found")
@@ -143,7 +143,7 @@ async def enroll_in_course(course_slug: str, db: Session = Depends(get_db), curr
 
 
 @router.get("/lessons/{lesson_slug}")
-async def get_lesson(
+def get_lesson(
     lesson_slug: str,
     db: Session = Depends(get_db),
     current_user: Optional[User] = Depends(get_current_user_optional),
@@ -174,7 +174,7 @@ class ExerciseSubmitRequest(BaseModel):
 
 
 @router.post("/lessons/{lesson_slug}/exercises/submit")
-async def submit_exercises(
+def submit_exercises(
     lesson_slug: str,
     request: ExerciseSubmitRequest,
     db: Session = Depends(get_db),
@@ -223,7 +223,7 @@ class ProgressUpdate(BaseModel):
 
 
 @router.post("/lessons/{lesson_slug}/progress")
-async def update_lesson_progress(
+def update_lesson_progress(
     lesson_slug: str,
     payload: ProgressUpdate,
     db: Session = Depends(get_db),

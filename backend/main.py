@@ -65,7 +65,7 @@ app.add_middleware(SlowAPIMiddleware)
 # ============================================
 
 @app.get("/")
-async def root():
+def root():
     return {
         "name": "PATHWAY AI Education Ecosystem",
         "version": "3.0.0",
@@ -96,7 +96,7 @@ async def root():
     }
 
 @app.get("/health")
-async def health():
+def health():
     # Render's healthCheckPath and the keep-warm ping both hit this -
     # previously it was a static response, so it reported "healthy" even
     # with the database unreachable, hiding exactly the kind of outage a
@@ -191,7 +191,7 @@ for module_name, import_path, prefix in modules:
 # ============================================
 
 @app.get("/api/careers")
-async def legacy_careers():
+def legacy_careers():
     return {
         "success": True,
         "careers": [

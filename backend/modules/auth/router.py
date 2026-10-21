@@ -9,7 +9,7 @@ from pydantic import BaseModel, EmailStr, Field
 from sqlalchemy.orm import Session
 
 from core.database import get_db
-from core.rate_limit import limiter
+from core.rate_limit import hit_per_account, limiter, user_or_ip
 from core.security import create_access_token, get_current_user, hash_password, verify_password
 from models.user import User
 from modules.auth.consent import can_resend, issue_consent_otp, verify_consent_otp
@@ -61,13 +61,13 @@ def _user_out(user: User) -> dict:
 
 
 @router.get("/")
-async def auth_root():
+def auth_root():
     return {"module": "auth", "status": "active"}
 
 
 @router.post("/register")
-@limiter.limit("20/hour")
-async def register(request: Request, body: RegisterRequest, db: Session = Depends(get_db)):
+@limiter.limit("60/hour")
+def register(request: Request, body: RegisterRequest, db: Session = Depends(get_db)):
     if not body.consent_confirmed:
         raise HTTPException(status_code=400, detail="You must confirm the age/consent statement to register")
     if body.guardian_email == body.email:
@@ -92,8 +92,9 @@ async def register(request: Request, body: RegisterRequest, db: Session = Depend
 
 
 @router.post("/login")
-@limiter.limit("10/minute")
-async def login(request: Request, body: LoginRequest, db: Session = Depends(get_db)):
+@limiter.limit("60/minute")
+def login(request: Request, body: LoginRequest, db: Session = Depends(get_db)):
+    hit_per_account("10/minute", "login", body.email)
     user = db.query(User).filter(User.email == body.email).first()
     if not user or not verify_password(body.password, user.password_hash):
         raise HTTPException(status_code=401, detail="Invalid credentials")
@@ -103,13 +104,13 @@ async def login(request: Request, body: LoginRequest, db: Session = Depends(get_
 
 
 @router.get("/me")
-async def me(current_user: User = Depends(get_current_user)):
+def me(current_user: User = Depends(get_current_user)):
     return {"success": True, "user": _user_out(current_user)}
 
 
 @router.post("/verify-consent")
-@limiter.limit("10/hour")
-async def verify_consent(
+@limiter.limit("10/hour", key_func=user_or_ip)
+def verify_consent(
     request: Request,
     body: ConsentOtpRequest,
     current_user: User = Depends(get_current_user),
@@ -122,8 +123,8 @@ async def verify_consent(
 
 
 @router.post("/resend-consent")
-@limiter.limit("3/hour")
-async def resend_consent(
+@limiter.limit("3/hour", key_func=user_or_ip)
+def resend_consent(
     request: Request,
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
@@ -141,8 +142,9 @@ async def resend_consent(
 
 
 @router.post("/forgot-password")
-@limiter.limit("5/hour")
-async def forgot_password(request: Request, body: ForgotPasswordRequest, db: Session = Depends(get_db)):
+@limiter.limit("20/hour")
+def forgot_password(request: Request, body: ForgotPasswordRequest, db: Session = Depends(get_db)):
+    hit_per_account("5/hour", "forgot-password", body.email)
     user = db.query(User).filter(User.email == body.email).first()
     # Always return the same generic response whether or not the email
     # exists - a different response would let anyone enumerate which
@@ -154,8 +156,9 @@ async def forgot_password(request: Request, body: ForgotPasswordRequest, db: Ses
 
 
 @router.post("/reset-password")
-@limiter.limit("10/hour")
-async def reset_password_endpoint(request: Request, body: ResetPasswordRequest, db: Session = Depends(get_db)):
+@limiter.limit("30/hour")
+def reset_password_endpoint(request: Request, body: ResetPasswordRequest, db: Session = Depends(get_db)):
+    hit_per_account("10/hour", "reset-password", body.email)
     user = db.query(User).filter(User.email == body.email).first()
     if not user:
         raise HTTPException(status_code=400, detail="Incorrect or invalid reset code")

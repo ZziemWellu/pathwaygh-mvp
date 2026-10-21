@@ -45,12 +45,12 @@ def _get_own_card(db: Session, card_id: int, user_id: int) -> Optional[Flashcard
 
 
 @router.get("/")
-async def flashcards_root():
+def flashcards_root():
     return {"module": "flashcards", "status": "active"}
 
 
 @router.post("")
-async def create_flashcard(
+def create_flashcard(
     body: CreateFlashcardRequest, current_user: User = Depends(get_current_user), db: Session = Depends(get_db)
 ):
     if not body.front.strip() or not body.back.strip():
@@ -64,13 +64,13 @@ async def create_flashcard(
 
 
 @router.get("")
-async def list_flashcards(current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+def list_flashcards(current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
     cards = db.query(Flashcard).filter(Flashcard.user_id == current_user.id).order_by(Flashcard.created_at.desc()).all()
     return {"success": True, "cards": [_card_out(c) for c in cards]}
 
 
 @router.get("/due")
-async def get_due_flashcards(current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+def get_due_flashcards(current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
     cards = (
         db.query(Flashcard)
         .filter(Flashcard.user_id == current_user.id, Flashcard.due_date <= today_utc())
@@ -81,7 +81,7 @@ async def get_due_flashcards(current_user: User = Depends(get_current_user), db:
 
 
 @router.post("/{card_id}/review")
-async def review_flashcard(
+def review_flashcard(
     card_id: int, body: ReviewFlashcardRequest, current_user: User = Depends(get_current_user), db: Session = Depends(get_db)
 ):
     card = _get_own_card(db, card_id, current_user.id)
@@ -104,7 +104,7 @@ async def review_flashcard(
 
 
 @router.delete("/{card_id}")
-async def delete_flashcard(card_id: int, current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+def delete_flashcard(card_id: int, current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
     card = _get_own_card(db, card_id, current_user.id)
     if not card:
         raise HTTPException(status_code=404, detail="Flashcard not found")

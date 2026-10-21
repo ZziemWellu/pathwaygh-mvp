@@ -68,7 +68,7 @@ def _exercise_out(exercise: Exercise) -> dict:
 
 
 @router.get("/")
-async def admin_root(admin: User = Depends(require_admin)):
+def admin_root(admin: User = Depends(require_admin)):
     return {"module": "admin", "status": "active", "admin": admin.email}
 
 
@@ -85,12 +85,12 @@ class CourseIn(BaseModel):
 
 
 @router.get("/courses")
-async def list_courses(db: Session = Depends(get_db), admin: User = Depends(require_admin)):
+def list_courses(db: Session = Depends(get_db), admin: User = Depends(require_admin)):
     return [_course_out(c) for c in db.query(Course).all()]
 
 
 @router.post("/courses")
-async def create_course(payload: CourseIn, db: Session = Depends(get_db), admin: User = Depends(require_admin)):
+def create_course(payload: CourseIn, db: Session = Depends(get_db), admin: User = Depends(require_admin)):
     if db.query(Course).filter(Course.slug == payload.slug).first():
         raise HTTPException(status_code=400, detail="A course with this slug already exists")
     course = Course(**payload.model_dump())
@@ -101,7 +101,7 @@ async def create_course(payload: CourseIn, db: Session = Depends(get_db), admin:
 
 
 @router.get("/courses/{course_id}")
-async def get_course(course_id: int, db: Session = Depends(get_db), admin: User = Depends(require_admin)):
+def get_course(course_id: int, db: Session = Depends(get_db), admin: User = Depends(require_admin)):
     course = db.query(Course).filter(Course.id == course_id).first()
     if not course:
         raise HTTPException(status_code=404, detail="Course not found")
@@ -109,7 +109,7 @@ async def get_course(course_id: int, db: Session = Depends(get_db), admin: User 
 
 
 @router.put("/courses/{course_id}")
-async def update_course(course_id: int, payload: CourseIn, db: Session = Depends(get_db), admin: User = Depends(require_admin)):
+def update_course(course_id: int, payload: CourseIn, db: Session = Depends(get_db), admin: User = Depends(require_admin)):
     course = db.query(Course).filter(Course.id == course_id).first()
     if not course:
         raise HTTPException(status_code=404, detail="Course not found")
@@ -121,7 +121,7 @@ async def update_course(course_id: int, payload: CourseIn, db: Session = Depends
 
 
 @router.delete("/courses/{course_id}")
-async def delete_course(course_id: int, db: Session = Depends(get_db), admin: User = Depends(require_admin)):
+def delete_course(course_id: int, db: Session = Depends(get_db), admin: User = Depends(require_admin)):
     course = db.query(Course).filter(Course.id == course_id).first()
     if not course:
         raise HTTPException(status_code=404, detail="Course not found")
@@ -151,7 +151,7 @@ class LessonIn(BaseModel):
 
 
 @router.get("/courses/{course_id}/lessons")
-async def list_lessons(course_id: int, db: Session = Depends(get_db), admin: User = Depends(require_admin)):
+def list_lessons(course_id: int, db: Session = Depends(get_db), admin: User = Depends(require_admin)):
     course = db.query(Course).filter(Course.id == course_id).first()
     if not course:
         raise HTTPException(status_code=404, detail="Course not found")
@@ -159,7 +159,7 @@ async def list_lessons(course_id: int, db: Session = Depends(get_db), admin: Use
 
 
 @router.post("/lessons")
-async def create_lesson(payload: LessonIn, db: Session = Depends(get_db), admin: User = Depends(require_admin)):
+def create_lesson(payload: LessonIn, db: Session = Depends(get_db), admin: User = Depends(require_admin)):
     if not db.query(Course).filter(Course.id == payload.course_id).first():
         raise HTTPException(status_code=404, detail="Course not found")
     lesson = Lesson(**payload.model_dump())
@@ -170,7 +170,7 @@ async def create_lesson(payload: LessonIn, db: Session = Depends(get_db), admin:
 
 
 @router.get("/lessons/{lesson_id}")
-async def get_lesson(lesson_id: int, db: Session = Depends(get_db), admin: User = Depends(require_admin)):
+def get_lesson(lesson_id: int, db: Session = Depends(get_db), admin: User = Depends(require_admin)):
     lesson = db.query(Lesson).filter(Lesson.id == lesson_id).first()
     if not lesson:
         raise HTTPException(status_code=404, detail="Lesson not found")
@@ -178,7 +178,7 @@ async def get_lesson(lesson_id: int, db: Session = Depends(get_db), admin: User 
 
 
 @router.put("/lessons/{lesson_id}")
-async def update_lesson(lesson_id: int, payload: LessonIn, db: Session = Depends(get_db), admin: User = Depends(require_admin)):
+def update_lesson(lesson_id: int, payload: LessonIn, db: Session = Depends(get_db), admin: User = Depends(require_admin)):
     lesson = db.query(Lesson).filter(Lesson.id == lesson_id).first()
     if not lesson:
         raise HTTPException(status_code=404, detail="Lesson not found")
@@ -190,7 +190,7 @@ async def update_lesson(lesson_id: int, payload: LessonIn, db: Session = Depends
 
 
 @router.delete("/lessons/{lesson_id}")
-async def delete_lesson(lesson_id: int, db: Session = Depends(get_db), admin: User = Depends(require_admin)):
+def delete_lesson(lesson_id: int, db: Session = Depends(get_db), admin: User = Depends(require_admin)):
     lesson = db.query(Lesson).filter(Lesson.id == lesson_id).first()
     if not lesson:
         raise HTTPException(status_code=404, detail="Lesson not found")
@@ -213,7 +213,7 @@ class ExerciseIn(BaseModel):
 
 
 @router.get("/lessons/{lesson_id}/exercises")
-async def list_exercises(lesson_id: int, db: Session = Depends(get_db), admin: User = Depends(require_admin)):
+def list_exercises(lesson_id: int, db: Session = Depends(get_db), admin: User = Depends(require_admin)):
     lesson = db.query(Lesson).filter(Lesson.id == lesson_id).first()
     if not lesson:
         raise HTTPException(status_code=404, detail="Lesson not found")
@@ -221,7 +221,7 @@ async def list_exercises(lesson_id: int, db: Session = Depends(get_db), admin: U
 
 
 @router.post("/exercises")
-async def create_exercise(payload: ExerciseIn, db: Session = Depends(get_db), admin: User = Depends(require_admin)):
+def create_exercise(payload: ExerciseIn, db: Session = Depends(get_db), admin: User = Depends(require_admin)):
     if not db.query(Lesson).filter(Lesson.id == payload.lesson_id).first():
         raise HTTPException(status_code=404, detail="Lesson not found")
     if not (0 <= payload.correct_index < len(payload.options)):
@@ -234,7 +234,7 @@ async def create_exercise(payload: ExerciseIn, db: Session = Depends(get_db), ad
 
 
 @router.put("/exercises/{exercise_id}")
-async def update_exercise(exercise_id: int, payload: ExerciseIn, db: Session = Depends(get_db), admin: User = Depends(require_admin)):
+def update_exercise(exercise_id: int, payload: ExerciseIn, db: Session = Depends(get_db), admin: User = Depends(require_admin)):
     exercise = db.query(Exercise).filter(Exercise.id == exercise_id).first()
     if not exercise:
         raise HTTPException(status_code=404, detail="Exercise not found")
@@ -248,7 +248,7 @@ async def update_exercise(exercise_id: int, payload: ExerciseIn, db: Session = D
 
 
 @router.delete("/exercises/{exercise_id}")
-async def delete_exercise(exercise_id: int, db: Session = Depends(get_db), admin: User = Depends(require_admin)):
+def delete_exercise(exercise_id: int, db: Session = Depends(get_db), admin: User = Depends(require_admin)):
     exercise = db.query(Exercise).filter(Exercise.id == exercise_id).first()
     if not exercise:
         raise HTTPException(status_code=404, detail="Exercise not found")
@@ -262,7 +262,7 @@ class ReorderRequest(BaseModel):
 
 
 @router.post("/lessons/{lesson_id}/exercises/reorder")
-async def reorder_exercises(lesson_id: int, payload: ReorderRequest, db: Session = Depends(get_db), admin: User = Depends(require_admin)):
+def reorder_exercises(lesson_id: int, payload: ReorderRequest, db: Session = Depends(get_db), admin: User = Depends(require_admin)):
     lesson = db.query(Lesson).filter(Lesson.id == lesson_id).first()
     if not lesson:
         raise HTTPException(status_code=404, detail="Lesson not found")

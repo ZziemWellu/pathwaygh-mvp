@@ -39,7 +39,7 @@ def _certificate_out(certificate: Certificate) -> dict:
 
 
 @router.get("/me")
-async def list_my_certificates(db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
+def list_my_certificates(db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
     certificates = (
         db.query(Certificate)
         .filter(Certificate.user_id == current_user.id)
@@ -50,7 +50,7 @@ async def list_my_certificates(db: Session = Depends(get_db), current_user: User
 
 
 @router.post("/check/{course_slug}")
-async def check_course_completion(
+def check_course_completion(
     course_slug: str, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)
 ):
     course = db.query(Course).filter(Course.slug == course_slug).first()
@@ -67,7 +67,7 @@ async def check_course_completion(
 
 
 @router.get("/verify/{code}")
-async def verify_certificate(code: str, db: Session = Depends(get_db)):
+def verify_certificate(code: str, db: Session = Depends(get_db)):
     certificate = db.query(Certificate).filter(Certificate.code == _normalize_code(code)).first()
     if not certificate or certificate.is_revoked:
         return {"success": True, "valid": False}
