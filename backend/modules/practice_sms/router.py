@@ -56,13 +56,13 @@ class UnsubscribeRequest(BaseModel):
 
 
 @router.get("/")
-async def practice_sms_root():
+def practice_sms_root():
     return {"module": "practice_sms", "status": "active"}
 
 
 @router.post("/subscribe")
 @limiter.limit("5/hour")
-async def subscribe(request: Request, body: SubscribeRequest, db: Session = Depends(get_db)):
+def subscribe(request: Request, body: SubscribeRequest, db: Session = Depends(get_db)):
     if body.country not in SUPPORTED_COUNTRIES:
         raise HTTPException(
             status_code=503,
@@ -97,7 +97,7 @@ async def subscribe(request: Request, body: SubscribeRequest, db: Session = Depe
 
 @router.post("/verify")
 @limiter.limit("10/hour")
-async def verify(request: Request, body: VerifyRequest, db: Session = Depends(get_db)):
+def verify(request: Request, body: VerifyRequest, db: Session = Depends(get_db)):
     subscriber = db.query(PracticeSmsSubscriber).filter(PracticeSmsSubscriber.phone_number == body.phone_number).first()
     if not subscriber:
         raise HTTPException(status_code=404, detail="No pending subscription for this number")
@@ -109,7 +109,7 @@ async def verify(request: Request, body: VerifyRequest, db: Session = Depends(ge
 
 @router.post("/resend-code")
 @limiter.limit("3/hour")
-async def resend_code(request: Request, body: UnsubscribeRequest, db: Session = Depends(get_db)):
+def resend_code(request: Request, body: UnsubscribeRequest, db: Session = Depends(get_db)):
     subscriber = db.query(PracticeSmsSubscriber).filter(PracticeSmsSubscriber.phone_number == body.phone_number).first()
     if not subscriber:
         raise HTTPException(status_code=404, detail="No pending subscription for this number")
@@ -127,7 +127,7 @@ async def resend_code(request: Request, body: UnsubscribeRequest, db: Session = 
 
 @router.post("/unsubscribe")
 @limiter.limit("10/hour")
-async def unsubscribe(request: Request, body: UnsubscribeRequest, db: Session = Depends(get_db)):
+def unsubscribe(request: Request, body: UnsubscribeRequest, db: Session = Depends(get_db)):
     subscriber = db.query(PracticeSmsSubscriber).filter(PracticeSmsSubscriber.phone_number == body.phone_number).first()
     if subscriber:
         subscriber.opted_in = False
@@ -136,7 +136,7 @@ async def unsubscribe(request: Request, body: UnsubscribeRequest, db: Session = 
 
 
 @router.post("/inbound")
-async def inbound_sms(
+def inbound_sms(
     from_: str = Form(..., alias="from"),
     text: str = Form(""),
     token: Optional[str] = None,
@@ -199,7 +199,7 @@ async def inbound_sms(
 
 
 @router.post("/send-batch")
-async def send_batch(x_digest_secret: str = Header(...), db: Session = Depends(get_db)):
+def send_batch(x_digest_secret: str = Header(...), db: Session = Depends(get_db)):
     expected = os.getenv("DIGEST_TRIGGER_SECRET")
     if not expected:
         raise HTTPException(status_code=503, detail="Practice SMS sending is not configured")

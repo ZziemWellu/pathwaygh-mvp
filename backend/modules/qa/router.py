@@ -17,7 +17,7 @@ from pydantic import BaseModel
 from sqlalchemy.orm import Session
 
 from core.database import get_db
-from core.rate_limit import limiter
+from core.rate_limit import limiter, user_or_ip
 from core.security import get_current_user, require_admin
 from models.peer_answer import PeerAnswer
 from models.peer_content_report import PeerContentReport
@@ -67,12 +67,12 @@ def _answer_out(a: PeerAnswer) -> dict:
 
 
 @router.get("/")
-async def qa_root():
+def qa_root():
     return {"module": "qa", "status": "active"}
 
 
 @router.get("/questions")
-async def list_questions(subject_id: Optional[str] = None, db: Session = Depends(get_db)):
+def list_questions(subject_id: Optional[str] = None, db: Session = Depends(get_db)):
     query = db.query(PeerQuestion).filter(PeerQuestion.status == "visible")
     if subject_id:
         query = query.filter(PeerQuestion.subject_id == subject_id)
@@ -81,8 +81,8 @@ async def list_questions(subject_id: Optional[str] = None, db: Session = Depends
 
 
 @router.post("/questions")
-@limiter.limit("10/hour")
-async def create_question(
+@limiter.limit("10/hour", key_func=user_or_ip)
+def create_question(
     request: Request,
     body: CreateQuestionRequest,
     current_user: User = Depends(get_current_user),
@@ -108,7 +108,7 @@ async def create_question(
 
 
 @router.get("/questions/{question_id}")
-async def get_question(
+def get_question(
     question_id: int, current_user: User = Depends(get_current_user), db: Session = Depends(get_db)
 ):
     question = db.query(PeerQuestion).filter(PeerQuestion.id == question_id).first()
@@ -138,8 +138,8 @@ async def get_question(
 
 
 @router.post("/questions/{question_id}/answers")
-@limiter.limit("20/hour")
-async def create_answer(
+@limiter.limit("20/hour", key_func=user_or_ip)
+def create_answer(
     request: Request,
     question_id: int,
     body: CreateAnswerRequest,
@@ -195,8 +195,8 @@ def _record_report(db: Session, current_user: User, target_type: str, target: ob
 
 
 @router.post("/questions/{question_id}/report")
-@limiter.limit("20/hour")
-async def report_question(
+@limiter.limit("20/hour", key_func=user_or_ip)
+def report_question(
     request: Request,
     question_id: int,
     body: Optional[ReportRequest] = None,
@@ -211,8 +211,8 @@ async def report_question(
 
 
 @router.post("/answers/{answer_id}/report")
-@limiter.limit("20/hour")
-async def report_answer(
+@limiter.limit("20/hour", key_func=user_or_ip)
+def report_answer(
     request: Request,
     answer_id: int,
     body: Optional[ReportRequest] = None,
@@ -239,7 +239,7 @@ def _report_reasons(db: Session, target_type: str, target_id: int) -> list:
 
 
 @router.get("/admin/pending")
-async def list_pending(current_user: User = Depends(require_admin), db: Session = Depends(get_db)):
+def list_pending(current_user: User = Depends(require_admin), db: Session = Depends(get_db)):
     questions = db.query(PeerQuestion).filter(PeerQuestion.status == "pending_review").order_by(PeerQuestion.created_at).all()
     answers = db.query(PeerAnswer).filter(PeerAnswer.status == "pending_review").order_by(PeerAnswer.created_at).all()
     return {
@@ -266,7 +266,7 @@ async def list_pending(current_user: User = Depends(require_admin), db: Session 
 
 
 @router.post("/admin/questions/{question_id}/approve")
-async def approve_question(question_id: int, current_user: User = Depends(require_admin), db: Session = Depends(get_db)):
+def approve_question(question_id: int, current_user: User = Depends(require_admin), db: Session = Depends(get_db)):
     question = db.query(PeerQuestion).filter(PeerQuestion.id == question_id).first()
     if not question:
         raise HTTPException(status_code=404, detail="Question not found")
@@ -278,7 +278,7 @@ async def approve_question(question_id: int, current_user: User = Depends(requir
 
 
 @router.post("/admin/questions/{question_id}/remove")
-async def remove_question(question_id: int, current_user: User = Depends(require_admin), db: Session = Depends(get_db)):
+def remove_question(question_id: int, current_user: User = Depends(require_admin), db: Session = Depends(get_db)):
     question = db.query(PeerQuestion).filter(PeerQuestion.id == question_id).first()
     if not question:
         raise HTTPException(status_code=404, detail="Question not found")
@@ -288,7 +288,7 @@ async def remove_question(question_id: int, current_user: User = Depends(require
 
 
 @router.post("/admin/answers/{answer_id}/approve")
-async def approve_answer(answer_id: int, current_user: User = Depends(require_admin), db: Session = Depends(get_db)):
+def approve_answer(answer_id: int, current_user: User = Depends(require_admin), db: Session = Depends(get_db)):
     answer = db.query(PeerAnswer).filter(PeerAnswer.id == answer_id).first()
     if not answer:
         raise HTTPException(status_code=404, detail="Answer not found")
@@ -300,7 +300,7 @@ async def approve_answer(answer_id: int, current_user: User = Depends(require_ad
 
 
 @router.post("/admin/answers/{answer_id}/remove")
-async def remove_answer(answer_id: int, current_user: User = Depends(require_admin), db: Session = Depends(get_db)):
+def remove_answer(answer_id: int, current_user: User = Depends(require_admin), db: Session = Depends(get_db)):
     answer = db.query(PeerAnswer).filter(PeerAnswer.id == answer_id).first()
     if not answer:
         raise HTTPException(status_code=404, detail="Answer not found")

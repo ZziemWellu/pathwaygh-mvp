@@ -64,12 +64,12 @@ def _school_out(school: School) -> dict:
 
 
 @router.get("/")
-async def school_root():
+def school_root():
     return {"module": "school", "status": "active"}
 
 
 @router.get("/me")
-async def get_my_school(current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+def get_my_school(current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
     if not current_user.school_id:
         return {"success": True, "school": None, "is_school_admin": False}
     school = db.query(School).filter(School.id == current_user.school_id).first()
@@ -77,7 +77,7 @@ async def get_my_school(current_user: User = Depends(get_current_user), db: Sess
 
 
 @router.post("/create")
-async def create_school(
+def create_school(
     request: CreateSchoolRequest, current_user: User = Depends(get_current_user), db: Session = Depends(get_db)
 ):
     if current_user.school_id is not None:
@@ -101,7 +101,7 @@ async def create_school(
 
 
 @router.post("/join")
-async def join_school(
+def join_school(
     request: JoinSchoolRequest, current_user: User = Depends(get_current_user), db: Session = Depends(get_db)
 ):
     if current_user.school_id is not None:
@@ -119,7 +119,7 @@ async def join_school(
 
 
 @router.patch("/consent")
-async def set_school_consent(
+def set_school_consent(
     request: SchoolConsentRequest,
     current_user: User = Depends(require_school_admin),
     db: Session = Depends(get_db),
@@ -134,7 +134,7 @@ async def set_school_consent(
 
 
 @router.get("/dashboard")
-async def get_school_dashboard(current_user: User = Depends(require_school_admin), db: Session = Depends(get_db)):
+def get_school_dashboard(current_user: User = Depends(require_school_admin), db: Session = Depends(get_db)):
     students = db.query(User).filter(User.school_id == current_user.school_id).all()
     overview_by_user = overview_for_users(db, [s.id for s in students])
 
@@ -161,7 +161,7 @@ async def get_school_dashboard(current_user: User = Depends(require_school_admin
 
 
 @router.post("/send-digests")
-async def send_school_digests(x_digest_secret: str = Header(...), db: Session = Depends(get_db)):
+def send_school_digests(x_digest_secret: str = Header(...), db: Session = Depends(get_db)):
     """Cron-callable (see .github/workflows/parent-digest.yml), not
     user-facing - gated by the same shared secret as the parent digest
     endpoint, not get_current_user."""

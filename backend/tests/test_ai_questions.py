@@ -1,5 +1,3 @@
-import asyncio
-
 import modules.ai_questions.router as ai_questions_router
 from modules.ai_questions.generator import GeneratedMathQuestion, _verify, generate_math_question
 from tests.conftest import register_user
@@ -75,7 +73,7 @@ class _FakeGeminiClient:
 
 def test_generate_returns_the_first_verified_candidate():
     client = _FakeGeminiClient([_question()])
-    result = asyncio.run(generate_math_question(client, topic=None, difficulty="medium"))
+    result = generate_math_question(client, topic=None, difficulty="medium")
     assert result is not None
     assert result["correct"] == "13"
     assert "verification_expression" not in result  # internal-only, never shown to the student
@@ -86,7 +84,7 @@ def test_generate_retries_after_a_bad_candidate_then_succeeds():
     bad = _question(verification_expression="6+6")
     good = _question()
     client = _FakeGeminiClient([bad, good])
-    result = asyncio.run(generate_math_question(client, topic="algebra", difficulty="easy"))
+    result = generate_math_question(client, topic="algebra", difficulty="easy")
     assert result is not None
     assert client.models.calls == 2
 
@@ -94,13 +92,13 @@ def test_generate_retries_after_a_bad_candidate_then_succeeds():
 def test_generate_gives_up_after_the_retry_budget_is_exhausted():
     bad = _question(verification_expression="6+6")
     client = _FakeGeminiClient([bad, bad, bad])
-    result = asyncio.run(generate_math_question(client, topic=None, difficulty="hard"))
+    result = generate_math_question(client, topic=None, difficulty="hard")
     assert result is None
 
 
 def test_generate_tolerates_a_gemini_call_exception_and_retries():
     client = _FakeGeminiClient([RuntimeError("boom"), _question()])
-    result = asyncio.run(generate_math_question(client, topic=None, difficulty="medium"))
+    result = generate_math_question(client, topic=None, difficulty="medium")
     assert result is not None
 
 
@@ -124,7 +122,7 @@ def test_generate_502_when_no_verified_question_could_be_produced(client, monkey
     headers, _ = _register(client, "ai_q_fail@test.com")
     monkeypatch.setattr(ai_questions_router, "get_gemini_client", lambda: object())
 
-    async def _always_fails(*args, **kwargs):
+    def _always_fails(*args, **kwargs):
         return None
 
     monkeypatch.setattr(ai_questions_router, "generate_math_question", _always_fails)

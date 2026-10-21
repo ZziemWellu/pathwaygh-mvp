@@ -76,7 +76,7 @@ def get_all_questions(
 
 
 @router.get("/")
-async def practice_root():
+def practice_root():
     data = load_questions()
     subjects = data.get("subjects", [])
     return {
@@ -88,7 +88,7 @@ async def practice_root():
 
 
 @router.get("/subjects")
-async def get_subjects(country: Optional[str] = None):
+def get_subjects(country: Optional[str] = None):
     data = load_questions()
     subjects = []
     for s in data.get("subjects", []):
@@ -107,7 +107,7 @@ async def get_subjects(country: Optional[str] = None):
 
 
 @router.get("/subject/{subject_id}")
-async def get_subject(subject_id: str):
+def get_subject(subject_id: str):
     data = load_questions()
     for s in data.get("subjects", []):
         if s["id"] == subject_id:
@@ -116,7 +116,7 @@ async def get_subject(subject_id: str):
 
 
 @router.post("/quiz/start")
-async def start_quiz(
+def start_quiz(
     request: QuizStartRequest,
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
@@ -175,7 +175,7 @@ async def start_quiz(
 
 
 @router.post("/quiz/submit")
-async def submit_quiz(
+def submit_quiz(
     request: QuizSubmitRequest,
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
@@ -243,7 +243,7 @@ async def submit_quiz(
 
 
 @router.get("/history")
-async def get_quiz_history(
+def get_quiz_history(
     limit: Optional[int] = 20,
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
@@ -289,7 +289,7 @@ def _topic_mastery_for(db: Session, user_id: int) -> list:
 
 
 @router.get("/statistics")
-async def get_quiz_statistics(current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+def get_quiz_statistics(current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
     attempts = db.query(QuizAttempt).filter(QuizAttempt.user_id == current_user.id).all()
     if not attempts:
         return {

@@ -21,7 +21,10 @@ services:
     buildCommand: pip install -r requirements.txt
     # preDeployCommand needs a paid instance; free-tier workaround is running
     # the migration as part of startup instead.
-    startCommand: alembic upgrade head && uvicorn main:app --host 0.0.0.0 --port $PORT
+    # --proxy-headers/--forwarded-allow-ips: trust X-Forwarded-For from
+    # Render's proxy (the only thing that can reach the service), so rate
+    # limits see each student's IP instead of the proxy's one shared IP.
+    startCommand: alembic upgrade head && uvicorn main:app --host 0.0.0.0 --port $PORT --proxy-headers --forwarded-allow-ips='*'
     healthCheckPath: /health
     envVars:
       - key: DATABASE_URL

@@ -22,12 +22,12 @@ router = APIRouter(tags=["parent"])
 
 
 @router.get("/")
-async def parent_root():
+def parent_root():
     return {"module": "parent", "status": "active"}
 
 
 @router.post("/send-digests")
-async def send_digests(x_digest_secret: str = Header(...), db: Session = Depends(get_db)):
+def send_digests(x_digest_secret: str = Header(...), db: Session = Depends(get_db)):
     expected = os.getenv("DIGEST_TRIGGER_SECRET")
     if not expected:
         raise HTTPException(status_code=503, detail="Digest sending is not configured")

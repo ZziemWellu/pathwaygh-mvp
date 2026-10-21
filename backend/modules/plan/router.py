@@ -105,7 +105,7 @@ class UpdatePlanRequest(BaseModel):
 
 
 @router.get("/")
-async def plan_root():
+def plan_root():
     return {
         "module": "plan",
         "status": "active",
@@ -123,7 +123,7 @@ def _require_owner(plan: Plan, current_user: User) -> None:
 
 
 @router.get("/study-plans")
-async def get_study_plans(db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
+def get_study_plans(db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
     plans = db.query(Plan).filter(
         (Plan.user_id == current_user.id) | (Plan.user_id.is_(None))
     ).all()
@@ -135,7 +135,7 @@ async def get_study_plans(db: Session = Depends(get_db), current_user: User = De
 
 
 @router.get("/study-plans/{plan_id}")
-async def get_study_plan(plan_id: str, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
+def get_study_plan(plan_id: str, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
     plan = db.query(Plan).filter(Plan.slug == plan_id).first()
     if not plan:
         raise HTTPException(status_code=404, detail="Plan not found")
@@ -145,7 +145,7 @@ async def get_study_plan(plan_id: str, db: Session = Depends(get_db), current_us
 
 
 @router.post("/study-plans/create")
-async def create_study_plan(
+def create_study_plan(
     request: CreatePlanRequest, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)
 ):
     plan = _create_plan_row(
@@ -165,7 +165,7 @@ async def create_study_plan(
 
 
 @router.put("/study-plans/{plan_id}")
-async def update_study_plan(
+def update_study_plan(
     plan_id: str,
     request: UpdatePlanRequest,
     db: Session = Depends(get_db),
@@ -199,7 +199,7 @@ async def update_study_plan(
 
 
 @router.delete("/study-plans/{plan_id}")
-async def delete_study_plan(
+def delete_study_plan(
     plan_id: str, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)
 ):
     plan = db.query(Plan).filter(Plan.slug == plan_id).first()
@@ -217,7 +217,7 @@ class UpdateProgressRequest(BaseModel):
 
 
 @router.put("/study-plans/{plan_id}/progress")
-async def update_progress(
+def update_progress(
     plan_id: str,
     request: UpdateProgressRequest,
     db: Session = Depends(get_db),
@@ -239,7 +239,7 @@ async def update_progress(
 
 
 @router.get("/roadmaps")
-async def get_roadmaps():
+def get_roadmaps():
     return [
         {
             "id": "roadmap_001",
@@ -255,7 +255,7 @@ async def get_roadmaps():
 
 
 @router.get("/templates")
-async def get_templates():
+def get_templates():
     return [
         {"id": "template_001", "name": "Daily Study Schedule", "description": "Structured daily study plan for exam preparation", "type": "study_schedule"},
         {"id": "template_002", "name": "Weekly Study Planner", "description": "Weekly breakdown of subjects and topics", "type": "weekly_planner"},

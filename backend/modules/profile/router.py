@@ -79,17 +79,17 @@ def _profile_out(user: User) -> dict:
 
 
 @router.get("/")
-async def profile_root():
+def profile_root():
     return {"module": "profile", "status": "active"}
 
 
 @router.get("/me")
-async def get_my_profile(current_user: User = Depends(get_current_user)):
+def get_my_profile(current_user: User = Depends(get_current_user)):
     return _profile_out(current_user)
 
 
 @router.put("/me")
-async def update_my_profile(
+def update_my_profile(
     request: ProfileUpdateRequest,
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
@@ -123,12 +123,12 @@ async def update_my_profile(
 
 
 @router.post("/avatar")
-async def upload_avatar(
+def upload_avatar(
     avatar: UploadFile = File(...),
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
-    content = await avatar.read()
+    content = avatar.file.read()
     if len(content) > 5 * 1024 * 1024:
         raise HTTPException(status_code=400, detail="File too large. Maximum size is 5MB.")
 
@@ -172,7 +172,7 @@ async def upload_avatar(
 
 
 @router.delete("/avatar")
-async def delete_avatar(current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+def delete_avatar(current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
     if current_user.avatar_filename:
         old_path = UPLOAD_DIR / current_user.avatar_filename
         if old_path.exists():
@@ -183,12 +183,12 @@ async def delete_avatar(current_user: User = Depends(get_current_user), db: Sess
 
 
 @router.get("/saved/careers")
-async def get_saved_careers(current_user: User = Depends(get_current_user)):
+def get_saved_careers(current_user: User = Depends(get_current_user)):
     return {"success": True, "careers": current_user.saved_careers or []}
 
 
 @router.post("/saved/careers")
-async def save_career(
+def save_career(
     item: SavedItemRequest,
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
@@ -202,10 +202,10 @@ async def save_career(
 
 
 @router.get("/saved/universities")
-async def get_saved_universities(current_user: User = Depends(get_current_user)):
+def get_saved_universities(current_user: User = Depends(get_current_user)):
     return {"success": True, "universities": current_user.saved_universities or []}
 
 
 @router.get("/saved/scholarships")
-async def get_saved_scholarships(current_user: User = Depends(get_current_user)):
+def get_saved_scholarships(current_user: User = Depends(get_current_user)):
     return {"success": True, "scholarships": current_user.saved_scholarships or []}

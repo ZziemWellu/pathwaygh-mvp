@@ -183,12 +183,12 @@ def _compute_trends(db: Session, months: int) -> dict:
 
 
 @router.get("/overview")
-async def get_impact_overview(current_user: User = Depends(require_admin), db: Session = Depends(get_db)):
+def get_impact_overview(current_user: User = Depends(require_admin), db: Session = Depends(get_db)):
     return {"success": True, **_compute_overview(db)}
 
 
 @router.get("/trends")
-async def get_impact_trends(
+def get_impact_trends(
     months: int = Query(default=6, ge=1, le=24),
     current_user: User = Depends(require_admin),
     db: Session = Depends(get_db),
@@ -197,7 +197,7 @@ async def get_impact_trends(
 
 
 @router.get("/export")
-async def export_impact_report(
+def export_impact_report(
     months: int = Query(default=6, ge=1, le=24),
     current_user: User = Depends(require_admin),
     db: Session = Depends(get_db),

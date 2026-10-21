@@ -20,4 +20,5 @@ pytest==9.1.1
 google-genai==1.0.0
 sympy==1.12
 slowapi==0.1.10
+redis==5.2.1
 better-profanity==0.7.0

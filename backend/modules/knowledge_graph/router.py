@@ -9,9 +9,9 @@ from fastapi import APIRouter, HTTPException
 router = APIRouter(tags=["knowledge_graph"])
 
 @router.get("/")
-async def kg_root():
+def kg_root():
     return {"module": "knowledge_graph", "status": "not_implemented"}
 
 @router.get("/subject/{subject}")
-async def get_subject_kg(subject: str):
+def get_subject_kg(subject: str):
     raise HTTPException(status_code=501, detail="Knowledge graph is not yet available.")

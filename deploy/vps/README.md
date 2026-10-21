@@ -21,7 +21,8 @@ usermod -aG sudo pathway
 rsync --archive --chown=pathway:pathway ~/.ssh /home/pathway   # copy your SSH key to the new user
 ufw allow OpenSSH && ufw allow 80/tcp && ufw allow 443/tcp && ufw --force enable
 apt update && apt -y upgrade
-apt -y install nginx certbot python3-certbot-nginx git fail2ban
+apt -y install nginx certbot python3-certbot-nginx git fail2ban redis-server
+systemctl enable --now redis-server   # shared rate-limit counters for the 2 API workers (localhost only by default)
 ```
 
 Log out, then log in as `pathway` (`ssh pathway@<VPS_IP>`) for the rest of the steps. Use `sudo` where needed.

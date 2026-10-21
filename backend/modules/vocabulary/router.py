@@ -18,12 +18,12 @@ router = APIRouter(tags=["vocabulary"])
 
 
 @router.get("/")
-async def vocabulary_root():
+def vocabulary_root():
     return {"module": "vocabulary", "status": "active"}
 
 
 @router.get("/word-of-the-day")
-async def get_word_of_the_day(current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+def get_word_of_the_day(current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
     word = word_of_the_day()
     if not word:
         raise HTTPException(status_code=503, detail="No vocabulary content is available")
@@ -38,7 +38,7 @@ async def get_word_of_the_day(current_user: User = Depends(get_current_user), db
 
 
 @router.post("/{word_id}/learned")
-async def mark_word_learned(word_id: str, current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+def mark_word_learned(word_id: str, current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
     word = find_word(word_id)
     if not word:
         raise HTTPException(status_code=404, detail=f"Word '{word_id}' not found")
@@ -59,6 +59,6 @@ async def mark_word_learned(word_id: str, current_user: User = Depends(get_curre
 
 
 @router.get("/progress")
-async def get_vocabulary_progress(current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+def get_vocabulary_progress(current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
     rows = db.query(VocabularyProgress).filter(VocabularyProgress.user_id == current_user.id).all()
     return {"success": True, "words_learned": len(rows), "word_ids": [r.word_id for r in rows]}

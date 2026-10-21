@@ -73,7 +73,7 @@ def _verify(candidate: GeneratedMathQuestion) -> bool:
     return abs(computed - stated_answer) < NUMERIC_TOLERANCE
 
 
-async def generate_math_question(
+def generate_math_question(
     gemini_client, topic: Optional[str], difficulty: Literal["easy", "medium", "hard"]
 ) -> Optional[dict]:
     """Returns a verified question dict, or None if no verified question

@@ -20,7 +20,7 @@ import asyncio
 import re
 from typing import Optional
 
-from sympy import Eq, Float, Integer, Symbol, cos, log, sin, solve, sqrt, tan
+from sympy import Add, Eq, Float, Integer, Mul, Pow, Symbol, cos, log, postorder_traversal, sin, solve, sqrt, tan
 from sympy.parsing.sympy_parser import (
     convert_xor,
     implicit_multiplication_application,
@@ -30,6 +30,10 @@ from sympy.parsing.sympy_parser import (
 
 MAX_EXPRESSION_LENGTH = 80
 MAX_EQUATION_DEGREE = 4
+# Bounds checked by _is_safe_to_evaluate before anything is evaluated
+# exactly - see its docstring for why the length cap alone isn't enough.
+MAX_EXPONENT = 1000
+MAX_POWER_MAGNITUDE = 1e100
 
 ALLOWED_CHARS = re.compile(r"^[0-9x\s\+\-\*/\^\(\)=\.a-z]+$")
 # Matches only actual math tokens - digits, the variable x, operators, and
@@ -62,6 +66,39 @@ _SAFE_NAMES = {
 }
 _GLOBAL_DICT = {"__builtins__": {}, **_SAFE_NAMES}
 _TRANSFORMATIONS = standard_transformations + (implicit_multiplication_application, convert_xor)
+# parse_expr(evaluate=False) rewrites operators into explicit Add/Mul/Pow
+# calls, so those sympy classes must be resolvable too. Used only for the
+# unevaluated safety check, never for the real computation.
+_CHECK_GLOBAL_DICT = {**_GLOBAL_DICT, "Add": Add, "Mul": Mul, "Pow": Pow}
+
+
+def _is_safe_to_evaluate(candidate: str) -> bool:
+    """Rejects expressions whose exact evaluation would be astronomically
+    expensive. Short input isn't cheap input: "9^9^9" is 5 characters but
+    a ~370-million-digit integer, and sympy computes integer powers
+    exactly - one such message pinned a CPU core indefinitely, and the
+    asyncio timeout in compute_math can't stop a thread already running.
+
+    Parses WITHOUT evaluating, then walks every power bottom-up: each
+    exponent must be a plain number of at most MAX_EXPONENT in size, and
+    each power's floating-point estimate (evalf - cheap, never builds the
+    exact integer) must stay under MAX_POWER_MAGNITUDE. Bottom-up order
+    matters: in a tower like 9^9^9^9 the inner 9^9 fails the exponent
+    bound before the outer power is ever estimated."""
+    try:
+        sides = candidate.split("=", 1)
+        for side in sides:
+            expr = parse_expr(side, transformations=_TRANSFORMATIONS, global_dict=_CHECK_GLOBAL_DICT, evaluate=False)
+            for node in postorder_traversal(expr):
+                if not isinstance(node, Pow):
+                    continue
+                if node.exp.free_symbols or abs(float(node.exp.evalf())) > MAX_EXPONENT:
+                    return False
+                if not node.free_symbols and abs(complex(node.evalf())) > MAX_POWER_MAGNITUDE:
+                    return False
+        return True
+    except Exception:
+        return False
 
 
 def looks_like_math(message: str) -> bool:
@@ -91,6 +128,8 @@ def _degree_of(expr) -> int:
 
 
 def _compute_sync(candidate: str) -> Optional[dict]:
+    if not _is_safe_to_evaluate(candidate):
+        return None
     try:
         if "=" in candidate:
             lhs_str, rhs_str = candidate.split("=", 1)
@@ -130,6 +169,8 @@ def evaluate_expression(expression: str) -> Optional[float]:
         return None
     if not ALLOWED_CHARS.match(candidate):
         return None
+    if not _is_safe_to_evaluate(candidate):
+        return None
     try:
         expr = parse_expr(candidate, transformations=_TRANSFORMATIONS, global_dict=_GLOBAL_DICT)
         if expr.free_symbols:
@@ -137,6 +178,18 @@ def evaluate_expression(expression: str) -> Optional[float]:
         return float(expr.evalf())
     except Exception:
         return None
+
+
+def compute_math_sync(message: str) -> Optional[dict]:
+    """For callers already off the event loop (sync FastAPI routes run in
+    the threadpool, e.g. the tutor's /chat). Bounded by
+    _is_safe_to_evaluate rather than a timeout."""
+    if not looks_like_math(message):
+        return None
+    candidate = _extract_candidate(message)
+    if not candidate:
+        return None
+    return _compute_sync(candidate)
 
 
 async def compute_math(message: str) -> Optional[dict]:

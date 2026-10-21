@@ -84,3 +84,35 @@ def test_evaluate_expression_rejects_adversarial_input():
 def test_evaluate_expression_rejects_garbage():
     assert evaluate_expression("not a math expression") is None
     assert evaluate_expression("") is None
+
+
+# --- Expensive-evaluation guard: short input isn't cheap input. Before
+# _is_safe_to_evaluate, "9^9^9" pinned a CPU core indefinitely (sympy
+# computes integer powers exactly) and the asyncio timeout couldn't stop
+# the already-running thread. Each of these must return promptly.
+
+
+def test_power_tower_is_rejected_without_hanging():
+    assert _run("what is 9^9^9") is None
+    assert _run("what is 9**9**9") is None
+    assert _run("9^9^9^9^9") is None
+
+
+def test_huge_exponent_is_rejected():
+    assert _run("what is 2^99999999") is None
+    assert _run("solve x^99999=1") is None
+
+
+def test_nested_powers_with_small_exponents_but_huge_value_are_rejected():
+    assert _run("((9^999)^999)^999") is None
+
+
+def test_evaluate_expression_rejects_a_power_tower():
+    assert evaluate_expression("9^9^9") is None
+
+
+def test_ordinary_powers_still_work():
+    assert float(_run("what is 2^10")["result"]) == 1024.0
+    assert float(_run("sqrt(16)+2^3")["result"]) == 12.0
+    assert evaluate_expression("(10^5)^2") == 1e10
+    assert evaluate_expression("2^(1/2)") is not None
