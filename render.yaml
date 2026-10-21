@@ -27,6 +27,10 @@ services:
     startCommand: alembic upgrade head && uvicorn main:app --host 0.0.0.0 --port $PORT --proxy-headers --forwarded-allow-ips='*'
     healthCheckPath: /health
     envVars:
+      # Must match CI (backend-tests.yml) - production silently ran 3.10
+      # while CI tested 3.11, until pillow 13 (requires >=3.11) broke the build.
+      - key: PYTHON_VERSION
+        value: 3.11.9
       - key: DATABASE_URL
         sync: false
       - key: SECRET_KEY
