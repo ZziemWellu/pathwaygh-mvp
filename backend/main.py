@@ -73,6 +73,7 @@ def root():
         "endpoints": {
             "docs": "/api/docs",
             "health": "/health",
+            "liveness": "/livez",
             "auth": "/api/auth",
             "learn": "/api/learn",
             "practice": "/api/practice",
@@ -95,9 +96,22 @@ def root():
         }
     }
 
+@app.get("/livez")
+@limiter.exempt
+def livez():
+    # Liveness only - deliberately does NOT touch the database. Render's
+    # healthCheckPath points here: it polls every few seconds, and when it
+    # polled /health (which queries the DB) Neon could never scale to zero,
+    # so the database billed as always-on. Database outages are still
+    # caught by /health, which the monitor-health workflow checks every
+    # 15 minutes.
+    return {"status": "alive"}
+
+
 @app.get("/health")
 def health():
-    # Render's healthCheckPath and the keep-warm ping both hit this -
+    # Readiness, including the database. The monitor-health workflow and
+    # the VPS deploy script hit this -
     # previously it was a static response, so it reported "healthy" even
     # with the database unreachable, hiding exactly the kind of outage a
     # health check exists to catch.
