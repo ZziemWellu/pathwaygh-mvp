@@ -19,13 +19,16 @@ services:
     runtime: python
     rootDir: backend
     buildCommand: pip install -r requirements.txt
-    # preDeployCommand needs a paid instance; free-tier workaround is running
-    # the migration as part of startup instead.
+    # Migrations run once per deploy, before the new instance starts
+    # (preDeployCommand requires a paid instance - the service is on one).
+    preDeployCommand: alembic upgrade head
     # --proxy-headers/--forwarded-allow-ips: trust X-Forwarded-For from
     # Render's proxy (the only thing that can reach the service), so rate
     # limits see each student's IP instead of the proxy's one shared IP.
-    startCommand: alembic upgrade head && uvicorn main:app --host 0.0.0.0 --port $PORT --proxy-headers --forwarded-allow-ips='*'
-    healthCheckPath: /health
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT --proxy-headers --forwarded-allow-ips='*'
+    # /livez never touches the database, so Render's frequent polling
+    # doesn't keep Neon awake; /health (with DB) is checked by monitor-health.
+    healthCheckPath: /livez
     envVars:
       # Must match CI (backend-tests.yml) - production silently ran 3.10
       # while CI tested 3.11, until pillow 13 (requires >=3.11) broke the build.

@@ -101,7 +101,7 @@ sudo crontab -u pathway -e
 
 1. **Frontend:** rebuild the site with the new API address. In `frontend/.env.production` set `VITE_API_URL=https://api.learninghotspot.africa`, run `npm run build`, and upload the new `dist` folder to Namecheap (overwrite the old files, keep `.htaccess`).
 2. **CORS:** set `FRONTEND_URL` in `/etc/pathwaygh/api.env` to the frontend's exact address (for example `https://learninghotspot.africa`, or the subdomain you use). Restart with `sudo systemctl restart pathwaygh-api`. Payments also redirect to this address.
-3. **Scheduled jobs:** the GitHub Actions workflows `keep-backend-warm`, `monitor-health`, `parent-digest` and `practice-sms` call the Render address. Change `pathwaygh-backend.onrender.com` to `api.learninghotspot.africa` in each file (as a pull request), and disable `keep-backend-warm`, which is not needed on the VPS. The `backup-database` workflow should be checked too.
+3. **Scheduled jobs:** the GitHub Actions workflows `monitor-health`, `parent-digest` and `practice-sms` call the Render address. Change `pathwaygh-backend.onrender.com` to `api.learninghotspot.africa` in each file (as a pull request). The `backup-database` workflow should be checked too.
 4. **Verify** the whole site: sign-in, a course page, a practice quiz, a payment test and an avatar upload.
 5. **Keep Render for one week** as a fallback, then suspend the Render services.
 
