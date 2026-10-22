@@ -61,9 +61,9 @@ const GamificationPage = () => {
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: '16px', marginBottom: '28px' }}>
         <StatCard icon={Star} label="Total XP" value={profile.xp_points} color="var(--primary)" />
-        <StatCard icon={Flame} label="Current streak" value={`${profile.current_streak_days} day${profile.current_streak_days === 1 ? '' : 's'}`} color="#ef6c00" />
-        <StatCard icon={Trophy} label="Longest streak" value={`${profile.longest_streak_days} day${profile.longest_streak_days === 1 ? '' : 's'}`} color="#b8791a" />
-        <StatCard icon={Users} label="Achievements" value={`${profile.achievements_earned}/${profile.achievements_total}`} color="#6a1b9a" />
+        <StatCard icon={Flame} label="Current streak" value={`${profile.current_streak_days} day${profile.current_streak_days === 1 ? '' : 's'}`} color="var(--warning)" />
+        <StatCard icon={Trophy} label="Longest streak" value={`${profile.longest_streak_days} day${profile.longest_streak_days === 1 ? '' : 's'}`} color="var(--accent-strong)" />
+        <StatCard icon={Users} label="Achievements" value={`${profile.achievements_earned}/${profile.achievements_total}`} color="var(--violet)" />
       </div>
 
       <h3 style={{ color: 'var(--primary)', fontSize: '16px', marginBottom: '12px' }}>Achievements</h3>
@@ -74,8 +74,8 @@ const GamificationPage = () => {
             style={{
               padding: '16px',
               textAlign: 'center',
-              background: a.earned ? 'white' : '#f5f5f5',
-              border: a.earned ? '1px solid #e0e0e0' : '1px dashed #ccc',
+              background: a.earned ? 'white' : 'var(--surface-muted)',
+              border: a.earned ? '1px solid var(--border)' : '1px dashed var(--border-strong)',
               borderRadius: '12px',
               opacity: a.earned ? 1 : 0.55,
             }}
@@ -88,7 +88,7 @@ const GamificationPage = () => {
       </div>
 
       <h3 style={{ color: 'var(--primary)', fontSize: '16px', marginBottom: '12px' }}>School Leaderboard</h3>
-      <div style={{ background: 'white', border: '1px solid #e0e0e0', borderRadius: '12px', padding: '20px' }}>
+      <div style={{ background: 'white', border: '1px solid var(--border)', borderRadius: '12px', padding: '20px' }}>
         {leaderboard?.reason ? (
           <p style={{ color: 'var(--gray-500)', margin: 0 }}>{leaderboard.reason}</p>
         ) : !profile.leaderboard_opt_in ? (
@@ -103,9 +103,9 @@ const GamificationPage = () => {
                 onChange={(e) => setDisplayName(e.target.value)}
                 placeholder="Choose a nickname"
                 maxLength={50}
-                style={{ flex: 1, minWidth: '160px', padding: '8px 12px', border: '1px solid #e0e0e0', borderRadius: '8px', fontSize: '14px' }}
+                style={{ flex: 1, minWidth: '160px', padding: '8px 12px', border: '1px solid var(--border)', borderRadius: '8px', fontSize: '14px' }}
               />
-              <button onClick={joinLeaderboard} disabled={!displayName.trim()} style={{ padding: '8px 20px', background: displayName.trim() ? 'var(--primary)' : '#ccc', color: 'white', border: 'none', borderRadius: '8px', cursor: displayName.trim() ? 'pointer' : 'not-allowed', fontWeight: 'bold' }}>
+              <button onClick={joinLeaderboard} disabled={!displayName.trim()} style={{ padding: '8px 20px', background: displayName.trim() ? 'var(--primary)' : 'var(--border-strong)', color: 'white', border: 'none', borderRadius: '8px', cursor: displayName.trim() ? 'pointer' : 'not-allowed', fontWeight: 'bold' }}>
                 Join
               </button>
             </div>
@@ -115,7 +115,7 @@ const GamificationPage = () => {
           <div>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
               <span style={{ fontSize: '13px', color: 'var(--gray-500)' }}>Playing as <strong>{profile.leaderboard_display_name}</strong></span>
-              <button onClick={leaveLeaderboard} style={{ padding: '4px 12px', background: 'none', border: '1px solid #e0e0e0', borderRadius: '6px', cursor: 'pointer', fontSize: '12px' }}>Leave</button>
+              <button onClick={leaveLeaderboard} style={{ padding: '4px 12px', background: 'none', border: '1px solid var(--border)', borderRadius: '6px', cursor: 'pointer', fontSize: '12px' }}>Leave</button>
             </div>
             {leaderboard.leaderboard.length === 0 ? (
               <p style={{ color: 'var(--gray-500)', margin: 0 }}>No one else at your school has joined yet.</p>
@@ -128,7 +128,7 @@ const GamificationPage = () => {
                       display: 'flex',
                       justifyContent: 'space-between',
                       padding: '8px 12px',
-                      background: row.is_you ? 'var(--primary-bg)' : '#f8f9fa',
+                      background: row.is_you ? 'var(--primary-bg)' : 'var(--surface-muted)',
                       borderRadius: '8px',
                       fontWeight: row.is_you ? 'bold' : 'normal',
                       fontSize: '13px',
@@ -148,7 +148,7 @@ const GamificationPage = () => {
 };
 
 const StatCard = ({ icon: Icon, label, value, color }) => (
-  <div style={{ background: 'white', border: '1px solid #e0e0e0', borderRadius: '12px', padding: '16px', textAlign: 'center' }}>
+  <div style={{ background: 'white', border: '1px solid var(--border)', borderRadius: '12px', padding: '16px', textAlign: 'center' }}>
     <Icon size={22} color={color} style={{ marginBottom: '6px' }} />
     <div style={{ fontSize: '22px', fontWeight: 'bold', color }}>{value}</div>
     <div style={{ fontSize: '12px', color: 'var(--gray-500)' }}>{label}</div>

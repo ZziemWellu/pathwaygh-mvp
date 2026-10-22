@@ -59,8 +59,8 @@ const CourseGrid = ({ user }) => {
             onClick={() => setShowEnrolledOnly(!showEnrolledOnly)}
             style={{
               padding: '8px 16px',
-              background: showEnrolledOnly ? 'var(--primary)' : '#f0f0f0',
-              color: showEnrolledOnly ? 'white' : '#333',
+              background: showEnrolledOnly ? 'var(--primary)' : 'var(--surface-sunken)',
+              color: showEnrolledOnly ? 'white' : 'var(--text)',
               border: 'none',
               borderRadius: '8px',
               cursor: 'pointer',
@@ -96,7 +96,7 @@ const CourseGrid = ({ user }) => {
               key={course.id}
               onClick={() => navigate(`/learn/${course.id}`)}
               style={{
-                border: course.enrolled ? '2px solid #1a5f2b' : '1px solid #e0e0e0',
+                border: course.enrolled ? '2px solid var(--primary)' : '1px solid var(--border)',
                 borderRadius: '12px',
                 padding: '20px',
                 background: 'white',
@@ -125,7 +125,7 @@ const CourseGrid = ({ user }) => {
                   {course.level.toUpperCase()}
                 </span>
               )}
-              <p style={{ color: '#555', fontSize: '14px', margin: '12px 0' }}>{course.description}</p>
+              <p style={{ color: 'var(--text-muted)', fontSize: '14px', margin: '12px 0' }}>{course.description}</p>
               <div style={{ fontSize: '12px', color: 'var(--gray-500)' }}>{t('learnLessonsCount').replace('{count}', course.lesson_count || 0)}</div>
               <div style={{ marginTop: '12px', fontSize: '12px', color: 'var(--primary)', textAlign: 'center' }}>
                 {course.enrolled ? t('learnContinueLearning') : t('learnViewCourse')}

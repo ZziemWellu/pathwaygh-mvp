@@ -77,7 +77,7 @@ const AdminCourseEditor = () => {
     <div style={{ maxWidth: '800px', margin: '0 auto', padding: '20px' }}>
       <Link to="/admin" style={{ color: 'var(--primary)', fontSize: '14px' }}>← All courses</Link>
 
-      <div style={{ background: 'white', border: '1px solid #e0e0e0', borderRadius: '12px', padding: '18px', margin: '16px 0', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+      <div style={{ background: 'white', border: '1px solid var(--border)', borderRadius: '12px', padding: '18px', margin: '16px 0', display: 'flex', flexDirection: 'column', gap: '10px' }}>
         <label htmlFor="course-title" style={labelStyle}>Title</label>
         <input id="course-title" value={course.title} onChange={(e) => setCourse({ ...course, title: e.target.value })} style={inputStyle} />
         <label htmlFor="course-description" style={labelStyle}>Description</label>
@@ -97,7 +97,7 @@ const AdminCourseEditor = () => {
           <option value="LR">Liberia</option>
           <option value="GM">The Gambia</option>
         </select>
-        <button onClick={handleSave} disabled={saving} style={{ padding: '10px', background: saving ? '#ccc' : 'var(--primary)', color: 'white', border: 'none', borderRadius: '8px', cursor: saving ? 'not-allowed' : 'pointer', fontWeight: 'bold' }}>
+        <button onClick={handleSave} disabled={saving} style={{ padding: '10px', background: saving ? 'var(--border-strong)' : 'var(--primary)', color: 'white', border: 'none', borderRadius: '8px', cursor: saving ? 'not-allowed' : 'pointer', fontWeight: 'bold' }}>
           {saving ? 'Saving...' : 'Save Course'}
         </button>
       </div>
@@ -113,7 +113,7 @@ const AdminCourseEditor = () => {
       </div>
 
       {showLessonForm && (
-        <form onSubmit={handleCreateLesson} style={{ background: 'white', border: '1px solid #e0e0e0', borderRadius: '12px', padding: '16px', marginBottom: '16px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+        <form onSubmit={handleCreateLesson} style={{ background: 'white', border: '1px solid var(--border)', borderRadius: '12px', padding: '16px', marginBottom: '16px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
           <input required placeholder="Title" value={lessonForm.title} onChange={(e) => setLessonForm({ ...lessonForm, title: e.target.value })} style={inputStyle} />
           <input required placeholder="Slug (unique id, e.g. shs_physics_intro)" value={lessonForm.slug} onChange={(e) => setLessonForm({ ...lessonForm, slug: e.target.value })} style={inputStyle} />
           <select value={lessonForm.lesson_type} onChange={(e) => setLessonForm({ ...lessonForm, lesson_type: e.target.value })} style={inputStyle}>
@@ -131,7 +131,7 @@ const AdminCourseEditor = () => {
         <div
           key={lesson.id}
           onClick={() => navigate(`/admin/lessons/${lesson.id}`)}
-          style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '12px 16px', background: 'white', border: '1px solid #e0e0e0', borderRadius: '10px', marginBottom: '8px', cursor: 'pointer' }}
+          style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '12px 16px', background: 'white', border: '1px solid var(--border)', borderRadius: '10px', marginBottom: '8px', cursor: 'pointer' }}
         >
           <div style={{ flex: 1 }}>
             <div style={{ fontWeight: 'bold' }}>{lesson.title}</div>
@@ -147,7 +147,7 @@ const AdminCourseEditor = () => {
   );
 };
 
-const inputStyle = { padding: '10px 12px', border: '1px solid #e0e0e0', borderRadius: '8px', fontSize: '14px', fontFamily: 'inherit' };
-const labelStyle = { fontSize: '12px', fontWeight: 'bold', color: '#666' };
+const inputStyle = { padding: '10px 12px', border: '1px solid var(--border)', borderRadius: '8px', fontSize: '14px', fontFamily: 'inherit' };
+const labelStyle = { fontSize: '12px', fontWeight: 'bold', color: 'var(--text-muted)' };
 
 export default AdminCourseEditor;

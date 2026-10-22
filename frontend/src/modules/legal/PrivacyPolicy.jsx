@@ -2,7 +2,7 @@ import React from 'react';
 
 const sectionStyle = { marginBottom: '24px' };
 const headingStyle = { color: 'var(--primary)', fontSize: '17px', marginBottom: '8px' };
-const bodyStyle = { color: '#333', fontSize: '14px', lineHeight: '1.6' };
+const bodyStyle = { color: 'var(--text)', fontSize: '14px', lineHeight: '1.6' };
 
 const PrivacyPolicy = ({ onBack }) => {
   const handleBack = onBack ?? (() => window.history.back());

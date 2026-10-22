@@ -90,7 +90,7 @@ const SchoolAdminDashboard = () => {
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', flexWrap: 'wrap', gap: '10px' }}>
         <h2 style={{ margin: 0 }}>{school?.name || 'School'} Dashboard</h2>
         <div
-          style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '8px 14px', background: 'var(--primary-bg)', border: '1px solid #a5d6a7', borderRadius: '8px', fontSize: '13px', cursor: 'pointer' }}
+          style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '8px 14px', background: 'var(--primary-bg)', border: '1px solid var(--primary-border)', borderRadius: '8px', fontSize: '13px', cursor: 'pointer' }}
           onClick={copyJoinCode}
           title="Click to copy"
         >
@@ -100,7 +100,7 @@ const SchoolAdminDashboard = () => {
         </div>
       </div>
 
-      <div style={{ background: 'white', border: '1px solid #e0e0e0', borderRadius: '12px', padding: '16px', marginBottom: '24px' }}>
+      <div style={{ background: 'white', border: '1px solid var(--border)', borderRadius: '12px', padding: '16px', marginBottom: '24px' }}>
         <label style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', cursor: 'pointer' }}>
           <input
             type="checkbox"
@@ -114,13 +114,13 @@ const SchoolAdminDashboard = () => {
           </span>
         </label>
         {school?.parent_consent_attested && school?.parent_consent_attested_at && (
-          <p style={{ fontSize: '12px', color: '#666', marginTop: '8px', marginLeft: '26px' }}>
+          <p style={{ fontSize: '12px', color: 'var(--text-muted)', marginTop: '8px', marginLeft: '26px' }}>
             Confirmed {formatDate(school.parent_consent_attested_at)}
           </p>
         )}
       </div>
 
-      <div style={{ background: 'white', border: '1px solid #e0e0e0', borderRadius: '12px', padding: '16px', marginBottom: '24px' }}>
+      <div style={{ background: 'white', border: '1px solid var(--border)', borderRadius: '12px', padding: '16px', marginBottom: '24px' }}>
         <h3 style={{ margin: '0 0 8px 0', fontSize: '15px' }}>School license</h3>
         {paymentStatus && (
           <div
@@ -129,8 +129,8 @@ const SchoolAdminDashboard = () => {
               borderRadius: '8px',
               marginBottom: '12px',
               fontSize: '13px',
-              background: paymentStatus.status === 'success' ? 'var(--primary-bg)' : '#fff3e0',
-              color: paymentStatus.status === 'success' ? 'var(--primary-dark)' : '#e65100',
+              background: paymentStatus.status === 'success' ? 'var(--primary-bg)' : 'var(--warning-bg)',
+              color: paymentStatus.status === 'success' ? 'var(--primary-dark)' : 'var(--warning)',
             }}
           >
             {paymentStatus.status === 'success'
@@ -148,7 +148,7 @@ const SchoolAdminDashboard = () => {
           disabled={paying}
           style={{
             padding: '10px 20px',
-            background: paying ? '#ccc' : 'var(--primary)',
+            background: paying ? 'var(--border-strong)' : 'var(--primary)',
             color: 'white',
             border: 'none',
             borderRadius: '8px',
@@ -162,29 +162,29 @@ const SchoolAdminDashboard = () => {
       </div>
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: '16px', marginBottom: '24px' }}>
-        <div style={{ background: 'white', border: '1px solid #e0e0e0', borderRadius: '12px', padding: '16px', textAlign: 'center' }}>
+        <div style={{ background: 'white', border: '1px solid var(--border)', borderRadius: '12px', padding: '16px', textAlign: 'center' }}>
           <div style={{ fontSize: '28px', fontWeight: 'bold', color: 'var(--primary)' }}>{summary.student_count}</div>
           <div style={{ fontSize: '12px', color: 'var(--gray-500)' }}>Students</div>
         </div>
-        <div style={{ background: 'white', border: '1px solid #e0e0e0', borderRadius: '12px', padding: '16px', textAlign: 'center' }}>
+        <div style={{ background: 'white', border: '1px solid var(--border)', borderRadius: '12px', padding: '16px', textAlign: 'center' }}>
           <div style={{ fontSize: '28px', fontWeight: 'bold', color: 'var(--primary)' }}>{summary.average_completion_rate}%</div>
           <div style={{ fontSize: '12px', color: 'var(--gray-500)' }}>Avg. Completion</div>
         </div>
-        <div style={{ background: 'white', border: '1px solid #e0e0e0', borderRadius: '12px', padding: '16px', textAlign: 'center' }}>
+        <div style={{ background: 'white', border: '1px solid var(--border)', borderRadius: '12px', padding: '16px', textAlign: 'center' }}>
           <div style={{ fontSize: '28px', fontWeight: 'bold', color: 'var(--primary)' }}>{summary.average_quiz_score}%</div>
           <div style={{ fontSize: '12px', color: 'var(--gray-500)' }}>Avg. Quiz Score</div>
         </div>
       </div>
 
       {roster.length === 0 ? (
-        <div style={{ textAlign: 'center', padding: '40px', color: 'var(--gray-500)', background: 'white', border: '1px solid #e0e0e0', borderRadius: '12px' }}>
+        <div style={{ textAlign: 'center', padding: '40px', color: 'var(--gray-500)', background: 'white', border: '1px solid var(--border)', borderRadius: '12px' }}>
           No students yet. Share the join code above so students can link themselves to {school?.name}.
         </div>
       ) : (
         <div style={{ overflowX: 'auto' }}>
-          <table style={{ width: '100%', borderCollapse: 'collapse', background: 'white', border: '1px solid #e0e0e0', borderRadius: '12px' }}>
+          <table style={{ width: '100%', borderCollapse: 'collapse', background: 'white', border: '1px solid var(--border)', borderRadius: '12px' }}>
             <thead>
-              <tr style={{ background: '#f5f5f5', textAlign: 'left' }}>
+              <tr style={{ background: 'var(--surface-muted)', textAlign: 'left' }}>
                 <th style={cellStyle}>Name</th>
                 <th style={cellStyle}>Email</th>
                 <th style={cellStyle}>Grade</th>
@@ -196,7 +196,7 @@ const SchoolAdminDashboard = () => {
             </thead>
             <tbody>
               {roster.map((student) => (
-                <tr key={student.id} style={{ borderTop: '1px solid #f0f0f0' }}>
+                <tr key={student.id} style={{ borderTop: '1px solid var(--surface-sunken)' }}>
                   <td style={cellStyle}>
                     {student.full_name}
                     {student.is_school_admin && (

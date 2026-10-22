@@ -36,7 +36,7 @@ const ExerciseForm = ({ initial, onSave, onCancel }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} style={{ background: '#f8f9fa', border: '1px solid #e0e0e0', borderRadius: '10px', padding: '14px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+    <form onSubmit={handleSubmit} style={{ background: 'var(--surface-muted)', border: '1px solid var(--border)', borderRadius: '10px', padding: '14px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
       <textarea required placeholder="Question" value={form.question} onChange={(e) => setForm({ ...form, question: e.target.value })} style={{ ...inputStyle, minHeight: '50px' }} />
       <label style={labelStyle}>Options (select the correct one)</label>
       {form.options.map((option, i) => (
@@ -63,7 +63,7 @@ const ExerciseForm = ({ initial, onSave, onCancel }) => {
         <button type="submit" disabled={saving} style={{ padding: '8px 16px', background: 'var(--primary)', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: 'bold', fontSize: '13px' }}>
           {saving ? 'Saving...' : 'Save Exercise'}
         </button>
-        <button type="button" onClick={onCancel} style={{ padding: '8px 16px', background: '#f0f0f0', border: 'none', borderRadius: '8px', cursor: 'pointer', fontSize: '13px' }}>
+        <button type="button" onClick={onCancel} style={{ padding: '8px 16px', background: 'var(--surface-sunken)', border: 'none', borderRadius: '8px', cursor: 'pointer', fontSize: '13px' }}>
           Cancel
         </button>
       </div>
@@ -122,7 +122,7 @@ const AdminExerciseEditor = ({ lessonId, exercises, onChange }) => {
             <ExerciseForm initial={exercise} onSave={(form) => handleUpdate(exercise, form)} onCancel={() => setEditingId(null)} />
           </div>
         ) : (
-          <div key={exercise.id} style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', padding: '12px', border: '1px solid #e0e0e0', borderRadius: '8px', marginBottom: '8px' }}>
+          <div key={exercise.id} style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', padding: '12px', border: '1px solid var(--border)', borderRadius: '8px', marginBottom: '8px' }}>
             <div style={{ display: 'flex', flexDirection: 'column' }}>
               <button onClick={() => handleMove(i, -1)} disabled={i === 0} style={{ background: 'none', border: 'none', cursor: i === 0 ? 'default' : 'pointer', opacity: i === 0 ? 0.3 : 1 }}><ArrowUp size={14} /></button>
               <button onClick={() => handleMove(i, 1)} disabled={i === exercises.length - 1} style={{ background: 'none', border: 'none', cursor: i === exercises.length - 1 ? 'default' : 'pointer', opacity: i === exercises.length - 1 ? 0.3 : 1 }}><ArrowDown size={14} /></button>
@@ -139,7 +139,7 @@ const AdminExerciseEditor = ({ lessonId, exercises, onChange }) => {
   );
 };
 
-const inputStyle = { padding: '9px 11px', border: '1px solid #e0e0e0', borderRadius: '8px', fontSize: '13px', fontFamily: 'inherit' };
-const labelStyle = { fontSize: '12px', fontWeight: 'bold', color: '#666' };
+const inputStyle = { padding: '9px 11px', border: '1px solid var(--border)', borderRadius: '8px', fontSize: '13px', fontFamily: 'inherit' };
+const labelStyle = { fontSize: '12px', fontWeight: 'bold', color: 'var(--text-muted)' };
 
 export default AdminExerciseEditor;

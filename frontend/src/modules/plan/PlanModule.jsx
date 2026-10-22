@@ -192,7 +192,7 @@ const PlanModule = () => {
             <div
               key={plan.id}
               style={{
-                border: '1px solid #e0e0e0',
+                border: '1px solid var(--border)',
                 borderRadius: '12px',
                 padding: '20px',
                 background: 'white',
@@ -212,7 +212,7 @@ const PlanModule = () => {
               <h3 style={{ color: 'var(--primary)', margin: '0 0 8px 0', paddingRight: '24px' }}>
                 {plan.name}
               </h3>
-              <p style={{ color: '#666', fontSize: '14px', margin: '0 0 8px 0' }}>
+              <p style={{ color: 'var(--text-muted)', fontSize: '14px', margin: '0 0 8px 0' }}>
                 {plan.description}
               </p>
               <div style={{ display: 'flex', gap: '12px', fontSize: '12px', color: 'var(--gray-500)', flexWrap: 'wrap' }}>
@@ -222,7 +222,7 @@ const PlanModule = () => {
               {plan.subjects && plan.subjects.length > 0 && (
                 <div style={{ marginTop: '8px', display: 'flex', flexWrap: 'wrap', gap: '4px' }}>
                   {plan.subjects.map((subject, i) => (
-                    <span key={i} style={{ background: '#f0f0f0', padding: '2px 8px', borderRadius: '4px', fontSize: '11px', color: '#555' }}>
+                    <span key={i} style={{ background: 'var(--surface-sunken)', padding: '2px 8px', borderRadius: '4px', fontSize: '11px', color: 'var(--text-muted)' }}>
                       {subject}
                     </span>
                   ))}
@@ -233,7 +233,7 @@ const PlanModule = () => {
                   🎯 {formatGoal(plan.goal)}
                 </div>
               )}
-              <div style={{ marginTop: '12px', height: '6px', background: '#f0f0f0', borderRadius: '3px' }}>
+              <div style={{ marginTop: '12px', height: '6px', background: 'var(--surface-sunken)', borderRadius: '3px' }}>
                 <div
                   style={{
                     width: `${plan.progress || 0}%`,
@@ -302,7 +302,7 @@ const PlanModule = () => {
                     style={{
                       width: '100%',
                       padding: '10px',
-                      border: '1px solid #e0e0e0',
+                      border: '1px solid var(--border)',
                       borderRadius: '8px',
                       fontSize: '14px',
                     }}
@@ -323,7 +323,7 @@ const PlanModule = () => {
                     style={{
                       width: '100%',
                       padding: '10px',
-                      border: '1px solid #e0e0e0',
+                      border: '1px solid var(--border)',
                       borderRadius: '8px',
                       fontSize: '14px',
                       resize: 'vertical',
@@ -345,7 +345,7 @@ const PlanModule = () => {
                     style={{
                       width: '100%',
                       padding: '10px',
-                      border: '1px solid #e0e0e0',
+                      border: '1px solid var(--border)',
                       borderRadius: '8px',
                       fontSize: '14px',
                     }}
@@ -363,7 +363,7 @@ const PlanModule = () => {
                     style={{
                       width: '100%',
                       padding: '10px',
-                      border: '1px solid #e0e0e0',
+                      border: '1px solid var(--border)',
                       borderRadius: '8px',
                       fontSize: '14px',
                     }}
@@ -383,7 +383,7 @@ const PlanModule = () => {
                   style={{
                     width: '100%',
                     padding: '12px',
-                    background: formData.name ? 'var(--primary)' : '#ccc',
+                    background: formData.name ? 'var(--primary)' : 'var(--border-strong)',
                     color: 'white',
                     border: 'none',
                     borderRadius: '8px',
@@ -412,10 +412,10 @@ const PlanModule = () => {
                           alignItems: 'center',
                           gap: '8px',
                           padding: '8px 12px',
-                          background: formData.subjects.includes(subject) ? 'var(--primary-bg)' : '#f8f9fa',
+                          background: formData.subjects.includes(subject) ? 'var(--primary-bg)' : 'var(--surface-muted)',
                           borderRadius: '6px',
                           cursor: 'pointer',
-                          border: formData.subjects.includes(subject) ? '1px solid #1a5f2b' : '1px solid #e0e0e0',
+                          border: formData.subjects.includes(subject) ? '1px solid var(--primary)' : '1px solid var(--border)',
                         }}
                       >
                         <input
@@ -436,7 +436,7 @@ const PlanModule = () => {
                     style={{
                       flex: 1,
                       padding: '12px',
-                      background: '#f0f0f0',
+                      background: 'var(--surface-sunken)',
                       border: 'none',
                       borderRadius: '8px',
                       cursor: 'pointer',
@@ -451,7 +451,7 @@ const PlanModule = () => {
                     style={{
                       flex: 2,
                       padding: '12px',
-                      background: saving ? '#ccc' : 'var(--primary)',
+                      background: saving ? 'var(--border-strong)' : 'var(--primary)',
                       color: 'white',
                       border: 'none',
                       borderRadius: '8px',

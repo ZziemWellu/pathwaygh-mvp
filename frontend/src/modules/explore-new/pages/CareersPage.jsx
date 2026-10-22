@@ -38,7 +38,7 @@ const CareersPage = ({ user }) => {
     return (
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '300px' }}>
         <div style={{ textAlign: 'center' }}>
-          <div style={{ width: '40px', height: '40px', border: '4px solid #f0f0f0', borderTopColor: 'var(--primary)', borderRadius: '50%', animation: 'spin 0.8s linear infinite', margin: '0 auto 16px' }} />
+          <div style={{ width: '40px', height: '40px', border: '4px solid var(--surface-sunken)', borderTopColor: 'var(--primary)', borderRadius: '50%', animation: 'spin 0.8s linear infinite', margin: '0 auto 16px' }} />
           <p style={{ color: 'var(--gray-500)' }}>Loading careers...</p>
         </div>
       </div>
@@ -76,7 +76,7 @@ const CareersPage = ({ user }) => {
               }
             }}
             style={{
-              border: '1px solid #e0e0e0',
+              border: '1px solid var(--border)',
               borderRadius: '12px',
               padding: '20px',
               background: 'white',
@@ -93,9 +93,9 @@ const CareersPage = ({ user }) => {
                 {career.category}
               </span>
             )}
-            <p style={{ color: '#555', fontSize: '14px', margin: '12px 0' }}>{career.description}</p>
+            <p style={{ color: 'var(--text-muted)', fontSize: '14px', margin: '12px 0' }}>{career.description}</p>
             {career.salary_range && (
-              <div style={{ fontSize: '13px', color: '#666' }}>💰 {career.salary_range}</div>
+              <div style={{ fontSize: '13px', color: 'var(--text-muted)' }}>💰 {career.salary_range}</div>
             )}
             <div style={{ fontSize: '12px', color: 'var(--gray-500)', marginTop: '12px' }}>Click for full details →</div>
           </div>
@@ -150,7 +150,7 @@ const CareersPage = ({ user }) => {
                 {selectedCareer.category}
               </span>
             )}
-            <p style={{ color: '#555', margin: '16px 0' }}>{selectedCareer.description}</p>
+            <p style={{ color: 'var(--text-muted)', margin: '16px 0' }}>{selectedCareer.description}</p>
             {selectedCareer.salary_range && (
               <div style={{ margin: '8px 0' }}><strong>💰 Salary Range:</strong> {selectedCareer.salary_range}</div>
             )}
@@ -159,7 +159,7 @@ const CareersPage = ({ user }) => {
                 <strong>📚 Required Subjects:</strong>
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginTop: '4px' }}>
                   {selectedCareer.required_subjects.map((subject, i) => (
-                    <span key={i} style={{ background: '#f0f0f0', padding: '4px 10px', borderRadius: '12px', fontSize: '12px' }}>
+                    <span key={i} style={{ background: 'var(--surface-sunken)', padding: '4px 10px', borderRadius: '12px', fontSize: '12px' }}>
                       {subject}
                     </span>
                   ))}

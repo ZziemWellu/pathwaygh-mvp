@@ -36,7 +36,7 @@ const AIBonusQuestion = () => {
   };
 
   return (
-    <div style={{ background: 'white', borderRadius: '12px', border: '1px solid #e0e0e0', padding: '20px', marginBottom: '24px' }}>
+    <div style={{ background: 'white', borderRadius: '12px', border: '1px solid var(--border)', padding: '20px', marginBottom: '24px' }}>
       <h3 style={{ color: 'var(--primary)', margin: '0 0 4px 0' }}>🤖 AI Bonus Question</h3>
       <p style={{ fontSize: '13px', color: 'var(--gray-500)', margin: '0 0 16px 0' }}>
         Unlimited extra Mathematics practice, generated on demand and checked by a calculator before you see it.
@@ -49,12 +49,12 @@ const AIBonusQuestion = () => {
           value={topic}
           onChange={(e) => setTopic(e.target.value)}
           placeholder="Topic (optional), e.g. algebra"
-          style={{ flex: 1, minWidth: '160px', padding: '8px 12px', border: '1px solid #e0e0e0', borderRadius: '8px', fontSize: '14px' }}
+          style={{ flex: 1, minWidth: '160px', padding: '8px 12px', border: '1px solid var(--border)', borderRadius: '8px', fontSize: '14px' }}
         />
         <select
           value={difficulty}
           onChange={(e) => setDifficulty(e.target.value)}
-          style={{ padding: '8px 12px', border: '1px solid #e0e0e0', borderRadius: '8px', fontSize: '14px' }}
+          style={{ padding: '8px 12px', border: '1px solid var(--border)', borderRadius: '8px', fontSize: '14px' }}
         >
           <option value="easy">Easy</option>
           <option value="medium">Medium</option>
@@ -63,7 +63,7 @@ const AIBonusQuestion = () => {
         <button
           onClick={generate}
           disabled={loading}
-          style={{ padding: '8px 20px', background: loading ? '#ccc' : 'var(--primary)', color: 'white', border: 'none', borderRadius: '8px', cursor: loading ? 'not-allowed' : 'pointer', fontWeight: 'bold' }}
+          style={{ padding: '8px 20px', background: loading ? 'var(--border-strong)' : 'var(--primary)', color: 'white', border: 'none', borderRadius: '8px', cursor: loading ? 'not-allowed' : 'pointer', fontWeight: 'bold' }}
         >
           {loading ? 'Generating...' : question ? 'New Question' : 'Generate'}
         </button>
@@ -72,16 +72,16 @@ const AIBonusQuestion = () => {
       {error && <p style={{ color: 'var(--danger)', fontSize: '13px' }}>{error}</p>}
 
       {question && (
-        <div style={{ padding: '16px', background: '#f8f9fa', borderRadius: '8px' }}>
+        <div style={{ padding: '16px', background: 'var(--surface-muted)', borderRadius: '8px' }}>
           <p style={{ margin: '0 0 12px 0', fontWeight: 'bold' }}>{question.question}</p>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: selected ? '12px' : 0 }}>
             {question.options.map((option, i) => {
               const isSelected = selected === option;
               const isCorrect = option === question.correct;
-              let background = '#fff';
+              let background = 'white';
               if (selected) {
-                if (isCorrect) background = '#e8f5e9';
-                else if (isSelected) background = '#fbeae7';
+                if (isCorrect) background = 'var(--primary-bg)';
+                else if (isSelected) background = 'var(--danger-bg)';
               }
               return (
                 <button
@@ -92,7 +92,7 @@ const AIBonusQuestion = () => {
                     padding: '10px 14px',
                     textAlign: 'left',
                     borderRadius: '8px',
-                    border: isSelected ? '2px solid var(--primary)' : '1px solid #e0e0e0',
+                    border: isSelected ? '2px solid var(--primary)' : '1px solid var(--border)',
                     background,
                     cursor: selected ? 'default' : 'pointer',
                     fontSize: '14px',
@@ -108,7 +108,7 @@ const AIBonusQuestion = () => {
               <p style={{ fontWeight: 'bold', color: selected === question.correct ? 'var(--primary)' : 'var(--danger)', margin: '0 0 6px 0' }}>
                 {selected === question.correct ? '✅ Correct!' : `❌ Not quite - the answer is ${question.correct}`}
               </p>
-              <p style={{ color: '#555', margin: 0 }}>{question.explanation}</p>
+              <p style={{ color: 'var(--text-muted)', margin: 0 }}>{question.explanation}</p>
             </div>
           )}
         </div>

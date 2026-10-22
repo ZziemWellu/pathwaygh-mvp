@@ -33,10 +33,10 @@ const ExploreLanding = ({ user }) => {
       icon: '💰',
       title: 'Scholarships',
       description: 'Find scholarships and funding opportunities',
-      // Deep amber, not #f9a825: this colour is both the heading text on
-      // white and the button behind white text, and #f9a825 is only 1.97:1
-      // against white (WCAG AA needs 4.5:1). #a15c00 is 5.19:1.
-      color: '#a15c00',
+      // Deep amber, not var(--accent): this colour is both the heading text on
+      // white and the button behind white text, and var(--accent) is only 1.97:1
+      // against white (WCAG AA needs 4.5:1). var(--accent-strong) is 5.19:1.
+      color: 'var(--accent-strong)',
       path: '/explore/scholarships',
       buttonText: 'Find Scholarships'
     },
@@ -45,7 +45,7 @@ const ExploreLanding = ({ user }) => {
       icon: '🎯',
       title: 'Career Match',
       description: 'Discover careers that match your interests and skills',
-      color: '#6a1b9a',
+      color: 'var(--violet)',
       path: '/explore/career-match',
       buttonText: 'Start Assessment',
       wassceOnly: true
@@ -58,7 +58,7 @@ const ExploreLanding = ({ user }) => {
     <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '20px' }}>
       <header style={{ marginBottom: '30px' }}>
         <h1 style={{ color: 'var(--primary)', marginBottom: '8px' }}>🔍 Explore</h1>
-        <p style={{ color: '#666', fontSize: '16px' }}>
+        <p style={{ color: 'var(--text-muted)', fontSize: '16px' }}>
           Discover careers, universities, scholarships, and find your perfect path
         </p>
       </header>
@@ -75,7 +75,7 @@ const ExploreLanding = ({ user }) => {
               background: 'white',
               borderRadius: '16px',
               padding: '30px 24px',
-              border: '1px solid #e0e0e0',
+              border: '1px solid var(--border)',
               boxShadow: '0 2px 8px rgba(0,0,0,0.04)',
               transition: 'all 0.3s ease',
               cursor: 'pointer',
@@ -100,7 +100,7 @@ const ExploreLanding = ({ user }) => {
             <h3 style={{ color: feature.color, marginBottom: '8px', fontSize: '20px' }}>
               {feature.title}
             </h3>
-            <p style={{ color: '#666', fontSize: '14px', marginBottom: '20px', lineHeight: '1.5' }}>
+            <p style={{ color: 'var(--text-muted)', fontSize: '14px', marginBottom: '20px', lineHeight: '1.5' }}>
               {feature.description}
             </p>
             <button
@@ -125,7 +125,7 @@ const ExploreLanding = ({ user }) => {
         ))}
       </div>
 
-      <footer style={{ textAlign: 'center', marginTop: '40px', padding: '20px', color: 'var(--gray-500)', borderTop: '1px solid #e0e0e0' }}>
+      <footer style={{ textAlign: 'center', marginTop: '40px', padding: '20px', color: 'var(--gray-500)', borderTop: '1px solid var(--border)' }}>
         <p>Discover your path with PathwayGH</p>
       </footer>
     </div>

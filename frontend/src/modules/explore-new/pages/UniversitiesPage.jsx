@@ -38,7 +38,7 @@ const UniversitiesPage = ({ user }) => {
     return (
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '300px' }}>
         <div style={{ textAlign: 'center' }}>
-          <div style={{ width: '40px', height: '40px', border: '4px solid #f0f0f0', borderTopColor: 'var(--primary)', borderRadius: '50%', animation: 'spin 0.8s linear infinite', margin: '0 auto 16px' }} />
+          <div style={{ width: '40px', height: '40px', border: '4px solid var(--surface-sunken)', borderTopColor: 'var(--primary)', borderRadius: '50%', animation: 'spin 0.8s linear infinite', margin: '0 auto 16px' }} />
           <p style={{ color: 'var(--gray-500)' }}>Loading universities...</p>
         </div>
       </div>
@@ -76,7 +76,7 @@ const UniversitiesPage = ({ user }) => {
               }
             }}
             style={{
-              border: '1px solid #e0e0e0',
+              border: '1px solid var(--border)',
               borderRadius: '12px',
               padding: '20px',
               background: 'white',
@@ -88,17 +88,17 @@ const UniversitiesPage = ({ user }) => {
             onMouseLeave={(e) => { e.currentTarget.style.boxShadow = '0 2px 4px rgba(0,0,0,0.04)'; }}
           >
             <h3 style={{ color: 'var(--primary)', margin: '0 0 8px 0' }}>{uni.name}</h3>
-            {uni.location && <div style={{ fontSize: '13px', color: '#666' }}>📍 {uni.location}</div>}
-            {uni.cutoff && <div style={{ fontSize: '13px', color: '#666' }}>Cutoff: {uni.cutoff}</div>}
+            {uni.location && <div style={{ fontSize: '13px', color: 'var(--text-muted)' }}>📍 {uni.location}</div>}
+            {uni.cutoff && <div style={{ fontSize: '13px', color: 'var(--text-muted)' }}>Cutoff: {uni.cutoff}</div>}
             {uni.programs && (
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px', marginTop: '8px' }}>
                 {uni.programs.slice(0, 3).map((program, i) => (
-                  <span key={i} style={{ background: '#f0f0f0', padding: '2px 8px', borderRadius: '4px', fontSize: '11px' }}>
+                  <span key={i} style={{ background: 'var(--surface-sunken)', padding: '2px 8px', borderRadius: '4px', fontSize: '11px' }}>
                     {program}
                   </span>
                 ))}
                 {uni.programs.length > 3 && (
-                  <span style={{ background: '#f0f0f0', padding: '2px 8px', borderRadius: '4px', fontSize: '11px' }}>
+                  <span style={{ background: 'var(--surface-sunken)', padding: '2px 8px', borderRadius: '4px', fontSize: '11px' }}>
                     +{uni.programs.length - 3} more
                   </span>
                 )}
@@ -152,16 +152,16 @@ const UniversitiesPage = ({ user }) => {
               ✕
             </button>
             <h2 id="university-modal-title" style={{ color: 'var(--primary)' }}>{selectedUniversity.name}</h2>
-            {selectedUniversity.location && <div style={{ fontSize: '14px', color: '#666' }}>📍 {selectedUniversity.location}</div>}
-            {selectedUniversity.cutoff && <div style={{ fontSize: '14px', color: '#666' }}>📊 Cutoff: {selectedUniversity.cutoff}</div>}
-            {selectedUniversity.ranking && <div style={{ fontSize: '14px', color: '#666' }}>🏆 Ranking: {selectedUniversity.ranking}</div>}
-            {selectedUniversity.about && <p style={{ color: '#555', margin: '16px 0' }}>{selectedUniversity.about}</p>}
+            {selectedUniversity.location && <div style={{ fontSize: '14px', color: 'var(--text-muted)' }}>📍 {selectedUniversity.location}</div>}
+            {selectedUniversity.cutoff && <div style={{ fontSize: '14px', color: 'var(--text-muted)' }}>📊 Cutoff: {selectedUniversity.cutoff}</div>}
+            {selectedUniversity.ranking && <div style={{ fontSize: '14px', color: 'var(--text-muted)' }}>🏆 Ranking: {selectedUniversity.ranking}</div>}
+            {selectedUniversity.about && <p style={{ color: 'var(--text-muted)', margin: '16px 0' }}>{selectedUniversity.about}</p>}
             {selectedUniversity.programs && (
               <div style={{ margin: '8px 0' }}>
                 <strong>📚 Programs Offered:</strong>
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginTop: '4px' }}>
                   {selectedUniversity.programs.map((program, i) => (
-                    <span key={i} style={{ background: '#f0f0f0', padding: '4px 10px', borderRadius: '12px', fontSize: '12px' }}>
+                    <span key={i} style={{ background: 'var(--surface-sunken)', padding: '4px 10px', borderRadius: '12px', fontSize: '12px' }}>
                       {program}
                     </span>
                   ))}

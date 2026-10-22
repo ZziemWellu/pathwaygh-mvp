@@ -137,7 +137,7 @@ const Register = ({ onSuccess, onShowPrivacy }) => {
       
       {error && (
         <div style={{ 
-          background: '#ffebee', 
+          background: 'var(--danger-bg)', 
           color: 'var(--danger)', 
           padding: '12px', 
           borderRadius: '8px', 
@@ -162,7 +162,7 @@ const Register = ({ onSuccess, onShowPrivacy }) => {
             style={{
               width: '100%',
               padding: '10px',
-              border: '1px solid #e0e0e0',
+              border: '1px solid var(--border)',
               borderRadius: '8px',
               fontSize: '14px'
             }}
@@ -182,7 +182,7 @@ const Register = ({ onSuccess, onShowPrivacy }) => {
             style={{
               width: '100%',
               padding: '10px',
-              border: '1px solid #e0e0e0',
+              border: '1px solid var(--border)',
               borderRadius: '8px',
               fontSize: '14px'
             }}
@@ -203,7 +203,7 @@ const Register = ({ onSuccess, onShowPrivacy }) => {
             style={{
               width: '100%',
               padding: '10px',
-              border: '1px solid #e0e0e0',
+              border: '1px solid var(--border)',
               borderRadius: '8px',
               fontSize: '14px'
             }}
@@ -223,7 +223,7 @@ const Register = ({ onSuccess, onShowPrivacy }) => {
             style={{
               width: '100%',
               padding: '10px',
-              border: '1px solid #e0e0e0',
+              border: '1px solid var(--border)',
               borderRadius: '8px',
               fontSize: '14px'
             }}
@@ -243,7 +243,7 @@ const Register = ({ onSuccess, onShowPrivacy }) => {
             style={{
               width: '100%',
               padding: '10px',
-              border: '1px solid #e0e0e0',
+              border: '1px solid var(--border)',
               borderRadius: '8px',
               fontSize: '14px'
             }}
@@ -280,7 +280,7 @@ const Register = ({ onSuccess, onShowPrivacy }) => {
           style={{
             width: '100%',
             padding: '12px',
-            background: loading ? '#ccc' : 'var(--primary)',
+            background: loading ? 'var(--border-strong)' : 'var(--primary)',
             color: 'white',
             border: 'none',
             borderRadius: '8px',

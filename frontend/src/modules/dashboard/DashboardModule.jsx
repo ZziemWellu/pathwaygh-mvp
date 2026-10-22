@@ -14,10 +14,10 @@ import { formatDate } from '../../utils/date';
 
 const navItems = [
   { icon: BookOpen, label: 'Learn', path: '/learn', description: 'Browse courses', bg: 'var(--primary-bg)', fg: 'var(--primary)' },
-  { icon: Target, label: 'Career Match', path: '/explore/career-match', description: 'Find your path', bg: '#e3f2fd', fg: 'var(--secondary)' },
-  { icon: Landmark, label: 'Universities', path: '/explore/universities', description: 'Explore schools', bg: '#fce4ec', fg: '#ad1457' },
-  { icon: Coins, label: 'Scholarships', path: '/explore/scholarships', description: 'Find funding', bg: '#fef6e0', fg: '#a06c00' },
-  { icon: Users, label: 'Community', path: '/community', description: 'Connect', bg: '#ede7f6', fg: '#5e35b1' },
+  { icon: Target, label: 'Career Match', path: '/explore/career-match', description: 'Find your path', bg: 'var(--info-bg)', fg: 'var(--secondary)' },
+  { icon: Landmark, label: 'Universities', path: '/explore/universities', description: 'Explore schools', bg: 'var(--rose-bg)', fg: 'var(--rose)' },
+  { icon: Coins, label: 'Scholarships', path: '/explore/scholarships', description: 'Find funding', bg: 'var(--accent-bg)', fg: 'var(--accent-strong)' },
+  { icon: Users, label: 'Community', path: '/community', description: 'Connect', bg: 'var(--violet-bg)', fg: 'var(--violet)' },
 ];
 
 const DashboardModule = () => {
@@ -164,14 +164,14 @@ const DashboardModule = () => {
           must still see it. */}
       {(weak_subjects.length > 0 || (weak_topics && weak_topics.length > 0)) && (
         <div className="dash-card dash-focus" style={{ marginTop: '20px' }}>
-          <h2 className="dash-section-title" style={{ color: '#a06c00' }}><HelpCircle size={17} /> Focus Areas</h2>
+          <h2 className="dash-section-title" style={{ color: 'var(--accent-strong)' }}><HelpCircle size={17} /> Focus Areas</h2>
           {weak_subjects.length > 0 && (
-            <p style={{ margin: 0, color: '#665000', fontSize: '14px' }}>
+            <p style={{ margin: 0, color: 'var(--accent-strong)', fontSize: '14px' }}>
               Your quiz scores are lower in <strong>{weak_subjects.join(', ')}</strong>. Revisit these in Practice to strengthen them.
             </p>
           )}
           {weak_topics && weak_topics.length > 0 && (
-            <p style={{ margin: weak_subjects.length > 0 ? '8px 0 0 0' : 0, color: '#665000', fontSize: '13px' }}>
+            <p style={{ margin: weak_subjects.length > 0 ? '8px 0 0 0' : 0, color: 'var(--accent-strong)', fontSize: '13px' }}>
               Weakest topics: <strong>{weak_topics.map((t) => `${t.topic_name} (${t.subject_id})`).join(', ')}</strong>
             </p>
           )}
@@ -204,7 +204,7 @@ const DashboardModule = () => {
                 <div key={i} className="dash-timeline-item">
                   <div
                     className="dash-timeline-dot"
-                    style={item.type === 'quiz' ? { background: '#fef6e0', color: '#a06c00' } : { background: 'var(--primary-glow)', color: 'var(--primary)' }}
+                    style={item.type === 'quiz' ? { background: 'var(--accent-bg)', color: 'var(--accent-strong)' } : { background: 'var(--primary-glow)', color: 'var(--primary)' }}
                   >
                     {item.type === 'quiz' ? <PencilLine size={16} /> : <CheckCircle2 size={16} />}
                   </div>

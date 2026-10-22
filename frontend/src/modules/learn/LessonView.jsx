@@ -82,24 +82,24 @@ const LessonView = () => {
             />
           </div>
         ) : (
-          <div style={{ padding: '60px 20px', textAlign: 'center', background: '#f8f9fa', borderRadius: '12px', color: 'var(--gray-500)' }}>
+          <div style={{ padding: '60px 20px', textAlign: 'center', background: 'var(--surface-muted)', borderRadius: '12px', color: 'var(--gray-500)' }}>
             {t('learnVideoComingSoon')}
           </div>
         )
       ) : lesson.lesson_type === 'text' ? (
-        <div style={{ padding: '24px', background: 'white', border: '1px solid #e0e0e0', borderRadius: '12px', lineHeight: 1.7 }}>
+        <div style={{ padding: '24px', background: 'white', border: '1px solid var(--border)', borderRadius: '12px', lineHeight: 1.7 }}>
           <ReactMarkdown>{lesson.content || t('learnContentComingSoon')}</ReactMarkdown>
         </div>
       ) : (
-        <div style={{ padding: '40px 20px', textAlign: 'center', background: '#fff3e0', borderRadius: '12px' }}>
-          <p style={{ margin: 0, color: '#e65100' }}>{t('learnPracticeQuizLesson')}</p>
+        <div style={{ padding: '40px 20px', textAlign: 'center', background: 'var(--warning-bg)', borderRadius: '12px' }}>
+          <p style={{ margin: 0, color: 'var(--warning)' }}>{t('learnPracticeQuizLesson')}</p>
           <Link to="/practice" style={{ display: 'inline-block', marginTop: '12px', color: 'var(--primary)', fontWeight: 'bold' }}>
             {t('learnGoToPractice')}
           </Link>
         </div>
       )}
 
-      {lesson.description && <p style={{ color: '#555', margin: '16px 0' }}>{lesson.description}</p>}
+      {lesson.description && <p style={{ color: 'var(--text-muted)', margin: '16px 0' }}>{lesson.description}</p>}
 
       <div style={{ marginTop: '20px', display: 'flex', alignItems: 'center', gap: '12px' }}>
         {lesson.watched ? (
@@ -108,7 +108,7 @@ const LessonView = () => {
           <button
             onClick={markWatched}
             disabled={marking}
-            style={{ padding: '10px 20px', background: marking ? '#ccc' : 'var(--primary)', color: 'white', border: 'none', borderRadius: '8px', cursor: marking ? 'not-allowed' : 'pointer' }}
+            style={{ padding: '10px 20px', background: marking ? 'var(--border-strong)' : 'var(--primary)', color: 'white', border: 'none', borderRadius: '8px', cursor: marking ? 'not-allowed' : 'pointer' }}
           >
             {marking ? t('learnMarking') : lesson.lesson_type === 'text' ? t('learnMarkAsRead') : t('learnMarkAsWatched')}
           </button>
@@ -116,7 +116,7 @@ const LessonView = () => {
       </div>
 
       {justCompleted && (
-        <div style={{ marginTop: '16px', padding: '16px', background: 'var(--primary-bg)', border: '1px solid #a5d6a7', borderRadius: '12px', textAlign: 'center' }}>
+        <div style={{ marginTop: '16px', padding: '16px', background: 'var(--primary-bg)', border: '1px solid var(--primary-border)', borderRadius: '12px', textAlign: 'center' }}>
           <p style={{ margin: '0 0 8px 0', fontWeight: 'bold', color: 'var(--primary)' }}>{t('learnCourseCompleteBanner')}</p>
           <Link to={`/certificates/${courseId}`} style={{ color: 'var(--primary)', fontWeight: 'bold', textDecoration: 'underline' }}>
             {t('learnViewCertificateLink')}

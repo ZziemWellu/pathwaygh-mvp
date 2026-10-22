@@ -15,7 +15,45 @@
   --accent-bg: #fef6e0;
   --danger: #c62828;
   --success: #2e7d32;
-  --warning: #ef6c00;
+  --warning: #b34700; /* was #ef6c00 - 3.08:1 on white; used as text, needs 4.5:1 */
+
+  /* ---- Semantic roles ----
+     Components use these, not raw hex. Each text colour here is >= 4.5:1
+     on white and on --bg-warm (WCAG AA). Status colours come in
+     text / tint-background / border triplets. */
+  --text: var(--gray-800);           /* 14.4:1 */
+  --text-muted: var(--gray-600);     /* 6.0:1 - secondary copy, captions */
+  --text-subtle: var(--gray-500);    /* 5.7:1 - hints, metadata */
+  --text-on-primary: #ffffff;
+  --surface: #ffffff;                /* cards, inputs */
+  --surface-muted: var(--gray-50);   /* stat tiles, quiet panels */
+  --surface-sunken: var(--gray-100); /* progress tracks, wells */
+  --border: var(--gray-200);
+  --border-strong: var(--gray-300);
+  --primary-border: #a5d6a7;
+  --accent-strong: #9a6700;          /* gold as text - 4.87:1 */
+  --accent-border: #f0d88b;
+  --success-dark: #1b5e20;
+  --success-bg: #e8f5e9;
+  --success-border: #a5d6a7;
+  --warning-bg: #fff3e0;
+  --warning-border: #ffcc80;
+  --warning-strong: #c43e00;         /* 5.2:1 */
+  --danger-dark: #b71c1c;
+  --danger-bg: #ffebee;
+  --danger-border: #ef9a9a;
+  --info: var(--secondary);          /* 5.75:1 */
+  --info-bg: #e3f2fd;
+  --violet: #6a1b9a;                 /* 9.4:1 */
+  --violet-bg: #f3e5f5;
+  --rose: #ad1457;                   /* 7.0:1 */
+  --rose-bg: #fce4ec;
+  --earth: #8d6e63;
+
+  /* Kente-inspired stripe - the app's one signature motif (gold/green/red). */
+  --kente: repeating-linear-gradient(90deg,
+    var(--accent) 0 14px, var(--primary) 14px 22px,
+    var(--accent) 22px 36px, #b3261e 36px 42px);
 
   /* Neutral (warm-tinted, not pure grey) */
   --white: #ffffff;
@@ -348,7 +386,7 @@ a:hover {
 }
 
 .btn-success:hover {
-  background: #1b5e20;
+  background: var(--success-dark);
 }
 
 .btn-danger {
@@ -357,7 +395,7 @@ a:hover {
 }
 
 .btn-danger:hover {
-  background: #b71c1c;
+  background: var(--danger-dark);
 }
 
 .btn-outline {

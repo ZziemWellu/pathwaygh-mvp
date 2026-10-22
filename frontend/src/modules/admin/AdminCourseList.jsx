@@ -71,7 +71,7 @@ const AdminCourseList = () => {
       </div>
 
       {showForm && (
-        <form onSubmit={handleCreate} style={{ background: 'white', border: '1px solid #e0e0e0', borderRadius: '12px', padding: '18px', marginBottom: '20px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+        <form onSubmit={handleCreate} style={{ background: 'white', border: '1px solid var(--border)', borderRadius: '12px', padding: '18px', marginBottom: '20px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
           <input required placeholder="Slug (e.g. shs-physics)" value={form.slug} onChange={(e) => setForm({ ...form, slug: e.target.value })} style={inputStyle} />
           <input required placeholder="Title" value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} style={inputStyle} />
           <textarea placeholder="Description" value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} style={{ ...inputStyle, minHeight: '70px' }} />
@@ -90,7 +90,7 @@ const AdminCourseList = () => {
             <option value="LR">Liberia</option>
             <option value="GM">The Gambia</option>
           </select>
-          <button type="submit" disabled={saving} style={{ padding: '10px', background: saving ? '#ccc' : 'var(--primary)', color: 'white', border: 'none', borderRadius: '8px', cursor: saving ? 'not-allowed' : 'pointer', fontWeight: 'bold' }}>
+          <button type="submit" disabled={saving} style={{ padding: '10px', background: saving ? 'var(--border-strong)' : 'var(--primary)', color: 'white', border: 'none', borderRadius: '8px', cursor: saving ? 'not-allowed' : 'pointer', fontWeight: 'bold' }}>
             {saving ? 'Creating...' : 'Create Course'}
           </button>
         </form>
@@ -99,7 +99,7 @@ const AdminCourseList = () => {
       {courses.map((course) => (
         <div
           key={course.id}
-          style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '14px 16px', background: 'white', border: '1px solid #e0e0e0', borderRadius: '10px', marginBottom: '8px', cursor: 'pointer' }}
+          style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '14px 16px', background: 'white', border: '1px solid var(--border)', borderRadius: '10px', marginBottom: '8px', cursor: 'pointer' }}
           onClick={() => navigate(`/admin/courses/${course.id}`)}
         >
           <div style={{ flex: 1 }}>
@@ -119,7 +119,7 @@ const AdminCourseList = () => {
   );
 };
 
-const inputStyle = { padding: '10px 12px', border: '1px solid #e0e0e0', borderRadius: '8px', fontSize: '14px', fontFamily: 'inherit' };
+const inputStyle = { padding: '10px 12px', border: '1px solid var(--border)', borderRadius: '8px', fontSize: '14px', fontFamily: 'inherit' };
 
 // Visually hidden but still announced by screen readers - this form's other
 // fields lean on placeholder text alone, but a <select>'s value never shows

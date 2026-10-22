@@ -191,7 +191,7 @@ const CareerMatchPage = () => {
     return (
       <div style={{ maxWidth: '800px', margin: '0 auto', padding: '20px', textAlign: 'center' }}>
         <h2 style={{ color: 'var(--primary)', marginBottom: '20px' }}>🎯 Calculating Your Career Match</h2>
-        <div style={{ width: '60px', height: '60px', border: '4px solid #f0f0f0', borderTopColor: 'var(--primary)', borderRadius: '50%', animation: 'spin 0.8s linear infinite', margin: '0 auto 20px' }} />
+        <div style={{ width: '60px', height: '60px', border: '4px solid var(--surface-sunken)', borderTopColor: 'var(--primary)', borderRadius: '50%', animation: 'spin 0.8s linear infinite', margin: '0 auto 20px' }} />
         <p style={{ color: 'var(--gray-500)' }}>Analyzing your preferences...</p>
         <p style={{ color: 'var(--gray-500)', fontSize: '13px' }}>Finding the best career matches for you</p>
       </div>
@@ -215,7 +215,7 @@ const CareerMatchPage = () => {
 
         {/* Top Career Matches */}
         <div style={{ marginBottom: '30px' }}>
-          <h3 style={{ color: '#333', marginBottom: '16px' }}>📋 Top Career Matches</h3>
+          <h3 style={{ color: 'var(--text)', marginBottom: '16px' }}>📋 Top Career Matches</h3>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '16px' }}>
             {result.matches.map((career, i) => (
               <div
@@ -223,7 +223,7 @@ const CareerMatchPage = () => {
                 style={{
                   padding: '20px',
                   background: i === 0 ? 'var(--primary-bg)' : 'white',
-                  border: i === 0 ? '2px solid #1a5f2b' : '1px solid #e0e0e0',
+                  border: i === 0 ? '2px solid var(--primary)' : '1px solid var(--border)',
                   borderRadius: '12px',
                   cursor: 'pointer',
                   transition: 'all 0.2s ease'
@@ -238,7 +238,7 @@ const CareerMatchPage = () => {
                     {career.match}%
                   </span>
                 </div>
-                <div style={{ height: '6px', background: '#f0f0f0', borderRadius: '3px', marginTop: '8px' }}>
+                <div style={{ height: '6px', background: 'var(--surface-sunken)', borderRadius: '3px', marginTop: '8px' }}>
                   <div style={{ width: `${career.match}%`, height: '100%', background: 'var(--primary)', borderRadius: '3px' }} />
                 </div>
                 <div style={{ fontSize: '12px', color: 'var(--gray-500)', marginTop: '8px' }}>
@@ -250,8 +250,8 @@ const CareerMatchPage = () => {
         </div>
 
         {/* Recommended SHS Electives */}
-        <div style={{ marginBottom: '24px', padding: '20px', background: 'white', borderRadius: '12px', border: '1px solid #e0e0e0' }}>
-          <h3 style={{ color: '#333', marginBottom: '12px' }}>📚 Recommended SHS Electives</h3>
+        <div style={{ marginBottom: '24px', padding: '20px', background: 'white', borderRadius: '12px', border: '1px solid var(--border)' }}>
+          <h3 style={{ color: 'var(--text)', marginBottom: '12px' }}>📚 Recommended SHS Electives</h3>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
             {result.recommendedElectives.map((elective, i) => (
               <span key={i} style={{ padding: '6px 14px', background: 'var(--primary-bg)', color: 'var(--primary)', borderRadius: '20px', fontWeight: '500' }}>
@@ -262,11 +262,11 @@ const CareerMatchPage = () => {
         </div>
 
         {/* Recommended Universities */}
-        <div style={{ marginBottom: '24px', padding: '20px', background: 'white', borderRadius: '12px', border: '1px solid #e0e0e0' }}>
-          <h3 style={{ color: '#333', marginBottom: '12px' }}>🏛️ Recommended Universities</h3>
+        <div style={{ marginBottom: '24px', padding: '20px', background: 'white', borderRadius: '12px', border: '1px solid var(--border)' }}>
+          <h3 style={{ color: 'var(--text)', marginBottom: '12px' }}>🏛️ Recommended Universities</h3>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
             {result.recommendedUniversities.map((uni, i) => (
-              <span key={i} style={{ padding: '6px 14px', background: '#e3f2fd', color: 'var(--secondary)', borderRadius: '20px', fontWeight: '500' }}>
+              <span key={i} style={{ padding: '6px 14px', background: 'var(--info-bg)', color: 'var(--secondary)', borderRadius: '20px', fontWeight: '500' }}>
                 {uni}
               </span>
             ))}
@@ -274,8 +274,8 @@ const CareerMatchPage = () => {
         </div>
 
         {/* Learning Path */}
-        <div style={{ marginBottom: '24px', padding: '20px', background: 'white', borderRadius: '12px', border: '1px solid #e0e0e0' }}>
-          <h3 style={{ color: '#333', marginBottom: '12px' }}>🗺️ Your Learning Path</h3>
+        <div style={{ marginBottom: '24px', padding: '20px', background: 'white', borderRadius: '12px', border: '1px solid var(--border)' }}>
+          <h3 style={{ color: 'var(--text)', marginBottom: '12px' }}>🗺️ Your Learning Path</h3>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
             {result.learningPaths.map((path, i) => (
               <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
@@ -295,7 +295,7 @@ const CareerMatchPage = () => {
                 </span>
                 <div>
                   <div style={{ fontWeight: 'bold', fontSize: '14px' }}>{path.title}</div>
-                  <div style={{ fontSize: '13px', color: '#666' }}>{path.description}</div>
+                  <div style={{ fontSize: '13px', color: 'var(--text-muted)' }}>{path.description}</div>
                 </div>
               </div>
             ))}
@@ -338,7 +338,7 @@ const CareerMatchPage = () => {
             onClick={resetAssessment}
             style={{
               padding: '12px 24px',
-              background: '#f0f0f0',
+              background: 'var(--surface-sunken)',
               border: 'none',
               borderRadius: '8px',
               cursor: 'pointer',
@@ -366,7 +366,7 @@ const CareerMatchPage = () => {
             Question {step} of {questions.length}
           </span>
         </div>
-        <div style={{ height: '4px', background: '#f0f0f0', borderRadius: '2px' }}>
+        <div style={{ height: '4px', background: 'var(--surface-sunken)', borderRadius: '2px' }}>
           <div style={{ width: `${getProgress()}%`, height: '100%', background: 'var(--primary)', borderRadius: '2px', transition: 'width 0.3s ease' }} />
         </div>
         <div style={{ textAlign: 'right', fontSize: '12px', color: 'var(--gray-500)', marginTop: '4px' }}>
@@ -374,7 +374,7 @@ const CareerMatchPage = () => {
         </div>
       </div>
 
-      <div style={{ background: 'white', borderRadius: '12px', border: '1px solid #e0e0e0', padding: '30px' }}>
+      <div style={{ background: 'white', borderRadius: '12px', border: '1px solid var(--border)', padding: '30px' }}>
         <h3 style={{ margin: '0 0 8px 0', fontSize: '20px' }}>{currentQuestion.question}</h3>
         {currentQuestion.description && (
           <p style={{ color: 'var(--gray-500)', fontSize: '14px', marginBottom: '16px' }}>{currentQuestion.description}</p>
@@ -400,15 +400,15 @@ const CareerMatchPage = () => {
                 }}
                 style={{
                   padding: '12px 16px',
-                  background: isSelected ? 'var(--primary-bg)' : '#f8f9fa',
-                  border: isSelected ? '2px solid #1a5f2b' : '1px solid #e0e0e0',
+                  background: isSelected ? 'var(--primary-bg)' : 'var(--surface-muted)',
+                  border: isSelected ? '2px solid var(--primary)' : '1px solid var(--border)',
                   borderRadius: '8px',
                   cursor: 'pointer',
                   textAlign: 'left',
                   fontSize: '14px',
                   transition: 'all 0.2s ease',
                   fontWeight: isSelected ? 'bold' : 'normal',
-                  color: isSelected ? 'var(--primary)' : '#333'
+                  color: isSelected ? 'var(--primary)' : 'var(--text)'
                 }}
               >
                 {option}
@@ -423,7 +423,7 @@ const CareerMatchPage = () => {
             disabled={step === 1}
             style={{
               padding: '10px 24px',
-              background: step === 1 ? '#f0f0f0' : 'var(--primary)',
+              background: step === 1 ? 'var(--surface-sunken)' : 'var(--primary)',
               color: step === 1 ? 'var(--gray-500)' : 'white',
               border: 'none',
               borderRadius: '8px',
@@ -439,7 +439,7 @@ const CareerMatchPage = () => {
             disabled={isMulti ? currentAnswer.length === 0 : !currentAnswer}
             style={{
               padding: '10px 24px',
-              background: (isMulti ? currentAnswer.length > 0 : currentAnswer) ? 'var(--primary)' : '#ccc',
+              background: (isMulti ? currentAnswer.length > 0 : currentAnswer) ? 'var(--primary)' : 'var(--border-strong)',
               color: 'white',
               border: 'none',
               borderRadius: '8px',

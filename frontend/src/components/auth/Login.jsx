@@ -44,7 +44,7 @@ const Login = ({ onSuccess }) => {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
-            style={{ width: '100%', padding: '10px', border: '1px solid #e0e0e0', borderRadius: '8px' }}
+            style={{ width: '100%', padding: '10px', border: '1px solid var(--border)', borderRadius: '8px' }}
             placeholder={t('emailPlaceholder')}
           />
         </div>
@@ -56,7 +56,7 @@ const Login = ({ onSuccess }) => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
-            style={{ width: '100%', padding: '10px', border: '1px solid #e0e0e0', borderRadius: '8px' }}
+            style={{ width: '100%', padding: '10px', border: '1px solid var(--border)', borderRadius: '8px' }}
             placeholder="••••••••"
           />
         </div>

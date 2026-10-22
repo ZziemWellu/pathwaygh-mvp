@@ -80,15 +80,15 @@ const CourseDetail = () => {
           {course.level.toUpperCase()}
         </span>
       )}
-      <p style={{ color: '#555', margin: '16px 0' }}>{course.description}</p>
+      <p style={{ color: 'var(--text-muted)', margin: '16px 0' }}>{course.description}</p>
 
       {course.enrolled ? (
         <div style={{ marginBottom: '20px' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px', color: '#666', marginBottom: '4px' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px', color: 'var(--text-muted)', marginBottom: '4px' }}>
             <span>{t('learnYourProgress')}</span>
             <span>{t('learnProgressSummary').replace('{watched}', watchedCount).replace('{total}', course.lessons.length).replace('{pct}', progressPct)}</span>
           </div>
-          <div style={{ height: '6px', background: '#f0f0f0', borderRadius: '3px' }}>
+          <div style={{ height: '6px', background: 'var(--surface-sunken)', borderRadius: '3px' }}>
             <div style={{ width: `${progressPct}%`, height: '100%', background: 'var(--primary)', borderRadius: '3px', transition: 'width 0.4s ease' }} />
           </div>
           {isComplete && (
@@ -104,13 +104,13 @@ const CourseDetail = () => {
         <button
           onClick={handleEnroll}
           disabled={enrolling}
-          style={{ padding: '12px 24px', background: enrolling ? '#ccc' : 'var(--primary)', color: 'white', border: 'none', borderRadius: '8px', cursor: enrolling ? 'not-allowed' : 'pointer', fontWeight: 'bold', marginBottom: '20px' }}
+          style={{ padding: '12px 24px', background: enrolling ? 'var(--border-strong)' : 'var(--primary)', color: 'white', border: 'none', borderRadius: '8px', cursor: enrolling ? 'not-allowed' : 'pointer', fontWeight: 'bold', marginBottom: '20px' }}
         >
           {enrolling ? t('learnEnrolling') : t('learnEnrollInCourse')}
         </button>
       )}
 
-      <h3 style={{ color: '#333' }}>{t('learnCurriculum')}</h3>
+      <h3 style={{ color: 'var(--text)' }}>{t('learnCurriculum')}</h3>
       <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
         {course.lessons.map((lesson) => {
           const locked = !course.enrolled && !lesson.is_free_preview;
@@ -123,9 +123,9 @@ const CourseDetail = () => {
                 alignItems: 'center',
                 gap: '12px',
                 padding: '14px 16px',
-                border: '1px solid #e0e0e0',
+                border: '1px solid var(--border)',
                 borderRadius: '8px',
-                background: locked ? '#fafafa' : 'white',
+                background: locked ? 'var(--surface-muted)' : 'white',
                 cursor: locked ? 'not-allowed' : 'pointer',
                 opacity: locked ? 0.6 : 1,
               }}

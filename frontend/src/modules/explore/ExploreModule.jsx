@@ -124,14 +124,14 @@ const ExploreModule = () => {
       </div>
 
       {/* Tabs */}
-      <div style={{ display: 'flex', gap: '10px', marginBottom: '20px', borderBottom: '1px solid #e0e0e0', paddingBottom: '10px' }}>
+      <div style={{ display: 'flex', gap: '10px', marginBottom: '20px', borderBottom: '1px solid var(--border)', paddingBottom: '10px' }}>
         <button
           onClick={() => setActiveTab('careers')}
           style={{
             padding: '8px 20px',
             background: activeTab === 'careers' ? 'var(--primary)' : 'transparent',
-            color: activeTab === 'careers' ? 'white' : '#333',
-            border: activeTab === 'careers' ? 'none' : '1px solid #e0e0e0',
+            color: activeTab === 'careers' ? 'white' : 'var(--text)',
+            border: activeTab === 'careers' ? 'none' : '1px solid var(--border)',
             borderRadius: '8px',
             cursor: 'pointer',
             fontWeight: activeTab === 'careers' ? 'bold' : 'normal',
@@ -144,8 +144,8 @@ const ExploreModule = () => {
           style={{
             padding: '8px 20px',
             background: activeTab === 'universities' ? 'var(--primary)' : 'transparent',
-            color: activeTab === 'universities' ? 'white' : '#333',
-            border: activeTab === 'universities' ? 'none' : '1px solid #e0e0e0',
+            color: activeTab === 'universities' ? 'white' : 'var(--text)',
+            border: activeTab === 'universities' ? 'none' : '1px solid var(--border)',
             borderRadius: '8px',
             cursor: 'pointer',
             fontWeight: activeTab === 'universities' ? 'bold' : 'normal',
@@ -166,7 +166,7 @@ const ExploreModule = () => {
                 key={career.id}
                 onClick={() => openCareerDetail(career)}
                 style={{
-                  border: '1px solid #e0e0e0',
+                  border: '1px solid var(--border)',
                   borderRadius: '12px',
                   padding: '20px',
                   background: 'white',
@@ -198,7 +198,7 @@ const ExploreModule = () => {
                     </span>
                   )}
                 </div>
-                <p style={{ color: '#666', fontSize: '14px', margin: '8px 0' }}>{career.description}</p>
+                <p style={{ color: 'var(--text-muted)', fontSize: '14px', margin: '8px 0' }}>{career.description}</p>
                 <div style={{ display: 'flex', gap: '12px', fontSize: '12px', color: 'var(--gray-500)', marginTop: '8px' }}>
                   {career.salary_range && <span>💰 {career.salary_range}</span>}
                   {career.demand && <span>📊 {career.demand}</span>}
@@ -223,7 +223,7 @@ const ExploreModule = () => {
                 key={uni.id}
                 onClick={() => openUniversityDetail(uni)}
                 style={{
-                  border: '1px solid #e0e0e0',
+                  border: '1px solid var(--border)',
                   borderRadius: '12px',
                   padding: '20px',
                   background: 'white',
@@ -241,28 +241,28 @@ const ExploreModule = () => {
                 }}
               >
                 <h3 style={{ color: 'var(--primary)', margin: '0 0 8px 0', fontSize: '18px' }}>{uni.name}</h3>
-                {uni.location && <div style={{ color: '#666', fontSize: '14px' }}>📍 {uni.location}</div>}
+                {uni.location && <div style={{ color: 'var(--text-muted)', fontSize: '14px' }}>📍 {uni.location}</div>}
                 {uni.cutoff && <div style={{ color: 'var(--gray-500)', fontSize: '13px' }}>Cutoff: {uni.cutoff}</div>}
                 {uni.programs && uni.programs.length > 0 && (
                   <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginTop: '8px' }}>
                     {uni.programs.slice(0, 2).map((p, i) => (
                       <span key={i} style={{
-                        background: '#f0f0f0',
+                        background: 'var(--surface-sunken)',
                         padding: '2px 10px',
                         borderRadius: '12px',
                         fontSize: '11px',
-                        color: '#666',
+                        color: 'var(--text-muted)',
                       }}>
                         {p}
                       </span>
                     ))}
                     {uni.programs.length > 2 && (
                       <span style={{
-                        background: '#f0f0f0',
+                        background: 'var(--surface-sunken)',
                         padding: '2px 10px',
                         borderRadius: '12px',
                         fontSize: '11px',
-                        color: '#666',
+                        color: 'var(--text-muted)',
                       }}>
                         +{uni.programs.length - 2} more
                       </span>

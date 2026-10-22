@@ -80,17 +80,17 @@ const FlashcardsModule = () => {
     <div style={{ maxWidth: '700px', margin: '0 auto', padding: '20px' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', flexWrap: 'wrap', gap: '10px' }}>
         <h2 style={{ margin: 0, color: 'var(--primary)' }}>🗂️ Flashcards</h2>
-        <button onClick={() => setShowManage(!showManage)} style={{ padding: '8px 16px', border: '1px solid #e0e0e0', borderRadius: '8px', background: showManage ? 'var(--primary)' : 'white', color: showManage ? 'white' : '#333', cursor: 'pointer', fontSize: '13px' }}>
+        <button onClick={() => setShowManage(!showManage)} style={{ padding: '8px 16px', border: '1px solid var(--border)', borderRadius: '8px', background: showManage ? 'var(--primary)' : 'white', color: showManage ? 'white' : 'var(--text)', cursor: 'pointer', fontSize: '13px' }}>
           {showManage ? 'Back to review' : `Manage (${allCards.length})`}
         </button>
       </div>
 
       {showManage ? (
         <div>
-          <form onSubmit={createCard} style={{ background: 'white', border: '1px solid #e0e0e0', borderRadius: '12px', padding: '16px', marginBottom: '20px' }}>
+          <form onSubmit={createCard} style={{ background: 'white', border: '1px solid var(--border)', borderRadius: '12px', padding: '16px', marginBottom: '20px' }}>
             <h3 style={{ margin: '0 0 10px 0', fontSize: '14px' }}>New flashcard</h3>
-            <textarea value={front} onChange={(e) => setFront(e.target.value)} placeholder="Front (question/prompt)" rows={2} style={{ width: '100%', padding: '8px', border: '1px solid #e0e0e0', borderRadius: '8px', marginBottom: '8px', fontFamily: 'inherit' }} />
-            <textarea value={back} onChange={(e) => setBack(e.target.value)} placeholder="Back (answer)" rows={2} style={{ width: '100%', padding: '8px', border: '1px solid #e0e0e0', borderRadius: '8px', marginBottom: '8px', fontFamily: 'inherit' }} />
+            <textarea value={front} onChange={(e) => setFront(e.target.value)} placeholder="Front (question/prompt)" rows={2} style={{ width: '100%', padding: '8px', border: '1px solid var(--border)', borderRadius: '8px', marginBottom: '8px', fontFamily: 'inherit' }} />
+            <textarea value={back} onChange={(e) => setBack(e.target.value)} placeholder="Back (answer)" rows={2} style={{ width: '100%', padding: '8px', border: '1px solid var(--border)', borderRadius: '8px', marginBottom: '8px', fontFamily: 'inherit' }} />
             <button type="submit" disabled={creating || !front.trim() || !back.trim()} style={{ padding: '8px 20px', background: 'var(--primary)', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: 'bold' }}>
               {creating ? 'Adding...' : 'Add Card'}
             </button>
@@ -102,7 +102,7 @@ const FlashcardsModule = () => {
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
               {allCards.map((c) => (
-                <div key={c.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 14px', background: 'white', border: '1px solid #e0e0e0', borderRadius: '8px' }}>
+                <div key={c.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 14px', background: 'white', border: '1px solid var(--border)', borderRadius: '8px' }}>
                   <div>
                     <div style={{ fontSize: '13px', fontWeight: 'bold' }}>{c.front}</div>
                     <div style={{ fontSize: '12px', color: 'var(--gray-500)' }}>{c.back}</div>
@@ -116,14 +116,14 @@ const FlashcardsModule = () => {
           )}
         </div>
       ) : dueCards.length === 0 ? (
-        <div style={{ textAlign: 'center', padding: '40px', background: 'white', border: '1px solid #e0e0e0', borderRadius: '12px' }}>
+        <div style={{ textAlign: 'center', padding: '40px', background: 'white', border: '1px solid var(--border)', borderRadius: '12px' }}>
           <p style={{ color: 'var(--gray-500)' }}>No cards due for review right now.</p>
           <button onClick={() => setShowManage(true)} style={{ marginTop: '10px', padding: '8px 20px', background: 'var(--primary)', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer' }}>
             Add a flashcard
           </button>
         </div>
       ) : !currentCard ? (
-        <div style={{ textAlign: 'center', padding: '40px', background: 'white', border: '1px solid #e0e0e0', borderRadius: '12px' }}>
+        <div style={{ textAlign: 'center', padding: '40px', background: 'white', border: '1px solid var(--border)', borderRadius: '12px' }}>
           <p style={{ fontSize: '18px' }}>🎉 All done for now!</p>
           <p style={{ color: 'var(--gray-500)' }}>You've reviewed every card due today.</p>
         </div>
@@ -137,7 +137,7 @@ const FlashcardsModule = () => {
             style={{
               minHeight: '180px',
               background: 'white',
-              border: '1px solid #e0e0e0',
+              border: '1px solid var(--border)',
               borderRadius: '16px',
               padding: '32px',
               display: 'flex',
@@ -156,9 +156,9 @@ const FlashcardsModule = () => {
           ) : (
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '8px' }}>
               <RatingButton label="Again" color="var(--danger)" onClick={() => rate('again')} />
-              <RatingButton label="Hard" color="#ef6c00" onClick={() => rate('hard')} />
+              <RatingButton label="Hard" color="var(--warning)" onClick={() => rate('hard')} />
               <RatingButton label="Good" color="var(--primary)" onClick={() => rate('good')} />
-              <RatingButton label="Easy" color="#2e7d32" onClick={() => rate('easy')} />
+              <RatingButton label="Easy" color="var(--success)" onClick={() => rate('easy')} />
             </div>
           )}
         </div>

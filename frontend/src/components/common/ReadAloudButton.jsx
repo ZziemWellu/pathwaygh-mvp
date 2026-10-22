@@ -46,7 +46,7 @@ const ReadAloudButton = ({ text, size = 14 }) => {
         border: 'none',
         padding: '2px',
         cursor: 'pointer',
-        color: 'var(--gray-500, #666)',
+        color: 'var(--gray-500, var(--text-muted))',
       }}
     >
       {speaking ? <VolumeX size={size} /> : <Volume2 size={size} />}

@@ -84,7 +84,7 @@ const CareerDetail = ({ career, onClose }) => {
             cursor: 'pointer',
             color: 'var(--gray-500)',
           }}
-          onMouseEnter={(e) => e.currentTarget.style.color = '#333'}
+          onMouseEnter={(e) => e.currentTarget.style.color = 'var(--text)'}
           onMouseLeave={(e) => e.currentTarget.style.color = 'var(--gray-500)'}
         >
           ✕
@@ -110,8 +110,8 @@ const CareerDetail = ({ career, onClose }) => {
             )}
             {career.difficulty && (
               <span style={{
-                background: '#fff3e0',
-                color: '#e65100',
+                background: 'var(--warning-bg)',
+                color: 'var(--warning)',
                 padding: '4px 14px',
                 borderRadius: '20px',
                 fontSize: '13px',
@@ -126,8 +126,8 @@ const CareerDetail = ({ career, onClose }) => {
         {error && (
           <div style={{
             padding: '12px',
-            background: '#ffebee',
-            border: '1px solid #ffcdd2',
+            background: 'var(--danger-bg)',
+            border: '1px solid var(--danger-border)',
             borderRadius: '8px',
             marginBottom: '16px',
             color: 'var(--danger)',
@@ -139,8 +139,8 @@ const CareerDetail = ({ career, onClose }) => {
 
         {/* Overview */}
         <div style={{ marginBottom: '20px' }}>
-          <h3 style={{ color: '#333', fontSize: '16px', marginBottom: '8px' }}>📋 Overview</h3>
-          <p style={{ color: '#555', lineHeight: '1.6' }}>{career.description}</p>
+          <h3 style={{ color: 'var(--text)', fontSize: '16px', marginBottom: '8px' }}>📋 Overview</h3>
+          <p style={{ color: 'var(--text-muted)', lineHeight: '1.6' }}>{career.description}</p>
         </div>
 
         {/* Key Stats */}
@@ -151,25 +151,25 @@ const CareerDetail = ({ career, onClose }) => {
           marginBottom: '20px',
         }}>
           {career.salary_range && (
-            <div style={{ padding: '14px', background: '#f8f9fa', borderRadius: '10px' }}>
+            <div style={{ padding: '14px', background: 'var(--surface-muted)', borderRadius: '10px' }}>
               <div style={{ fontSize: '11px', color: 'var(--gray-500)' }}>💰 Salary Range</div>
               <div style={{ fontSize: '16px', fontWeight: 'bold', color: 'var(--primary)' }}>{career.salary_range}</div>
             </div>
           )}
           {career.demand && (
-            <div style={{ padding: '14px', background: '#f8f9fa', borderRadius: '10px' }}>
+            <div style={{ padding: '14px', background: 'var(--surface-muted)', borderRadius: '10px' }}>
               <div style={{ fontSize: '11px', color: 'var(--gray-500)' }}>📊 Job Demand</div>
               <div style={{ fontSize: '16px', fontWeight: 'bold', color: 'var(--primary)' }}>{career.demand}</div>
             </div>
           )}
           {career.growth && (
-            <div style={{ padding: '14px', background: '#f8f9fa', borderRadius: '10px' }}>
+            <div style={{ padding: '14px', background: 'var(--surface-muted)', borderRadius: '10px' }}>
               <div style={{ fontSize: '11px', color: 'var(--gray-500)' }}>📈 Growth Outlook</div>
               <div style={{ fontSize: '16px', fontWeight: 'bold', color: 'var(--primary)' }}>{career.growth}</div>
             </div>
           )}
           {career.ai_score && (
-            <div style={{ padding: '14px', background: '#f8f9fa', borderRadius: '10px' }}>
+            <div style={{ padding: '14px', background: 'var(--surface-muted)', borderRadius: '10px' }}>
               <div style={{ fontSize: '11px', color: 'var(--gray-500)' }}>🤖 AI Suitability</div>
               <div style={{ fontSize: '16px', fontWeight: 'bold', color: 'var(--primary)' }}>{career.ai_score}%</div>
             </div>
@@ -179,11 +179,11 @@ const CareerDetail = ({ career, onClose }) => {
         {/* WASSCE Subjects */}
         {career.required_subjects && career.required_subjects.length > 0 && (
           <div style={{ marginBottom: '20px' }}>
-            <h3 style={{ color: '#333', fontSize: '16px', marginBottom: '8px' }}>📚 Required WASSCE Subjects</h3>
+            <h3 style={{ color: 'var(--text)', fontSize: '16px', marginBottom: '8px' }}>📚 Required WASSCE Subjects</h3>
             <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
               {career.required_subjects.map((subject, i) => (
                 <span key={i} style={{
-                  background: '#e3f2fd',
+                  background: 'var(--info-bg)',
                   color: 'var(--secondary)',
                   padding: '4px 14px',
                   borderRadius: '16px',
@@ -199,12 +199,12 @@ const CareerDetail = ({ career, onClose }) => {
         {/* Skills */}
         {career.skills && career.skills.length > 0 && (
           <div style={{ marginBottom: '20px' }}>
-            <h3 style={{ color: '#333', fontSize: '16px', marginBottom: '8px' }}>🛠️ Key Skills</h3>
+            <h3 style={{ color: 'var(--text)', fontSize: '16px', marginBottom: '8px' }}>🛠️ Key Skills</h3>
             <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
               {career.skills.map((skill, i) => (
                 <span key={i} style={{
-                  background: '#f3e5f5',
-                  color: '#6a1b9a',
+                  background: 'var(--violet-bg)',
+                  color: 'var(--violet)',
                   padding: '4px 14px',
                   borderRadius: '16px',
                   fontSize: '13px',
@@ -219,7 +219,7 @@ const CareerDetail = ({ career, onClose }) => {
         {/* Universities */}
         {career.universities && career.universities.length > 0 && (
           <div style={{ marginBottom: '20px' }}>
-            <h3 style={{ color: '#333', fontSize: '16px', marginBottom: '8px' }}>🏛️ Recommended Universities</h3>
+            <h3 style={{ color: 'var(--text)', fontSize: '16px', marginBottom: '8px' }}>🏛️ Recommended Universities</h3>
             <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
               {career.universities.map((uni, i) => (
                 <span key={i} style={{
@@ -239,7 +239,7 @@ const CareerDetail = ({ career, onClose }) => {
         {/* Learning Roadmap */}
         {career.roadmap && career.roadmap.length > 0 && (
           <div style={{ marginBottom: '20px' }}>
-            <h3 style={{ color: '#333', fontSize: '16px', marginBottom: '12px' }}>🗺️ Learning Roadmap</h3>
+            <h3 style={{ color: 'var(--text)', fontSize: '16px', marginBottom: '12px' }}>🗺️ Learning Roadmap</h3>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
               {career.roadmap.map((step, i) => (
                 <div key={i} style={{
@@ -247,7 +247,7 @@ const CareerDetail = ({ career, onClose }) => {
                   alignItems: 'center',
                   gap: '12px',
                   padding: '10px 16px',
-                  background: '#f8f9fa',
+                  background: 'var(--surface-muted)',
                   borderRadius: '8px',
                 }}>
                   <span style={{
@@ -282,7 +282,7 @@ const CareerDetail = ({ career, onClose }) => {
             background: 'var(--primary-bg)',
             borderRadius: '10px',
             marginBottom: '20px',
-            border: '1px solid #c8e6c9',
+            border: '1px solid var(--primary-border)',
           }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <span style={{ fontWeight: 'bold', color: 'var(--primary)' }}>🤖 Your Match Score</span>
@@ -290,7 +290,7 @@ const CareerDetail = ({ career, onClose }) => {
                 {career.ai_match}%
               </span>
             </div>
-            <div style={{ height: '6px', background: '#e0e0e0', borderRadius: '3px', marginTop: '8px' }}>
+            <div style={{ height: '6px', background: 'var(--border)', borderRadius: '3px', marginTop: '8px' }}>
               <div style={{
                 width: `${career.ai_match}%`,
                 height: '100%',
@@ -328,7 +328,7 @@ const CareerDetail = ({ career, onClose }) => {
               padding: '10px 24px',
               background: saved ? 'var(--primary-bg)' : 'white',
               color: saved ? 'var(--primary)' : 'var(--primary)',
-              border: saved ? '2px solid #1a5f2b' : '1px solid #1a5f2b',
+              border: saved ? '2px solid var(--primary)' : '1px solid var(--primary)',
               borderRadius: '8px',
               cursor: saving ? 'default' : 'pointer',
               fontSize: '14px',

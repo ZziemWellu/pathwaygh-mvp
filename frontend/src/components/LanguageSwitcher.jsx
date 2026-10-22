@@ -12,7 +12,7 @@ const LanguageSwitcher = ({ style }) => {
       onChange={(e) => setLanguage(e.target.value)}
       style={{
         padding: '4px 8px',
-        border: '1px solid #e0e0e0',
+        border: '1px solid var(--border)',
         borderRadius: '6px',
         fontSize: '12px',
         background: 'white',

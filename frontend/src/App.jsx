@@ -196,7 +196,7 @@ const App = () => {
             <LanguageSwitcher />
           </p>
         </main>
-        <footer style={{ textAlign: 'center', marginTop: '40px', padding: '20px', color: 'var(--gray-500)', borderTop: '1px solid #eee' }}>
+        <footer style={{ textAlign: 'center', marginTop: '40px', padding: '20px', color: 'var(--gray-500)', borderTop: '1px solid var(--border)' }}>
           <p>{t('copyright')}</p>
           <p style={{ fontSize: '12px', margin: '4px 0 8px 0' }}>{t('poweredBy')}</p>
           <button onClick={() => setShowPrivacy(true)} style={{ background: 'none', border: 'none', color: 'var(--gray-500)', cursor: 'pointer', textDecoration: 'underline', fontSize: '12px' }}>
@@ -223,7 +223,7 @@ const App = () => {
           justifyContent: 'space-between',
           alignItems: 'center',
           padding: '12px 0',
-          borderBottom: '1px solid #e0e0e0',
+          borderBottom: '1px solid var(--border)',
           flexWrap: 'wrap',
           gap: '8px'
         }}>
@@ -232,11 +232,11 @@ const App = () => {
             <span style={{ fontSize: '11px', color: 'var(--gray-500)' }}>{t('tagline')} • {COUNTRY_NAMES[user?.country] || ''}</span>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-            <span style={{ color: '#555', fontSize: '13px', display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+            <span style={{ color: 'var(--text-muted)', fontSize: '13px', display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
               <User size={14} aria-hidden="true" /> {user?.full_name || user?.name || t('student')}
             </span>
             {user?.is_admin && (
-              <span style={{ fontSize: '11px', fontWeight: 'bold', color: 'var(--primary)', background: 'var(--primary-bg)', border: '1px solid #a5d6a7', borderRadius: '999px', padding: '3px 10px' }}>
+              <span style={{ fontSize: '11px', fontWeight: 'bold', color: 'var(--primary)', background: 'var(--primary-bg)', border: '1px solid var(--primary-border)', borderRadius: '999px', padding: '3px 10px' }}>
                 {t('admin')}
               </span>
             )}
@@ -246,7 +246,7 @@ const App = () => {
               alignItems: 'center',
               gap: '6px',
               padding: '5px 14px',
-              background: '#f0f0f0',
+              background: 'var(--surface-sunken)',
               border: 'none',
               borderRadius: '6px',
               cursor: 'pointer',
@@ -305,7 +305,7 @@ const App = () => {
           textAlign: 'center', 
           padding: '16px 0', 
           color: 'var(--gray-500)', 
-          borderTop: '1px solid #e0e0e0', 
+          borderTop: '1px solid var(--border)', 
           fontSize: '13px' 
         }}>
           <p>{t('copyright')}</p>

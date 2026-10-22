@@ -54,7 +54,7 @@ const CertificateVerify = ({ code: initialCode }) => {
           value={codeInput}
           onChange={(e) => setCodeInput(e.target.value)}
           placeholder="XXXX-XXXX-XXXX"
-          style={{ flex: 1, padding: '10px', border: '1px solid #e0e0e0', borderRadius: '8px', fontSize: '14px' }}
+          style={{ flex: 1, padding: '10px', border: '1px solid var(--border)', borderRadius: '8px', fontSize: '14px' }}
         />
         <button
           type="submit"
@@ -69,18 +69,18 @@ const CertificateVerify = ({ code: initialCode }) => {
 
       {result && !loading && (
         result.valid ? (
-          <div style={{ background: 'var(--primary-bg)', border: '1px solid #a5d6a7', borderRadius: '12px', padding: '24px', textAlign: 'center' }}>
+          <div style={{ background: 'var(--primary-bg)', border: '1px solid var(--primary-border)', borderRadius: '12px', padding: '24px', textAlign: 'center' }}>
             <div style={{ fontSize: '32px', marginBottom: '8px' }}>✅</div>
             <h2 style={{ color: 'var(--primary)', margin: '0 0 12px 0' }}>Certificate Verified</h2>
             <p style={{ margin: '4px 0' }}><strong>{result.certificate.recipient_name}</strong></p>
-            <p style={{ margin: '4px 0', color: '#333' }}>completed <strong>{result.certificate.course_title}</strong></p>
+            <p style={{ margin: '4px 0', color: 'var(--text)' }}>completed <strong>{result.certificate.course_title}</strong></p>
             <p style={{ margin: '4px 0', color: 'var(--gray-500)', fontSize: '13px' }}>
               {result.certificate.lesson_count} lessons · issued {formatDate(result.certificate.issued_at, { long: true })}
             </p>
             <p style={{ marginTop: '12px', color: 'var(--gray-500)', fontSize: '12px' }}>Code: {result.certificate.code_display}</p>
           </div>
         ) : (
-          <div style={{ background: '#ffebee', border: '1px solid #ef9a9a', borderRadius: '12px', padding: '24px', textAlign: 'center' }}>
+          <div style={{ background: 'var(--danger-bg)', border: '1px solid var(--danger-border)', borderRadius: '12px', padding: '24px', textAlign: 'center' }}>
             <div style={{ fontSize: '32px', marginBottom: '8px' }}>❌</div>
             <h2 style={{ color: 'var(--danger)', margin: 0 }}>No certificate found for this code</h2>
           </div>

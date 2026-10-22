@@ -10,8 +10,8 @@ const markdownComponents = {
   h1: ({ children }) => <div style={{ fontWeight: 'bold', fontSize: '15px', margin: '4px 0' }}>{children}</div>,
   h2: ({ children }) => <div style={{ fontWeight: 'bold', fontSize: '14px', margin: '4px 0' }}>{children}</div>,
   h3: ({ children }) => <div style={{ fontWeight: 'bold', fontSize: '14px', margin: '4px 0' }}>{children}</div>,
-  hr: () => <hr style={{ border: 'none', borderTop: '1px solid #e0e0e0', margin: '8px 0' }} />,
-  code: ({ children }) => <code style={{ background: '#f0f0f0', padding: '1px 4px', borderRadius: '4px', fontSize: '13px' }}>{children}</code>,
+  hr: () => <hr style={{ border: 'none', borderTop: '1px solid var(--border)', margin: '8px 0' }} />,
+  code: ({ children }) => <code style={{ background: 'var(--surface-sunken)', padding: '1px 4px', borderRadius: '4px', fontSize: '13px' }}>{children}</code>,
 };
 
 const AIChat = ({ user }) => {
@@ -95,7 +95,7 @@ const AIChat = ({ user }) => {
         style={{
           position: 'fixed',
           borderRadius: '50%',
-          background: 'linear-gradient(135deg, #1a5f2b, #2d8a4e)',
+          background: 'linear-gradient(135deg, var(--primary), var(--primary-light))',
           color: 'white',
           border: 'none',
           fontSize: '28px',
@@ -126,14 +126,14 @@ const AIChat = ({ user }) => {
         flexDirection: 'column',
         zIndex: 1000,
         overflow: 'hidden',
-        border: '1px solid #e0e0e0',
+        border: '1px solid var(--border)',
       }}
     >
       {/* Header */}
       <div
         style={{
           padding: '16px 20px',
-          background: 'linear-gradient(135deg, #1a5f2b, #2d8a4e)',
+          background: 'linear-gradient(135deg, var(--primary), var(--primary-light))',
           color: 'white',
           display: 'flex',
           justifyContent: 'space-between',
@@ -159,7 +159,7 @@ const AIChat = ({ user }) => {
       <div
         style={{
           padding: '8px 16px',
-          borderBottom: '1px solid #e0e0e0',
+          borderBottom: '1px solid var(--border)',
           background: 'white',
         }}
       >
@@ -171,8 +171,8 @@ const AIChat = ({ user }) => {
             padding: '6px 8px',
             fontSize: '13px',
             borderRadius: '6px',
-            border: '1px solid #e0e0e0',
-            color: '#333',
+            border: '1px solid var(--border)',
+            color: 'var(--text)',
           }}
         >
           <option value="">General (no personalized help)</option>
@@ -188,7 +188,7 @@ const AIChat = ({ user }) => {
           flex: 1,
           padding: '16px',
           overflowY: 'auto',
-          background: '#f8f9fa',
+          background: 'var(--surface-muted)',
         }}
       >
         {messages.map((msg, i) => (
@@ -206,8 +206,8 @@ const AIChat = ({ user }) => {
                 padding: '10px 14px',
                 borderRadius: '12px',
                 background: msg.role === 'user' ? 'var(--primary)' : 'white',
-                color: msg.role === 'user' ? 'white' : '#333',
-                border: msg.role === 'assistant' ? '1px solid #e0e0e0' : 'none',
+                color: msg.role === 'user' ? 'white' : 'var(--text)',
+                border: msg.role === 'assistant' ? '1px solid var(--border)' : 'none',
                 boxShadow: '0 1px 4px rgba(0,0,0,0.06)',
               }}
             >
@@ -217,12 +217,12 @@ const AIChat = ({ user }) => {
                   <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '6px', marginTop: '4px' }}>
                     <ReadAloudButton text={msg.content} />
                     {msg.grounded && (
-                      <span style={{ fontSize: '11px', color: 'var(--primary)', background: '#eaf5ee', padding: '2px 8px', borderRadius: '10px' }}>
+                      <span style={{ fontSize: '11px', color: 'var(--primary)', background: 'var(--primary-bg)', padding: '2px 8px', borderRadius: '10px' }}>
                         📚 grounded in curriculum
                       </span>
                     )}
                     {msg.computedMath && (
-                      <span style={{ fontSize: '11px', color: 'var(--primary)', background: '#eaf5ee', padding: '2px 8px', borderRadius: '10px' }}>
+                      <span style={{ fontSize: '11px', color: 'var(--primary)', background: 'var(--primary-bg)', padding: '2px 8px', borderRadius: '10px' }}>
                         🧮 verified: {msg.computedMath.expression} = {msg.computedMath.result}
                       </span>
                     )}
@@ -241,7 +241,7 @@ const AIChat = ({ user }) => {
                 padding: '10px 14px',
                 borderRadius: '12px',
                 background: 'white',
-                border: '1px solid #e0e0e0',
+                border: '1px solid var(--border)',
                 display: 'flex',
                 gap: '4px',
               }}
@@ -259,7 +259,7 @@ const AIChat = ({ user }) => {
       <div
         style={{
           padding: '12px 16px',
-          borderTop: '1px solid #e0e0e0',
+          borderTop: '1px solid var(--border)',
           display: 'flex',
           gap: '10px',
           background: 'white',
@@ -274,7 +274,7 @@ const AIChat = ({ user }) => {
           style={{
             flex: 1,
             padding: '10px 14px',
-            border: '1px solid #e0e0e0',
+            border: '1px solid var(--border)',
             borderRadius: '8px',
             outline: 'none',
             fontSize: '14px',
@@ -285,7 +285,7 @@ const AIChat = ({ user }) => {
           disabled={loading || !input.trim()}
           style={{
             padding: '10px 16px',
-            background: loading || !input.trim() ? '#ccc' : 'var(--primary)',
+            background: loading || !input.trim() ? 'var(--border-strong)' : 'var(--primary)',
             color: 'white',
             border: 'none',
             borderRadius: '8px',

@@ -38,7 +38,7 @@ const EcosystemNavigation = ({ user }) => {
       display: 'flex',
       gap: '8px',
       padding: '10px 0',
-      borderBottom: '1px solid #e0e0e0',
+      borderBottom: '1px solid var(--border)',
       flexWrap: 'wrap',
       alignItems: 'center'
     }}>
@@ -55,8 +55,8 @@ const EcosystemNavigation = ({ user }) => {
               gap: '6px',
               padding: '6px 14px',
               background: active ? 'var(--primary)' : 'transparent',
-              color: active ? 'white' : '#333',
-              border: active ? 'none' : '1px solid #e0e0e0',
+              color: active ? 'white' : 'var(--text)',
+              border: active ? 'none' : '1px solid var(--border)',
               borderRadius: '8px',
               cursor: 'pointer',
               fontSize: '13px',
@@ -64,7 +64,7 @@ const EcosystemNavigation = ({ user }) => {
               transition: 'all 0.2s ease',
             }}
             onMouseEnter={(e) => {
-              if (!active) e.currentTarget.style.background = '#f5f5f5';
+              if (!active) e.currentTarget.style.background = 'var(--surface-muted)';
             }}
             onMouseLeave={(e) => {
               if (!active) e.currentTarget.style.background = 'transparent';

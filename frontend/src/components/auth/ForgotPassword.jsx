@@ -85,14 +85,14 @@ const ForgotPassword = ({ onBackToLogin }) => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              style={{ width: '100%', padding: '10px', border: '1px solid #e0e0e0', borderRadius: '8px' }}
+              style={{ width: '100%', padding: '10px', border: '1px solid var(--border)', borderRadius: '8px' }}
               placeholder={t('emailPlaceholder')}
             />
           </div>
           <button
             type="submit"
             disabled={loading}
-            style={{ width: '100%', padding: '12px', background: loading ? '#ccc' : 'var(--primary)', color: 'white', border: 'none', borderRadius: '8px', fontSize: '16px', cursor: loading ? 'not-allowed' : 'pointer' }}
+            style={{ width: '100%', padding: '12px', background: loading ? 'var(--border-strong)' : 'var(--primary)', color: 'white', border: 'none', borderRadius: '8px', fontSize: '16px', cursor: loading ? 'not-allowed' : 'pointer' }}
           >
             {loading ? t('forgotPasswordSending') : t('forgotPasswordSendCode')}
           </button>
@@ -107,7 +107,7 @@ const ForgotPassword = ({ onBackToLogin }) => {
               value={token}
               onChange={(e) => setToken(e.target.value)}
               required
-              style={{ width: '100%', padding: '10px', border: '1px solid #e0e0e0', borderRadius: '8px' }}
+              style={{ width: '100%', padding: '10px', border: '1px solid var(--border)', borderRadius: '8px' }}
               placeholder={t('resetPasswordCodePlaceholder')}
             />
           </div>
@@ -120,7 +120,7 @@ const ForgotPassword = ({ onBackToLogin }) => {
               onChange={(e) => setNewPassword(e.target.value)}
               required
               minLength="6"
-              style={{ width: '100%', padding: '10px', border: '1px solid #e0e0e0', borderRadius: '8px' }}
+              style={{ width: '100%', padding: '10px', border: '1px solid var(--border)', borderRadius: '8px' }}
               placeholder={t('passwordPlaceholder')}
             />
           </div>
@@ -132,14 +132,14 @@ const ForgotPassword = ({ onBackToLogin }) => {
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               required
-              style={{ width: '100%', padding: '10px', border: '1px solid #e0e0e0', borderRadius: '8px' }}
+              style={{ width: '100%', padding: '10px', border: '1px solid var(--border)', borderRadius: '8px' }}
               placeholder={t('confirmPasswordPlaceholder')}
             />
           </div>
           <button
             type="submit"
             disabled={loading}
-            style={{ width: '100%', padding: '12px', background: loading ? '#ccc' : 'var(--primary)', color: 'white', border: 'none', borderRadius: '8px', fontSize: '16px', cursor: loading ? 'not-allowed' : 'pointer' }}
+            style={{ width: '100%', padding: '12px', background: loading ? 'var(--border-strong)' : 'var(--primary)', color: 'white', border: 'none', borderRadius: '8px', fontSize: '16px', cursor: loading ? 'not-allowed' : 'pointer' }}
           >
             {loading ? t('resetPasswordSaving') : t('resetPasswordSubmit')}
           </button>
