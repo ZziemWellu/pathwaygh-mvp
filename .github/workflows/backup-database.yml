@@ -47,8 +47,13 @@ jobs:
           sudo apt-get update -qq && sudo apt-get install -y -qq postgresql-common
           sudo /usr/share/postgresql-common/pgdg/apt.postgresql.org.sh -y >/dev/null
           sudo apt-get install -y -qq postgresql-client
-          pg_dump --version
-          pg_dump "$BACKUP_DATABASE_URL" --no-owner --no-privileges -f backup.sql
+          # Call the newest installed pg_dump by path: the runner image ships
+          # its own older PostgreSQL, and the plain `pg_dump` wrapper picks
+          # that one (16) even after 18 is installed - which then refuses
+          # Neon's newer server ("aborting because of server version mismatch").
+          PG_DUMP=$(ls /usr/lib/postgresql/*/bin/pg_dump | sort -V | tail -n 1)
+          "$PG_DUMP" --version
+          "$PG_DUMP" "$BACKUP_DATABASE_URL" --no-owner --no-privileges -f backup.sql
 
       - name: Encrypt dump
         env:
