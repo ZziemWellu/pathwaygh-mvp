@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import api from '../../services/api';
 import './certificate-print.css';
 import { formatDate } from '../../utils/date';
+import { PrinterIcon } from 'lucide-react';
 
 const CertificatePage = () => {
   const { courseSlug } = useParams();
@@ -52,7 +53,7 @@ const CertificatePage = () => {
           onClick={() => window.print()}
           style={{ padding: '10px 20px', background: 'var(--primary)', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer' }}
         >
-          🖨️ Print / Save as PDF
+          <PrinterIcon className="icon-inline" size="1em" aria-hidden="true" /> Print / Save as PDF
         </button>
       </div>
 

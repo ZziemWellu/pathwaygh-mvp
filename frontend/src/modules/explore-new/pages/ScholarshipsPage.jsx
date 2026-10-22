@@ -3,6 +3,7 @@ import api from '../../../services/api';
 import { getUser } from '../../../constants/auth';
 import { useModalA11y } from '../../../hooks/useModalA11y';
 import { formatDate } from '../../../utils/date';
+import { CalendarDaysIcon, CircleCheckIcon, ClipboardListIcon, CoinsIcon, GraduationCapIcon, LandmarkIcon, LinkIcon, RocketIcon, TriangleAlertIcon } from 'lucide-react';
 
 const ScholarshipsPage = () => {
   const [scholarships, setScholarships] = useState([]);
@@ -99,10 +100,10 @@ const ScholarshipsPage = () => {
         scholarship_id: scholarshipId
       });
       await fetchSavedScholarships();
-      alert('✅ Scholarship saved successfully!');
+      alert('Scholarship saved successfully!');
     } catch (err) {
       console.error('Save scholarship error:', err);
-      alert('❌ Failed to save scholarship. Please try again.');
+      alert('Failed to save scholarship. Please try again.');
     }
   };
 
@@ -147,8 +148,8 @@ const ScholarshipsPage = () => {
   if (error) {
     return (
       <div style={{ textAlign: 'center', padding: '40px' }}>
-        <h2 style={{ color: 'var(--primary)' }}>💰 Scholarships</h2>
-        <p style={{ color: 'var(--danger)' }}>⚠️ {error}</p>
+        <h2 style={{ color: 'var(--primary)' }}><CoinsIcon className="icon-inline" size="1em" aria-hidden="true" /> Scholarships</h2>
+        <p style={{ color: 'var(--danger)' }}><TriangleAlertIcon className="icon-inline" size="1em" aria-hidden="true" /> {error}</p>
         <button onClick={fetchScholarships} style={{ padding: '8px 20px', background: 'var(--primary)', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer' }}>Retry</button>
       </div>
     );
@@ -158,11 +159,11 @@ const ScholarshipsPage = () => {
     return (
       <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '20px' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', flexWrap: 'wrap', gap: '10px' }}>
-          <h2 style={{ color: 'var(--primary)' }}>💰 Scholarships</h2>
+          <h2 style={{ color: 'var(--primary)' }}><CoinsIcon className="icon-inline" size="1em" aria-hidden="true" /> Scholarships</h2>
           <span style={{ color: 'var(--gray-500)' }}>0 scholarships available</span>
         </div>
         <div style={{ textAlign: 'center', padding: '60px 20px', background: 'white', borderRadius: '12px', border: '1px solid var(--border)' }}>
-          <div style={{ fontSize: '48px', marginBottom: '16px' }}>🎓</div>
+          <div style={{ fontSize: '48px', marginBottom: '16px' }}><GraduationCapIcon className="icon-inline" size="1em" aria-hidden="true" /></div>
           <h3 style={{ color: 'var(--text-muted)' }}>Scholarships Coming Soon</h3>
           <p style={{ color: 'var(--gray-500)', maxWidth: '400px', margin: '0 auto' }}>
             We're working on adding scholarship opportunities. Check back soon!
@@ -176,7 +177,7 @@ const ScholarshipsPage = () => {
     <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '20px' }}>
       {/* Header */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', flexWrap: 'wrap', gap: '10px' }}>
-        <h2 style={{ color: 'var(--primary)' }}>💰 Scholarships</h2>
+        <h2 style={{ color: 'var(--primary)' }}><CoinsIcon className="icon-inline" size="1em" aria-hidden="true" /> Scholarships</h2>
         <span style={{ color: 'var(--gray-500)' }}>{filteredScholarships.length} scholarships available</span>
       </div>
 
@@ -184,7 +185,7 @@ const ScholarshipsPage = () => {
       <div style={{ display: 'flex', gap: '12px', marginBottom: '24px', flexWrap: 'wrap' }}>
         <input
           type="text"
-          placeholder="🔍 Search scholarships..."
+          placeholder="Search scholarships..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           style={{
@@ -209,9 +210,9 @@ const ScholarshipsPage = () => {
           }}
         >
           <option value="all">All Types</option>
-          <option value="government">🏛️ Government</option>
-          <option value="private">💼 Private</option>
-          <option value="international">🌍 International</option>
+          <option value="government">Government</option>
+          <option value="private">Private</option>
+          <option value="international">International</option>
         </select>
         <select
           aria-label="Filter by scholarship status"
@@ -226,8 +227,8 @@ const ScholarshipsPage = () => {
           }}
         >
           <option value="all">All Status</option>
-          <option value="open">🟢 Open</option>
-          <option value="closed">🔴 Closed</option>
+          <option value="open">Open</option>
+          <option value="closed">Closed</option>
         </select>
       </div>
 
@@ -283,13 +284,13 @@ const ScholarshipsPage = () => {
                 </span>
               </div>
               <div style={{ fontSize: '13px', color: 'var(--text-muted)', marginBottom: '4px' }}>
-                🏛️ {sch.sponsor}
+                <LandmarkIcon className="icon-inline" size="1em" aria-hidden="true" /> {sch.sponsor}
               </div>
               <div style={{ fontSize: '13px', color: 'var(--text-muted)', marginBottom: '4px' }}>
-                💰 {sch.amount || 'Full tuition'}
+                <CoinsIcon className="icon-inline" size="1em" aria-hidden="true" /> {sch.amount || 'Full tuition'}
               </div>
               <div style={{ fontSize: '13px', color: 'var(--text-muted)', marginBottom: '4px' }}>
-                📅 Deadline: {formatDeadline(sch.deadline)}
+                <CalendarDaysIcon className="icon-inline" size="1em" aria-hidden="true" /> Deadline: {formatDeadline(sch.deadline)}
               </div>
               <div style={{ marginTop: '12px' }}>
                 <span style={{
@@ -366,32 +367,32 @@ const ScholarshipsPage = () => {
               {selectedScholarship.status.toUpperCase()}
             </span>
             <div style={{ fontSize: '14px', color: 'var(--text-muted)', marginBottom: '8px' }}>
-              🏛️ <strong>Sponsor:</strong> {selectedScholarship.sponsor}
+              <LandmarkIcon className="icon-inline" size="1em" aria-hidden="true" /> <strong>Sponsor:</strong> {selectedScholarship.sponsor}
             </div>
             <div style={{ fontSize: '14px', color: 'var(--text-muted)', marginBottom: '8px' }}>
-              💰 <strong>Coverage:</strong> {selectedScholarship.coverage || selectedScholarship.amount || 'Full tuition'}
+              <CoinsIcon className="icon-inline" size="1em" aria-hidden="true" /> <strong>Coverage:</strong> {selectedScholarship.coverage || selectedScholarship.amount || 'Full tuition'}
             </div>
             <div style={{ fontSize: '14px', color: 'var(--text-muted)', marginBottom: '8px' }}>
-              📅 <strong>Deadline:</strong> {formatDeadline(selectedScholarship.deadline)}
+              <CalendarDaysIcon className="icon-inline" size="1em" aria-hidden="true" /> <strong>Deadline:</strong> {formatDeadline(selectedScholarship.deadline)}
             </div>
             <div style={{ fontSize: '14px', color: 'var(--text-muted)', marginBottom: '8px' }}>
-              🏛️ <strong>Type:</strong> {selectedScholarship.type.toUpperCase()}
+              <LandmarkIcon className="icon-inline" size="1em" aria-hidden="true" /> <strong>Type:</strong> {selectedScholarship.type.toUpperCase()}
             </div>
             {selectedScholarship.eligibility && (
               <div style={{ margin: '12px 0' }}>
-                <strong>✅ Eligibility:</strong>
+                <strong><CircleCheckIcon className="icon-inline" size="1em" aria-hidden="true" /> Eligibility:</strong>
                 <p style={{ color: 'var(--text-muted)', fontSize: '14px', margin: '4px 0 0 0' }}>{selectedScholarship.eligibility}</p>
               </div>
             )}
             {selectedScholarship.description && (
               <div style={{ margin: '12px 0' }}>
-                <strong>📋 Description:</strong>
+                <strong><ClipboardListIcon className="icon-inline" size="1em" aria-hidden="true" /> Description:</strong>
                 <p style={{ color: 'var(--text-muted)', fontSize: '14px', margin: '4px 0 0 0' }}>{selectedScholarship.description}</p>
               </div>
             )}
             {selectedScholarship.website && (
               <div style={{ margin: '12px 0' }}>
-                <strong>🔗 Website:</strong>
+                <strong><LinkIcon className="icon-inline" size="1em" aria-hidden="true" /> Website:</strong>
                 <a href={selectedScholarship.website} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--primary)' }}>
                   {selectedScholarship.website}
                 </a>
@@ -411,7 +412,7 @@ const ScholarshipsPage = () => {
                   fontWeight: 'bold'
                 }}
               >
-                🚀 Apply Now
+                <RocketIcon className="icon-inline" size="1em" aria-hidden="true" /> Apply Now
               </button>
               <button
                 onClick={() => {
@@ -427,7 +428,7 @@ const ScholarshipsPage = () => {
                   fontWeight: isSaved(selectedScholarship.id) ? 'bold' : 'normal'
                 }}
               >
-                {isSaved(selectedScholarship.id) ? '✅ Saved' : '💾 Save Scholarship'}
+                {isSaved(selectedScholarship.id) ? 'Saved' : 'Save Scholarship'}
               </button>
               <button
                 onClick={() => setSelectedScholarship(null)}

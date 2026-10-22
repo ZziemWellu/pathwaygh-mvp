@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams, Link } from 'react-router-dom';
 import api from '../../services/api';
+import { AwardIcon, BookOpenIcon, CircleCheck, Lock, TriangleAlertIcon } from 'lucide-react';
 import { useLanguage } from '../../contexts/LanguageContext';
-
-const LESSON_ICON = { video: '🎬', quiz: '📝', text: '📖' };
+import { LessonIcon } from '../../components/ui/icons';
 
 const CourseDetail = () => {
   const { t } = useLanguage();
@@ -60,7 +60,7 @@ const CourseDetail = () => {
   if (error || !course) {
     return (
       <div style={{ textAlign: 'center', padding: '40px' }}>
-        <p style={{ color: 'red' }}>⚠️ {error || t('learnCourseNotFound')}</p>
+        <p style={{ color: 'red' }}><TriangleAlertIcon className="icon-inline" size="1em" aria-hidden="true" /> {error || t('learnCourseNotFound')}</p>
         <Link to="/learn">{t('learnBackToLearn')}</Link>
       </div>
     );
@@ -96,7 +96,7 @@ const CourseDetail = () => {
               to={`/certificates/${courseId}`}
               style={{ display: 'inline-block', marginTop: '10px', color: 'var(--primary)', fontWeight: 'bold', textDecoration: 'underline' }}
             >
-              {t('learnViewCertificate')}
+              <AwardIcon className="icon-inline" size="1em" aria-hidden="true" /> {t('learnViewCertificate')}
             </Link>
           )}
         </div>
@@ -106,7 +106,7 @@ const CourseDetail = () => {
           disabled={enrolling}
           style={{ padding: '12px 24px', background: enrolling ? 'var(--border-strong)' : 'var(--primary)', color: 'white', border: 'none', borderRadius: '8px', cursor: enrolling ? 'not-allowed' : 'pointer', fontWeight: 'bold', marginBottom: '20px' }}
         >
-          {enrolling ? t('learnEnrolling') : t('learnEnrollInCourse')}
+          {!enrolling && <BookOpenIcon className="icon-inline" size="1em" aria-hidden="true" />}{enrolling ? t('learnEnrolling') : t('learnEnrollInCourse')}
         </button>
       )}
 
@@ -130,7 +130,13 @@ const CourseDetail = () => {
                 opacity: locked ? 0.6 : 1,
               }}
             >
-              <span style={{ fontSize: '20px' }}>{lesson.watched ? '✅' : LESSON_ICON[lesson.lesson_type] || '📄'}</span>
+              <span style={{ display: 'inline-flex' }}>
+                {lesson.watched ? (
+                  <CircleCheck size={20} color="var(--success)" aria-label={t('learnWatched')} />
+                ) : (
+                  <LessonIcon type={lesson.lesson_type} size={20} color="var(--primary)" />
+                )}
+              </span>
               <div style={{ flex: 1 }}>
                 <div style={{ fontWeight: 500 }}>{lesson.title}</div>
                 <div style={{ fontSize: '12px', color: 'var(--gray-500)' }}>
@@ -138,7 +144,7 @@ const CourseDetail = () => {
                   {lesson.is_free_preview && ` ${t('learnFreePreview')}`}
                 </div>
               </div>
-              {locked && <span style={{ fontSize: '18px' }}>🔒</span>}
+              {locked && <Lock size={18} color="var(--text-subtle)" aria-label="Locked" />}
             </div>
           );
         })}

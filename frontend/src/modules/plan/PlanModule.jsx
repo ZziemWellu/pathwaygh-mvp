@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import api from '../../services/api';
+import { CalendarDaysIcon, ChartColumnIcon, ClipboardListIcon, TargetIcon, TriangleAlertIcon } from 'lucide-react';
 
 // Goals are stored in more than one shape - seeded plans use
 // "exam_preparation", the create form saves "exam preparation", and the
@@ -43,7 +44,7 @@ const PlanModule = () => {
     setError(null);
     try {
       const response = await api.get('/api/plan/study-plans');
-      console.log('📋 Plan response:', response.data);
+      console.log('Plan response:', response.data);
       
       const data = response.data;
       let planData = [];
@@ -53,7 +54,7 @@ const PlanModule = () => {
       
       setPlans(planData);
     } catch (err) {
-      console.error('❌ Plan error:', err);
+      console.error('Plan error:', err);
       setError(err.message || 'Failed to load plans');
     } finally {
       setLoading(false);
@@ -107,7 +108,7 @@ const PlanModule = () => {
       await api.delete(`/api/plan/study-plans/${planId}`);
       await fetchPlans();
     } catch (err) {
-      console.error('❌ Delete plan error:', err);
+      console.error('Delete plan error:', err);
       alert(err.response?.status === 403 ? "You can't delete this plan." : 'Failed to delete plan. Please try again.');
     }
   };
@@ -126,13 +127,13 @@ const PlanModule = () => {
       };
       
       const response = await api.post('/api/plan/study-plans/create', payload);
-      console.log('📋 Plan created:', response.data);
+      console.log('Plan created:', response.data);
       
       // Refresh plans
       await fetchPlans();
       handleCloseModal();
     } catch (err) {
-      console.error('❌ Create plan error:', err);
+      console.error('Create plan error:', err);
       alert('Failed to create plan. Please try again.');
     } finally {
       setSaving(false);
@@ -142,7 +143,7 @@ const PlanModule = () => {
   if (loading) {
     return (
       <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '20px' }}>
-        <h2>📋 Plan</h2>
+        <h2><ClipboardListIcon className="icon-inline" size="1em" aria-hidden="true" /> Plan</h2>
         <p>Loading plans...</p>
       </div>
     );
@@ -151,8 +152,8 @@ const PlanModule = () => {
   if (error) {
     return (
       <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '20px' }}>
-        <h2>📋 Plan</h2>
-        <p style={{ color: 'red' }}>⚠️ {error}</p>
+        <h2><ClipboardListIcon className="icon-inline" size="1em" aria-hidden="true" /> Plan</h2>
+        <p style={{ color: 'red' }}><TriangleAlertIcon className="icon-inline" size="1em" aria-hidden="true" /> {error}</p>
         <button onClick={fetchPlans} style={{ padding: '8px 16px', background: 'var(--primary)', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer' }}>Retry</button>
       </div>
     );
@@ -161,7 +162,7 @@ const PlanModule = () => {
   return (
     <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '20px' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-        <h2>📋 Study Planner</h2>
+        <h2><ClipboardListIcon className="icon-inline" size="1em" aria-hidden="true" /> Study Planner</h2>
         <button
           onClick={handleOpenModal}
           style={{
@@ -216,8 +217,8 @@ const PlanModule = () => {
                 {plan.description}
               </p>
               <div style={{ display: 'flex', gap: '12px', fontSize: '12px', color: 'var(--gray-500)', flexWrap: 'wrap' }}>
-                <span>📅 {plan.duration_months || plan.duration || 'N/A'} months</span>
-                <span>📊 {plan.progress || 0}% complete</span>
+                <span><CalendarDaysIcon className="icon-inline" size="1em" aria-hidden="true" /> {plan.duration_months || plan.duration || 'N/A'} months</span>
+                <span><ChartColumnIcon className="icon-inline" size="1em" aria-hidden="true" /> {plan.progress || 0}% complete</span>
               </div>
               {plan.subjects && plan.subjects.length > 0 && (
                 <div style={{ marginTop: '8px', display: 'flex', flexWrap: 'wrap', gap: '4px' }}>
@@ -230,7 +231,7 @@ const PlanModule = () => {
               )}
               {plan.goal && (
                 <div style={{ marginTop: '8px', fontSize: '11px', color: 'var(--gray-500)' }}>
-                  🎯 {formatGoal(plan.goal)}
+                  <TargetIcon className="icon-inline" size="1em" aria-hidden="true" /> {formatGoal(plan.goal)}
                 </div>
               )}
               <div style={{ marginTop: '12px', height: '6px', background: 'var(--surface-sunken)', borderRadius: '3px' }}>
@@ -279,7 +280,7 @@ const PlanModule = () => {
             onClick={(e) => e.stopPropagation()}
           >
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-              <h2 style={{ color: 'var(--primary)', margin: 0 }}>📋 Create Study Plan</h2>
+              <h2 style={{ color: 'var(--primary)', margin: 0 }}><ClipboardListIcon className="icon-inline" size="1em" aria-hidden="true" /> Create Study Plan</h2>
               <button
                 onClick={handleCloseModal}
                 style={{ background: 'none', border: 'none', fontSize: '24px', cursor: 'pointer', color: 'var(--gray-500)' }}
@@ -369,11 +370,11 @@ const PlanModule = () => {
                     }}
                   >
                     <option value="">Select a goal</option>
-                    <option value="exam preparation">📝 Exam Preparation</option>
-                    <option value="university admission">🎓 University Admission</option>
-                    <option value="career readiness">💼 Career Readiness</option>
-                    <option value="skill development">🔧 Skill Development</option>
-                    <option value="personal growth">🌱 Personal Growth</option>
+                    <option value="exam preparation">Exam Preparation</option>
+                    <option value="university admission">University Admission</option>
+                    <option value="career readiness">Career Readiness</option>
+                    <option value="skill development">Skill Development</option>
+                    <option value="personal growth">Personal Growth</option>
                   </select>
                 </div>
 
@@ -460,7 +461,7 @@ const PlanModule = () => {
                       fontWeight: 'bold',
                     }}
                   >
-                    {saving ? 'Creating...' : '✨ Create Plan'}
+                    {saving ? 'Creating...' : 'Create Plan'}
                   </button>
                 </div>
               </div>

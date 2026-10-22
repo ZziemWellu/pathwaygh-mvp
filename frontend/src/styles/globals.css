@@ -175,6 +175,17 @@ textarea {
   font-family: inherit;
 }
 
+/* ---------- Icons ----------
+   One icon set (lucide-react). Inline icons sit in running text at the
+   text's own size (size="1em") and colour (currentColor). */
+svg.lucide {
+  flex-shrink: 0;
+}
+
+.icon-inline {
+  vertical-align: -0.125em; /* the space after it in the text provides the gap */
+}
+
 /* ---------- AI tutor launcher ----------
    Position and size live here (not inline) so phones can get their own
    values. The launcher sat 80px up the right edge at 60px wide, hovering

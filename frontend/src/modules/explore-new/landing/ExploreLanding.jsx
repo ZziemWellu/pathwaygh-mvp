@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Briefcase, Coins, Landmark, SearchIcon, Target } from 'lucide-react';
 
 // Countries that sit WASSCE under WAEC - matches WASSCE_COUNTRIES in
 // App.jsx and backend/modules/plan/router.py. Career Match's content is
@@ -12,7 +13,8 @@ const ExploreLanding = ({ user }) => {
   const allFeatures = [
     {
       id: 'careers',
-      icon: '💼',
+      icon: Briefcase,
+      tint: 'var(--primary-bg)',
       title: 'Careers',
       description: 'Explore career opportunities and pathways',
       color: 'var(--primary)',
@@ -21,7 +23,8 @@ const ExploreLanding = ({ user }) => {
     },
     {
       id: 'universities',
-      icon: '🏛️',
+      icon: Landmark,
+      tint: 'var(--info-bg)',
       title: 'Universities',
       description: 'Browse universities and their admission requirements',
       color: 'var(--secondary)',
@@ -30,7 +33,8 @@ const ExploreLanding = ({ user }) => {
     },
     {
       id: 'scholarships',
-      icon: '💰',
+      icon: Coins,
+      tint: 'var(--accent-bg)',
       title: 'Scholarships',
       description: 'Find scholarships and funding opportunities',
       // Deep amber, not var(--accent): this colour is both the heading text on
@@ -42,7 +46,8 @@ const ExploreLanding = ({ user }) => {
     },
     {
       id: 'career-match',
-      icon: '🎯',
+      icon: Target,
+      tint: 'var(--violet-bg)',
       title: 'Career Match',
       description: 'Discover careers that match your interests and skills',
       color: 'var(--violet)',
@@ -57,7 +62,7 @@ const ExploreLanding = ({ user }) => {
   return (
     <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '20px' }}>
       <header style={{ marginBottom: '30px' }}>
-        <h1 style={{ color: 'var(--primary)', marginBottom: '8px' }}>🔍 Explore</h1>
+        <h1 style={{ color: 'var(--primary)', marginBottom: '8px' }}><SearchIcon className="icon-inline" size="1em" aria-hidden="true" /> Explore</h1>
         <p style={{ color: 'var(--text-muted)', fontSize: '16px' }}>
           Discover careers, universities, scholarships, and find your perfect path
         </p>
@@ -96,7 +101,9 @@ const ExploreLanding = ({ user }) => {
             }}
             onClick={() => navigate(feature.path)}
           >
-            <div style={{ fontSize: '56px', marginBottom: '16px' }}>{feature.icon}</div>
+            <div style={{ width: '72px', height: '72px', borderRadius: '18px', background: feature.tint, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', marginBottom: '16px' }}>
+              <feature.icon size={36} color={feature.color} strokeWidth={1.75} aria-hidden="true" />
+            </div>
             <h3 style={{ color: feature.color, marginBottom: '8px', fontSize: '20px' }}>
               {feature.title}
             </h3>

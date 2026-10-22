@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import useSavedItems from '../../../hooks/useSavedItems';
+import { BookOpenIcon, ChartColumnIcon, ClipboardListIcon, GraduationCapIcon, LandmarkIcon, MapPinIcon, TriangleAlertIcon, TrophyIcon } from 'lucide-react';
 
 const UniversityDetail = ({ university, onClose }) => {
   const [saving, setSaving] = useState(false);
@@ -90,11 +91,11 @@ const UniversityDetail = ({ university, onClose }) => {
         {/* Header */}
         <div style={{ marginBottom: '24px' }}>
           <h2 style={{ color: 'var(--primary)', margin: '0 0 8px 0', fontSize: '24px' }}>
-            🏛️ {university.name}
+            <LandmarkIcon className="icon-inline" size="1em" aria-hidden="true" /> {university.name}
           </h2>
           {university.location && (
             <div style={{ color: 'var(--text-muted)', fontSize: '14px' }}>
-              📍 {university.location}
+              <MapPinIcon className="icon-inline" size="1em" aria-hidden="true" /> {university.location}
             </div>
           )}
         </div>
@@ -109,7 +110,7 @@ const UniversityDetail = ({ university, onClose }) => {
             color: 'var(--danger)',
             textAlign: 'center',
           }}>
-            ⚠️ {error}
+            <TriangleAlertIcon className="icon-inline" size="1em" aria-hidden="true" /> {error}
           </div>
         )}
 
@@ -122,19 +123,19 @@ const UniversityDetail = ({ university, onClose }) => {
         }}>
           {university.cutoff && (
             <div style={{ padding: '14px', background: 'var(--surface-muted)', borderRadius: '10px' }}>
-              <div style={{ fontSize: '11px', color: 'var(--gray-500)' }}>📊 Cutoff</div>
+              <div style={{ fontSize: '11px', color: 'var(--gray-500)' }}><ChartColumnIcon className="icon-inline" size="1em" aria-hidden="true" /> Cutoff</div>
               <div style={{ fontSize: '16px', fontWeight: 'bold', color: 'var(--primary)' }}>{university.cutoff}</div>
             </div>
           )}
           {university.ranking && (
             <div style={{ padding: '14px', background: 'var(--surface-muted)', borderRadius: '10px' }}>
-              <div style={{ fontSize: '11px', color: 'var(--gray-500)' }}>🏆 Ranking</div>
+              <div style={{ fontSize: '11px', color: 'var(--gray-500)' }}><TrophyIcon className="icon-inline" size="1em" aria-hidden="true" /> Ranking</div>
               <div style={{ fontSize: '16px', fontWeight: 'bold', color: 'var(--primary)' }}>#{university.ranking}</div>
             </div>
           )}
           {university.type && (
             <div style={{ padding: '14px', background: 'var(--surface-muted)', borderRadius: '10px' }}>
-              <div style={{ fontSize: '11px', color: 'var(--gray-500)' }}>🏛️ Type</div>
+              <div style={{ fontSize: '11px', color: 'var(--gray-500)' }}><LandmarkIcon className="icon-inline" size="1em" aria-hidden="true" /> Type</div>
               <div style={{ fontSize: '16px', fontWeight: 'bold', color: 'var(--primary)' }}>{university.type}</div>
             </div>
           )}
@@ -143,7 +144,7 @@ const UniversityDetail = ({ university, onClose }) => {
         {/* Description */}
         {university.description && (
           <div style={{ marginBottom: '20px' }}>
-            <h3 style={{ color: 'var(--text)', fontSize: '16px', marginBottom: '8px' }}>📋 About</h3>
+            <h3 style={{ color: 'var(--text)', fontSize: '16px', marginBottom: '8px' }}><ClipboardListIcon className="icon-inline" size="1em" aria-hidden="true" /> About</h3>
             <p style={{ color: 'var(--text-muted)', lineHeight: '1.6' }}>{university.description}</p>
           </div>
         )}
@@ -151,7 +152,7 @@ const UniversityDetail = ({ university, onClose }) => {
         {/* Programs */}
         {university.programs && university.programs.length > 0 && (
           <div style={{ marginBottom: '20px' }}>
-            <h3 style={{ color: 'var(--text)', fontSize: '16px', marginBottom: '8px' }}>📚 Programs Offered</h3>
+            <h3 style={{ color: 'var(--text)', fontSize: '16px', marginBottom: '8px' }}><BookOpenIcon className="icon-inline" size="1em" aria-hidden="true" /> Programs Offered</h3>
             <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
               {university.programs.map((program, i) => (
                 <span key={i} style={{
@@ -171,7 +172,7 @@ const UniversityDetail = ({ university, onClose }) => {
         {/* WASSCE Requirements */}
         {university.requirements && university.requirements.length > 0 && (
           <div style={{ marginBottom: '20px' }}>
-            <h3 style={{ color: 'var(--text)', fontSize: '16px', marginBottom: '8px' }}>📋 WASSCE Requirements</h3>
+            <h3 style={{ color: 'var(--text)', fontSize: '16px', marginBottom: '8px' }}><ClipboardListIcon className="icon-inline" size="1em" aria-hidden="true" /> WASSCE Requirements</h3>
             <ul style={{ color: 'var(--text-muted)', lineHeight: '1.8', paddingLeft: '20px', margin: 0 }}>
               {university.requirements.map((req, i) => (
                 <li key={i}>{req}</li>
@@ -189,7 +190,7 @@ const UniversityDetail = ({ university, onClose }) => {
             marginBottom: '20px',
             border: '1px solid var(--primary-border)',
           }}>
-            <h4 style={{ color: 'var(--primary)', margin: '0 0 8px 0' }}>🎓 Admission Information</h4>
+            <h4 style={{ color: 'var(--primary)', margin: '0 0 8px 0' }}><GraduationCapIcon className="icon-inline" size="1em" aria-hidden="true" /> Admission Information</h4>
             <p style={{ color: 'var(--text-muted)', margin: 0 }}>{university.admission_info}</p>
           </div>
         )}
@@ -241,7 +242,7 @@ const UniversityDetail = ({ university, onClose }) => {
               }
             }}
           >
-            {saving ? '⏳ Saving...' : saved ? '✅ Saved' : '💾 Save University'}
+            {saving ? 'Saving...' : saved ? 'Saved' : 'Save University'}
           </button>
         </div>
       </div>

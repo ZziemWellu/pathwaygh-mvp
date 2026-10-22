@@ -6,6 +6,7 @@ import api from '../../services/api';
 import ExerciseSection from './ExerciseSection';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { useGamificationNotify } from '../../contexts/GamificationNotifyContext';
+import { CircleCheckIcon, CirclePlayIcon, FileTextIcon, PartyPopperIcon, TriangleAlertIcon } from 'lucide-react';
 
 const LessonView = () => {
   const { t } = useLanguage();
@@ -55,7 +56,7 @@ const LessonView = () => {
   if (error || !lesson) {
     return (
       <div style={{ textAlign: 'center', padding: '40px' }}>
-        <p style={{ color: 'red' }}>⚠️ {error || t('learnLessonNotFound')}</p>
+        <p style={{ color: 'red' }}><TriangleAlertIcon className="icon-inline" size="1em" aria-hidden="true" /> {error || t('learnLessonNotFound')}</p>
         <Link to={`/learn/${courseId}`}>{t('learnBackToCourse')}</Link>
       </div>
     );
@@ -83,7 +84,7 @@ const LessonView = () => {
           </div>
         ) : (
           <div style={{ padding: '60px 20px', textAlign: 'center', background: 'var(--surface-muted)', borderRadius: '12px', color: 'var(--gray-500)' }}>
-            {t('learnVideoComingSoon')}
+            <CirclePlayIcon className="icon-inline" size="1em" aria-hidden="true" /> {t('learnVideoComingSoon')}
           </div>
         )
       ) : lesson.lesson_type === 'text' ? (
@@ -92,7 +93,7 @@ const LessonView = () => {
         </div>
       ) : (
         <div style={{ padding: '40px 20px', textAlign: 'center', background: 'var(--warning-bg)', borderRadius: '12px' }}>
-          <p style={{ margin: 0, color: 'var(--warning)' }}>{t('learnPracticeQuizLesson')}</p>
+          <p style={{ margin: 0, color: 'var(--warning)' }}><FileTextIcon className="icon-inline" size="1em" aria-hidden="true" /> {t('learnPracticeQuizLesson')}</p>
           <Link to="/practice" style={{ display: 'inline-block', marginTop: '12px', color: 'var(--primary)', fontWeight: 'bold' }}>
             {t('learnGoToPractice')}
           </Link>
@@ -103,7 +104,7 @@ const LessonView = () => {
 
       <div style={{ marginTop: '20px', display: 'flex', alignItems: 'center', gap: '12px' }}>
         {lesson.watched ? (
-          <span style={{ color: 'var(--primary)', fontWeight: 'bold' }}>{lesson.lesson_type === 'text' ? t('learnCompleted') : t('learnWatched')}</span>
+          <span style={{ color: 'var(--primary)', fontWeight: 'bold' }}><CircleCheckIcon className="icon-inline" size="1em" aria-hidden="true" /> {lesson.lesson_type === 'text' ? t('learnCompleted') : t('learnWatched')}</span>
         ) : (
           <button
             onClick={markWatched}
@@ -117,7 +118,7 @@ const LessonView = () => {
 
       {justCompleted && (
         <div style={{ marginTop: '16px', padding: '16px', background: 'var(--primary-bg)', border: '1px solid var(--primary-border)', borderRadius: '12px', textAlign: 'center' }}>
-          <p style={{ margin: '0 0 8px 0', fontWeight: 'bold', color: 'var(--primary)' }}>{t('learnCourseCompleteBanner')}</p>
+          <p style={{ margin: '0 0 8px 0', fontWeight: 'bold', color: 'var(--primary)' }}><PartyPopperIcon className="icon-inline" size="1em" aria-hidden="true" /> {t('learnCourseCompleteBanner')}</p>
           <Link to={`/certificates/${courseId}`} style={{ color: 'var(--primary)', fontWeight: 'bold', textDecoration: 'underline' }}>
             {t('learnViewCertificateLink')}
           </Link>

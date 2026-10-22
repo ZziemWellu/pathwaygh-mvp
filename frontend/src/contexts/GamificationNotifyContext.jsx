@@ -1,4 +1,5 @@
 import React, { createContext, useCallback, useContext, useState, useRef } from 'react';
+import { AchievementIcon } from '../components/ui/icons';
 
 const GamificationNotifyContext = createContext();
 
@@ -54,7 +55,7 @@ const GamificationToast = ({ toast, onDismiss }) => (
   >
     {toast.achievements.map((a) => (
       <div key={a.id} style={{ marginBottom: '6px' }}>
-        <span style={{ fontSize: '22px', marginRight: '8px' }}>{a.icon}</span>
+        <AchievementIcon id={a.id} size={22} color="var(--accent-strong)" style={{ marginRight: '8px', verticalAlign: '-5px' }} />
         <strong style={{ fontSize: '14px' }}>Achievement unlocked: {a.name}</strong>
         <div style={{ fontSize: '12px', color: 'var(--gray-500, var(--text-muted))' }}>{a.description}</div>
       </div>

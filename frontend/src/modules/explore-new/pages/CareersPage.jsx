@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import api from '../../../services/api';
 import { useModalA11y } from '../../../hooks/useModalA11y';
+import { BookOpenIcon, BriefcaseIcon, CoinsIcon, TriangleAlertIcon } from 'lucide-react';
 
 const CareersPage = ({ user }) => {
   const [careers, setCareers] = useState([]);
@@ -48,8 +49,8 @@ const CareersPage = ({ user }) => {
   if (error) {
     return (
       <div style={{ textAlign: 'center', padding: '40px' }}>
-        <h2 style={{ color: 'var(--primary)' }}>💼 Careers</h2>
-        <p style={{ color: 'var(--danger)' }}>⚠️ {error}</p>
+        <h2 style={{ color: 'var(--primary)' }}><BriefcaseIcon className="icon-inline" size="1em" aria-hidden="true" /> Careers</h2>
+        <p style={{ color: 'var(--danger)' }}><TriangleAlertIcon className="icon-inline" size="1em" aria-hidden="true" /> {error}</p>
         <button onClick={fetchCareers} style={{ padding: '8px 20px', background: 'var(--primary)', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer' }}>Retry</button>
       </div>
     );
@@ -58,7 +59,7 @@ const CareersPage = ({ user }) => {
   return (
     <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '20px' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', flexWrap: 'wrap', gap: '10px' }}>
-        <h2 style={{ color: 'var(--primary)' }}>💼 Careers</h2>
+        <h2 style={{ color: 'var(--primary)' }}><BriefcaseIcon className="icon-inline" size="1em" aria-hidden="true" /> Careers</h2>
         <span style={{ color: 'var(--gray-500)' }}>{careers.length} careers available</span>
       </div>
 
@@ -95,7 +96,7 @@ const CareersPage = ({ user }) => {
             )}
             <p style={{ color: 'var(--text-muted)', fontSize: '14px', margin: '12px 0' }}>{career.description}</p>
             {career.salary_range && (
-              <div style={{ fontSize: '13px', color: 'var(--text-muted)' }}>💰 {career.salary_range}</div>
+              <div style={{ fontSize: '13px', color: 'var(--text-muted)' }}><CoinsIcon className="icon-inline" size="1em" aria-hidden="true" /> {career.salary_range}</div>
             )}
             <div style={{ fontSize: '12px', color: 'var(--gray-500)', marginTop: '12px' }}>Click for full details →</div>
           </div>
@@ -152,11 +153,11 @@ const CareersPage = ({ user }) => {
             )}
             <p style={{ color: 'var(--text-muted)', margin: '16px 0' }}>{selectedCareer.description}</p>
             {selectedCareer.salary_range && (
-              <div style={{ margin: '8px 0' }}><strong>💰 Salary Range:</strong> {selectedCareer.salary_range}</div>
+              <div style={{ margin: '8px 0' }}><strong><CoinsIcon className="icon-inline" size="1em" aria-hidden="true" /> Salary Range:</strong> {selectedCareer.salary_range}</div>
             )}
             {selectedCareer.required_subjects && (
               <div style={{ margin: '8px 0' }}>
-                <strong>📚 Required Subjects:</strong>
+                <strong><BookOpenIcon className="icon-inline" size="1em" aria-hidden="true" /> Required Subjects:</strong>
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginTop: '4px' }}>
                   {selectedCareer.required_subjects.map((subject, i) => (
                     <span key={i} style={{ background: 'var(--surface-sunken)', padding: '4px 10px', borderRadius: '12px', fontSize: '12px' }}>

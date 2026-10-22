@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Trash2 } from 'lucide-react';
+import { LayersIcon, PartyPopperIcon, Trash2 } from 'lucide-react';
 import api, { extractErrorMessage } from '../../services/api';
 import { useGamificationNotify } from '../../contexts/GamificationNotifyContext';
 
@@ -79,7 +79,7 @@ const FlashcardsModule = () => {
   return (
     <div style={{ maxWidth: '700px', margin: '0 auto', padding: '20px' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', flexWrap: 'wrap', gap: '10px' }}>
-        <h2 style={{ margin: 0, color: 'var(--primary)' }}>🗂️ Flashcards</h2>
+        <h2 style={{ margin: 0, color: 'var(--primary)' }}><LayersIcon className="icon-inline" size="1em" aria-hidden="true" /> Flashcards</h2>
         <button onClick={() => setShowManage(!showManage)} style={{ padding: '8px 16px', border: '1px solid var(--border)', borderRadius: '8px', background: showManage ? 'var(--primary)' : 'white', color: showManage ? 'white' : 'var(--text)', cursor: 'pointer', fontSize: '13px' }}>
           {showManage ? 'Back to review' : `Manage (${allCards.length})`}
         </button>
@@ -124,7 +124,7 @@ const FlashcardsModule = () => {
         </div>
       ) : !currentCard ? (
         <div style={{ textAlign: 'center', padding: '40px', background: 'white', border: '1px solid var(--border)', borderRadius: '12px' }}>
-          <p style={{ fontSize: '18px' }}>🎉 All done for now!</p>
+          <p style={{ fontSize: '18px' }}><PartyPopperIcon className="icon-inline" size="1em" aria-hidden="true" /> All done for now!</p>
           <p style={{ color: 'var(--gray-500)' }}>You've reviewed every card due today.</p>
         </div>
       ) : (

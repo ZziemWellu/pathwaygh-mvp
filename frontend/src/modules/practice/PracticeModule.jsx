@@ -2,7 +2,9 @@ import React, { useState, useEffect } from 'react';
 import api, { extractData } from '../../services/api';
 import { getUser } from '../../constants/auth';
 import { useGamificationNotify } from '../../contexts/GamificationNotifyContext';
+import { BookOpen, BookOpenIcon, ChartColumnIcon, CircleCheckIcon, CircleXIcon, Dumbbell, FileTextIcon, HouseIcon, PenLineIcon, RocketIcon, RotateCcwIcon, Star, ThumbsUp, TimerIcon, TrendingUpIcon, TriangleAlertIcon } from 'lucide-react';
 import AIBonusQuestion from './AIBonusQuestion';
+import { SubjectIcon } from '../../components/ui/icons';
 import { formatDate } from '../../utils/date';
 
 const PracticeModule = () => {
@@ -37,14 +39,14 @@ const PracticeModule = () => {
     setError(null);
     try {
       const response = await api.get('/api/practice/subjects');
-      console.log('📚 Practice subjects response:', response.data);
+      console.log('Practice subjects response:', response.data);
       const data = response.data;
       let subjectData = [];
       if (Array.isArray(data)) subjectData = data;
       else if (data.subjects && Array.isArray(data.subjects)) subjectData = data.subjects;
       else if (data.data && Array.isArray(data.data)) subjectData = data.data;
       setSubjects(subjectData);
-      console.log('📚 Subjects loaded:', subjectData.length);
+      console.log('Subjects loaded:', subjectData.length);
     } catch (err) {
       console.error('Practice error:', err);
       setError(err.message || 'Failed to load subjects');
@@ -86,7 +88,7 @@ const PracticeModule = () => {
         user_id: user?.id || 'test_user',
         question_count: 5
       });
-      console.log('📝 Quiz started:', response.data);
+      console.log('Quiz started:', response.data);
       setQuiz(response.data);
       
       const interval = setInterval(() => {
@@ -112,7 +114,7 @@ const PracticeModule = () => {
         user_id: user?.id || 'test_user',
         time_spent: timeSpent
       });
-      console.log('📊 Quiz results:', response.data);
+      console.log('Quiz results:', response.data);
       setQuizResults(response.data);
       notify(response.data.gamification);
       await fetchQuizHistory();
@@ -148,18 +150,18 @@ const PracticeModule = () => {
     return 'var(--danger)';
   };
 
-  const getScoreEmoji = (score) => {
-    if (score >= 80) return '🌟';
-    if (score >= 60) return '😊';
-    if (score >= 40) return '📚';
-    return '💪';
+  const getScoreIcon = (score) => {
+    if (score >= 80) return Star;
+    if (score >= 60) return ThumbsUp;
+    if (score >= 40) return BookOpen;
+    return Dumbbell;
   };
 
   const getScoreMessage = (score) => {
-    if (score >= 80) return 'Excellent! You\'re a star! 🌟';
-    if (score >= 60) return 'Good job! Keep it up! 😊';
-    if (score >= 40) return 'Keep practicing! You\'ll get better! 📚';
-    return 'Don\'t give up! Practice makes perfect! 💪';
+    if (score >= 80) return 'Excellent! You\'re a star!';
+    if (score >= 60) return 'Good job! Keep it up!';
+    if (score >= 40) return 'Keep practicing! You\'ll get better!';
+    return 'Don\'t give up! Practice makes perfect!';
   };
 
   const formatTime = (seconds) => {
@@ -171,7 +173,7 @@ const PracticeModule = () => {
   if (loading) {
     return (
       <div style={{ textAlign: 'center', padding: '40px' }}>
-        <h2>✍️ Practice</h2>
+        <h2><PenLineIcon className="icon-inline" size="1em" aria-hidden="true" /> Practice</h2>
         <p>Loading subjects...</p>
       </div>
     );
@@ -180,8 +182,8 @@ const PracticeModule = () => {
   if (error) {
     return (
       <div style={{ textAlign: 'center', padding: '40px' }}>
-        <h2>✍️ Practice</h2>
-        <p style={{ color: 'red' }}>⚠️ {error}</p>
+        <h2><PenLineIcon className="icon-inline" size="1em" aria-hidden="true" /> Practice</h2>
+        <p style={{ color: 'red' }}><TriangleAlertIcon className="icon-inline" size="1em" aria-hidden="true" /> {error}</p>
         <button onClick={fetchSubjects} style={{ padding: '8px 16px', background: 'var(--primary)', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer' }}>Retry</button>
       </div>
     );
@@ -196,14 +198,14 @@ const PracticeModule = () => {
     if (quizResults) {
       const score = quizResults.score || 0;
       const scoreColor = getScoreColor(score);
-      const emoji = getScoreEmoji(score);
+      const ScoreIcon = getScoreIcon(score);
       const message = getScoreMessage(score);
 
       return (
         <div style={{ maxWidth: '600px', margin: '0 auto', padding: '20px' }}>
-          <h2 style={{ textAlign: 'center', color: 'var(--primary)' }}>📊 Quiz Results</h2>
+          <h2 style={{ textAlign: 'center', color: 'var(--primary)' }}><ChartColumnIcon className="icon-inline" size="1em" aria-hidden="true" /> Quiz Results</h2>
           <div style={{ background: 'white', padding: '30px', borderRadius: '16px', border: '1px solid var(--border)', textAlign: 'center' }}>
-            <div style={{ fontSize: '64px' }}>{emoji}</div>
+            <ScoreIcon size={64} color={scoreColor} strokeWidth={1.5} aria-hidden="true" />
             <div style={{ fontSize: '48px', fontWeight: 'bold', color: scoreColor }}>{score}%</div>
             <div style={{ fontSize: '18px', color: 'var(--text-muted)', margin: '8px 0 16px 0' }}>{message}</div>
             <div style={{ height: '12px', background: 'var(--surface-sunken)', borderRadius: '6px', overflow: 'hidden', margin: '16px 0' }}>
@@ -211,22 +213,22 @@ const PracticeModule = () => {
             </div>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '12px', margin: '16px 0' }}>
               <div style={{ padding: '12px', background: 'var(--surface-muted)', borderRadius: '8px' }}>
-                <span style={{ display: 'block', fontSize: '12px', color: 'var(--gray-500)' }}>✅ Correct</span>
+                <span style={{ display: 'block', fontSize: '12px', color: 'var(--gray-500)' }}><CircleCheckIcon className="icon-inline" size="1em" aria-hidden="true" /> Correct</span>
                 <span style={{ display: 'block', fontSize: '20px', fontWeight: 'bold', color: 'var(--primary)' }}>{quizResults.correct || 0}/{totalQuestions}</span>
               </div>
               <div style={{ padding: '12px', background: 'var(--surface-muted)', borderRadius: '8px' }}>
-                <span style={{ display: 'block', fontSize: '12px', color: 'var(--gray-500)' }}>❌ Incorrect</span>
+                <span style={{ display: 'block', fontSize: '12px', color: 'var(--gray-500)' }}><CircleXIcon className="icon-inline" size="1em" aria-hidden="true" /> Incorrect</span>
                 <span style={{ display: 'block', fontSize: '20px', fontWeight: 'bold', color: 'var(--danger)' }}>{quizResults.incorrect || 0}/{totalQuestions}</span>
               </div>
               <div style={{ padding: '12px', background: 'var(--surface-muted)', borderRadius: '8px' }}>
-                <span style={{ display: 'block', fontSize: '12px', color: 'var(--gray-500)' }}>⏱️ Time</span>
+                <span style={{ display: 'block', fontSize: '12px', color: 'var(--gray-500)' }}><TimerIcon className="icon-inline" size="1em" aria-hidden="true" /> Time</span>
                 <span style={{ display: 'block', fontSize: '20px', fontWeight: 'bold' }}>{formatTime(quizResults.time_spent || 0)}</span>
               </div>
             </div>
             <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', justifyContent: 'center' }}>
-              <button onClick={resetQuiz} style={{ padding: '10px 20px', background: 'var(--primary)', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: 'bold' }}>🔄 Retry Quiz</button>
-              <button onClick={() => setShowStats(true)} style={{ padding: '10px 20px', background: 'var(--surface-sunken)', border: 'none', borderRadius: '8px', cursor: 'pointer' }}>📊 Stats</button>
-              <button onClick={resetQuiz} style={{ padding: '10px 20px', background: 'var(--surface-sunken)', border: 'none', borderRadius: '8px', cursor: 'pointer' }}>🏠 Back</button>
+              <button onClick={resetQuiz} style={{ padding: '10px 20px', background: 'var(--primary)', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: 'bold' }}><RotateCcwIcon className="icon-inline" size="1em" aria-hidden="true" /> Retry Quiz</button>
+              <button onClick={() => setShowStats(true)} style={{ padding: '10px 20px', background: 'var(--surface-sunken)', border: 'none', borderRadius: '8px', cursor: 'pointer' }}><ChartColumnIcon className="icon-inline" size="1em" aria-hidden="true" /> Stats</button>
+              <button onClick={resetQuiz} style={{ padding: '10px 20px', background: 'var(--surface-sunken)', border: 'none', borderRadius: '8px', cursor: 'pointer' }}><HouseIcon className="icon-inline" size="1em" aria-hidden="true" /> Back</button>
             </div>
           </div>
         </div>
@@ -236,9 +238,9 @@ const PracticeModule = () => {
     return (
       <div style={{ maxWidth: '800px', margin: '0 auto', padding: '20px' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', flexWrap: 'wrap', gap: '10px' }}>
-          <h2 style={{ margin: 0, color: 'var(--primary)' }}>📝 Quiz</h2>
+          <h2 style={{ margin: 0, color: 'var(--primary)' }}><FileTextIcon className="icon-inline" size="1em" aria-hidden="true" /> Quiz</h2>
           <div style={{ display: 'flex', gap: '16px', alignItems: 'center', flexWrap: 'wrap' }}>
-            <span style={{ fontWeight: 'bold', color: 'var(--primary)' }}>⏱️ {formatTime(timeSpent)}</span>
+            <span style={{ fontWeight: 'bold', color: 'var(--primary)' }}><TimerIcon className="icon-inline" size="1em" aria-hidden="true" /> {formatTime(timeSpent)}</span>
             <span style={{ fontSize: '13px', color: 'var(--gray-500)' }}>{answeredCount} of {totalQuestions} answered</span>
             <button onClick={resetQuiz} style={{ padding: '6px 14px', background: 'var(--surface-sunken)', border: 'none', borderRadius: '6px', cursor: 'pointer' }}>✕ Quit</button>
           </div>
@@ -309,7 +311,7 @@ const PracticeModule = () => {
   return (
     <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '20px' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px', flexWrap: 'wrap', gap: '12px' }}>
-        <h2 style={{ margin: 0, color: 'var(--primary)' }}>✍️ Practice</h2>
+        <h2 style={{ margin: 0, color: 'var(--primary)' }}><PenLineIcon className="icon-inline" size="1em" aria-hidden="true" /> Practice</h2>
         <div style={{ display: 'flex', gap: '12px', alignItems: 'center', flexWrap: 'wrap' }}>
           <button
             onClick={() => setShowHistory(!showHistory)}
@@ -323,7 +325,7 @@ const PracticeModule = () => {
               fontSize: '14px'
             }}
           >
-            📊 {showHistory ? 'Back' : 'History'}
+            <ChartColumnIcon className="icon-inline" size="1em" aria-hidden="true" /> {showHistory ? 'Back' : 'History'}
           </button>
           <button
             onClick={() => setShowStats(!showStats)}
@@ -336,9 +338,9 @@ const PracticeModule = () => {
               fontSize: '14px'
             }}
           >
-            📈 Stats
+            <TrendingUpIcon className="icon-inline" size="1em" aria-hidden="true" /> Stats
           </button>
-          <span style={{ color: 'var(--gray-500)', fontSize: '14px' }}>📚 {subjects.length} subjects</span>
+          <span style={{ color: 'var(--gray-500)', fontSize: '14px' }}><BookOpenIcon className="icon-inline" size="1em" aria-hidden="true" /> {subjects.length} subjects</span>
         </div>
       </div>
 
@@ -346,7 +348,7 @@ const PracticeModule = () => {
 
       {showStats && statistics && (
         <div style={{ background: 'white', borderRadius: '12px', border: '1px solid var(--border)', padding: '24px', marginBottom: '24px' }}>
-          <h3 style={{ color: 'var(--primary)', margin: '0 0 16px 0' }}>📈 Your Statistics</h3>
+          <h3 style={{ color: 'var(--primary)', margin: '0 0 16px 0' }}><TrendingUpIcon className="icon-inline" size="1em" aria-hidden="true" /> Your Statistics</h3>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', gap: '16px' }}>
             <div style={{ textAlign: 'center', padding: '12px', background: 'var(--surface-muted)', borderRadius: '8px' }}>
               <span style={{ display: 'block', fontSize: '28px', fontWeight: 'bold', color: 'var(--primary)' }}>{statistics.total_quizzes || 0}</span>
@@ -397,7 +399,7 @@ const PracticeModule = () => {
 
       {showHistory ? (
         <div style={{ background: 'white', borderRadius: '12px', border: '1px solid var(--border)', padding: '24px' }}>
-          <h3 style={{ color: 'var(--primary)', margin: '0 0 16px 0' }}>📊 Quiz History</h3>
+          <h3 style={{ color: 'var(--primary)', margin: '0 0 16px 0' }}><ChartColumnIcon className="icon-inline" size="1em" aria-hidden="true" /> Quiz History</h3>
           {quizHistory.length === 0 ? (
             <p style={{ textAlign: 'center', padding: '40px', color: 'var(--gray-500)' }}>No quiz attempts yet. Start your first quiz!</p>
           ) : (
@@ -447,7 +449,9 @@ const PracticeModule = () => {
                   e.currentTarget.style.transform = 'translateY(0)';
                 }}
               >
-                <div style={{ fontSize: '48px' }}>{subject.icon || '📚'}</div>
+                <div style={{ width: '72px', height: '72px', borderRadius: '18px', background: 'var(--primary-bg)', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <SubjectIcon id={subject.id} size={36} color="var(--primary)" strokeWidth={1.75} />
+                </div>
                 <h3 style={{ color: 'var(--primary)', margin: '12px 0' }}>{subject.name}</h3>
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', justifyContent: 'center', marginBottom: '12px' }}>
                   {subject.topics?.slice(0, 3).map((topic, i) => (
@@ -480,7 +484,7 @@ const PracticeModule = () => {
                     width: '100%'
                   }}
                 >
-                  🚀 Start Quiz
+                  <RocketIcon className="icon-inline" size="1em" aria-hidden="true" /> Start Quiz
                 </button>
               </div>
             ))

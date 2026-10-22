@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import api from '../../services/api';
 import { formatDate } from '../../utils/date';
+import { CircleCheckIcon, CircleXIcon } from 'lucide-react';
 
 /**
  * Public, router-agnostic: takes `code` as a prop rather than calling
@@ -70,7 +71,7 @@ const CertificateVerify = ({ code: initialCode }) => {
       {result && !loading && (
         result.valid ? (
           <div style={{ background: 'var(--primary-bg)', border: '1px solid var(--primary-border)', borderRadius: '12px', padding: '24px', textAlign: 'center' }}>
-            <div style={{ fontSize: '32px', marginBottom: '8px' }}>✅</div>
+            <div style={{ fontSize: '32px', marginBottom: '8px' }}><CircleCheckIcon className="icon-inline" size="1em" aria-hidden="true" /></div>
             <h2 style={{ color: 'var(--primary)', margin: '0 0 12px 0' }}>Certificate Verified</h2>
             <p style={{ margin: '4px 0' }}><strong>{result.certificate.recipient_name}</strong></p>
             <p style={{ margin: '4px 0', color: 'var(--text)' }}>completed <strong>{result.certificate.course_title}</strong></p>
@@ -81,7 +82,7 @@ const CertificateVerify = ({ code: initialCode }) => {
           </div>
         ) : (
           <div style={{ background: 'var(--danger-bg)', border: '1px solid var(--danger-border)', borderRadius: '12px', padding: '24px', textAlign: 'center' }}>
-            <div style={{ fontSize: '32px', marginBottom: '8px' }}>❌</div>
+            <div style={{ fontSize: '32px', marginBottom: '8px' }}><CircleXIcon className="icon-inline" size="1em" aria-hidden="true" /></div>
             <h2 style={{ color: 'var(--danger)', margin: 0 }}>No certificate found for this code</h2>
           </div>
         )

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import api, { extractErrorMessage } from '../../services/api';
 import { getCountry } from '../../constants/auth';
 import { useLanguage } from '../../contexts/LanguageContext';
+import { CircleCheckIcon } from 'lucide-react';
 
 const Register = ({ onSuccess, onShowPrivacy }) => {
   const { t } = useLanguage();
@@ -76,10 +77,10 @@ const Register = ({ onSuccess, onShowPrivacy }) => {
         guardian_email: formData.guardian_email.trim()
       };
 
-      console.log('📤 Registering with:', payload);
+      console.log('Registering with:', payload);
 
       const response = await api.post('/api/auth/register', payload);
-      console.log('📥 Response:', response.data);
+      console.log('Response:', response.data);
 
       if (response.data?.success) {
         setSuccess(true);
@@ -89,7 +90,7 @@ const Register = ({ onSuccess, onShowPrivacy }) => {
         setError(response.data?.message || t('registrationFailed'));
       }
     } catch (err) {
-      console.error('❌ Registration error:', err);
+      console.error('Registration error:', err);
 
       // Handle different error formats. A request that never got a
       // response (timeout, or the backend cold-starting after idle) has no
@@ -111,7 +112,7 @@ const Register = ({ onSuccess, onShowPrivacy }) => {
   if (success) {
     return (
       <div style={{ maxWidth: '400px', margin: '0 auto', textAlign: 'center' }}>
-        <h2 style={{ color: 'var(--primary)' }}>{t('registrationSuccessful')}</h2>
+        <h2 style={{ color: 'var(--primary)' }}><CircleCheckIcon className="icon-inline" size="1em" aria-hidden="true" /> {t('registrationSuccessful')}</h2>
         <p>{t('registrationSuccessfulBody')}</p>
         <button
           onClick={onSuccess}

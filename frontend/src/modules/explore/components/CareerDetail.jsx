@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import useSavedItems from '../../../hooks/useSavedItems';
+import { BookOpenIcon, BotIcon, ChartColumnIcon, ClipboardListIcon, CoinsIcon, LandmarkIcon, MapIcon, TrendingUpIcon, TriangleAlertIcon, WrenchIcon } from 'lucide-react';
 
 const CareerDetail = ({ career, onClose }) => {
   const [saving, setSaving] = useState(false);
@@ -133,13 +134,13 @@ const CareerDetail = ({ career, onClose }) => {
             color: 'var(--danger)',
             textAlign: 'center',
           }}>
-            ⚠️ {error}
+            <TriangleAlertIcon className="icon-inline" size="1em" aria-hidden="true" /> {error}
           </div>
         )}
 
         {/* Overview */}
         <div style={{ marginBottom: '20px' }}>
-          <h3 style={{ color: 'var(--text)', fontSize: '16px', marginBottom: '8px' }}>📋 Overview</h3>
+          <h3 style={{ color: 'var(--text)', fontSize: '16px', marginBottom: '8px' }}><ClipboardListIcon className="icon-inline" size="1em" aria-hidden="true" /> Overview</h3>
           <p style={{ color: 'var(--text-muted)', lineHeight: '1.6' }}>{career.description}</p>
         </div>
 
@@ -152,25 +153,25 @@ const CareerDetail = ({ career, onClose }) => {
         }}>
           {career.salary_range && (
             <div style={{ padding: '14px', background: 'var(--surface-muted)', borderRadius: '10px' }}>
-              <div style={{ fontSize: '11px', color: 'var(--gray-500)' }}>💰 Salary Range</div>
+              <div style={{ fontSize: '11px', color: 'var(--gray-500)' }}><CoinsIcon className="icon-inline" size="1em" aria-hidden="true" /> Salary Range</div>
               <div style={{ fontSize: '16px', fontWeight: 'bold', color: 'var(--primary)' }}>{career.salary_range}</div>
             </div>
           )}
           {career.demand && (
             <div style={{ padding: '14px', background: 'var(--surface-muted)', borderRadius: '10px' }}>
-              <div style={{ fontSize: '11px', color: 'var(--gray-500)' }}>📊 Job Demand</div>
+              <div style={{ fontSize: '11px', color: 'var(--gray-500)' }}><ChartColumnIcon className="icon-inline" size="1em" aria-hidden="true" /> Job Demand</div>
               <div style={{ fontSize: '16px', fontWeight: 'bold', color: 'var(--primary)' }}>{career.demand}</div>
             </div>
           )}
           {career.growth && (
             <div style={{ padding: '14px', background: 'var(--surface-muted)', borderRadius: '10px' }}>
-              <div style={{ fontSize: '11px', color: 'var(--gray-500)' }}>📈 Growth Outlook</div>
+              <div style={{ fontSize: '11px', color: 'var(--gray-500)' }}><TrendingUpIcon className="icon-inline" size="1em" aria-hidden="true" /> Growth Outlook</div>
               <div style={{ fontSize: '16px', fontWeight: 'bold', color: 'var(--primary)' }}>{career.growth}</div>
             </div>
           )}
           {career.ai_score && (
             <div style={{ padding: '14px', background: 'var(--surface-muted)', borderRadius: '10px' }}>
-              <div style={{ fontSize: '11px', color: 'var(--gray-500)' }}>🤖 AI Suitability</div>
+              <div style={{ fontSize: '11px', color: 'var(--gray-500)' }}><BotIcon className="icon-inline" size="1em" aria-hidden="true" /> AI Suitability</div>
               <div style={{ fontSize: '16px', fontWeight: 'bold', color: 'var(--primary)' }}>{career.ai_score}%</div>
             </div>
           )}
@@ -179,7 +180,7 @@ const CareerDetail = ({ career, onClose }) => {
         {/* WASSCE Subjects */}
         {career.required_subjects && career.required_subjects.length > 0 && (
           <div style={{ marginBottom: '20px' }}>
-            <h3 style={{ color: 'var(--text)', fontSize: '16px', marginBottom: '8px' }}>📚 Required WASSCE Subjects</h3>
+            <h3 style={{ color: 'var(--text)', fontSize: '16px', marginBottom: '8px' }}><BookOpenIcon className="icon-inline" size="1em" aria-hidden="true" /> Required WASSCE Subjects</h3>
             <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
               {career.required_subjects.map((subject, i) => (
                 <span key={i} style={{
@@ -199,7 +200,7 @@ const CareerDetail = ({ career, onClose }) => {
         {/* Skills */}
         {career.skills && career.skills.length > 0 && (
           <div style={{ marginBottom: '20px' }}>
-            <h3 style={{ color: 'var(--text)', fontSize: '16px', marginBottom: '8px' }}>🛠️ Key Skills</h3>
+            <h3 style={{ color: 'var(--text)', fontSize: '16px', marginBottom: '8px' }}><WrenchIcon className="icon-inline" size="1em" aria-hidden="true" /> Key Skills</h3>
             <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
               {career.skills.map((skill, i) => (
                 <span key={i} style={{
@@ -219,7 +220,7 @@ const CareerDetail = ({ career, onClose }) => {
         {/* Universities */}
         {career.universities && career.universities.length > 0 && (
           <div style={{ marginBottom: '20px' }}>
-            <h3 style={{ color: 'var(--text)', fontSize: '16px', marginBottom: '8px' }}>🏛️ Recommended Universities</h3>
+            <h3 style={{ color: 'var(--text)', fontSize: '16px', marginBottom: '8px' }}><LandmarkIcon className="icon-inline" size="1em" aria-hidden="true" /> Recommended Universities</h3>
             <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
               {career.universities.map((uni, i) => (
                 <span key={i} style={{
@@ -239,7 +240,7 @@ const CareerDetail = ({ career, onClose }) => {
         {/* Learning Roadmap */}
         {career.roadmap && career.roadmap.length > 0 && (
           <div style={{ marginBottom: '20px' }}>
-            <h3 style={{ color: 'var(--text)', fontSize: '16px', marginBottom: '12px' }}>🗺️ Learning Roadmap</h3>
+            <h3 style={{ color: 'var(--text)', fontSize: '16px', marginBottom: '12px' }}><MapIcon className="icon-inline" size="1em" aria-hidden="true" /> Learning Roadmap</h3>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
               {career.roadmap.map((step, i) => (
                 <div key={i} style={{
@@ -285,7 +286,7 @@ const CareerDetail = ({ career, onClose }) => {
             border: '1px solid var(--primary-border)',
           }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <span style={{ fontWeight: 'bold', color: 'var(--primary)' }}>🤖 Your Match Score</span>
+              <span style={{ fontWeight: 'bold', color: 'var(--primary)' }}><BotIcon className="icon-inline" size="1em" aria-hidden="true" /> Your Match Score</span>
               <span style={{ fontSize: '24px', fontWeight: 'bold', color: 'var(--primary)' }}>
                 {career.ai_match}%
               </span>
@@ -348,7 +349,7 @@ const CareerDetail = ({ career, onClose }) => {
               }
             }}
           >
-            {saving ? '⏳ Saving...' : saved ? '✅ Saved' : '💾 Save Career'}
+            {saving ? 'Saving...' : saved ? 'Saved' : 'Save Career'}
           </button>
         </div>
       </div>

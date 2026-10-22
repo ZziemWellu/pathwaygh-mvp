@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Flame, Trophy, Users, Star } from 'lucide-react';
+import { Flame, Star, Trophy, TrophyIcon, Users } from 'lucide-react';
 import api, { extractErrorMessage } from '../../services/api';
+import { AchievementIcon } from '../../components/ui/icons';
 
 const GamificationPage = () => {
   const [profile, setProfile] = useState(null);
@@ -57,7 +58,7 @@ const GamificationPage = () => {
 
   return (
     <div style={{ maxWidth: '800px', margin: '0 auto', padding: '20px' }}>
-      <h2 style={{ color: 'var(--primary)', marginBottom: '20px' }}>🏆 Your Progress</h2>
+      <h2 style={{ color: 'var(--primary)', marginBottom: '20px' }}><TrophyIcon className="icon-inline" size="1em" aria-hidden="true" /> Your Progress</h2>
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: '16px', marginBottom: '28px' }}>
         <StatCard icon={Star} label="Total XP" value={profile.xp_points} color="var(--primary)" />
@@ -80,7 +81,9 @@ const GamificationPage = () => {
               opacity: a.earned ? 1 : 0.55,
             }}
           >
-            <div style={{ fontSize: '32px', marginBottom: '6px' }}>{a.icon}</div>
+            <div style={{ marginBottom: '6px' }}>
+              <AchievementIcon id={a.id} size={32} strokeWidth={1.75} color={a.earned ? 'var(--accent-strong)' : 'var(--text-subtle)'} />
+            </div>
             <div style={{ fontSize: '13px', fontWeight: 'bold' }}>{a.name}</div>
             <div style={{ fontSize: '11px', color: 'var(--gray-500)', marginTop: '4px' }}>{a.description}</div>
           </div>

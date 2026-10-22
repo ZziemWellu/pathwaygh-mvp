@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import api from '../../services/api';
 import CareerDetail from './components/CareerDetail';
 import UniversityDetail from './components/UniversityDetail';
+import { BriefcaseIcon, ChartColumnIcon, CoinsIcon, LandmarkIcon, MapPinIcon, SearchIcon, TriangleAlertIcon } from 'lucide-react';
 
 const ExploreModule = () => {
   const [careers, setCareers] = useState([]);
@@ -74,7 +75,7 @@ const ExploreModule = () => {
       setCareers(careerData);
       setUniversities(uniData);
     } catch (err) {
-      console.error('❌ Explore error:', err);
+      console.error('Explore error:', err);
       setError(err.message || 'Failed to load explore data');
     } finally {
       setLoading(false);
@@ -97,7 +98,7 @@ const ExploreModule = () => {
   if (loading) {
     return (
       <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '20px' }}>
-        <h2>🔍 Explore</h2>
+        <h2><SearchIcon className="icon-inline" size="1em" aria-hidden="true" /> Explore</h2>
         <p>Loading explore data...</p>
       </div>
     );
@@ -106,8 +107,8 @@ const ExploreModule = () => {
   if (error) {
     return (
       <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '20px' }}>
-        <h2>🔍 Explore</h2>
-        <p style={{ color: 'red' }}>⚠️ {error}</p>
+        <h2><SearchIcon className="icon-inline" size="1em" aria-hidden="true" /> Explore</h2>
+        <p style={{ color: 'red' }}><TriangleAlertIcon className="icon-inline" size="1em" aria-hidden="true" /> {error}</p>
         <button onClick={fetchExploreData} style={{ padding: '8px 16px', background: 'var(--primary)', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer' }}>Retry</button>
       </div>
     );
@@ -117,7 +118,7 @@ const ExploreModule = () => {
     <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '20px' }}>
       {/* Header */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-        <h2 style={{ margin: 0 }}>🔍 Explore</h2>
+        <h2 style={{ margin: 0 }}><SearchIcon className="icon-inline" size="1em" aria-hidden="true" /> Explore</h2>
         <span style={{ color: 'var(--gray-500)' }}>
           {careers.length} careers • {universities.length} universities
         </span>
@@ -137,7 +138,7 @@ const ExploreModule = () => {
             fontWeight: activeTab === 'careers' ? 'bold' : 'normal',
           }}
         >
-          💼 Careers ({careers.length})
+          <BriefcaseIcon className="icon-inline" size="1em" aria-hidden="true" /> Careers ({careers.length})
         </button>
         <button
           onClick={() => setActiveTab('universities')}
@@ -151,7 +152,7 @@ const ExploreModule = () => {
             fontWeight: activeTab === 'universities' ? 'bold' : 'normal',
           }}
         >
-          🏛️ Universities ({universities.length})
+          <LandmarkIcon className="icon-inline" size="1em" aria-hidden="true" /> Universities ({universities.length})
         </button>
       </div>
 
@@ -200,8 +201,8 @@ const ExploreModule = () => {
                 </div>
                 <p style={{ color: 'var(--text-muted)', fontSize: '14px', margin: '8px 0' }}>{career.description}</p>
                 <div style={{ display: 'flex', gap: '12px', fontSize: '12px', color: 'var(--gray-500)', marginTop: '8px' }}>
-                  {career.salary_range && <span>💰 {career.salary_range}</span>}
-                  {career.demand && <span>📊 {career.demand}</span>}
+                  {career.salary_range && <span><CoinsIcon className="icon-inline" size="1em" aria-hidden="true" /> {career.salary_range}</span>}
+                  {career.demand && <span><ChartColumnIcon className="icon-inline" size="1em" aria-hidden="true" /> {career.demand}</span>}
                 </div>
                 <div style={{ marginTop: '12px', fontSize: '12px', color: 'var(--primary)', textAlign: 'center' }}>
                   Click for full details →
@@ -241,7 +242,7 @@ const ExploreModule = () => {
                 }}
               >
                 <h3 style={{ color: 'var(--primary)', margin: '0 0 8px 0', fontSize: '18px' }}>{uni.name}</h3>
-                {uni.location && <div style={{ color: 'var(--text-muted)', fontSize: '14px' }}>📍 {uni.location}</div>}
+                {uni.location && <div style={{ color: 'var(--text-muted)', fontSize: '14px' }}><MapPinIcon className="icon-inline" size="1em" aria-hidden="true" /> {uni.location}</div>}
                 {uni.cutoff && <div style={{ color: 'var(--gray-500)', fontSize: '13px' }}>Cutoff: {uni.cutoff}</div>}
                 {uni.programs && uni.programs.length > 0 && (
                   <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginTop: '8px' }}>

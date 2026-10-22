@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { BookOpenIcon, BookmarkIcon, CircleCheckIcon, ClipboardListIcon, LandmarkIcon, MapIcon, RotateCcwIcon, SearchIcon, TargetIcon, Trophy } from 'lucide-react';
 import api from '../../../services/api';
 import { getUser } from '../../../constants/auth';
 
@@ -169,10 +170,10 @@ const CareerMatchPage = () => {
         results: result
       });
       setSaved(true);
-      alert('✅ Assessment saved successfully!');
+      alert('Assessment saved successfully!');
     } catch (err) {
       console.error('Save error:', err);
-      alert('❌ Failed to save assessment. Please try again.');
+      alert('Failed to save assessment. Please try again.');
     }
   };
 
@@ -190,7 +191,7 @@ const CareerMatchPage = () => {
   if (loading) {
     return (
       <div style={{ maxWidth: '800px', margin: '0 auto', padding: '20px', textAlign: 'center' }}>
-        <h2 style={{ color: 'var(--primary)', marginBottom: '20px' }}>🎯 Calculating Your Career Match</h2>
+        <h2 style={{ color: 'var(--primary)', marginBottom: '20px' }}><TargetIcon className="icon-inline" size="1em" aria-hidden="true" /> Calculating Your Career Match</h2>
         <div style={{ width: '60px', height: '60px', border: '4px solid var(--surface-sunken)', borderTopColor: 'var(--primary)', borderRadius: '50%', animation: 'spin 0.8s linear infinite', margin: '0 auto 20px' }} />
         <p style={{ color: 'var(--gray-500)' }}>Analyzing your preferences...</p>
         <p style={{ color: 'var(--gray-500)', fontSize: '13px' }}>Finding the best career matches for you</p>
@@ -202,10 +203,10 @@ const CareerMatchPage = () => {
     return (
       <div style={{ maxWidth: '1000px', margin: '0 auto', padding: '20px' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', flexWrap: 'wrap', gap: '10px' }}>
-          <h2 style={{ color: 'var(--primary)', margin: 0 }}>🎯 Your Career Match Results</h2>
+          <h2 style={{ color: 'var(--primary)', margin: 0 }}><TargetIcon className="icon-inline" size="1em" aria-hidden="true" /> Your Career Match Results</h2>
           {saved && (
             <span style={{ padding: '6px 16px', background: 'var(--primary-bg)', color: 'var(--primary)', borderRadius: '20px', fontWeight: 'bold' }}>
-              ✅ Saved to Profile
+              <CircleCheckIcon className="icon-inline" size="1em" aria-hidden="true" /> Saved to Profile
             </span>
           )}
         </div>
@@ -215,7 +216,7 @@ const CareerMatchPage = () => {
 
         {/* Top Career Matches */}
         <div style={{ marginBottom: '30px' }}>
-          <h3 style={{ color: 'var(--text)', marginBottom: '16px' }}>📋 Top Career Matches</h3>
+          <h3 style={{ color: 'var(--text)', marginBottom: '16px' }}><ClipboardListIcon className="icon-inline" size="1em" aria-hidden="true" /> Top Career Matches</h3>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '16px' }}>
             {result.matches.map((career, i) => (
               <div
@@ -232,7 +233,7 @@ const CareerMatchPage = () => {
               >
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <span style={{ fontWeight: 'bold', fontSize: '16px', color: 'var(--primary)' }}>
-                    {i === 0 && '🏆 '}{career.title}
+                    {i === 0 && <Trophy size="1em" color="var(--accent-strong)" aria-label="Top match" style={{ marginRight: '6px' }} />}{career.title}
                   </span>
                   <span style={{ fontSize: '24px', fontWeight: 'bold', color: 'var(--primary)' }}>
                     {career.match}%
@@ -251,7 +252,7 @@ const CareerMatchPage = () => {
 
         {/* Recommended SHS Electives */}
         <div style={{ marginBottom: '24px', padding: '20px', background: 'white', borderRadius: '12px', border: '1px solid var(--border)' }}>
-          <h3 style={{ color: 'var(--text)', marginBottom: '12px' }}>📚 Recommended SHS Electives</h3>
+          <h3 style={{ color: 'var(--text)', marginBottom: '12px' }}><BookOpenIcon className="icon-inline" size="1em" aria-hidden="true" /> Recommended SHS Electives</h3>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
             {result.recommendedElectives.map((elective, i) => (
               <span key={i} style={{ padding: '6px 14px', background: 'var(--primary-bg)', color: 'var(--primary)', borderRadius: '20px', fontWeight: '500' }}>
@@ -263,7 +264,7 @@ const CareerMatchPage = () => {
 
         {/* Recommended Universities */}
         <div style={{ marginBottom: '24px', padding: '20px', background: 'white', borderRadius: '12px', border: '1px solid var(--border)' }}>
-          <h3 style={{ color: 'var(--text)', marginBottom: '12px' }}>🏛️ Recommended Universities</h3>
+          <h3 style={{ color: 'var(--text)', marginBottom: '12px' }}><LandmarkIcon className="icon-inline" size="1em" aria-hidden="true" /> Recommended Universities</h3>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
             {result.recommendedUniversities.map((uni, i) => (
               <span key={i} style={{ padding: '6px 14px', background: 'var(--info-bg)', color: 'var(--secondary)', borderRadius: '20px', fontWeight: '500' }}>
@@ -275,7 +276,7 @@ const CareerMatchPage = () => {
 
         {/* Learning Path */}
         <div style={{ marginBottom: '24px', padding: '20px', background: 'white', borderRadius: '12px', border: '1px solid var(--border)' }}>
-          <h3 style={{ color: 'var(--text)', marginBottom: '12px' }}>🗺️ Your Learning Path</h3>
+          <h3 style={{ color: 'var(--text)', marginBottom: '12px' }}><MapIcon className="icon-inline" size="1em" aria-hidden="true" /> Your Learning Path</h3>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
             {result.learningPaths.map((path, i) => (
               <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
@@ -317,7 +318,7 @@ const CareerMatchPage = () => {
               flex: 1
             }}
           >
-            💾 Save to Profile
+            <BookmarkIcon className="icon-inline" size="1em" aria-hidden="true" /> Save to Profile
           </button>
           <button
             onClick={() => navigate('/explore/careers')}
@@ -332,7 +333,7 @@ const CareerMatchPage = () => {
               flex: 1
             }}
           >
-            🔍 Explore All Careers
+            <SearchIcon className="icon-inline" size="1em" aria-hidden="true" /> Explore All Careers
           </button>
           <button
             onClick={resetAssessment}
@@ -345,7 +346,7 @@ const CareerMatchPage = () => {
               flex: 1
             }}
           >
-            🔄 Retake Assessment
+            <RotateCcwIcon className="icon-inline" size="1em" aria-hidden="true" /> Retake Assessment
           </button>
         </div>
       </div>
@@ -361,7 +362,7 @@ const CareerMatchPage = () => {
     <div style={{ maxWidth: '800px', margin: '0 auto', padding: '20px' }}>
       <div style={{ marginBottom: '24px' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-          <h2 style={{ color: 'var(--primary)', margin: 0 }}>🎯 Career Match</h2>
+          <h2 style={{ color: 'var(--primary)', margin: 0 }}><TargetIcon className="icon-inline" size="1em" aria-hidden="true" /> Career Match</h2>
           <span style={{ fontSize: '14px', color: 'var(--gray-500)' }}>
             Question {step} of {questions.length}
           </span>
@@ -448,7 +449,7 @@ const CareerMatchPage = () => {
               fontWeight: 'bold'
             }}
           >
-            {step === questions.length ? '🚀 See Results' : 'Next →'}
+            {step === questions.length ? 'See Results' : 'Next →'}
           </button>
         </div>
       </div>

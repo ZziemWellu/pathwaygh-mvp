@@ -5,6 +5,7 @@ import { getUser, setUser } from '../../constants/auth';
 import LanguageSwitcher from '../../components/LanguageSwitcher';
 import { useAccessibility } from '../../contexts/AccessibilityContext';
 import { formatDate } from '../../utils/date';
+import { Award, BookOpen, BookOpenIcon, BookOpenTextIcon, Bookmark, BookmarkIcon, BriefcaseIcon, CameraIcon, ClipboardList, ClipboardListIcon, CoinsIcon, FileTextIcon, FlameIcon, HourglassIcon, LandmarkIcon, PencilIcon, School, SchoolIcon, Settings, SettingsIcon, StarIcon, Target, TargetIcon, TrophyIcon, User, UserIcon } from 'lucide-react';
 
 const ProfileModule = () => {
   const { dyslexiaFont, setDyslexiaFont, textScale, setTextScale, textScales } = useAccessibility();
@@ -137,7 +138,7 @@ const ProfileModule = () => {
       const updatedUser = { ...user, avatar_url: avatarUrl };
       setUser(updatedUser);
       setUserState(updatedUser);
-      showNotification('✅ Profile photo updated successfully!');
+      showNotification('Profile photo updated successfully!');
     } catch (err) {
       console.error('Upload error:', err);
       showNotification('Failed to upload photo. Please try again.', 'error');
@@ -186,7 +187,7 @@ const ProfileModule = () => {
       setUser(updatedUser);
       setUserState(updatedUser);
       setEditing(false);
-      showNotification('✅ Profile updated successfully!');
+      showNotification('Profile updated successfully!');
     } catch (err) {
       console.error('Save error:', err);
       showNotification('Failed to save profile.', 'error');
@@ -211,13 +212,13 @@ const ProfileModule = () => {
   };
 
   const tabs = [
-    { id: 'overview', icon: '📋', label: 'Overview' },
-    { id: 'academic', icon: '📚', label: 'Academic' },
-    { id: 'goals', icon: '🎯', label: 'Goals' },
-    { id: 'saved', icon: '💾', label: 'Saved' },
-    { id: 'certificates', icon: '🏆', label: 'Certificates' },
-    { id: 'school', icon: '🏫', label: 'School' },
-    { id: 'settings', icon: '⚙️', label: 'Settings' },
+    { id: 'overview', icon: ClipboardList, label: 'Overview' },
+    { id: 'academic', icon: BookOpen, label: 'Academic' },
+    { id: 'goals', icon: Target, label: 'Goals' },
+    { id: 'saved', icon: Bookmark, label: 'Saved' },
+    { id: 'certificates', icon: Award, label: 'Certificates' },
+    { id: 'school', icon: School, label: 'School' },
+    { id: 'settings', icon: Settings, label: 'Settings' },
   ];
 
   // App.jsx's user state (and everything gated on user.is_school_admin, like
@@ -236,7 +237,7 @@ const ProfileModule = () => {
     try {
       const response = await api.put('/api/profile/me', { guardian_email: guardianEmailValue.trim() || null });
       setProfile(response.data.profile);
-      showNotification('✅ Parent/Guardian email saved.');
+      showNotification('Parent/Guardian email saved.');
     } catch (err) {
       showNotification(err.response?.data?.detail || 'Failed to save parent/guardian email.', 'error');
     } finally {
@@ -252,7 +253,7 @@ const ProfileModule = () => {
         guardian_whatsapp_opt_in: guardianWhatsappOptIn,
       });
       setProfile(response.data.profile);
-      showNotification('✅ Guardian WhatsApp number saved.');
+      showNotification('Guardian WhatsApp number saved.');
     } catch (err) {
       showNotification(err.response?.data?.detail || 'Failed to save guardian WhatsApp number.', 'error');
     } finally {
@@ -298,7 +299,7 @@ const ProfileModule = () => {
     return (
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '400px' }}>
         <div style={{ textAlign: 'center' }}>
-          <div style={{ fontSize: '24px', marginBottom: '12px' }}>⏳</div>
+          <div style={{ fontSize: '24px', marginBottom: '12px' }}><HourglassIcon className="icon-inline" size="1em" aria-hidden="true" /></div>
           <p style={{ color: 'var(--gray-500)' }}>Loading profile...</p>
         </div>
       </div>
@@ -325,10 +326,10 @@ const ProfileModule = () => {
       )}
 
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
-        <h2 style={{ margin: 0, color: 'var(--primary)' }}>👤 Profile</h2>
+        <h2 style={{ margin: 0, color: 'var(--primary)' }}><UserIcon className="icon-inline" size="1em" aria-hidden="true" /> Profile</h2>
         {!editing && (
           <button onClick={handleEdit} style={{ padding: '8px 20px', background: 'var(--primary)', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer', fontSize: '14px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-            ✏️ Edit Profile
+            <PencilIcon className="icon-inline" size="1em" aria-hidden="true" /> Edit Profile
           </button>
         )}
       </div>
@@ -378,7 +379,7 @@ const ProfileModule = () => {
                 {getAvatarUrl() ? (
                   <img src={getAvatarUrl()} alt="Profile" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                 ) : (
-                  '👤'
+                  <User size={48} color="var(--text-subtle)" aria-hidden="true" />
                 )}
                 {!editing && !uploading && (
                   <div style={{
@@ -396,7 +397,7 @@ const ProfileModule = () => {
                   }}
                   onMouseEnter={(e) => e.currentTarget.style.opacity = '1'}
                   onMouseLeave={(e) => e.currentTarget.style.opacity = '0'}>
-                    📷 Change
+                    <CameraIcon className="icon-inline" size="1em" aria-hidden="true" /> Change
                   </div>
                 )}
               </div>
@@ -427,7 +428,7 @@ const ProfileModule = () => {
               hang off the bottom of the green cover in white text, so the
               "Member since" line was cut in half by the cover's edge and the
               white "Change Photo" button vanished on the white card - only
-              its 📷 stayed visible, looking like a stray icon. */}
+              its camera emoji stayed visible, looking like a stray icon. */}
           <div style={{ marginLeft: '120px', minHeight: '54px', marginBottom: '24px' }}>
             <h3 style={{ color: 'var(--gray-900)', margin: 0, fontSize: '22px' }}>
               {profile?.full_name || user?.full_name || 'Student'}
@@ -450,7 +451,7 @@ const ProfileModule = () => {
                   fontWeight: '600'
                 }}
               >
-                📷 Change Photo
+                <CameraIcon className="icon-inline" size="1em" aria-hidden="true" /> Change Photo
               </button>
             )}
           </div>
@@ -505,33 +506,33 @@ const ProfileModule = () => {
               </div>
               <div style={{ display: 'flex', gap: '12px', justifyContent: 'flex-end' }}>
                 <button onClick={handleCancel} style={{ padding: '10px 24px', background: 'var(--surface-sunken)', border: 'none', borderRadius: '8px', cursor: 'pointer' }}>Cancel</button>
-                <button onClick={handleSave} disabled={saving} style={{ padding: '10px 24px', background: 'var(--primary)', color: 'white', border: 'none', borderRadius: '8px', cursor: saving ? 'not-allowed' : 'pointer', opacity: saving ? 0.6 : 1 }}>{saving ? 'Saving...' : '💾 Save Changes'}</button>
+                <button onClick={handleSave} disabled={saving} style={{ padding: '10px 24px', background: 'var(--primary)', color: 'white', border: 'none', borderRadius: '8px', cursor: saving ? 'not-allowed' : 'pointer', opacity: saving ? 0.6 : 1 }}>{saving ? 'Saving...' : 'Save Changes'}</button>
               </div>
             </div>
           ) : (
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(120px, 1fr))', gap: '16px' }}>
               <div style={{ textAlign: 'center', padding: '12px', background: 'var(--surface-muted)', borderRadius: '8px' }}>
-                <div style={{ fontSize: '24px' }}>📚</div>
+                <div style={{ fontSize: '24px' }}><BookOpenIcon className="icon-inline" size="1em" aria-hidden="true" /></div>
                 <div style={{ fontSize: '20px', fontWeight: 'bold', color: 'var(--primary)' }}>{stats.coursesCompleted || 0}</div>
                 <div style={{ fontSize: '12px', color: 'var(--gray-500)' }}>Courses</div>
               </div>
               <div style={{ textAlign: 'center', padding: '12px', background: 'var(--surface-muted)', borderRadius: '8px' }}>
-                <div style={{ fontSize: '24px' }}>📖</div>
+                <div style={{ fontSize: '24px' }}><BookOpenTextIcon className="icon-inline" size="1em" aria-hidden="true" /></div>
                 <div style={{ fontSize: '20px', fontWeight: 'bold', color: 'var(--primary)' }}>{stats.totalLessons || 0}</div>
                 <div style={{ fontSize: '12px', color: 'var(--gray-500)' }}>Lessons</div>
               </div>
               <div style={{ textAlign: 'center', padding: '12px', background: 'var(--surface-muted)', borderRadius: '8px' }}>
-                <div style={{ fontSize: '24px' }}>📝</div>
+                <div style={{ fontSize: '24px' }}><FileTextIcon className="icon-inline" size="1em" aria-hidden="true" /></div>
                 <div style={{ fontSize: '20px', fontWeight: 'bold', color: 'var(--primary)' }}>{stats.quizzesTaken || 0}</div>
                 <div style={{ fontSize: '12px', color: 'var(--gray-500)' }}>Quizzes</div>
               </div>
               <div style={{ textAlign: 'center', padding: '12px', background: 'var(--surface-muted)', borderRadius: '8px' }}>
-                <div style={{ fontSize: '24px' }}>🔥</div>
+                <div style={{ fontSize: '24px' }}><FlameIcon className="icon-inline" size="1em" aria-hidden="true" /></div>
                 <div style={{ fontSize: '20px', fontWeight: 'bold', color: 'var(--primary)' }}>{stats.studyStreak || 0}</div>
                 <div style={{ fontSize: '12px', color: 'var(--gray-500)' }}>Day Streak</div>
               </div>
               <div style={{ textAlign: 'center', padding: '12px', background: 'var(--surface-muted)', borderRadius: '8px' }}>
-                <div style={{ fontSize: '24px' }}>⭐</div>
+                <div style={{ fontSize: '24px' }}><StarIcon className="icon-inline" size="1em" aria-hidden="true" /></div>
                 <div style={{ fontSize: '20px', fontWeight: 'bold', color: 'var(--primary)' }}>{stats.xp || 0}</div>
                 <div style={{ fontSize: '12px', color: 'var(--gray-500)' }}>XP</div>
               </div>
@@ -565,7 +566,7 @@ const ProfileModule = () => {
               whiteSpace: 'nowrap'
             }}
           >
-            {tab.icon} {tab.label}
+            <tab.icon size={16} aria-hidden="true" /> {tab.label}
           </button>
         ))}
       </div>
@@ -573,7 +574,7 @@ const ProfileModule = () => {
       <div style={{ background: 'white', borderRadius: '12px', border: '1px solid var(--border)', padding: '24px' }}>
         {activeTab === 'overview' && (
           <div>
-            <h3 style={{ color: 'var(--text)', marginBottom: '16px' }}>📋 Overview</h3>
+            <h3 style={{ color: 'var(--text)', marginBottom: '16px' }}><ClipboardListIcon className="icon-inline" size="1em" aria-hidden="true" /> Overview</h3>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
               <div>
                 <p><strong style={{ color: 'var(--text-muted)' }}>Name:</strong> {profile?.full_name || user?.full_name || 'Not set'}</p>
@@ -584,13 +585,13 @@ const ProfileModule = () => {
               <div>
                 <p><strong style={{ color: 'var(--text-muted)' }}>Grade:</strong> {profile?.grade || 'Not specified'}</p>
                 <p><strong style={{ color: 'var(--text-muted)' }}>Member since:</strong> {formatDate(profile?.created_at, { fallback: 'N/A' })}</p>
-                <p><strong style={{ color: 'var(--text-muted)' }}>Study Streak:</strong> 🔥 {stats.studyStreak || 0} days</p>
-                <p><strong style={{ color: 'var(--text-muted)' }}>XP:</strong> ⭐ {stats.xp || 0}</p>
+                <p><strong style={{ color: 'var(--text-muted)' }}>Study Streak:</strong> <FlameIcon className="icon-inline" size="1em" aria-hidden="true" /> {stats.studyStreak || 0} days</p>
+                <p><strong style={{ color: 'var(--text-muted)' }}>XP:</strong> <StarIcon className="icon-inline" size="1em" aria-hidden="true" /> {stats.xp || 0}</p>
               </div>
             </div>
             {profile?.bio && (
               <div style={{ marginTop: '12px' }}>
-                <p><strong style={{ color: 'var(--text-muted)' }}>📝 Bio:</strong></p>
+                <p><strong style={{ color: 'var(--text-muted)' }}><FileTextIcon className="icon-inline" size="1em" aria-hidden="true" /> Bio:</strong></p>
                 <p style={{ color: 'var(--text-muted)' }}>{profile.bio}</p>
               </div>
             )}
@@ -599,7 +600,7 @@ const ProfileModule = () => {
 
         {activeTab === 'academic' && (
           <div>
-            <h3 style={{ color: 'var(--text)', marginBottom: '16px' }}>📚 Academic Information</h3>
+            <h3 style={{ color: 'var(--text)', marginBottom: '16px' }}><BookOpenIcon className="icon-inline" size="1em" aria-hidden="true" /> Academic Information</h3>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
               <div>
                 <p><strong style={{ color: 'var(--text-muted)' }}>School/Institution:</strong> {profile?.school || 'Not specified'}</p>
@@ -616,7 +617,7 @@ const ProfileModule = () => {
 
         {activeTab === 'goals' && (
           <div>
-            <h3 style={{ color: 'var(--text)', marginBottom: '16px' }}>🎯 Goals & Interests</h3>
+            <h3 style={{ color: 'var(--text)', marginBottom: '16px' }}><TargetIcon className="icon-inline" size="1em" aria-hidden="true" /> Goals & Interests</h3>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
               <div>
                 <p><strong style={{ color: 'var(--text-muted)' }}>Career Interests:</strong></p>
@@ -648,10 +649,10 @@ const ProfileModule = () => {
 
         {activeTab === 'saved' && (
           <div>
-            <h3 style={{ color: 'var(--text)', marginBottom: '16px' }}>💾 Saved Items</h3>
+            <h3 style={{ color: 'var(--text)', marginBottom: '16px' }}><BookmarkIcon className="icon-inline" size="1em" aria-hidden="true" /> Saved Items</h3>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '16px' }}>
               <div style={{ background: 'var(--surface-muted)', borderRadius: '8px', padding: '16px' }}>
-                <h4 style={{ margin: '0 0 8px 0', color: 'var(--primary)' }}>💼 Careers ({savedCareers.length})</h4>
+                <h4 style={{ margin: '0 0 8px 0', color: 'var(--primary)' }}><BriefcaseIcon className="icon-inline" size="1em" aria-hidden="true" /> Careers ({savedCareers.length})</h4>
                 {savedCareers.length > 0 ? (
                   savedCareers.map((career, i) => <div key={i} style={{ fontSize: '13px', color: 'var(--text-muted)', padding: '4px 0' }}>• {career}</div>)
                 ) : (
@@ -659,7 +660,7 @@ const ProfileModule = () => {
                 )}
               </div>
               <div style={{ background: 'var(--surface-muted)', borderRadius: '8px', padding: '16px' }}>
-                <h4 style={{ margin: '0 0 8px 0', color: 'var(--primary)' }}>🏛️ Universities ({savedUniversities.length})</h4>
+                <h4 style={{ margin: '0 0 8px 0', color: 'var(--primary)' }}><LandmarkIcon className="icon-inline" size="1em" aria-hidden="true" /> Universities ({savedUniversities.length})</h4>
                 {savedUniversities.length > 0 ? (
                   savedUniversities.map((uni, i) => <div key={i} style={{ fontSize: '13px', color: 'var(--text-muted)', padding: '4px 0' }}>• {uni}</div>)
                 ) : (
@@ -667,7 +668,7 @@ const ProfileModule = () => {
                 )}
               </div>
               <div style={{ background: 'var(--surface-muted)', borderRadius: '8px', padding: '16px' }}>
-                <h4 style={{ margin: '0 0 8px 0', color: 'var(--primary)' }}>💰 Scholarships ({savedScholarships.length})</h4>
+                <h4 style={{ margin: '0 0 8px 0', color: 'var(--primary)' }}><CoinsIcon className="icon-inline" size="1em" aria-hidden="true" /> Scholarships ({savedScholarships.length})</h4>
                 {savedScholarships.length > 0 ? (
                   savedScholarships.map((sch, i) => <div key={i} style={{ fontSize: '13px', color: 'var(--text-muted)', padding: '4px 0' }}>• {sch}</div>)
                 ) : (
@@ -680,7 +681,7 @@ const ProfileModule = () => {
 
         {activeTab === 'certificates' && (
           <div>
-            <h3 style={{ color: 'var(--text)', marginBottom: '16px' }}>🏆 Certificates</h3>
+            <h3 style={{ color: 'var(--text)', marginBottom: '16px' }}><TrophyIcon className="icon-inline" size="1em" aria-hidden="true" /> Certificates</h3>
             {certificates.length === 0 ? (
               <p style={{ color: 'var(--gray-500)', fontSize: '13px' }}>Complete a course to earn your first certificate.</p>
             ) : (
@@ -716,7 +717,7 @@ const ProfileModule = () => {
 
         {activeTab === 'school' && (
           <div>
-            <h3 style={{ color: 'var(--text)', marginBottom: '16px' }}>🏫 School</h3>
+            <h3 style={{ color: 'var(--text)', marginBottom: '16px' }}><SchoolIcon className="icon-inline" size="1em" aria-hidden="true" /> School</h3>
             {schoolInfo?.school ? (
               <div>
                 <p><strong style={{ color: 'var(--text-muted)' }}>School:</strong> {schoolInfo.school.name}</p>
@@ -776,7 +777,7 @@ const ProfileModule = () => {
 
         {activeTab === 'settings' && (
           <div>
-            <h3 style={{ color: 'var(--text)', marginBottom: '16px' }}>⚙️ Settings</h3>
+            <h3 style={{ color: 'var(--text)', marginBottom: '16px' }}><SettingsIcon className="icon-inline" size="1em" aria-hidden="true" /> Settings</h3>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
               <div>
                 <p><strong style={{ color: 'var(--text-muted)' }}>Phone Number:</strong> {profile?.phone || 'Not specified'}</p>

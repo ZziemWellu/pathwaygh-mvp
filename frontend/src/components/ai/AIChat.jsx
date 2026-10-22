@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import ReactMarkdown from 'react-markdown';
 import ReadAloudButton from '../common/ReadAloudButton';
 import api from '../../services/api';
+import { BookOpenIcon, BotIcon, CalculatorIcon } from 'lucide-react';
 
 const markdownComponents = {
   p: ({ children }) => <p style={{ margin: '0 0 8px' }}>{children}</p>,
@@ -107,7 +108,7 @@ const AIChat = ({ user }) => {
         onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.1)'}
         onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
       >
-        🤖
+        <BotIcon className="icon-inline" size="1em" aria-hidden="true" />
       </button>
     );
   }
@@ -141,7 +142,7 @@ const AIChat = ({ user }) => {
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <span style={{ fontSize: '24px' }}>🤖</span>
+          <span style={{ fontSize: '24px' }}><BotIcon className="icon-inline" size="1em" aria-hidden="true" /></span>
           <div>
             <div style={{ fontWeight: 'bold', fontSize: '16px' }}>AI Tutor</div>
             <div style={{ fontSize: '11px', opacity: 0.8 }}>Online • Powered by AI</div>
@@ -218,12 +219,12 @@ const AIChat = ({ user }) => {
                     <ReadAloudButton text={msg.content} />
                     {msg.grounded && (
                       <span style={{ fontSize: '11px', color: 'var(--primary)', background: 'var(--primary-bg)', padding: '2px 8px', borderRadius: '10px' }}>
-                        📚 grounded in curriculum
+                        <BookOpenIcon className="icon-inline" size="1em" aria-hidden="true" /> grounded in curriculum
                       </span>
                     )}
                     {msg.computedMath && (
                       <span style={{ fontSize: '11px', color: 'var(--primary)', background: 'var(--primary-bg)', padding: '2px 8px', borderRadius: '10px' }}>
-                        🧮 verified: {msg.computedMath.expression} = {msg.computedMath.result}
+                        <CalculatorIcon className="icon-inline" size="1em" aria-hidden="true" /> verified: {msg.computedMath.expression} = {msg.computedMath.result}
                       </span>
                     )}
                   </div>

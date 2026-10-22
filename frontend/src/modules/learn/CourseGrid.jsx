@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../../services/api';
 import { useLanguage } from '../../contexts/LanguageContext';
+import { BookOpenIcon, BookOpenTextIcon, CircleCheckIcon, TriangleAlertIcon } from 'lucide-react';
 
 const CourseGrid = ({ user }) => {
   const { t } = useLanguage();
@@ -44,7 +45,7 @@ const CourseGrid = ({ user }) => {
     return (
       <div style={{ textAlign: 'center', padding: '40px' }}>
         <h2>{t('learnHeading')}</h2>
-        <p style={{ color: 'red' }}>⚠️ {error}</p>
+        <p style={{ color: 'red' }}><TriangleAlertIcon className="icon-inline" size="1em" aria-hidden="true" /> {error}</p>
         <button onClick={fetchCourses} style={{ padding: '8px 16px', background: 'var(--primary)', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer' }}>{t('retry')}</button>
       </div>
     );
@@ -67,7 +68,7 @@ const CourseGrid = ({ user }) => {
               fontWeight: showEnrolledOnly ? 'bold' : 'normal',
             }}
           >
-            {showEnrolledOnly ? t('learnMyCourses') : t('learnAllCourses')}
+            <BookOpenIcon className="icon-inline" size="1em" aria-hidden="true" /> {showEnrolledOnly ? t('learnMyCourses') : t('learnAllCourses')}
           </button>
           <span style={{ color: 'var(--gray-500)', fontSize: '14px' }}>{t('learnCoursesCount').replace('{count}', courses.length)}</span>
         </div>
@@ -116,7 +117,7 @@ const CourseGrid = ({ user }) => {
             >
               {course.enrolled && (
                 <div style={{ position: 'absolute', top: '12px', right: '12px', background: 'var(--primary)', color: 'white', padding: '2px 10px', borderRadius: '12px', fontSize: '11px', fontWeight: 'bold' }}>
-                  {t('learnEnrolledBadge')}
+                  <CircleCheckIcon className="icon-inline" size="1em" aria-hidden="true" /> {t('learnEnrolledBadge')}
                 </div>
               )}
               <h3 style={{ color: 'var(--primary)', margin: '0 0 8px 0', paddingRight: '80px' }}>{course.title}</h3>
@@ -126,7 +127,7 @@ const CourseGrid = ({ user }) => {
                 </span>
               )}
               <p style={{ color: 'var(--text-muted)', fontSize: '14px', margin: '12px 0' }}>{course.description}</p>
-              <div style={{ fontSize: '12px', color: 'var(--gray-500)' }}>{t('learnLessonsCount').replace('{count}', course.lesson_count || 0)}</div>
+              <div style={{ fontSize: '12px', color: 'var(--gray-500)' }}><BookOpenTextIcon className="icon-inline" size="1em" aria-hidden="true" /> {t('learnLessonsCount').replace('{count}', course.lesson_count || 0)}</div>
               <div style={{ marginTop: '12px', fontSize: '12px', color: 'var(--primary)', textAlign: 'center' }}>
                 {course.enrolled ? t('learnContinueLearning') : t('learnViewCourse')}
               </div>

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import api, { extractErrorMessage } from '../../services/api';
+import { BotIcon } from 'lucide-react';
 
 // On-demand, AI-generated bonus Mathematics practice - separate from the
 // tracked/adaptive quiz flow above (see backend/modules/ai_questions/
@@ -37,7 +38,7 @@ const AIBonusQuestion = () => {
 
   return (
     <div style={{ background: 'white', borderRadius: '12px', border: '1px solid var(--border)', padding: '20px', marginBottom: '24px' }}>
-      <h3 style={{ color: 'var(--primary)', margin: '0 0 4px 0' }}>🤖 AI Bonus Question</h3>
+      <h3 style={{ color: 'var(--primary)', margin: '0 0 4px 0' }}><BotIcon className="icon-inline" size="1em" aria-hidden="true" /> AI Bonus Question</h3>
       <p style={{ fontSize: '13px', color: 'var(--gray-500)', margin: '0 0 16px 0' }}>
         Unlimited extra Mathematics practice, generated on demand and checked by a calculator before you see it.
         Doesn't count toward your tracked stats above.
@@ -106,7 +107,7 @@ const AIBonusQuestion = () => {
           {selected && (
             <div style={{ fontSize: '13px' }}>
               <p style={{ fontWeight: 'bold', color: selected === question.correct ? 'var(--primary)' : 'var(--danger)', margin: '0 0 6px 0' }}>
-                {selected === question.correct ? '✅ Correct!' : `❌ Not quite - the answer is ${question.correct}`}
+                {selected === question.correct ? 'Correct!' : `Not quite - the answer is ${question.correct}`}
               </p>
               <p style={{ color: 'var(--text-muted)', margin: 0 }}>{question.explanation}</p>
             </div>

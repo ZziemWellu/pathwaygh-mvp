@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import api, { extractErrorMessage } from '../../services/api';
 import { useLanguage } from '../../contexts/LanguageContext';
+import { CircleCheckIcon } from 'lucide-react';
 
 const ForgotPassword = ({ onBackToLogin }) => {
   const { t } = useLanguage();
@@ -57,7 +58,7 @@ const ForgotPassword = ({ onBackToLogin }) => {
   if (step === 'done') {
     return (
       <div style={{ maxWidth: '400px', margin: '0 auto', textAlign: 'center' }}>
-        <h2 style={{ color: 'var(--primary)' }}>{t('resetPasswordSuccessTitle')}</h2>
+        <h2 style={{ color: 'var(--primary)' }}><CircleCheckIcon className="icon-inline" size="1em" aria-hidden="true" /> {t('resetPasswordSuccessTitle')}</h2>
         <p>{t('resetPasswordSuccessBody')}</p>
         <button
           onClick={onBackToLogin}

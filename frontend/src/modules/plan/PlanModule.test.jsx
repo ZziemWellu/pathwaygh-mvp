@@ -109,7 +109,7 @@ describe('PlanModule', () => {
 
     api.post.mockResolvedValueOnce({ data: { success: true, plan: { ...samplePlan, name: 'My New Plan' } } });
     api.get.mockResolvedValueOnce({ data: [{ ...samplePlan, name: 'My New Plan' }] });
-    await user.click(screen.getByRole('button', { name: /✨ Create Plan/i }));
+    await user.click(screen.getByRole('button', { name: 'Create Plan' }));
 
     await waitFor(() => {
       expect(api.post).toHaveBeenCalledWith(
