@@ -19,7 +19,8 @@ import ConsentBanner from './components/consent/ConsentBanner';
 import { useLanguage } from './contexts/LanguageContext';
 import PrivacyPolicy from './modules/legal/PrivacyPolicy';
 import CertificateVerify from './modules/certificates/CertificateVerify';
-import Button from 'components/ui/Button';
+import Button from './components/ui/Button';
+import MobileTabBar from './components/common/MobileTabBar';
 
 const COUNTRY_FLAGS = { GH: GhanaFlag, NG: NigeriaFlag, SL: SierraLeoneFlag, LR: LiberiaFlag, GM: GambiaFlag };
 const COUNTRY_NAMES = { GH: 'Ghana', NG: 'Nigeria', SL: 'Sierra Leone', LR: 'Liberia', GM: 'The Gambia' };
@@ -219,20 +220,13 @@ const App = () => {
         width: '100%'
       }}>
         <a href="#main-content" className="skip-link">Skip to main content</a>
-        <header style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          padding: '12px 0',
-          borderBottom: '1px solid var(--border)',
-          flexWrap: 'wrap',
-          gap: '8px'
-        }}>
+        <header className="app-header">
           <div>
             <h1 style={{ color: 'var(--primary)', fontSize: '22px', margin: 0, display: 'flex', alignItems: 'center', gap: '8px' }}><UserCountryFlag size={22} /> PathwayGH</h1>
-            <span style={{ fontSize: '11px', color: 'var(--gray-500)' }}>{t('tagline')} • {COUNTRY_NAMES[user?.country] || ''}</span>
+            <span className="app-header__tagline" style={{ fontSize: '11px', color: 'var(--text-subtle)' }}>{t('tagline')} • {COUNTRY_NAMES[user?.country] || ''}</span>
           </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          {/* On phones these move into the tab bar's "More" sheet (MobileTabBar). */}
+          <div className="app-header__account" style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
             <span style={{ color: 'var(--text-muted)', fontSize: '13px', display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
               <User size={14} aria-hidden="true" /> {user?.full_name || user?.name || t('student')}
             </span>
@@ -307,6 +301,7 @@ const App = () => {
         </footer>
 
         <AIChat user={user} />
+        <MobileTabBar user={user} onLogout={handleLogout} />
       </div>
     </BrowserRouter>
   );

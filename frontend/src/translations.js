@@ -31,6 +31,8 @@ export const translations = {
     navAdmin: 'Admin',
     navSchoolAdmin: 'School Admin',
     navImpact: 'Impact',
+    navProgress: 'Progress',
+    navMore: 'More',
 
     // Login
     welcomeBack: 'Welcome Back',
@@ -329,6 +331,8 @@ export const translations = {
     navAdmin: 'Admin',
     navSchoolAdmin: 'School Admin',
     navImpact: 'Impact',
+    navProgress: 'Progress',
+    navMore: 'More',
 
     // Login
     welcomeBack: 'Welcome Back',

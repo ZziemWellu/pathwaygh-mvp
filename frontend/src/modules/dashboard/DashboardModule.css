@@ -42,13 +42,8 @@
   left: 0;
   right: 0;
   bottom: 0;
-  height: 10px;
-  background-image: repeating-linear-gradient(
-    45deg,
-    var(--accent) 0, var(--accent) 10px,
-    transparent 10px, transparent 20px
-  );
-  opacity: 0.9;
+  height: 6px;
+  background: var(--kente); /* same signature stripe as the page band and headers */
 }
 
 /* ---------- Cards ---------- */

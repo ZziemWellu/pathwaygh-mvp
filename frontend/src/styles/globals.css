@@ -165,6 +165,21 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Brand band: a thin kente stripe across the top of every screen - signed
+   in or out - as the app's signature. Not printed (certificates). */
+body::before {
+  content: '';
+  display: block;
+  height: 4px;
+  background: var(--kente);
+}
+
+@media print {
+  body::before {
+    display: none;
+  }
+}
+
 /* Browsers don't let form controls inherit the page font - without this,
    every button, input and select rendered in the browser default (Arial)
    instead of the brand typeface. */
@@ -184,6 +199,215 @@ svg.lucide {
 
 .icon-inline {
   vertical-align: -0.125em; /* the space after it in the text provides the gap */
+}
+
+/* ---------- App header & navigation ---------- */
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.desktop-nav {
+  display: flex;
+  gap: 8px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.desktop-nav__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  background: transparent;
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 13px;
+  transition: background var(--transition-fast), color var(--transition-fast);
+}
+
+.desktop-nav__item:hover {
+  background: var(--surface-muted);
+}
+
+.desktop-nav__item.is-active {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: var(--text-on-primary);
+  font-weight: 700;
+}
+
+.desktop-nav__item:focus-visible,
+.mobile-tabbar__item:focus-visible,
+.mobile-sheet__item:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* Phone tab bar + "More" sheet (MobileTabBar.jsx) - hidden above 768px. */
+.mobile-tabbar {
+  display: none;
+}
+
+.mobile-tabbar__item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  min-height: 56px;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  position: relative;
+}
+
+.mobile-tabbar__item.is-active {
+  color: var(--primary);
+}
+
+/* Kente-striped indicator on the active tab. */
+.mobile-tabbar__item.is-active::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 28%;
+  right: 28%;
+  height: 3px;
+  border-radius: 0 0 3px 3px;
+  background: var(--kente);
+}
+
+.mobile-sheet__backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(28, 27, 22, 0.45);
+  z-index: 1100;
+  display: flex;
+  align-items: flex-end;
+}
+
+.mobile-sheet {
+  width: 100%;
+  max-height: 80vh;
+  overflow-y: auto;
+  background: var(--surface);
+  border-radius: 20px 20px 0 0;
+  padding: 8px 16px calc(16px + env(safe-area-inset-bottom));
+  box-shadow: var(--shadow-xl);
+  outline: none;
+}
+
+.mobile-sheet::before {
+  content: '';
+  display: block;
+  width: 40px;
+  height: 4px;
+  margin: 4px auto 12px;
+  border-radius: 2px;
+  background: var(--border-strong);
+}
+
+.mobile-sheet__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.mobile-sheet__name {
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: var(--text);
+}
+
+.mobile-sheet__email {
+  font-size: 13px;
+  color: var(--text-subtle);
+}
+
+.mobile-sheet__close {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 4px;
+}
+
+.mobile-sheet__list {
+  list-style: none;
+  padding: 8px 0;
+  margin: 0;
+}
+
+.mobile-sheet__item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-height: 48px;
+  padding: 0 8px;
+  background: none;
+  border: none;
+  border-radius: 10px;
+  color: var(--text);
+  font-size: 15px;
+  cursor: pointer;
+  text-align: left;
+}
+
+.mobile-sheet__item.is-active {
+  background: var(--primary-bg);
+  color: var(--primary);
+  font-weight: 700;
+}
+
+.mobile-sheet__footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+}
+
+@media (max-width: 768px) {
+  .desktop-nav,
+  .app-header__tagline,
+  .app-header__account {
+    display: none !important;
+  }
+
+  .app-header {
+    padding: 10px 0;
+  }
+
+  .mobile-tabbar {
+    display: flex;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1000;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.06);
+    padding-bottom: env(safe-area-inset-bottom);
+  }
 }
 
 /* ---------- AI tutor launcher ----------
@@ -211,9 +435,10 @@ svg.lucide {
   padding-bottom: 96px !important;
 }
 
-@media (max-width: 640px) {
+@media (max-width: 768px) {
+  /* Sit above the bottom tab bar (56px + the phone's home-indicator inset). */
   .ai-chat-fab {
-    bottom: 16px;
+    bottom: calc(72px + env(safe-area-inset-bottom));
     right: 16px;
     width: 52px;
     height: 52px;
@@ -221,12 +446,14 @@ svg.lucide {
   }
 
   .ai-chat-panel {
-    bottom: 16px;
+    bottom: calc(72px + env(safe-area-inset-bottom));
     right: 16px;
+    height: min(500px, calc(100dvh - 96px - env(safe-area-inset-bottom)));
   }
 
+  /* Footer content clears the tab bar and the launcher above it. */
   .app-footer-clear-fab {
-    padding-bottom: 80px !important;
+    padding-bottom: calc(140px + env(safe-area-inset-bottom)) !important;
   }
 }
 
