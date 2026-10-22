@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import api from '../../services/api';
 import { setUser as persistUser } from '../../constants/auth';
 import { useLanguage } from '../../contexts/LanguageContext';
+import Button from '../../components/ui/Button';
 
 const ConsentBanner = ({ user, onVerified }) => {
   const { t } = useLanguage();
@@ -50,8 +51,8 @@ const ConsentBanner = ({ user, onVerified }) => {
   return (
     <div
       style={{
-        background: '#fff8e1',
-        border: '1px solid #f0d68a',
+        background: 'var(--warning-bg)',
+        border: '1px solid var(--accent-border)',
         borderRadius: '8px',
         padding: '12px 16px',
         margin: '12px 0',
@@ -61,12 +62,9 @@ const ConsentBanner = ({ user, onVerified }) => {
       <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: '10px', justifyContent: 'space-between' }}>
         <span>{t('consentBannerMessage').replace('{email}', user.guardian_email)}</span>
         {!showForm && (
-          <button
-            onClick={() => setShowForm(true)}
-            style={{ padding: '6px 12px', background: 'var(--primary)', color: 'white', border: 'none', borderRadius: '6px', cursor: 'pointer', fontSize: '13px' }}
-          >
+          <Button size="sm" onClick={() => setShowForm(true)}>
             {t('consentBannerEnterCode')}
-          </button>
+          </Button>
         )}
       </div>
 
@@ -79,20 +77,16 @@ const ConsentBanner = ({ user, onVerified }) => {
             value={code}
             onChange={(e) => setCode(e.target.value)}
             placeholder={t('consentBannerCodePlaceholder')}
-            style={{ padding: '8px 10px', border: '1px solid #e0e0e0', borderRadius: '6px', width: '140px' }}
+            style={{ padding: '8px 10px', border: '1px solid var(--border)', borderRadius: '6px', width: '140px' }}
           />
-          <button
-            type="submit"
-            disabled={loading || code.trim().length !== 6}
-            style={{ padding: '8px 14px', background: loading ? '#ccc' : 'var(--primary)', color: 'white', border: 'none', borderRadius: '6px', cursor: loading ? 'not-allowed' : 'pointer' }}
-          >
+          <Button size="sm" type="submit" disabled={loading || code.trim().length !== 6}>
             {t('consentBannerVerify')}
-          </button>
+          </Button>
           <button
             type="button"
             onClick={handleResend}
             disabled={resending}
-            style={{ padding: '8px 14px', background: 'none', border: '1px solid #ccc', borderRadius: '6px', cursor: resending ? 'not-allowed' : 'pointer' }}
+            style={{ padding: '8px 14px', background: 'none', border: '1px solid var(--border-strong)', borderRadius: '6px', cursor: resending ? 'not-allowed' : 'pointer' }}
           >
             {t('consentBannerResend')}
           </button>

@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import api from '../../services/api';
+import { CalendarDaysIcon, ChartColumnIcon, ClipboardList, ClipboardListIcon, Plus, TargetIcon, TriangleAlertIcon } from 'lucide-react';
+import PageHeader from '../../components/ui/PageHeader';
+import Button from '../../components/ui/Button';
 
 // Goals are stored in more than one shape - seeded plans use
 // "exam_preparation", the create form saves "exam preparation", and the
@@ -43,7 +46,7 @@ const PlanModule = () => {
     setError(null);
     try {
       const response = await api.get('/api/plan/study-plans');
-      console.log('📋 Plan response:', response.data);
+      console.log('Plan response:', response.data);
       
       const data = response.data;
       let planData = [];
@@ -53,7 +56,7 @@ const PlanModule = () => {
       
       setPlans(planData);
     } catch (err) {
-      console.error('❌ Plan error:', err);
+      console.error('Plan error:', err);
       setError(err.message || 'Failed to load plans');
     } finally {
       setLoading(false);
@@ -107,7 +110,7 @@ const PlanModule = () => {
       await api.delete(`/api/plan/study-plans/${planId}`);
       await fetchPlans();
     } catch (err) {
-      console.error('❌ Delete plan error:', err);
+      console.error('Delete plan error:', err);
       alert(err.response?.status === 403 ? "You can't delete this plan." : 'Failed to delete plan. Please try again.');
     }
   };
@@ -126,13 +129,13 @@ const PlanModule = () => {
       };
       
       const response = await api.post('/api/plan/study-plans/create', payload);
-      console.log('📋 Plan created:', response.data);
+      console.log('Plan created:', response.data);
       
       // Refresh plans
       await fetchPlans();
       handleCloseModal();
     } catch (err) {
-      console.error('❌ Create plan error:', err);
+      console.error('Create plan error:', err);
       alert('Failed to create plan. Please try again.');
     } finally {
       setSaving(false);
@@ -142,8 +145,8 @@ const PlanModule = () => {
   if (loading) {
     return (
       <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '20px' }}>
-        <h2>📋 Plan</h2>
-        <p>Loading plans...</p>
+        <PageHeader icon={ClipboardList} title="Study Planner" />
+        <p style={{ textAlign: 'center', padding: '20px', color: 'var(--text-muted)' }}>Loading plans...</p>
       </div>
     );
   }
@@ -151,36 +154,22 @@ const PlanModule = () => {
   if (error) {
     return (
       <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '20px' }}>
-        <h2>📋 Plan</h2>
-        <p style={{ color: 'red' }}>⚠️ {error}</p>
-        <button onClick={fetchPlans} style={{ padding: '8px 16px', background: 'var(--primary)', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer' }}>Retry</button>
+        <PageHeader icon={ClipboardList} title="Study Planner" />
+        <div style={{ textAlign: 'center', padding: '20px' }}>
+          <p style={{ color: 'var(--danger)' }}><TriangleAlertIcon className="icon-inline" size="1em" aria-hidden="true" /> {error}</p>
+          <Button onClick={fetchPlans}>Retry</Button>
+        </div>
       </div>
     );
   }
 
   return (
     <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '20px' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-        <h2>📋 Study Planner</h2>
-        <button
-          onClick={handleOpenModal}
-          style={{
-            padding: '10px 20px',
-            background: 'var(--primary)',
-            color: 'white',
-            border: 'none',
-            borderRadius: '8px',
-            cursor: 'pointer',
-            fontSize: '14px',
-            fontWeight: 'bold',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '8px'
-          }}
-        >
-          + Create Plan
-        </button>
-      </div>
+      <PageHeader
+        icon={ClipboardList}
+        title="Study Planner"
+        actions={<Button icon={Plus} onClick={handleOpenModal}>New Plan</Button>}
+      />
 
       {plans.length === 0 ? (
         <div style={{ textAlign: 'center', padding: '60px 20px', color: 'var(--gray-500)' }}>
@@ -189,17 +178,7 @@ const PlanModule = () => {
       ) : (
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '20px' }}>
           {plans.map((plan) => (
-            <div
-              key={plan.id}
-              style={{
-                border: '1px solid #e0e0e0',
-                borderRadius: '12px',
-                padding: '20px',
-                background: 'white',
-                position: 'relative',
-                transition: 'all 0.2s ease',
-              }}
-            >
+            <div className="card" key={plan.id} style={{ padding: '20px', position: 'relative', transition: 'all 0.2s ease' }}>
               <div style={{ position: 'absolute', top: '12px', right: '12px' }}>
                 <button
                   style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--gray-500)', fontSize: '16px' }}
@@ -212,17 +191,17 @@ const PlanModule = () => {
               <h3 style={{ color: 'var(--primary)', margin: '0 0 8px 0', paddingRight: '24px' }}>
                 {plan.name}
               </h3>
-              <p style={{ color: '#666', fontSize: '14px', margin: '0 0 8px 0' }}>
+              <p style={{ color: 'var(--text-muted)', fontSize: '14px', margin: '0 0 8px 0' }}>
                 {plan.description}
               </p>
               <div style={{ display: 'flex', gap: '12px', fontSize: '12px', color: 'var(--gray-500)', flexWrap: 'wrap' }}>
-                <span>📅 {plan.duration_months || plan.duration || 'N/A'} months</span>
-                <span>📊 {plan.progress || 0}% complete</span>
+                <span><CalendarDaysIcon className="icon-inline" size="1em" aria-hidden="true" /> {plan.duration_months || plan.duration || 'N/A'} months</span>
+                <span><ChartColumnIcon className="icon-inline" size="1em" aria-hidden="true" /> {plan.progress || 0}% complete</span>
               </div>
               {plan.subjects && plan.subjects.length > 0 && (
                 <div style={{ marginTop: '8px', display: 'flex', flexWrap: 'wrap', gap: '4px' }}>
                   {plan.subjects.map((subject, i) => (
-                    <span key={i} style={{ background: '#f0f0f0', padding: '2px 8px', borderRadius: '4px', fontSize: '11px', color: '#555' }}>
+                    <span key={i} style={{ background: 'var(--surface-sunken)', padding: '2px 8px', borderRadius: '4px', fontSize: '11px', color: 'var(--text-muted)' }}>
                       {subject}
                     </span>
                   ))}
@@ -230,10 +209,10 @@ const PlanModule = () => {
               )}
               {plan.goal && (
                 <div style={{ marginTop: '8px', fontSize: '11px', color: 'var(--gray-500)' }}>
-                  🎯 {formatGoal(plan.goal)}
+                  <TargetIcon className="icon-inline" size="1em" aria-hidden="true" /> {formatGoal(plan.goal)}
                 </div>
               )}
-              <div style={{ marginTop: '12px', height: '6px', background: '#f0f0f0', borderRadius: '3px' }}>
+              <div style={{ marginTop: '12px', height: '6px', background: 'var(--surface-sunken)', borderRadius: '3px' }}>
                 <div
                   style={{
                     width: `${plan.progress || 0}%`,
@@ -279,7 +258,7 @@ const PlanModule = () => {
             onClick={(e) => e.stopPropagation()}
           >
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-              <h2 style={{ color: 'var(--primary)', margin: 0 }}>📋 Create Study Plan</h2>
+              <h2 style={{ color: 'var(--primary)', margin: 0 }}><ClipboardListIcon className="icon-inline" size="1em" aria-hidden="true" /> Create Study Plan</h2>
               <button
                 onClick={handleCloseModal}
                 style={{ background: 'none', border: 'none', fontSize: '24px', cursor: 'pointer', color: 'var(--gray-500)' }}
@@ -302,7 +281,7 @@ const PlanModule = () => {
                     style={{
                       width: '100%',
                       padding: '10px',
-                      border: '1px solid #e0e0e0',
+                      border: '1px solid var(--border)',
                       borderRadius: '8px',
                       fontSize: '14px',
                     }}
@@ -323,7 +302,7 @@ const PlanModule = () => {
                     style={{
                       width: '100%',
                       padding: '10px',
-                      border: '1px solid #e0e0e0',
+                      border: '1px solid var(--border)',
                       borderRadius: '8px',
                       fontSize: '14px',
                       resize: 'vertical',
@@ -345,7 +324,7 @@ const PlanModule = () => {
                     style={{
                       width: '100%',
                       padding: '10px',
-                      border: '1px solid #e0e0e0',
+                      border: '1px solid var(--border)',
                       borderRadius: '8px',
                       fontSize: '14px',
                     }}
@@ -363,37 +342,23 @@ const PlanModule = () => {
                     style={{
                       width: '100%',
                       padding: '10px',
-                      border: '1px solid #e0e0e0',
+                      border: '1px solid var(--border)',
                       borderRadius: '8px',
                       fontSize: '14px',
                     }}
                   >
                     <option value="">Select a goal</option>
-                    <option value="exam preparation">📝 Exam Preparation</option>
-                    <option value="university admission">🎓 University Admission</option>
-                    <option value="career readiness">💼 Career Readiness</option>
-                    <option value="skill development">🔧 Skill Development</option>
-                    <option value="personal growth">🌱 Personal Growth</option>
+                    <option value="exam preparation">Exam Preparation</option>
+                    <option value="university admission">University Admission</option>
+                    <option value="career readiness">Career Readiness</option>
+                    <option value="skill development">Skill Development</option>
+                    <option value="personal growth">Personal Growth</option>
                   </select>
                 </div>
 
-                <button
-                  onClick={handleNext}
-                  disabled={!formData.name}
-                  style={{
-                    width: '100%',
-                    padding: '12px',
-                    background: formData.name ? 'var(--primary)' : '#ccc',
-                    color: 'white',
-                    border: 'none',
-                    borderRadius: '8px',
-                    cursor: formData.name ? 'pointer' : 'not-allowed',
-                    fontSize: '16px',
-                    fontWeight: 'bold',
-                  }}
-                >
+                <Button onClick={handleNext} disabled={!formData.name} style={{ width: '100%' }}>
                   Next →
-                </button>
+                </Button>
               </div>
             )}
 
@@ -412,10 +377,10 @@ const PlanModule = () => {
                           alignItems: 'center',
                           gap: '8px',
                           padding: '8px 12px',
-                          background: formData.subjects.includes(subject) ? 'var(--primary-bg)' : '#f8f9fa',
+                          background: formData.subjects.includes(subject) ? 'var(--primary-bg)' : 'var(--surface-muted)',
                           borderRadius: '6px',
                           cursor: 'pointer',
-                          border: formData.subjects.includes(subject) ? '1px solid #1a5f2b' : '1px solid #e0e0e0',
+                          border: formData.subjects.includes(subject) ? '1px solid var(--primary)' : '1px solid var(--border)',
                         }}
                       >
                         <input
@@ -431,37 +396,12 @@ const PlanModule = () => {
                 </div>
 
                 <div style={{ display: 'flex', gap: '12px' }}>
-                  <button
-                    onClick={handleBack}
-                    style={{
-                      flex: 1,
-                      padding: '12px',
-                      background: '#f0f0f0',
-                      border: 'none',
-                      borderRadius: '8px',
-                      cursor: 'pointer',
-                      fontSize: '16px',
-                    }}
-                  >
+                  <Button variant="secondary" onClick={handleBack} style={{ flex: 1 }}>
                     ← Back
-                  </button>
-                  <button
-                    onClick={handleSave}
-                    disabled={saving}
-                    style={{
-                      flex: 2,
-                      padding: '12px',
-                      background: saving ? '#ccc' : 'var(--primary)',
-                      color: 'white',
-                      border: 'none',
-                      borderRadius: '8px',
-                      cursor: saving ? 'not-allowed' : 'pointer',
-                      fontSize: '16px',
-                      fontWeight: 'bold',
-                    }}
-                  >
-                    {saving ? 'Creating...' : '✨ Create Plan'}
-                  </button>
+                  </Button>
+                  <Button onClick={handleSave} disabled={saving} style={{ flex: 2 }}>
+                    {saving ? 'Creating...' : 'Create Plan'}
+                  </Button>
                 </div>
               </div>
             )}

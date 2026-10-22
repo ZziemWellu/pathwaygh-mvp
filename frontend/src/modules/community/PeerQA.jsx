@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Flag, MessageSquare, ShieldCheck, Trash2 } from 'lucide-react';
 import api, { extractErrorMessage } from '../../services/api';
 import { getUser } from '../../constants/auth';
+import Button from '../../components/ui/Button';
 
 // The real "Discussion Forums" feature (previously a "coming soon"
 // placeholder) - a lightweight peer Q&A board. Every post is checked
@@ -102,20 +103,20 @@ const PeerQA = () => {
           onChange={(e) => setNewQuestion(e.target.value)}
           placeholder="Ask a question for other students to help with..."
           rows={3}
-          style={{ width: '100%', padding: '12px', border: '1px solid #e0e0e0', borderRadius: '8px', fontSize: '14px', resize: 'vertical', fontFamily: 'inherit' }}
+          style={{ width: '100%', padding: '12px', border: '1px solid var(--border)', borderRadius: '8px', fontSize: '14px', resize: 'vertical', fontFamily: 'inherit' }}
         />
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '8px' }}>
-          <button type="submit" disabled={posting || !newQuestion.trim()} style={{ padding: '8px 20px', background: posting ? '#ccc' : 'var(--primary)', color: 'white', border: 'none', borderRadius: '8px', cursor: posting ? 'not-allowed' : 'pointer', fontWeight: 'bold' }}>
+          <Button size="sm" type="submit" disabled={posting || !newQuestion.trim()}>
             {posting ? 'Posting...' : 'Ask'}
-          </button>
+          </Button>
           {user?.is_admin && (
-            <button type="button" onClick={fetchPending} style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', padding: '6px 14px', background: 'white', border: '1px solid #e0e0e0', borderRadius: '8px', cursor: 'pointer', fontSize: '13px' }}>
+            <Button variant="secondary" size="sm" type="button" onClick={fetchPending}>
               <ShieldCheck size={14} /> Review queue
-            </button>
+            </Button>
           )}
         </div>
         {postNotice && (
-          <p style={{ marginTop: '8px', fontSize: '13px', color: postNotice.type === 'error' ? 'var(--danger)' : postNotice.type === 'info' ? '#b8791a' : 'var(--primary)' }}>
+          <p style={{ marginTop: '8px', fontSize: '13px', color: postNotice.type === 'error' ? 'var(--danger)' : postNotice.type === 'info' ? 'var(--accent-strong)' : 'var(--primary)' }}>
             {postNotice.text}
           </p>
         )}
@@ -132,7 +133,7 @@ const PeerQA = () => {
       ) : (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
           {questions.map((q) => (
-            <div key={q.id} style={{ padding: '14px 16px', background: 'white', border: '1px solid #e0e0e0', borderRadius: '10px', cursor: 'pointer' }} onClick={() => setSelectedId(q.id)}>
+            <div key={q.id} style={{ padding: '14px 16px', background: 'white', border: '1px solid var(--border)', borderRadius: '10px', cursor: 'pointer' }} onClick={() => setSelectedId(q.id)}>
               <p style={{ margin: '0 0 6px 0', fontSize: '14px' }}>{q.body}</p>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '12px', color: 'var(--gray-500)' }}>
                 <span>{q.author_name} · {q.answer_count} {q.answer_count === 1 ? 'answer' : 'answers'}</span>
@@ -163,31 +164,31 @@ const ModerationQueue = ({ pending, onChange }) => {
   }
 
   return (
-    <div style={{ background: '#fff3e0', border: '1px solid #ffcc80', borderRadius: '10px', padding: '14px', marginBottom: '20px' }}>
+    <div style={{ background: 'var(--warning-bg)', border: '1px solid var(--warning-border)', borderRadius: '10px', padding: '14px', marginBottom: '20px' }}>
       <h4 style={{ margin: '0 0 10px 0', fontSize: '14px' }}>Pending review</h4>
       {pending.questions.map((q) => (
-        <div key={`q-${q.id}`} style={{ padding: '8px 0', borderBottom: '1px solid #ffe0b2' }}>
+        <div key={`q-${q.id}`} style={{ padding: '8px 0', borderBottom: '1px solid var(--warning-border)' }}>
           <p style={{ margin: '0 0 4px 0', fontSize: '13px' }}>{q.body}</p>
-          <p style={{ margin: '0 0 6px 0', fontSize: '11px', color: '#b8791a' }}>{q.moderation_reason} · {q.flagged_count} report(s)</p>
+          <p style={{ margin: '0 0 6px 0', fontSize: '11px', color: 'var(--accent-strong)' }}>{q.moderation_reason} · {q.flagged_count} report(s)</p>
           {q.report_reasons?.length > 0 && (
-            <p style={{ margin: '0 0 6px 0', fontSize: '11px', color: '#8d6e63', fontStyle: 'italic' }}>"{q.report_reasons.join('", "')}"</p>
+            <p style={{ margin: '0 0 6px 0', fontSize: '11px', color: 'var(--earth)', fontStyle: 'italic' }}>"{q.report_reasons.join('", "')}"</p>
           )}
           <div style={{ display: 'flex', gap: '8px' }}>
-            <button onClick={() => act('questions', q.id, 'approve')} style={{ padding: '4px 10px', fontSize: '12px', background: 'var(--primary)', color: 'white', border: 'none', borderRadius: '6px', cursor: 'pointer' }}>Approve</button>
-            <button onClick={() => act('questions', q.id, 'remove')} style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', padding: '4px 10px', fontSize: '12px', background: 'white', border: '1px solid #e0e0e0', borderRadius: '6px', cursor: 'pointer' }}><Trash2 size={12} /> Remove</button>
+            <Button size="sm" onClick={() => act('questions', q.id, 'approve')}>Approve</Button>
+            <Button variant="secondary" size="sm" onClick={() => act('questions', q.id, 'remove')}><Trash2 size={12} /> Remove</Button>
           </div>
         </div>
       ))}
       {pending.answers.map((a) => (
-        <div key={`a-${a.id}`} style={{ padding: '8px 0', borderBottom: '1px solid #ffe0b2' }}>
+        <div key={`a-${a.id}`} style={{ padding: '8px 0', borderBottom: '1px solid var(--warning-border)' }}>
           <p style={{ margin: '0 0 4px 0', fontSize: '13px' }}>{a.body}</p>
-          <p style={{ margin: '0 0 6px 0', fontSize: '11px', color: '#b8791a' }}>{a.moderation_reason} · {a.flagged_count} report(s)</p>
+          <p style={{ margin: '0 0 6px 0', fontSize: '11px', color: 'var(--accent-strong)' }}>{a.moderation_reason} · {a.flagged_count} report(s)</p>
           {a.report_reasons?.length > 0 && (
-            <p style={{ margin: '0 0 6px 0', fontSize: '11px', color: '#8d6e63', fontStyle: 'italic' }}>"{a.report_reasons.join('", "')}"</p>
+            <p style={{ margin: '0 0 6px 0', fontSize: '11px', color: 'var(--earth)', fontStyle: 'italic' }}>"{a.report_reasons.join('", "')}"</p>
           )}
           <div style={{ display: 'flex', gap: '8px' }}>
-            <button onClick={() => act('answers', a.id, 'approve')} style={{ padding: '4px 10px', fontSize: '12px', background: 'var(--primary)', color: 'white', border: 'none', borderRadius: '6px', cursor: 'pointer' }}>Approve</button>
-            <button onClick={() => act('answers', a.id, 'remove')} style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', padding: '4px 10px', fontSize: '12px', background: 'white', border: '1px solid #e0e0e0', borderRadius: '6px', cursor: 'pointer' }}><Trash2 size={12} /> Remove</button>
+            <Button size="sm" onClick={() => act('answers', a.id, 'approve')}>Approve</Button>
+            <Button variant="secondary" size="sm" onClick={() => act('answers', a.id, 'remove')}><Trash2 size={12} /> Remove</Button>
           </div>
         </div>
       ))}
@@ -251,9 +252,9 @@ const QuestionDetail = ({ questionId, currentUserId, onBack }) => {
 
   return (
     <div>
-      <button onClick={onBack} style={{ marginBottom: '16px', padding: '6px 14px', background: '#f0f0f0', border: 'none', borderRadius: '8px', cursor: 'pointer', fontSize: '13px' }}>
+      <Button variant="secondary" size="sm" onClick={onBack} style={{ marginBottom: '16px' }}>
         ← Back to questions
-      </button>
+      </Button>
 
       {loading ? (
         <p style={{ color: 'var(--gray-500)' }}>Loading...</p>
@@ -261,7 +262,7 @@ const QuestionDetail = ({ questionId, currentUserId, onBack }) => {
         <p style={{ color: 'var(--danger)' }}>This question isn't available.</p>
       ) : (
         <>
-          <div style={{ background: 'white', border: '1px solid #e0e0e0', borderRadius: '10px', padding: '16px', marginBottom: '16px' }}>
+          <div style={{ background: 'white', border: '1px solid var(--border)', borderRadius: '10px', padding: '16px', marginBottom: '16px' }}>
             <p style={{ margin: '0 0 6px 0', fontSize: '15px', fontWeight: 'bold' }}>{data.question.body}</p>
             <span style={{ fontSize: '12px', color: 'var(--gray-500)' }}>{data.question.author_name}</span>
           </div>
@@ -271,7 +272,7 @@ const QuestionDetail = ({ questionId, currentUserId, onBack }) => {
           </h4>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: '20px' }}>
             {data.answers.map((a) => (
-              <div key={a.id} style={{ padding: '12px 14px', background: '#f8f9fa', borderRadius: '8px' }}>
+              <div key={a.id} style={{ padding: '12px 14px', background: 'var(--surface-muted)', borderRadius: '8px' }}>
                 <p style={{ margin: '0 0 6px 0', fontSize: '13px' }}>{a.body}</p>
                 <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '11px', color: 'var(--gray-500)' }}>
                   <span>{a.author_name}</span>
@@ -291,12 +292,12 @@ const QuestionDetail = ({ questionId, currentUserId, onBack }) => {
               onChange={(e) => setNewAnswer(e.target.value)}
               placeholder="Write an answer..."
               rows={2}
-              style={{ width: '100%', padding: '10px', border: '1px solid #e0e0e0', borderRadius: '8px', fontSize: '14px', resize: 'vertical', fontFamily: 'inherit' }}
+              style={{ width: '100%', padding: '10px', border: '1px solid var(--border)', borderRadius: '8px', fontSize: '14px', resize: 'vertical', fontFamily: 'inherit' }}
             />
-            <button type="submit" disabled={posting || !newAnswer.trim()} style={{ marginTop: '8px', padding: '8px 20px', background: posting ? '#ccc' : 'var(--primary)', color: 'white', border: 'none', borderRadius: '8px', cursor: posting ? 'not-allowed' : 'pointer', fontWeight: 'bold' }}>
+            <Button size="sm" type="submit" disabled={posting || !newAnswer.trim()} style={{ marginTop: '8px' }}>
               {posting ? 'Posting...' : 'Post Answer'}
-            </button>
-            {notice && <p style={{ marginTop: '8px', fontSize: '13px', color: '#b8791a' }}>{notice}</p>}
+            </Button>
+            {notice && <p style={{ marginTop: '8px', fontSize: '13px', color: 'var(--accent-strong)' }}>{notice}</p>}
           </form>
         </>
       )}

@@ -1,4 +1,5 @@
 import React, { createContext, useCallback, useContext, useState, useRef } from 'react';
+import { AchievementIcon } from '../components/ui/icons';
 
 const GamificationNotifyContext = createContext();
 
@@ -41,7 +42,7 @@ const GamificationToast = ({ toast, onDismiss }) => (
       transform: 'translateX(-50%)',
       zIndex: 2000,
       background: 'white',
-      border: '1px solid #e0e0e0',
+      border: '1px solid var(--border)',
       borderRadius: '12px',
       boxShadow: '0 8px 30px rgba(0,0,0,0.15)',
       padding: '14px 20px',
@@ -54,9 +55,9 @@ const GamificationToast = ({ toast, onDismiss }) => (
   >
     {toast.achievements.map((a) => (
       <div key={a.id} style={{ marginBottom: '6px' }}>
-        <span style={{ fontSize: '22px', marginRight: '8px' }}>{a.icon}</span>
+        <AchievementIcon id={a.id} size={22} color="var(--accent-strong)" style={{ marginRight: '8px', verticalAlign: '-5px' }} />
         <strong style={{ fontSize: '14px' }}>Achievement unlocked: {a.name}</strong>
-        <div style={{ fontSize: '12px', color: 'var(--gray-500, #666)' }}>{a.description}</div>
+        <div style={{ fontSize: '12px', color: 'var(--gray-500, var(--text-muted))' }}>{a.description}</div>
       </div>
     ))}
     {toast.xp > 0 && (

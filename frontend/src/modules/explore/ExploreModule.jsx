@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import api from '../../services/api';
 import CareerDetail from './components/CareerDetail';
 import UniversityDetail from './components/UniversityDetail';
+import { BriefcaseIcon, ChartColumnIcon, CoinsIcon, Compass, LandmarkIcon, MapPinIcon, TriangleAlertIcon } from 'lucide-react';
+import PageHeader from '../../components/ui/PageHeader';
+import Button from '../../components/ui/Button';
 
 const ExploreModule = () => {
   const [careers, setCareers] = useState([]);
@@ -74,7 +77,7 @@ const ExploreModule = () => {
       setCareers(careerData);
       setUniversities(uniData);
     } catch (err) {
-      console.error('❌ Explore error:', err);
+      console.error('Explore error:', err);
       setError(err.message || 'Failed to load explore data');
     } finally {
       setLoading(false);
@@ -97,8 +100,8 @@ const ExploreModule = () => {
   if (loading) {
     return (
       <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '20px' }}>
-        <h2>🔍 Explore</h2>
-        <p>Loading explore data...</p>
+        <PageHeader icon={Compass} title="Explore" />
+        <p style={{ textAlign: 'center', padding: '20px', color: 'var(--text-muted)' }}>Loading explore data...</p>
       </div>
     );
   }
@@ -106,9 +109,11 @@ const ExploreModule = () => {
   if (error) {
     return (
       <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '20px' }}>
-        <h2>🔍 Explore</h2>
-        <p style={{ color: 'red' }}>⚠️ {error}</p>
-        <button onClick={fetchExploreData} style={{ padding: '8px 16px', background: 'var(--primary)', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer' }}>Retry</button>
+        <PageHeader icon={Compass} title="Explore" />
+        <div style={{ textAlign: 'center', padding: '20px' }}>
+          <p style={{ color: 'var(--danger)' }}><TriangleAlertIcon className="icon-inline" size="1em" aria-hidden="true" /> {error}</p>
+          <Button onClick={fetchExploreData}>Retry</Button>
+        </div>
       </div>
     );
   }
@@ -116,42 +121,41 @@ const ExploreModule = () => {
   return (
     <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '20px' }}>
       {/* Header */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-        <h2 style={{ margin: 0 }}>🔍 Explore</h2>
-        <span style={{ color: 'var(--gray-500)' }}>
-          {careers.length} careers • {universities.length} universities
-        </span>
-      </div>
+      <PageHeader
+        icon={Compass}
+        title="Explore"
+        actions={<span style={{ color: 'var(--text-subtle)' }}>{careers.length} careers • {universities.length} universities</span>}
+      />
 
       {/* Tabs */}
-      <div style={{ display: 'flex', gap: '10px', marginBottom: '20px', borderBottom: '1px solid #e0e0e0', paddingBottom: '10px' }}>
+      <div style={{ display: 'flex', gap: '10px', marginBottom: '20px', borderBottom: '1px solid var(--border)', paddingBottom: '10px' }}>
         <button
           onClick={() => setActiveTab('careers')}
           style={{
             padding: '8px 20px',
             background: activeTab === 'careers' ? 'var(--primary)' : 'transparent',
-            color: activeTab === 'careers' ? 'white' : '#333',
-            border: activeTab === 'careers' ? 'none' : '1px solid #e0e0e0',
+            color: activeTab === 'careers' ? 'white' : 'var(--text)',
+            border: activeTab === 'careers' ? 'none' : '1px solid var(--border)',
             borderRadius: '8px',
             cursor: 'pointer',
             fontWeight: activeTab === 'careers' ? 'bold' : 'normal',
           }}
         >
-          💼 Careers ({careers.length})
+          <BriefcaseIcon className="icon-inline" size="1em" aria-hidden="true" /> Careers ({careers.length})
         </button>
         <button
           onClick={() => setActiveTab('universities')}
           style={{
             padding: '8px 20px',
             background: activeTab === 'universities' ? 'var(--primary)' : 'transparent',
-            color: activeTab === 'universities' ? 'white' : '#333',
-            border: activeTab === 'universities' ? 'none' : '1px solid #e0e0e0',
+            color: activeTab === 'universities' ? 'white' : 'var(--text)',
+            border: activeTab === 'universities' ? 'none' : '1px solid var(--border)',
             borderRadius: '8px',
             cursor: 'pointer',
             fontWeight: activeTab === 'universities' ? 'bold' : 'normal',
           }}
         >
-          🏛️ Universities ({universities.length})
+          <LandmarkIcon className="icon-inline" size="1em" aria-hidden="true" /> Universities ({universities.length})
         </button>
       </div>
 
@@ -162,27 +166,7 @@ const ExploreModule = () => {
             <p style={{ gridColumn: '1 / -1', textAlign: 'center', padding: '40px', color: 'var(--gray-500)' }}>No careers available.</p>
           ) : (
             careers.map((career) => (
-              <div
-                key={career.id}
-                onClick={() => openCareerDetail(career)}
-                style={{
-                  border: '1px solid #e0e0e0',
-                  borderRadius: '12px',
-                  padding: '20px',
-                  background: 'white',
-                  cursor: 'pointer',
-                  transition: 'all 0.2s ease',
-                  boxShadow: '0 2px 4px rgba(0,0,0,0.04)',
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.boxShadow = '0 4px 16px rgba(0,0,0,0.1)';
-                  e.currentTarget.style.transform = 'translateY(-2px)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.boxShadow = '0 2px 4px rgba(0,0,0,0.04)';
-                  e.currentTarget.style.transform = 'translateY(0)';
-                }}
-              >
+              <div className="card card--interactive" key={career.id} onClick={() => openCareerDetail(career)} style={{ padding: '20px' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                   <h3 style={{ color: 'var(--primary)', margin: '0 0 8px 0', fontSize: '18px' }}>{career.title}</h3>
                   {career.category && (
@@ -198,10 +182,10 @@ const ExploreModule = () => {
                     </span>
                   )}
                 </div>
-                <p style={{ color: '#666', fontSize: '14px', margin: '8px 0' }}>{career.description}</p>
+                <p style={{ color: 'var(--text-muted)', fontSize: '14px', margin: '8px 0' }}>{career.description}</p>
                 <div style={{ display: 'flex', gap: '12px', fontSize: '12px', color: 'var(--gray-500)', marginTop: '8px' }}>
-                  {career.salary_range && <span>💰 {career.salary_range}</span>}
-                  {career.demand && <span>📊 {career.demand}</span>}
+                  {career.salary_range && <span><CoinsIcon className="icon-inline" size="1em" aria-hidden="true" /> {career.salary_range}</span>}
+                  {career.demand && <span><ChartColumnIcon className="icon-inline" size="1em" aria-hidden="true" /> {career.demand}</span>}
                 </div>
                 <div style={{ marginTop: '12px', fontSize: '12px', color: 'var(--primary)', textAlign: 'center' }}>
                   Click for full details →
@@ -219,50 +203,30 @@ const ExploreModule = () => {
             <p style={{ gridColumn: '1 / -1', textAlign: 'center', padding: '40px', color: 'var(--gray-500)' }}>No universities available.</p>
           ) : (
             universities.map((uni) => (
-              <div
-                key={uni.id}
-                onClick={() => openUniversityDetail(uni)}
-                style={{
-                  border: '1px solid #e0e0e0',
-                  borderRadius: '12px',
-                  padding: '20px',
-                  background: 'white',
-                  cursor: 'pointer',
-                  transition: 'all 0.2s ease',
-                  boxShadow: '0 2px 4px rgba(0,0,0,0.04)',
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.boxShadow = '0 4px 16px rgba(0,0,0,0.1)';
-                  e.currentTarget.style.transform = 'translateY(-2px)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.boxShadow = '0 2px 4px rgba(0,0,0,0.04)';
-                  e.currentTarget.style.transform = 'translateY(0)';
-                }}
-              >
+              <div className="card card--interactive" key={uni.id} onClick={() => openUniversityDetail(uni)} style={{ padding: '20px' }}>
                 <h3 style={{ color: 'var(--primary)', margin: '0 0 8px 0', fontSize: '18px' }}>{uni.name}</h3>
-                {uni.location && <div style={{ color: '#666', fontSize: '14px' }}>📍 {uni.location}</div>}
+                {uni.location && <div style={{ color: 'var(--text-muted)', fontSize: '14px' }}><MapPinIcon className="icon-inline" size="1em" aria-hidden="true" /> {uni.location}</div>}
                 {uni.cutoff && <div style={{ color: 'var(--gray-500)', fontSize: '13px' }}>Cutoff: {uni.cutoff}</div>}
                 {uni.programs && uni.programs.length > 0 && (
                   <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginTop: '8px' }}>
                     {uni.programs.slice(0, 2).map((p, i) => (
                       <span key={i} style={{
-                        background: '#f0f0f0',
+                        background: 'var(--surface-sunken)',
                         padding: '2px 10px',
                         borderRadius: '12px',
                         fontSize: '11px',
-                        color: '#666',
+                        color: 'var(--text-muted)',
                       }}>
                         {p}
                       </span>
                     ))}
                     {uni.programs.length > 2 && (
                       <span style={{
-                        background: '#f0f0f0',
+                        background: 'var(--surface-sunken)',
                         padding: '2px 10px',
                         borderRadius: '12px',
                         fontSize: '11px',
-                        color: '#666',
+                        color: 'var(--text-muted)',
                       }}>
                         +{uni.programs.length - 2} more
                       </span>

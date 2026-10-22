@@ -1,5 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Briefcase, Coins, Compass, Landmark, Target } from 'lucide-react';
+import PageHeader from '../../../components/ui/PageHeader';
 
 // Countries that sit WASSCE under WAEC - matches WASSCE_COUNTRIES in
 // App.jsx and backend/modules/plan/router.py. Career Match's content is
@@ -12,7 +14,8 @@ const ExploreLanding = ({ user }) => {
   const allFeatures = [
     {
       id: 'careers',
-      icon: '💼',
+      icon: Briefcase,
+      tint: 'var(--primary-bg)',
       title: 'Careers',
       description: 'Explore career opportunities and pathways',
       color: 'var(--primary)',
@@ -21,7 +24,8 @@ const ExploreLanding = ({ user }) => {
     },
     {
       id: 'universities',
-      icon: '🏛️',
+      icon: Landmark,
+      tint: 'var(--info-bg)',
       title: 'Universities',
       description: 'Browse universities and their admission requirements',
       color: 'var(--secondary)',
@@ -30,22 +34,24 @@ const ExploreLanding = ({ user }) => {
     },
     {
       id: 'scholarships',
-      icon: '💰',
+      icon: Coins,
+      tint: 'var(--accent-bg)',
       title: 'Scholarships',
       description: 'Find scholarships and funding opportunities',
-      // Deep amber, not #f9a825: this colour is both the heading text on
-      // white and the button behind white text, and #f9a825 is only 1.97:1
-      // against white (WCAG AA needs 4.5:1). #a15c00 is 5.19:1.
-      color: '#a15c00',
+      // Deep amber, not var(--accent): this colour is both the heading text on
+      // white and the button behind white text, and var(--accent) is only 1.97:1
+      // against white (WCAG AA needs 4.5:1). var(--accent-strong) is 5.19:1.
+      color: 'var(--accent-strong)',
       path: '/explore/scholarships',
       buttonText: 'Find Scholarships'
     },
     {
       id: 'career-match',
-      icon: '🎯',
+      icon: Target,
+      tint: 'var(--violet-bg)',
       title: 'Career Match',
       description: 'Discover careers that match your interests and skills',
-      color: '#6a1b9a',
+      color: 'var(--violet)',
       path: '/explore/career-match',
       buttonText: 'Start Assessment',
       wassceOnly: true
@@ -56,12 +62,11 @@ const ExploreLanding = ({ user }) => {
 
   return (
     <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '20px' }}>
-      <header style={{ marginBottom: '30px' }}>
-        <h1 style={{ color: 'var(--primary)', marginBottom: '8px' }}>🔍 Explore</h1>
-        <p style={{ color: '#666', fontSize: '16px' }}>
-          Discover careers, universities, scholarships, and find your perfect path
-        </p>
-      </header>
+      <PageHeader
+        icon={Compass}
+        title="Explore"
+        subtitle="Discover careers, universities, scholarships, and find your perfect path"
+      />
 
       <div style={{
         display: 'grid',
@@ -69,38 +74,14 @@ const ExploreLanding = ({ user }) => {
         gap: '24px'
       }}>
         {features.map((feature) => (
-          <div
-            key={feature.id}
-            style={{
-              background: 'white',
-              borderRadius: '16px',
-              padding: '30px 24px',
-              border: '1px solid #e0e0e0',
-              boxShadow: '0 2px 8px rgba(0,0,0,0.04)',
-              transition: 'all 0.3s ease',
-              cursor: 'pointer',
-              textAlign: 'center',
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'center',
-              minHeight: '280px'
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.boxShadow = '0 8px 32px rgba(0,0,0,0.12)';
-              e.currentTarget.style.transform = 'translateY(-4px)';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.boxShadow = '0 2px 8px rgba(0,0,0,0.04)';
-              e.currentTarget.style.transform = 'translateY(0)';
-            }}
-            onClick={() => navigate(feature.path)}
-          >
-            <div style={{ fontSize: '56px', marginBottom: '16px' }}>{feature.icon}</div>
+          <div className="card card--interactive" key={feature.id} onClick={() => navigate(feature.path)} style={{ padding: '30px 24px', textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '280px' }}>
+            <div style={{ width: '72px', height: '72px', borderRadius: '18px', background: feature.tint, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', marginBottom: '16px' }}>
+              <feature.icon size={36} color={feature.color} strokeWidth={1.75} aria-hidden="true" />
+            </div>
             <h3 style={{ color: feature.color, marginBottom: '8px', fontSize: '20px' }}>
               {feature.title}
             </h3>
-            <p style={{ color: '#666', fontSize: '14px', marginBottom: '20px', lineHeight: '1.5' }}>
+            <p style={{ color: 'var(--text-muted)', fontSize: '14px', marginBottom: '20px', lineHeight: '1.5' }}>
               {feature.description}
             </p>
             <button
@@ -125,7 +106,7 @@ const ExploreLanding = ({ user }) => {
         ))}
       </div>
 
-      <footer style={{ textAlign: 'center', marginTop: '40px', padding: '20px', color: 'var(--gray-500)', borderTop: '1px solid #e0e0e0' }}>
+      <footer style={{ textAlign: 'center', marginTop: '40px', padding: '20px', color: 'var(--gray-500)', borderTop: '1px solid var(--border)' }}>
         <p>Discover your path with PathwayGH</p>
       </footer>
     </div>

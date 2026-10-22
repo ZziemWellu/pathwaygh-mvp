@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import api, { extractErrorMessage } from '../../services/api';
 import { useLanguage } from '../../contexts/LanguageContext';
+import { CircleCheckIcon } from 'lucide-react';
+import Button from '../../components/ui/Button';
 
 const ForgotPassword = ({ onBackToLogin }) => {
   const { t } = useLanguage();
@@ -57,14 +59,11 @@ const ForgotPassword = ({ onBackToLogin }) => {
   if (step === 'done') {
     return (
       <div style={{ maxWidth: '400px', margin: '0 auto', textAlign: 'center' }}>
-        <h2 style={{ color: 'var(--primary)' }}>{t('resetPasswordSuccessTitle')}</h2>
+        <h2 style={{ color: 'var(--primary)' }}><CircleCheckIcon className="icon-inline" size="1em" aria-hidden="true" /> {t('resetPasswordSuccessTitle')}</h2>
         <p>{t('resetPasswordSuccessBody')}</p>
-        <button
-          onClick={onBackToLogin}
-          style={{ padding: '10px 24px', background: 'var(--primary)', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer', marginTop: '16px' }}
-        >
+        <Button onClick={onBackToLogin} style={{ marginTop: '16px' }}>
           {t('goToLoginNow')}
-        </button>
+        </Button>
       </div>
     );
   }
@@ -85,17 +84,13 @@ const ForgotPassword = ({ onBackToLogin }) => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              style={{ width: '100%', padding: '10px', border: '1px solid #e0e0e0', borderRadius: '8px' }}
+              style={{ width: '100%', padding: '10px', border: '1px solid var(--border)', borderRadius: '8px' }}
               placeholder={t('emailPlaceholder')}
             />
           </div>
-          <button
-            type="submit"
-            disabled={loading}
-            style={{ width: '100%', padding: '12px', background: loading ? '#ccc' : 'var(--primary)', color: 'white', border: 'none', borderRadius: '8px', fontSize: '16px', cursor: loading ? 'not-allowed' : 'pointer' }}
-          >
+          <Button type="submit" disabled={loading} style={{ width: '100%' }}>
             {loading ? t('forgotPasswordSending') : t('forgotPasswordSendCode')}
-          </button>
+          </Button>
         </form>
       ) : (
         <form onSubmit={handleReset}>
@@ -107,7 +102,7 @@ const ForgotPassword = ({ onBackToLogin }) => {
               value={token}
               onChange={(e) => setToken(e.target.value)}
               required
-              style={{ width: '100%', padding: '10px', border: '1px solid #e0e0e0', borderRadius: '8px' }}
+              style={{ width: '100%', padding: '10px', border: '1px solid var(--border)', borderRadius: '8px' }}
               placeholder={t('resetPasswordCodePlaceholder')}
             />
           </div>
@@ -120,7 +115,7 @@ const ForgotPassword = ({ onBackToLogin }) => {
               onChange={(e) => setNewPassword(e.target.value)}
               required
               minLength="6"
-              style={{ width: '100%', padding: '10px', border: '1px solid #e0e0e0', borderRadius: '8px' }}
+              style={{ width: '100%', padding: '10px', border: '1px solid var(--border)', borderRadius: '8px' }}
               placeholder={t('passwordPlaceholder')}
             />
           </div>
@@ -132,17 +127,13 @@ const ForgotPassword = ({ onBackToLogin }) => {
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               required
-              style={{ width: '100%', padding: '10px', border: '1px solid #e0e0e0', borderRadius: '8px' }}
+              style={{ width: '100%', padding: '10px', border: '1px solid var(--border)', borderRadius: '8px' }}
               placeholder={t('confirmPasswordPlaceholder')}
             />
           </div>
-          <button
-            type="submit"
-            disabled={loading}
-            style={{ width: '100%', padding: '12px', background: loading ? '#ccc' : 'var(--primary)', color: 'white', border: 'none', borderRadius: '8px', fontSize: '16px', cursor: loading ? 'not-allowed' : 'pointer' }}
-          >
+          <Button type="submit" disabled={loading} style={{ width: '100%' }}>
             {loading ? t('resetPasswordSaving') : t('resetPasswordSubmit')}
-          </button>
+          </Button>
         </form>
       )}
 

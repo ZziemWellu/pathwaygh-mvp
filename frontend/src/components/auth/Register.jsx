@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import api, { extractErrorMessage } from '../../services/api';
 import { getCountry } from '../../constants/auth';
 import { useLanguage } from '../../contexts/LanguageContext';
+import { CircleCheckIcon } from 'lucide-react';
+import Button from '../../components/ui/Button';
 
 const Register = ({ onSuccess, onShowPrivacy }) => {
   const { t } = useLanguage();
@@ -76,10 +78,10 @@ const Register = ({ onSuccess, onShowPrivacy }) => {
         guardian_email: formData.guardian_email.trim()
       };
 
-      console.log('📤 Registering with:', payload);
+      console.log('Registering with:', payload);
 
       const response = await api.post('/api/auth/register', payload);
-      console.log('📥 Response:', response.data);
+      console.log('Response:', response.data);
 
       if (response.data?.success) {
         setSuccess(true);
@@ -89,7 +91,7 @@ const Register = ({ onSuccess, onShowPrivacy }) => {
         setError(response.data?.message || t('registrationFailed'));
       }
     } catch (err) {
-      console.error('❌ Registration error:', err);
+      console.error('Registration error:', err);
 
       // Handle different error formats. A request that never got a
       // response (timeout, or the backend cold-starting after idle) has no
@@ -111,22 +113,11 @@ const Register = ({ onSuccess, onShowPrivacy }) => {
   if (success) {
     return (
       <div style={{ maxWidth: '400px', margin: '0 auto', textAlign: 'center' }}>
-        <h2 style={{ color: 'var(--primary)' }}>{t('registrationSuccessful')}</h2>
+        <h2 style={{ color: 'var(--primary)' }}><CircleCheckIcon className="icon-inline" size="1em" aria-hidden="true" /> {t('registrationSuccessful')}</h2>
         <p>{t('registrationSuccessfulBody')}</p>
-        <button
-          onClick={onSuccess}
-          style={{
-            padding: '10px 24px',
-            background: 'var(--primary)',
-            color: 'white',
-            border: 'none',
-            borderRadius: '8px',
-            cursor: 'pointer',
-            marginTop: '16px'
-          }}
-        >
+        <Button onClick={onSuccess} style={{ marginTop: '16px' }}>
           {t('goToLoginNow')}
-        </button>
+        </Button>
       </div>
     );
   }
@@ -137,7 +128,7 @@ const Register = ({ onSuccess, onShowPrivacy }) => {
       
       {error && (
         <div style={{ 
-          background: '#ffebee', 
+          background: 'var(--danger-bg)', 
           color: 'var(--danger)', 
           padding: '12px', 
           borderRadius: '8px', 
@@ -162,7 +153,7 @@ const Register = ({ onSuccess, onShowPrivacy }) => {
             style={{
               width: '100%',
               padding: '10px',
-              border: '1px solid #e0e0e0',
+              border: '1px solid var(--border)',
               borderRadius: '8px',
               fontSize: '14px'
             }}
@@ -182,7 +173,7 @@ const Register = ({ onSuccess, onShowPrivacy }) => {
             style={{
               width: '100%',
               padding: '10px',
-              border: '1px solid #e0e0e0',
+              border: '1px solid var(--border)',
               borderRadius: '8px',
               fontSize: '14px'
             }}
@@ -203,7 +194,7 @@ const Register = ({ onSuccess, onShowPrivacy }) => {
             style={{
               width: '100%',
               padding: '10px',
-              border: '1px solid #e0e0e0',
+              border: '1px solid var(--border)',
               borderRadius: '8px',
               fontSize: '14px'
             }}
@@ -223,7 +214,7 @@ const Register = ({ onSuccess, onShowPrivacy }) => {
             style={{
               width: '100%',
               padding: '10px',
-              border: '1px solid #e0e0e0',
+              border: '1px solid var(--border)',
               borderRadius: '8px',
               fontSize: '14px'
             }}
@@ -243,7 +234,7 @@ const Register = ({ onSuccess, onShowPrivacy }) => {
             style={{
               width: '100%',
               padding: '10px',
-              border: '1px solid #e0e0e0',
+              border: '1px solid var(--border)',
               borderRadius: '8px',
               fontSize: '14px'
             }}
@@ -274,30 +265,9 @@ const Register = ({ onSuccess, onShowPrivacy }) => {
           </label>
         </div>
 
-        <button
-          type="submit"
-          disabled={loading}
-          style={{
-            width: '100%',
-            padding: '12px',
-            background: loading ? '#ccc' : 'var(--primary)',
-            color: 'white',
-            border: 'none',
-            borderRadius: '8px',
-            fontSize: '16px',
-            fontWeight: 'bold',
-            cursor: loading ? 'not-allowed' : 'pointer',
-            transition: 'background 0.2s ease'
-          }}
-          onMouseEnter={(e) => {
-            if (!loading) e.currentTarget.style.background = 'var(--primary-dark)';
-          }}
-          onMouseLeave={(e) => {
-            if (!loading) e.currentTarget.style.background = 'var(--primary)';
-          }}
-        >
+        <Button type="submit" disabled={loading} style={{ width: '100%' }}>
           {loading ? t('creatingAccount') : t('register')}
-        </button>
+        </Button>
       </form>
     </div>
   );

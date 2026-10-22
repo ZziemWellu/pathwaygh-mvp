@@ -1,6 +1,9 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import api from '../../../services/api';
 import { useModalA11y } from '../../../hooks/useModalA11y';
+import { BookOpenIcon, Briefcase, CoinsIcon, TriangleAlertIcon } from 'lucide-react';
+import PageHeader from '../../../components/ui/PageHeader';
+import Button from '../../../components/ui/Button';
 
 const CareersPage = ({ user }) => {
   const [careers, setCareers] = useState([]);
@@ -38,7 +41,7 @@ const CareersPage = ({ user }) => {
     return (
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '300px' }}>
         <div style={{ textAlign: 'center' }}>
-          <div style={{ width: '40px', height: '40px', border: '4px solid #f0f0f0', borderTopColor: 'var(--primary)', borderRadius: '50%', animation: 'spin 0.8s linear infinite', margin: '0 auto 16px' }} />
+          <div style={{ width: '40px', height: '40px', border: '4px solid var(--surface-sunken)', borderTopColor: 'var(--primary)', borderRadius: '50%', animation: 'spin 0.8s linear infinite', margin: '0 auto 16px' }} />
           <p style={{ color: 'var(--gray-500)' }}>Loading careers...</p>
         </div>
       </div>
@@ -47,55 +50,37 @@ const CareersPage = ({ user }) => {
 
   if (error) {
     return (
-      <div style={{ textAlign: 'center', padding: '40px' }}>
-        <h2 style={{ color: 'var(--primary)' }}>💼 Careers</h2>
-        <p style={{ color: 'var(--danger)' }}>⚠️ {error}</p>
-        <button onClick={fetchCareers} style={{ padding: '8px 20px', background: 'var(--primary)', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer' }}>Retry</button>
+      <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '20px' }}>
+        <PageHeader icon={Briefcase} title="Careers" />
+        <div style={{ textAlign: 'center', padding: '20px' }}>
+          <p style={{ color: 'var(--danger)' }}><TriangleAlertIcon className="icon-inline" size="1em" aria-hidden="true" /> {error}</p>
+          <Button onClick={fetchCareers}>Retry</Button>
+        </div>
       </div>
     );
   }
 
   return (
     <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '20px' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', flexWrap: 'wrap', gap: '10px' }}>
-        <h2 style={{ color: 'var(--primary)' }}>💼 Careers</h2>
-        <span style={{ color: 'var(--gray-500)' }}>{careers.length} careers available</span>
-      </div>
+      <PageHeader icon={Briefcase} title="Careers" actions={<span style={{ color: 'var(--text-subtle)' }}>{careers.length} careers available</span>} />
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '20px' }}>
         {careers.map((career) => (
-          <div
-            key={career.id}
-            onClick={() => setSelectedCareer(career)}
-            role="button"
-            tabIndex={0}
-            onKeyDown={(e) => {
+          <div className="card card--interactive" key={career.id} onClick={() => setSelectedCareer(career)} role="button" tabIndex={0} onKeyDown={(e) => {
               if (e.key === 'Enter' || e.key === ' ') {
                 e.preventDefault();
                 setSelectedCareer(career);
               }
-            }}
-            style={{
-              border: '1px solid #e0e0e0',
-              borderRadius: '12px',
-              padding: '20px',
-              background: 'white',
-              cursor: 'pointer',
-              transition: 'all 0.2s ease',
-              boxShadow: '0 2px 4px rgba(0,0,0,0.04)'
-            }}
-            onMouseEnter={(e) => { e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.1)'; }}
-            onMouseLeave={(e) => { e.currentTarget.style.boxShadow = '0 2px 4px rgba(0,0,0,0.04)'; }}
-          >
+            }} style={{ padding: '20px' }}>
             <h3 style={{ color: 'var(--primary)', margin: '0 0 8px 0' }}>{career.title}</h3>
             {career.category && (
               <span style={{ background: 'var(--primary-bg)', padding: '2px 10px', borderRadius: '12px', fontSize: '12px', display: 'inline-block' }}>
                 {career.category}
               </span>
             )}
-            <p style={{ color: '#555', fontSize: '14px', margin: '12px 0' }}>{career.description}</p>
+            <p style={{ color: 'var(--text-muted)', fontSize: '14px', margin: '12px 0' }}>{career.description}</p>
             {career.salary_range && (
-              <div style={{ fontSize: '13px', color: '#666' }}>💰 {career.salary_range}</div>
+              <div style={{ fontSize: '13px', color: 'var(--text-muted)' }}><CoinsIcon className="icon-inline" size="1em" aria-hidden="true" /> {career.salary_range}</div>
             )}
             <div style={{ fontSize: '12px', color: 'var(--gray-500)', marginTop: '12px' }}>Click for full details →</div>
           </div>
@@ -150,28 +135,25 @@ const CareersPage = ({ user }) => {
                 {selectedCareer.category}
               </span>
             )}
-            <p style={{ color: '#555', margin: '16px 0' }}>{selectedCareer.description}</p>
+            <p style={{ color: 'var(--text-muted)', margin: '16px 0' }}>{selectedCareer.description}</p>
             {selectedCareer.salary_range && (
-              <div style={{ margin: '8px 0' }}><strong>💰 Salary Range:</strong> {selectedCareer.salary_range}</div>
+              <div style={{ margin: '8px 0' }}><strong><CoinsIcon className="icon-inline" size="1em" aria-hidden="true" /> Salary Range:</strong> {selectedCareer.salary_range}</div>
             )}
             {selectedCareer.required_subjects && (
               <div style={{ margin: '8px 0' }}>
-                <strong>📚 Required Subjects:</strong>
+                <strong><BookOpenIcon className="icon-inline" size="1em" aria-hidden="true" /> Required Subjects:</strong>
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginTop: '4px' }}>
                   {selectedCareer.required_subjects.map((subject, i) => (
-                    <span key={i} style={{ background: '#f0f0f0', padding: '4px 10px', borderRadius: '12px', fontSize: '12px' }}>
+                    <span key={i} style={{ background: 'var(--surface-sunken)', padding: '4px 10px', borderRadius: '12px', fontSize: '12px' }}>
                       {subject}
                     </span>
                   ))}
                 </div>
               </div>
             )}
-            <button
-              style={{ marginTop: '20px', padding: '10px 20px', background: 'var(--primary)', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer', width: '100%' }}
-              onClick={() => setSelectedCareer(null)}
-            >
+            <Button onClick={() => setSelectedCareer(null)} style={{ marginTop: '20px', width: '100%' }}>
               Close
-            </button>
+            </Button>
           </div>
         </div>
       )}

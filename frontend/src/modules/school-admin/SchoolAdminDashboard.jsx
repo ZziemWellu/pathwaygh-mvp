@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Copy } from 'lucide-react';
+import { Building2, Copy } from 'lucide-react';
 import api, { extractErrorMessage } from '../../services/api';
 import { formatDate } from '../../utils/date';
+import PageHeader from '../../components/ui/PageHeader';
+import Button from '../../components/ui/Button';
 
 const CURRENCY_SYMBOLS = { GHS: 'GHS', NGN: '₦' };
 
@@ -87,20 +89,25 @@ const SchoolAdminDashboard = () => {
 
   return (
     <div style={{ maxWidth: '1000px', margin: '0 auto', padding: '20px' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', flexWrap: 'wrap', gap: '10px' }}>
-        <h2 style={{ margin: 0 }}>{school?.name || 'School'} Dashboard</h2>
-        <div
-          style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '8px 14px', background: 'var(--primary-bg)', border: '1px solid #a5d6a7', borderRadius: '8px', fontSize: '13px', cursor: 'pointer' }}
-          onClick={copyJoinCode}
-          title="Click to copy"
-        >
-          Join code: <strong>{school?.join_code}</strong>
-          <Copy size={14} />
-          {copied && <span style={{ color: 'var(--primary)' }}>Copied!</span>}
-        </div>
-      </div>
+      <PageHeader
+        icon={Building2}
+        title={`${school?.name || 'School'} Dashboard`}
+        actions={
+          <button
+            type="button"
+            style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '8px 14px', background: 'var(--primary-bg)', color: 'var(--text)', border: '1px solid var(--primary-border)', borderRadius: '8px', fontSize: '13px', cursor: 'pointer' }}
+            onClick={copyJoinCode}
+            title="Click to copy"
+            aria-label={`Copy join code ${school?.join_code || ''}`}
+          >
+            Join code: <strong>{school?.join_code}</strong>
+            <Copy size={14} aria-hidden="true" />
+            {copied && <span style={{ color: 'var(--primary)' }} role="status">Copied!</span>}
+          </button>
+        }
+      />
 
-      <div style={{ background: 'white', border: '1px solid #e0e0e0', borderRadius: '12px', padding: '16px', marginBottom: '24px' }}>
+      <div className="card" style={{ padding: '16px', marginBottom: '24px' }}>
         <label style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', cursor: 'pointer' }}>
           <input
             type="checkbox"
@@ -114,13 +121,13 @@ const SchoolAdminDashboard = () => {
           </span>
         </label>
         {school?.parent_consent_attested && school?.parent_consent_attested_at && (
-          <p style={{ fontSize: '12px', color: '#666', marginTop: '8px', marginLeft: '26px' }}>
+          <p style={{ fontSize: '12px', color: 'var(--text-muted)', marginTop: '8px', marginLeft: '26px' }}>
             Confirmed {formatDate(school.parent_consent_attested_at)}
           </p>
         )}
       </div>
 
-      <div style={{ background: 'white', border: '1px solid #e0e0e0', borderRadius: '12px', padding: '16px', marginBottom: '24px' }}>
+      <div className="card" style={{ padding: '16px', marginBottom: '24px' }}>
         <h3 style={{ margin: '0 0 8px 0', fontSize: '15px' }}>School license</h3>
         {paymentStatus && (
           <div
@@ -129,8 +136,8 @@ const SchoolAdminDashboard = () => {
               borderRadius: '8px',
               marginBottom: '12px',
               fontSize: '13px',
-              background: paymentStatus.status === 'success' ? 'var(--primary-bg)' : '#fff3e0',
-              color: paymentStatus.status === 'success' ? 'var(--primary-dark)' : '#e65100',
+              background: paymentStatus.status === 'success' ? 'var(--primary-bg)' : 'var(--warning-bg)',
+              color: paymentStatus.status === 'success' ? 'var(--primary-dark)' : 'var(--warning)',
             }}
           >
             {paymentStatus.status === 'success'
@@ -143,48 +150,35 @@ const SchoolAdminDashboard = () => {
           {summary.student_count} student{summary.student_count === 1 ? '' : 's'} enrolled. The annual institutional
           license is billed per student.
         </p>
-        <button
-          onClick={handleSubscribe}
-          disabled={paying}
-          style={{
-            padding: '10px 20px',
-            background: paying ? '#ccc' : 'var(--primary)',
-            color: 'white',
-            border: 'none',
-            borderRadius: '8px',
-            cursor: paying ? 'not-allowed' : 'pointer',
-            fontWeight: 'bold',
-            fontSize: '14px',
-          }}
-        >
+        <Button onClick={handleSubscribe} disabled={paying}>
           {paying ? 'Redirecting to checkout...' : 'Pay / renew school license'}
-        </button>
+        </Button>
       </div>
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: '16px', marginBottom: '24px' }}>
-        <div style={{ background: 'white', border: '1px solid #e0e0e0', borderRadius: '12px', padding: '16px', textAlign: 'center' }}>
+        <div className="card" style={{ padding: '16px', textAlign: 'center' }}>
           <div style={{ fontSize: '28px', fontWeight: 'bold', color: 'var(--primary)' }}>{summary.student_count}</div>
           <div style={{ fontSize: '12px', color: 'var(--gray-500)' }}>Students</div>
         </div>
-        <div style={{ background: 'white', border: '1px solid #e0e0e0', borderRadius: '12px', padding: '16px', textAlign: 'center' }}>
+        <div className="card" style={{ padding: '16px', textAlign: 'center' }}>
           <div style={{ fontSize: '28px', fontWeight: 'bold', color: 'var(--primary)' }}>{summary.average_completion_rate}%</div>
           <div style={{ fontSize: '12px', color: 'var(--gray-500)' }}>Avg. Completion</div>
         </div>
-        <div style={{ background: 'white', border: '1px solid #e0e0e0', borderRadius: '12px', padding: '16px', textAlign: 'center' }}>
+        <div className="card" style={{ padding: '16px', textAlign: 'center' }}>
           <div style={{ fontSize: '28px', fontWeight: 'bold', color: 'var(--primary)' }}>{summary.average_quiz_score}%</div>
           <div style={{ fontSize: '12px', color: 'var(--gray-500)' }}>Avg. Quiz Score</div>
         </div>
       </div>
 
       {roster.length === 0 ? (
-        <div style={{ textAlign: 'center', padding: '40px', color: 'var(--gray-500)', background: 'white', border: '1px solid #e0e0e0', borderRadius: '12px' }}>
+        <div className="card" style={{ textAlign: 'center', padding: '40px', color: 'var(--gray-500)' }}>
           No students yet. Share the join code above so students can link themselves to {school?.name}.
         </div>
       ) : (
         <div style={{ overflowX: 'auto' }}>
-          <table style={{ width: '100%', borderCollapse: 'collapse', background: 'white', border: '1px solid #e0e0e0', borderRadius: '12px' }}>
+          <table className="card card--flush" style={{ width: '100%', borderCollapse: 'collapse' }}>
             <thead>
-              <tr style={{ background: '#f5f5f5', textAlign: 'left' }}>
+              <tr style={{ background: 'var(--surface-muted)', textAlign: 'left' }}>
                 <th style={cellStyle}>Name</th>
                 <th style={cellStyle}>Email</th>
                 <th style={cellStyle}>Grade</th>
@@ -196,7 +190,7 @@ const SchoolAdminDashboard = () => {
             </thead>
             <tbody>
               {roster.map((student) => (
-                <tr key={student.id} style={{ borderTop: '1px solid #f0f0f0' }}>
+                <tr key={student.id} style={{ borderTop: '1px solid var(--surface-sunken)' }}>
                   <td style={cellStyle}>
                     {student.full_name}
                     {student.is_school_admin && (

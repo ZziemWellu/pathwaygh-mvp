@@ -3,6 +3,8 @@ import { useParams, Link } from 'react-router-dom';
 import api from '../../services/api';
 import './certificate-print.css';
 import { formatDate } from '../../utils/date';
+import { PrinterIcon } from 'lucide-react';
+import Button from '../../components/ui/Button';
 
 const CertificatePage = () => {
   const { courseSlug } = useParams();
@@ -48,17 +50,14 @@ const CertificatePage = () => {
     <div style={{ maxWidth: '800px', margin: '20px auto', padding: '20px' }}>
       <div className="no-print" style={{ marginBottom: '16px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <Link to={`/learn/${courseSlug}`} style={{ color: 'var(--primary)', fontSize: '14px' }}>← Back to course</Link>
-        <button
-          onClick={() => window.print()}
-          style={{ padding: '10px 20px', background: 'var(--primary)', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer' }}
-        >
-          🖨️ Print / Save as PDF
-        </button>
+        <Button onClick={() => window.print()}>
+          <PrinterIcon className="icon-inline" size="1em" aria-hidden="true" /> Print / Save as PDF
+        </Button>
       </div>
 
       <div
         className="certificate-print-area"
-        style={{ background: 'white', border: '4px solid #1a5f2b', borderRadius: '12px', padding: '48px', textAlign: 'center' }}
+        style={{ background: 'white', border: '4px solid var(--primary)', borderRadius: '12px', padding: '48px', textAlign: 'center' }}
       >
         <p style={{ color: 'var(--primary)', fontWeight: 'bold', fontSize: '20px', margin: 0 }}>PathwayGH</p>
         <p style={{ color: 'var(--gray-500)', fontSize: '13px', marginTop: '4px' }}>Certificate of Completion</p>
@@ -71,7 +70,7 @@ const CertificatePage = () => {
           {certificate.lesson_count} lessons · issued {formatDate(certificate.issued_at, { long: true })}
         </p>
 
-        <div style={{ marginTop: '40px', paddingTop: '16px', borderTop: '1px solid #eee', fontSize: '12px', color: 'var(--gray-500)' }}>
+        <div style={{ marginTop: '40px', paddingTop: '16px', borderTop: '1px solid var(--border)', fontSize: '12px', color: 'var(--gray-500)' }}>
           <p style={{ margin: '4px 0' }}>Verify this certificate at:</p>
           <p style={{ margin: '4px 0', color: 'var(--primary)' }}>{verifyUrl}</p>
           <p style={{ margin: '4px 0' }}>Code: {certificate.code_display}</p>
@@ -81,7 +80,7 @@ const CertificatePage = () => {
       <div className="no-print" style={{ marginTop: '16px', textAlign: 'center' }}>
         <button
           onClick={() => navigator.clipboard.writeText(verifyUrl)}
-          style={{ padding: '8px 16px', background: 'none', border: '1px solid #1a5f2b', color: 'var(--primary)', borderRadius: '8px', cursor: 'pointer', fontSize: '13px' }}
+          style={{ padding: '8px 16px', background: 'none', border: '1px solid var(--primary)', color: 'var(--primary)', borderRadius: '8px', cursor: 'pointer', fontSize: '13px' }}
         >
           Copy shareable verification link
         </button>

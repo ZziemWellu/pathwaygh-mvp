@@ -19,6 +19,8 @@ import ConsentBanner from './components/consent/ConsentBanner';
 import { useLanguage } from './contexts/LanguageContext';
 import PrivacyPolicy from './modules/legal/PrivacyPolicy';
 import CertificateVerify from './modules/certificates/CertificateVerify';
+import Button from './components/ui/Button';
+import MobileTabBar from './components/common/MobileTabBar';
 
 const COUNTRY_FLAGS = { GH: GhanaFlag, NG: NigeriaFlag, SL: SierraLeoneFlag, LR: LiberiaFlag, GM: GambiaFlag };
 const COUNTRY_NAMES = { GH: 'Ghana', NG: 'Nigeria', SL: 'Sierra Leone', LR: 'Liberia', GM: 'The Gambia' };
@@ -196,7 +198,7 @@ const App = () => {
             <LanguageSwitcher />
           </p>
         </main>
-        <footer style={{ textAlign: 'center', marginTop: '40px', padding: '20px', color: 'var(--gray-500)', borderTop: '1px solid #eee' }}>
+        <footer style={{ textAlign: 'center', marginTop: '40px', padding: '20px', color: 'var(--gray-500)', borderTop: '1px solid var(--border)' }}>
           <p>{t('copyright')}</p>
           <p style={{ fontSize: '12px', margin: '4px 0 8px 0' }}>{t('poweredBy')}</p>
           <button onClick={() => setShowPrivacy(true)} style={{ background: 'none', border: 'none', color: 'var(--gray-500)', cursor: 'pointer', textDecoration: 'underline', fontSize: '12px' }}>
@@ -218,40 +220,23 @@ const App = () => {
         width: '100%'
       }}>
         <a href="#main-content" className="skip-link">Skip to main content</a>
-        <header style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          padding: '12px 0',
-          borderBottom: '1px solid #e0e0e0',
-          flexWrap: 'wrap',
-          gap: '8px'
-        }}>
+        <header className="app-header">
           <div>
             <h1 style={{ color: 'var(--primary)', fontSize: '22px', margin: 0, display: 'flex', alignItems: 'center', gap: '8px' }}><UserCountryFlag size={22} /> PathwayGH</h1>
-            <span style={{ fontSize: '11px', color: 'var(--gray-500)' }}>{t('tagline')} • {COUNTRY_NAMES[user?.country] || ''}</span>
+            <span className="app-header__tagline" style={{ fontSize: '11px', color: 'var(--text-subtle)' }}>{t('tagline')} • {COUNTRY_NAMES[user?.country] || ''}</span>
           </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-            <span style={{ color: '#555', fontSize: '13px', display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+          {/* On phones these move into the tab bar's "More" sheet (MobileTabBar). */}
+          <div className="app-header__account" style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <span style={{ color: 'var(--text-muted)', fontSize: '13px', display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
               <User size={14} aria-hidden="true" /> {user?.full_name || user?.name || t('student')}
             </span>
             {user?.is_admin && (
-              <span style={{ fontSize: '11px', fontWeight: 'bold', color: 'var(--primary)', background: 'var(--primary-bg)', border: '1px solid #a5d6a7', borderRadius: '999px', padding: '3px 10px' }}>
+              <span style={{ fontSize: '11px', fontWeight: 'bold', color: 'var(--primary)', background: 'var(--primary-bg)', border: '1px solid var(--primary-border)', borderRadius: '999px', padding: '3px 10px' }}>
                 {t('admin')}
               </span>
             )}
             <LanguageSwitcher />
-            <button onClick={handleLogout} style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '6px',
-              padding: '5px 14px',
-              background: '#f0f0f0',
-              border: 'none',
-              borderRadius: '6px',
-              cursor: 'pointer',
-              fontSize: '13px'
-            }}><LogOut size={14} aria-hidden="true" /> {t('logout')}</button>
+            <Button variant="secondary" size="sm" onClick={handleLogout}><LogOut size={14} aria-hidden="true" /> {t('logout')}</Button>
           </div>
         </header>
 
@@ -305,7 +290,7 @@ const App = () => {
           textAlign: 'center', 
           padding: '16px 0', 
           color: 'var(--gray-500)', 
-          borderTop: '1px solid #e0e0e0', 
+          borderTop: '1px solid var(--border)', 
           fontSize: '13px' 
         }}>
           <p>{t('copyright')}</p>
@@ -316,6 +301,7 @@ const App = () => {
         </footer>
 
         <AIChat user={user} />
+        <MobileTabBar user={user} onLogout={handleLogout} />
       </div>
     </BrowserRouter>
   );

@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams, Link } from 'react-router-dom';
 import api from '../../services/api';
+import { AwardIcon, BookOpenIcon, CircleCheck, Lock, TriangleAlertIcon } from 'lucide-react';
 import { useLanguage } from '../../contexts/LanguageContext';
-
-const LESSON_ICON = { video: '🎬', quiz: '📝', text: '📖' };
+import { LessonIcon } from '../../components/ui/icons';
+import Button from '../../components/ui/Button';
 
 const CourseDetail = () => {
   const { t } = useLanguage();
@@ -60,7 +61,7 @@ const CourseDetail = () => {
   if (error || !course) {
     return (
       <div style={{ textAlign: 'center', padding: '40px' }}>
-        <p style={{ color: 'red' }}>⚠️ {error || t('learnCourseNotFound')}</p>
+        <p style={{ color: 'red' }}><TriangleAlertIcon className="icon-inline" size="1em" aria-hidden="true" /> {error || t('learnCourseNotFound')}</p>
         <Link to="/learn">{t('learnBackToLearn')}</Link>
       </div>
     );
@@ -80,15 +81,15 @@ const CourseDetail = () => {
           {course.level.toUpperCase()}
         </span>
       )}
-      <p style={{ color: '#555', margin: '16px 0' }}>{course.description}</p>
+      <p style={{ color: 'var(--text-muted)', margin: '16px 0' }}>{course.description}</p>
 
       {course.enrolled ? (
         <div style={{ marginBottom: '20px' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px', color: '#666', marginBottom: '4px' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px', color: 'var(--text-muted)', marginBottom: '4px' }}>
             <span>{t('learnYourProgress')}</span>
             <span>{t('learnProgressSummary').replace('{watched}', watchedCount).replace('{total}', course.lessons.length).replace('{pct}', progressPct)}</span>
           </div>
-          <div style={{ height: '6px', background: '#f0f0f0', borderRadius: '3px' }}>
+          <div style={{ height: '6px', background: 'var(--surface-sunken)', borderRadius: '3px' }}>
             <div style={{ width: `${progressPct}%`, height: '100%', background: 'var(--primary)', borderRadius: '3px', transition: 'width 0.4s ease' }} />
           </div>
           {isComplete && (
@@ -96,21 +97,17 @@ const CourseDetail = () => {
               to={`/certificates/${courseId}`}
               style={{ display: 'inline-block', marginTop: '10px', color: 'var(--primary)', fontWeight: 'bold', textDecoration: 'underline' }}
             >
-              {t('learnViewCertificate')}
+              <AwardIcon className="icon-inline" size="1em" aria-hidden="true" /> {t('learnViewCertificate')}
             </Link>
           )}
         </div>
       ) : (
-        <button
-          onClick={handleEnroll}
-          disabled={enrolling}
-          style={{ padding: '12px 24px', background: enrolling ? '#ccc' : 'var(--primary)', color: 'white', border: 'none', borderRadius: '8px', cursor: enrolling ? 'not-allowed' : 'pointer', fontWeight: 'bold', marginBottom: '20px' }}
-        >
-          {enrolling ? t('learnEnrolling') : t('learnEnrollInCourse')}
-        </button>
+        <Button onClick={handleEnroll} disabled={enrolling} style={{ marginBottom: '20px' }}>
+          {!enrolling && <BookOpenIcon className="icon-inline" size="1em" aria-hidden="true" />}{enrolling ? t('learnEnrolling') : t('learnEnrollInCourse')}
+        </Button>
       )}
 
-      <h3 style={{ color: '#333' }}>{t('learnCurriculum')}</h3>
+      <h3 style={{ color: 'var(--text)' }}>{t('learnCurriculum')}</h3>
       <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
         {course.lessons.map((lesson) => {
           const locked = !course.enrolled && !lesson.is_free_preview;
@@ -123,14 +120,20 @@ const CourseDetail = () => {
                 alignItems: 'center',
                 gap: '12px',
                 padding: '14px 16px',
-                border: '1px solid #e0e0e0',
+                border: '1px solid var(--border)',
                 borderRadius: '8px',
-                background: locked ? '#fafafa' : 'white',
+                background: locked ? 'var(--surface-muted)' : 'white',
                 cursor: locked ? 'not-allowed' : 'pointer',
                 opacity: locked ? 0.6 : 1,
               }}
             >
-              <span style={{ fontSize: '20px' }}>{lesson.watched ? '✅' : LESSON_ICON[lesson.lesson_type] || '📄'}</span>
+              <span style={{ display: 'inline-flex' }}>
+                {lesson.watched ? (
+                  <CircleCheck size={20} color="var(--success)" aria-label={t('learnWatched')} />
+                ) : (
+                  <LessonIcon type={lesson.lesson_type} size={20} color="var(--primary)" />
+                )}
+              </span>
               <div style={{ flex: 1 }}>
                 <div style={{ fontWeight: 500 }}>{lesson.title}</div>
                 <div style={{ fontSize: '12px', color: 'var(--gray-500)' }}>
@@ -138,7 +141,7 @@ const CourseDetail = () => {
                   {lesson.is_free_preview && ` ${t('learnFreePreview')}`}
                 </div>
               </div>
-              {locked && <span style={{ fontSize: '18px' }}>🔒</span>}
+              {locked && <Lock size={18} color="var(--text-subtle)" aria-label="Locked" />}
             </div>
           );
         })}

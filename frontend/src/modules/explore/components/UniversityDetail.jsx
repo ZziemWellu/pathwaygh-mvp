@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import useSavedItems from '../../../hooks/useSavedItems';
+import { BookOpenIcon, ChartColumnIcon, ClipboardListIcon, GraduationCapIcon, LandmarkIcon, MapPinIcon, TriangleAlertIcon, TrophyIcon } from 'lucide-react';
+import Button from '../../../components/ui/Button';
 
 const UniversityDetail = ({ university, onClose }) => {
   const [saving, setSaving] = useState(false);
@@ -81,7 +83,7 @@ const UniversityDetail = ({ university, onClose }) => {
             cursor: 'pointer',
             color: 'var(--gray-500)',
           }}
-          onMouseEnter={(e) => e.currentTarget.style.color = '#333'}
+          onMouseEnter={(e) => e.currentTarget.style.color = 'var(--text)'}
           onMouseLeave={(e) => e.currentTarget.style.color = 'var(--gray-500)'}
         >
           ✕
@@ -90,11 +92,11 @@ const UniversityDetail = ({ university, onClose }) => {
         {/* Header */}
         <div style={{ marginBottom: '24px' }}>
           <h2 style={{ color: 'var(--primary)', margin: '0 0 8px 0', fontSize: '24px' }}>
-            🏛️ {university.name}
+            <LandmarkIcon className="icon-inline" size="1em" aria-hidden="true" /> {university.name}
           </h2>
           {university.location && (
-            <div style={{ color: '#666', fontSize: '14px' }}>
-              📍 {university.location}
+            <div style={{ color: 'var(--text-muted)', fontSize: '14px' }}>
+              <MapPinIcon className="icon-inline" size="1em" aria-hidden="true" /> {university.location}
             </div>
           )}
         </div>
@@ -102,14 +104,14 @@ const UniversityDetail = ({ university, onClose }) => {
         {error && (
           <div style={{
             padding: '12px',
-            background: '#ffebee',
-            border: '1px solid #ffcdd2',
+            background: 'var(--danger-bg)',
+            border: '1px solid var(--danger-border)',
             borderRadius: '8px',
             marginBottom: '16px',
             color: 'var(--danger)',
             textAlign: 'center',
           }}>
-            ⚠️ {error}
+            <TriangleAlertIcon className="icon-inline" size="1em" aria-hidden="true" /> {error}
           </div>
         )}
 
@@ -121,20 +123,20 @@ const UniversityDetail = ({ university, onClose }) => {
           marginBottom: '20px',
         }}>
           {university.cutoff && (
-            <div style={{ padding: '14px', background: '#f8f9fa', borderRadius: '10px' }}>
-              <div style={{ fontSize: '11px', color: 'var(--gray-500)' }}>📊 Cutoff</div>
+            <div style={{ padding: '14px', background: 'var(--surface-muted)', borderRadius: '10px' }}>
+              <div style={{ fontSize: '11px', color: 'var(--gray-500)' }}><ChartColumnIcon className="icon-inline" size="1em" aria-hidden="true" /> Cutoff</div>
               <div style={{ fontSize: '16px', fontWeight: 'bold', color: 'var(--primary)' }}>{university.cutoff}</div>
             </div>
           )}
           {university.ranking && (
-            <div style={{ padding: '14px', background: '#f8f9fa', borderRadius: '10px' }}>
-              <div style={{ fontSize: '11px', color: 'var(--gray-500)' }}>🏆 Ranking</div>
+            <div style={{ padding: '14px', background: 'var(--surface-muted)', borderRadius: '10px' }}>
+              <div style={{ fontSize: '11px', color: 'var(--gray-500)' }}><TrophyIcon className="icon-inline" size="1em" aria-hidden="true" /> Ranking</div>
               <div style={{ fontSize: '16px', fontWeight: 'bold', color: 'var(--primary)' }}>#{university.ranking}</div>
             </div>
           )}
           {university.type && (
-            <div style={{ padding: '14px', background: '#f8f9fa', borderRadius: '10px' }}>
-              <div style={{ fontSize: '11px', color: 'var(--gray-500)' }}>🏛️ Type</div>
+            <div style={{ padding: '14px', background: 'var(--surface-muted)', borderRadius: '10px' }}>
+              <div style={{ fontSize: '11px', color: 'var(--gray-500)' }}><LandmarkIcon className="icon-inline" size="1em" aria-hidden="true" /> Type</div>
               <div style={{ fontSize: '16px', fontWeight: 'bold', color: 'var(--primary)' }}>{university.type}</div>
             </div>
           )}
@@ -143,19 +145,19 @@ const UniversityDetail = ({ university, onClose }) => {
         {/* Description */}
         {university.description && (
           <div style={{ marginBottom: '20px' }}>
-            <h3 style={{ color: '#333', fontSize: '16px', marginBottom: '8px' }}>📋 About</h3>
-            <p style={{ color: '#555', lineHeight: '1.6' }}>{university.description}</p>
+            <h3 style={{ color: 'var(--text)', fontSize: '16px', marginBottom: '8px' }}><ClipboardListIcon className="icon-inline" size="1em" aria-hidden="true" /> About</h3>
+            <p style={{ color: 'var(--text-muted)', lineHeight: '1.6' }}>{university.description}</p>
           </div>
         )}
 
         {/* Programs */}
         {university.programs && university.programs.length > 0 && (
           <div style={{ marginBottom: '20px' }}>
-            <h3 style={{ color: '#333', fontSize: '16px', marginBottom: '8px' }}>📚 Programs Offered</h3>
+            <h3 style={{ color: 'var(--text)', fontSize: '16px', marginBottom: '8px' }}><BookOpenIcon className="icon-inline" size="1em" aria-hidden="true" /> Programs Offered</h3>
             <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
               {university.programs.map((program, i) => (
                 <span key={i} style={{
-                  background: '#e3f2fd',
+                  background: 'var(--info-bg)',
                   color: 'var(--secondary)',
                   padding: '4px 14px',
                   borderRadius: '16px',
@@ -171,8 +173,8 @@ const UniversityDetail = ({ university, onClose }) => {
         {/* WASSCE Requirements */}
         {university.requirements && university.requirements.length > 0 && (
           <div style={{ marginBottom: '20px' }}>
-            <h3 style={{ color: '#333', fontSize: '16px', marginBottom: '8px' }}>📋 WASSCE Requirements</h3>
-            <ul style={{ color: '#555', lineHeight: '1.8', paddingLeft: '20px', margin: 0 }}>
+            <h3 style={{ color: 'var(--text)', fontSize: '16px', marginBottom: '8px' }}><ClipboardListIcon className="icon-inline" size="1em" aria-hidden="true" /> WASSCE Requirements</h3>
+            <ul style={{ color: 'var(--text-muted)', lineHeight: '1.8', paddingLeft: '20px', margin: 0 }}>
               {university.requirements.map((req, i) => (
                 <li key={i}>{req}</li>
               ))}
@@ -187,33 +189,18 @@ const UniversityDetail = ({ university, onClose }) => {
             background: 'var(--primary-bg)',
             borderRadius: '10px',
             marginBottom: '20px',
-            border: '1px solid #c8e6c9',
+            border: '1px solid var(--primary-border)',
           }}>
-            <h4 style={{ color: 'var(--primary)', margin: '0 0 8px 0' }}>🎓 Admission Information</h4>
-            <p style={{ color: '#555', margin: 0 }}>{university.admission_info}</p>
+            <h4 style={{ color: 'var(--primary)', margin: '0 0 8px 0' }}><GraduationCapIcon className="icon-inline" size="1em" aria-hidden="true" /> Admission Information</h4>
+            <p style={{ color: 'var(--text-muted)', margin: 0 }}>{university.admission_info}</p>
           </div>
         )}
 
         {/* Action Buttons */}
         <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
-          <button
-            onClick={onClose}
-            style={{
-              padding: '10px 24px',
-              background: 'var(--primary)',
-              color: 'white',
-              border: 'none',
-              borderRadius: '8px',
-              cursor: 'pointer',
-              fontSize: '14px',
-              flex: 1,
-              transition: 'background 0.2s ease',
-            }}
-            onMouseEnter={(e) => e.currentTarget.style.background = 'var(--primary-dark)'}
-            onMouseLeave={(e) => e.currentTarget.style.background = 'var(--primary)'}
-          >
+          <Button onClick={onClose} style={{ flex: 1 }}>
             Close
-          </button>
+          </Button>
           <button
             onClick={handleSave}
             disabled={saving}
@@ -221,7 +208,7 @@ const UniversityDetail = ({ university, onClose }) => {
               padding: '10px 24px',
               background: saved ? 'var(--primary-bg)' : 'white',
               color: saved ? 'var(--primary)' : 'var(--primary)',
-              border: saved ? '2px solid #1a5f2b' : '1px solid #1a5f2b',
+              border: saved ? '2px solid var(--primary)' : '1px solid var(--primary)',
               borderRadius: '8px',
               cursor: saving ? 'default' : 'pointer',
               fontSize: '14px',
@@ -241,7 +228,7 @@ const UniversityDetail = ({ university, onClose }) => {
               }
             }}
           >
-            {saving ? '⏳ Saving...' : saved ? '✅ Saved' : '💾 Save University'}
+            {saving ? 'Saving...' : saved ? 'Saved' : 'Save University'}
           </button>
         </div>
       </div>

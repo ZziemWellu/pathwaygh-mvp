@@ -5,6 +5,9 @@ import { getUser, setUser } from '../../constants/auth';
 import LanguageSwitcher from '../../components/LanguageSwitcher';
 import { useAccessibility } from '../../contexts/AccessibilityContext';
 import { formatDate } from '../../utils/date';
+import { Award, BookOpen, BookOpenIcon, BookOpenTextIcon, Bookmark, BookmarkIcon, BriefcaseIcon, CameraIcon, ClipboardList, ClipboardListIcon, CoinsIcon, FileTextIcon, FlameIcon, HourglassIcon, LandmarkIcon, Pencil, School, SchoolIcon, Settings, SettingsIcon, StarIcon, Target, TargetIcon, TrophyIcon, User } from 'lucide-react';
+import PageHeader from '../../components/ui/PageHeader';
+import Button from '../../components/ui/Button';
 
 const ProfileModule = () => {
   const { dyslexiaFont, setDyslexiaFont, textScale, setTextScale, textScales } = useAccessibility();
@@ -137,7 +140,7 @@ const ProfileModule = () => {
       const updatedUser = { ...user, avatar_url: avatarUrl };
       setUser(updatedUser);
       setUserState(updatedUser);
-      showNotification('✅ Profile photo updated successfully!');
+      showNotification('Profile photo updated successfully!');
     } catch (err) {
       console.error('Upload error:', err);
       showNotification('Failed to upload photo. Please try again.', 'error');
@@ -186,7 +189,7 @@ const ProfileModule = () => {
       setUser(updatedUser);
       setUserState(updatedUser);
       setEditing(false);
-      showNotification('✅ Profile updated successfully!');
+      showNotification('Profile updated successfully!');
     } catch (err) {
       console.error('Save error:', err);
       showNotification('Failed to save profile.', 'error');
@@ -211,13 +214,13 @@ const ProfileModule = () => {
   };
 
   const tabs = [
-    { id: 'overview', icon: '📋', label: 'Overview' },
-    { id: 'academic', icon: '📚', label: 'Academic' },
-    { id: 'goals', icon: '🎯', label: 'Goals' },
-    { id: 'saved', icon: '💾', label: 'Saved' },
-    { id: 'certificates', icon: '🏆', label: 'Certificates' },
-    { id: 'school', icon: '🏫', label: 'School' },
-    { id: 'settings', icon: '⚙️', label: 'Settings' },
+    { id: 'overview', icon: ClipboardList, label: 'Overview' },
+    { id: 'academic', icon: BookOpen, label: 'Academic' },
+    { id: 'goals', icon: Target, label: 'Goals' },
+    { id: 'saved', icon: Bookmark, label: 'Saved' },
+    { id: 'certificates', icon: Award, label: 'Certificates' },
+    { id: 'school', icon: School, label: 'School' },
+    { id: 'settings', icon: Settings, label: 'Settings' },
   ];
 
   // App.jsx's user state (and everything gated on user.is_school_admin, like
@@ -236,7 +239,7 @@ const ProfileModule = () => {
     try {
       const response = await api.put('/api/profile/me', { guardian_email: guardianEmailValue.trim() || null });
       setProfile(response.data.profile);
-      showNotification('✅ Parent/Guardian email saved.');
+      showNotification('Parent/Guardian email saved.');
     } catch (err) {
       showNotification(err.response?.data?.detail || 'Failed to save parent/guardian email.', 'error');
     } finally {
@@ -252,7 +255,7 @@ const ProfileModule = () => {
         guardian_whatsapp_opt_in: guardianWhatsappOptIn,
       });
       setProfile(response.data.profile);
-      showNotification('✅ Guardian WhatsApp number saved.');
+      showNotification('Guardian WhatsApp number saved.');
     } catch (err) {
       showNotification(err.response?.data?.detail || 'Failed to save guardian WhatsApp number.', 'error');
     } finally {
@@ -298,7 +301,7 @@ const ProfileModule = () => {
     return (
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '400px' }}>
         <div style={{ textAlign: 'center' }}>
-          <div style={{ fontSize: '24px', marginBottom: '12px' }}>⏳</div>
+          <div style={{ fontSize: '24px', marginBottom: '12px' }}><HourglassIcon className="icon-inline" size="1em" aria-hidden="true" /></div>
           <p style={{ color: 'var(--gray-500)' }}>Loading profile...</p>
         </div>
       </div>
@@ -312,9 +315,9 @@ const ProfileModule = () => {
           padding: '12px 20px',
           borderRadius: '8px',
           marginBottom: '16px',
-          background: notification.type === 'error' ? '#ffebee' : 'var(--primary-bg)',
+          background: notification.type === 'error' ? 'var(--danger-bg)' : 'var(--primary-bg)',
           color: notification.type === 'error' ? 'var(--danger)' : 'var(--primary)',
-          border: `1px solid ${notification.type === 'error' ? '#ef9a9a' : '#a5d6a7'}`,
+          border: `1px solid ${notification.type === 'error' ? 'var(--danger-border)' : 'var(--primary-border)'}`,
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center'
@@ -324,25 +327,16 @@ const ProfileModule = () => {
         </div>
       )}
 
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
-        <h2 style={{ margin: 0, color: 'var(--primary)' }}>👤 Profile</h2>
-        {!editing && (
-          <button onClick={handleEdit} style={{ padding: '8px 20px', background: 'var(--primary)', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer', fontSize: '14px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-            ✏️ Edit Profile
-          </button>
-        )}
-      </div>
+      <PageHeader
+        icon={User}
+        title="Profile"
+        actions={!editing && <Button icon={Pencil} onClick={handleEdit}>Edit Profile</Button>}
+      />
 
-      <div style={{
-        background: 'white',
-        borderRadius: '16px',
-        border: '1px solid #e0e0e0',
-        overflow: 'hidden',
-        marginBottom: '24px'
-      }}>
+      <div className="card card--flush" style={{ overflow: 'hidden', marginBottom: '24px' }}>
         <div style={{
           height: '120px',
-          background: 'linear-gradient(135deg, #1a5f2b, #2d8a4e)',
+          background: 'linear-gradient(135deg, var(--primary), var(--primary-light))',
           position: 'relative'
         }}>
           <div style={{
@@ -360,7 +354,7 @@ const ProfileModule = () => {
                   width: '100px',
                   height: '100px',
                   borderRadius: '50%',
-                  background: '#f0f0f0',
+                  background: 'var(--surface-sunken)',
                   border: '4px solid white',
                   display: 'flex',
                   alignItems: 'center',
@@ -378,7 +372,7 @@ const ProfileModule = () => {
                 {getAvatarUrl() ? (
                   <img src={getAvatarUrl()} alt="Profile" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                 ) : (
-                  '👤'
+                  <User size={48} color="var(--text-subtle)" aria-hidden="true" />
                 )}
                 {!editing && !uploading && (
                   <div style={{
@@ -396,7 +390,7 @@ const ProfileModule = () => {
                   }}
                   onMouseEnter={(e) => e.currentTarget.style.opacity = '1'}
                   onMouseLeave={(e) => e.currentTarget.style.opacity = '0'}>
-                    📷 Change
+                    <CameraIcon className="icon-inline" size="1em" aria-hidden="true" /> Change
                   </div>
                 )}
               </div>
@@ -427,7 +421,7 @@ const ProfileModule = () => {
               hang off the bottom of the green cover in white text, so the
               "Member since" line was cut in half by the cover's edge and the
               white "Change Photo" button vanished on the white card - only
-              its 📷 stayed visible, looking like a stray icon. */}
+              its camera emoji stayed visible, looking like a stray icon. */}
           <div style={{ marginLeft: '120px', minHeight: '54px', marginBottom: '24px' }}>
             <h3 style={{ color: 'var(--gray-900)', margin: 0, fontSize: '22px' }}>
               {profile?.full_name || user?.full_name || 'Student'}
@@ -436,22 +430,9 @@ const ProfileModule = () => {
               {profile?.role || 'Student'} • Member since {formatDate(profile?.created_at, { fallback: 'N/A' })}
             </p>
             {!editing && (
-              <button
-                onClick={handleAvatarClick}
-                style={{
-                  background: 'white',
-                  color: 'var(--primary)',
-                  border: '1px solid var(--primary)',
-                  borderRadius: '6px',
-                  padding: '4px 12px',
-                  fontSize: '12px',
-                  cursor: 'pointer',
-                  marginTop: '8px',
-                  fontWeight: '600'
-                }}
-              >
-                📷 Change Photo
-              </button>
+              <Button variant="outline" size="sm" onClick={handleAvatarClick} style={{ marginTop: '8px' }}>
+                <CameraIcon className="icon-inline" size="1em" aria-hidden="true" /> Change Photo
+              </Button>
             )}
           </div>
           {editing ? (
@@ -459,19 +440,19 @@ const ProfileModule = () => {
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
                 <div>
                   <label style={{ display: 'block', fontSize: '13px', color: 'var(--gray-500)', marginBottom: '4px' }}>Full Name</label>
-                  <input name="full_name" value={formData.full_name || ''} onChange={handleChange} style={{ width: '100%', padding: '10px', border: '1px solid #e0e0e0', borderRadius: '8px' }} />
+                  <input name="full_name" value={formData.full_name || ''} onChange={handleChange} style={{ width: '100%', padding: '10px', border: '1px solid var(--border)', borderRadius: '8px' }} />
                 </div>
                 <div>
                   <label style={{ display: 'block', fontSize: '13px', color: 'var(--gray-500)', marginBottom: '4px' }}>Email</label>
-                  <input name="email" value={formData.email || ''} onChange={handleChange} style={{ width: '100%', padding: '10px', border: '1px solid #e0e0e0', borderRadius: '8px' }} disabled />
+                  <input name="email" value={formData.email || ''} onChange={handleChange} style={{ width: '100%', padding: '10px', border: '1px solid var(--border)', borderRadius: '8px' }} disabled />
                 </div>
                 <div>
                   <label style={{ display: 'block', fontSize: '13px', color: 'var(--gray-500)', marginBottom: '4px' }}>School</label>
-                  <input name="school" value={formData.school || ''} onChange={handleChange} placeholder="Your school name" style={{ width: '100%', padding: '10px', border: '1px solid #e0e0e0', borderRadius: '8px' }} />
+                  <input name="school" value={formData.school || ''} onChange={handleChange} placeholder="Your school name" style={{ width: '100%', padding: '10px', border: '1px solid var(--border)', borderRadius: '8px' }} />
                 </div>
                 <div>
                   <label style={{ display: 'block', fontSize: '13px', color: 'var(--gray-500)', marginBottom: '4px' }}>Grade/Level</label>
-                  <select name="grade" value={formData.grade || ''} onChange={handleChange} style={{ width: '100%', padding: '10px', border: '1px solid #e0e0e0', borderRadius: '8px' }}>
+                  <select name="grade" value={formData.grade || ''} onChange={handleChange} style={{ width: '100%', padding: '10px', border: '1px solid var(--border)', borderRadius: '8px' }}>
                     <option value="">Select Grade</option>
                     <option value="JHS 1">JHS 1</option>
                     <option value="JHS 2">JHS 2</option>
@@ -484,54 +465,54 @@ const ProfileModule = () => {
                 </div>
                 <div>
                   <label style={{ display: 'block', fontSize: '13px', color: 'var(--gray-500)', marginBottom: '4px' }}>Bio / About Me</label>
-                  <textarea name="bio" value={formData.bio || ''} onChange={handleChange} placeholder="Tell us about yourself..." rows="3" style={{ width: '100%', padding: '10px', border: '1px solid #e0e0e0', borderRadius: '8px', resize: 'vertical' }} />
+                  <textarea name="bio" value={formData.bio || ''} onChange={handleChange} placeholder="Tell us about yourself..." rows="3" style={{ width: '100%', padding: '10px', border: '1px solid var(--border)', borderRadius: '8px', resize: 'vertical' }} />
                 </div>
                 <div>
                   <label style={{ display: 'block', fontSize: '13px', color: 'var(--gray-500)', marginBottom: '4px' }}>Phone Number</label>
-                  <input name="phone" value={formData.phone || ''} onChange={handleChange} placeholder="+233 XX XXX XXXX" style={{ width: '100%', padding: '10px', border: '1px solid #e0e0e0', borderRadius: '8px' }} />
+                  <input name="phone" value={formData.phone || ''} onChange={handleChange} placeholder="+233 XX XXX XXXX" style={{ width: '100%', padding: '10px', border: '1px solid var(--border)', borderRadius: '8px' }} />
                 </div>
                 <div>
                   <label style={{ display: 'block', fontSize: '13px', color: 'var(--gray-500)', marginBottom: '4px' }}>Location</label>
-                  <input name="location" value={formData.location || ''} onChange={handleChange} placeholder="Accra, Kumasi, ..." style={{ width: '100%', padding: '10px', border: '1px solid #e0e0e0', borderRadius: '8px' }} />
+                  <input name="location" value={formData.location || ''} onChange={handleChange} placeholder="Accra, Kumasi, ..." style={{ width: '100%', padding: '10px', border: '1px solid var(--border)', borderRadius: '8px' }} />
                 </div>
                 <div>
                   <label style={{ display: 'block', fontSize: '13px', color: 'var(--gray-500)', marginBottom: '4px' }}>Career Interests (comma separated)</label>
-                  <input name="interests" value={formData.interests?.join(', ') || ''} onChange={(e) => handleArrayChange(e, 'interests')} placeholder="Engineering, Medicine, Technology, ..." style={{ width: '100%', padding: '10px', border: '1px solid #e0e0e0', borderRadius: '8px' }} />
+                  <input name="interests" value={formData.interests?.join(', ') || ''} onChange={(e) => handleArrayChange(e, 'interests')} placeholder="Engineering, Medicine, Technology, ..." style={{ width: '100%', padding: '10px', border: '1px solid var(--border)', borderRadius: '8px' }} />
                 </div>
                 <div>
                   <label style={{ display: 'block', fontSize: '13px', color: 'var(--gray-500)', marginBottom: '4px' }}>Learning Goals (comma separated)</label>
-                  <input name="goals" value={formData.goals?.join(', ') || ''} onChange={(e) => handleArrayChange(e, 'goals')} placeholder="Pass WASSCE, Study Engineering, ..." style={{ width: '100%', padding: '10px', border: '1px solid #e0e0e0', borderRadius: '8px' }} />
+                  <input name="goals" value={formData.goals?.join(', ') || ''} onChange={(e) => handleArrayChange(e, 'goals')} placeholder="Pass WASSCE, Study Engineering, ..." style={{ width: '100%', padding: '10px', border: '1px solid var(--border)', borderRadius: '8px' }} />
                 </div>
               </div>
               <div style={{ display: 'flex', gap: '12px', justifyContent: 'flex-end' }}>
-                <button onClick={handleCancel} style={{ padding: '10px 24px', background: '#f0f0f0', border: 'none', borderRadius: '8px', cursor: 'pointer' }}>Cancel</button>
-                <button onClick={handleSave} disabled={saving} style={{ padding: '10px 24px', background: 'var(--primary)', color: 'white', border: 'none', borderRadius: '8px', cursor: saving ? 'not-allowed' : 'pointer', opacity: saving ? 0.6 : 1 }}>{saving ? 'Saving...' : '💾 Save Changes'}</button>
+                <Button variant="secondary" onClick={handleCancel}>Cancel</Button>
+                <Button onClick={handleSave} disabled={saving}>{saving ? 'Saving...' : 'Save Changes'}</Button>
               </div>
             </div>
           ) : (
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(120px, 1fr))', gap: '16px' }}>
-              <div style={{ textAlign: 'center', padding: '12px', background: '#f8f9fa', borderRadius: '8px' }}>
-                <div style={{ fontSize: '24px' }}>📚</div>
+              <div style={{ textAlign: 'center', padding: '12px', background: 'var(--surface-muted)', borderRadius: '8px' }}>
+                <div style={{ fontSize: '24px' }}><BookOpenIcon className="icon-inline" size="1em" aria-hidden="true" /></div>
                 <div style={{ fontSize: '20px', fontWeight: 'bold', color: 'var(--primary)' }}>{stats.coursesCompleted || 0}</div>
                 <div style={{ fontSize: '12px', color: 'var(--gray-500)' }}>Courses</div>
               </div>
-              <div style={{ textAlign: 'center', padding: '12px', background: '#f8f9fa', borderRadius: '8px' }}>
-                <div style={{ fontSize: '24px' }}>📖</div>
+              <div style={{ textAlign: 'center', padding: '12px', background: 'var(--surface-muted)', borderRadius: '8px' }}>
+                <div style={{ fontSize: '24px' }}><BookOpenTextIcon className="icon-inline" size="1em" aria-hidden="true" /></div>
                 <div style={{ fontSize: '20px', fontWeight: 'bold', color: 'var(--primary)' }}>{stats.totalLessons || 0}</div>
                 <div style={{ fontSize: '12px', color: 'var(--gray-500)' }}>Lessons</div>
               </div>
-              <div style={{ textAlign: 'center', padding: '12px', background: '#f8f9fa', borderRadius: '8px' }}>
-                <div style={{ fontSize: '24px' }}>📝</div>
+              <div style={{ textAlign: 'center', padding: '12px', background: 'var(--surface-muted)', borderRadius: '8px' }}>
+                <div style={{ fontSize: '24px' }}><FileTextIcon className="icon-inline" size="1em" aria-hidden="true" /></div>
                 <div style={{ fontSize: '20px', fontWeight: 'bold', color: 'var(--primary)' }}>{stats.quizzesTaken || 0}</div>
                 <div style={{ fontSize: '12px', color: 'var(--gray-500)' }}>Quizzes</div>
               </div>
-              <div style={{ textAlign: 'center', padding: '12px', background: '#f8f9fa', borderRadius: '8px' }}>
-                <div style={{ fontSize: '24px' }}>🔥</div>
+              <div style={{ textAlign: 'center', padding: '12px', background: 'var(--surface-muted)', borderRadius: '8px' }}>
+                <div style={{ fontSize: '24px' }}><FlameIcon className="icon-inline" size="1em" aria-hidden="true" /></div>
                 <div style={{ fontSize: '20px', fontWeight: 'bold', color: 'var(--primary)' }}>{stats.studyStreak || 0}</div>
                 <div style={{ fontSize: '12px', color: 'var(--gray-500)' }}>Day Streak</div>
               </div>
-              <div style={{ textAlign: 'center', padding: '12px', background: '#f8f9fa', borderRadius: '8px' }}>
-                <div style={{ fontSize: '24px' }}>⭐</div>
+              <div style={{ textAlign: 'center', padding: '12px', background: 'var(--surface-muted)', borderRadius: '8px' }}>
+                <div style={{ fontSize: '24px' }}><StarIcon className="icon-inline" size="1em" aria-hidden="true" /></div>
                 <div style={{ fontSize: '20px', fontWeight: 'bold', color: 'var(--primary)' }}>{stats.xp || 0}</div>
                 <div style={{ fontSize: '12px', color: 'var(--gray-500)' }}>XP</div>
               </div>
@@ -543,7 +524,7 @@ const ProfileModule = () => {
       <div style={{
         display: 'flex',
         gap: '4px',
-        borderBottom: '2px solid #e0e0e0',
+        borderBottom: '2px solid var(--border)',
         marginBottom: '24px',
         paddingBottom: '0',
         overflowX: 'auto'
@@ -556,42 +537,42 @@ const ProfileModule = () => {
               padding: '12px 20px',
               background: 'transparent',
               border: 'none',
-              borderBottom: activeTab === tab.id ? '3px solid #1a5f2b' : '3px solid transparent',
+              borderBottom: activeTab === tab.id ? '3px solid var(--primary)' : '3px solid transparent',
               cursor: 'pointer',
               fontSize: '14px',
               fontWeight: activeTab === tab.id ? 'bold' : 'normal',
-              color: activeTab === tab.id ? 'var(--primary)' : '#666',
+              color: activeTab === tab.id ? 'var(--primary)' : 'var(--text-muted)',
               transition: 'all 0.2s ease',
               whiteSpace: 'nowrap'
             }}
           >
-            {tab.icon} {tab.label}
+            <tab.icon size={16} aria-hidden="true" /> {tab.label}
           </button>
         ))}
       </div>
 
-      <div style={{ background: 'white', borderRadius: '12px', border: '1px solid #e0e0e0', padding: '24px' }}>
+      <div className="card" style={{ padding: '24px' }}>
         {activeTab === 'overview' && (
           <div>
-            <h3 style={{ color: '#333', marginBottom: '16px' }}>📋 Overview</h3>
+            <h3 style={{ color: 'var(--text)', marginBottom: '16px' }}><ClipboardListIcon className="icon-inline" size="1em" aria-hidden="true" /> Overview</h3>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
               <div>
-                <p><strong style={{ color: '#666' }}>Name:</strong> {profile?.full_name || user?.full_name || 'Not set'}</p>
-                <p><strong style={{ color: '#666' }}>Email:</strong> {profile?.email || user?.email || 'Not set'}</p>
-                <p><strong style={{ color: '#666' }}>Role:</strong> {profile?.role || 'Student'}</p>
-                <p><strong style={{ color: '#666' }}>School:</strong> {profile?.school || 'Not specified'}</p>
+                <p><strong style={{ color: 'var(--text-muted)' }}>Name:</strong> {profile?.full_name || user?.full_name || 'Not set'}</p>
+                <p><strong style={{ color: 'var(--text-muted)' }}>Email:</strong> {profile?.email || user?.email || 'Not set'}</p>
+                <p><strong style={{ color: 'var(--text-muted)' }}>Role:</strong> {profile?.role || 'Student'}</p>
+                <p><strong style={{ color: 'var(--text-muted)' }}>School:</strong> {profile?.school || 'Not specified'}</p>
               </div>
               <div>
-                <p><strong style={{ color: '#666' }}>Grade:</strong> {profile?.grade || 'Not specified'}</p>
-                <p><strong style={{ color: '#666' }}>Member since:</strong> {formatDate(profile?.created_at, { fallback: 'N/A' })}</p>
-                <p><strong style={{ color: '#666' }}>Study Streak:</strong> 🔥 {stats.studyStreak || 0} days</p>
-                <p><strong style={{ color: '#666' }}>XP:</strong> ⭐ {stats.xp || 0}</p>
+                <p><strong style={{ color: 'var(--text-muted)' }}>Grade:</strong> {profile?.grade || 'Not specified'}</p>
+                <p><strong style={{ color: 'var(--text-muted)' }}>Member since:</strong> {formatDate(profile?.created_at, { fallback: 'N/A' })}</p>
+                <p><strong style={{ color: 'var(--text-muted)' }}>Study Streak:</strong> <FlameIcon className="icon-inline" size="1em" aria-hidden="true" /> {stats.studyStreak || 0} days</p>
+                <p><strong style={{ color: 'var(--text-muted)' }}>XP:</strong> <StarIcon className="icon-inline" size="1em" aria-hidden="true" /> {stats.xp || 0}</p>
               </div>
             </div>
             {profile?.bio && (
               <div style={{ marginTop: '12px' }}>
-                <p><strong style={{ color: '#666' }}>📝 Bio:</strong></p>
-                <p style={{ color: '#555' }}>{profile.bio}</p>
+                <p><strong style={{ color: 'var(--text-muted)' }}><FileTextIcon className="icon-inline" size="1em" aria-hidden="true" /> Bio:</strong></p>
+                <p style={{ color: 'var(--text-muted)' }}>{profile.bio}</p>
               </div>
             )}
           </div>
@@ -599,16 +580,16 @@ const ProfileModule = () => {
 
         {activeTab === 'academic' && (
           <div>
-            <h3 style={{ color: '#333', marginBottom: '16px' }}>📚 Academic Information</h3>
+            <h3 style={{ color: 'var(--text)', marginBottom: '16px' }}><BookOpenIcon className="icon-inline" size="1em" aria-hidden="true" /> Academic Information</h3>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
               <div>
-                <p><strong style={{ color: '#666' }}>School/Institution:</strong> {profile?.school || 'Not specified'}</p>
-                <p><strong style={{ color: '#666' }}>Grade/Level:</strong> {profile?.grade || 'Not specified'}</p>
-                <p><strong style={{ color: '#666' }}>Courses Completed:</strong> {stats.coursesCompleted || 0}</p>
+                <p><strong style={{ color: 'var(--text-muted)' }}>School/Institution:</strong> {profile?.school || 'Not specified'}</p>
+                <p><strong style={{ color: 'var(--text-muted)' }}>Grade/Level:</strong> {profile?.grade || 'Not specified'}</p>
+                <p><strong style={{ color: 'var(--text-muted)' }}>Courses Completed:</strong> {stats.coursesCompleted || 0}</p>
               </div>
               <div>
-                <p><strong style={{ color: '#666' }}>Quiz Average:</strong> {stats.quizAverage || 0}%</p>
-                <p><strong style={{ color: '#666' }}>Subjects:</strong> {profile?.subjects?.length > 0 ? profile.subjects.join(', ') : 'No subjects added yet'}</p>
+                <p><strong style={{ color: 'var(--text-muted)' }}>Quiz Average:</strong> {stats.quizAverage || 0}%</p>
+                <p><strong style={{ color: 'var(--text-muted)' }}>Subjects:</strong> {profile?.subjects?.length > 0 ? profile.subjects.join(', ') : 'No subjects added yet'}</p>
               </div>
             </div>
           </div>
@@ -616,10 +597,10 @@ const ProfileModule = () => {
 
         {activeTab === 'goals' && (
           <div>
-            <h3 style={{ color: '#333', marginBottom: '16px' }}>🎯 Goals & Interests</h3>
+            <h3 style={{ color: 'var(--text)', marginBottom: '16px' }}><TargetIcon className="icon-inline" size="1em" aria-hidden="true" /> Goals & Interests</h3>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
               <div>
-                <p><strong style={{ color: '#666' }}>Career Interests:</strong></p>
+                <p><strong style={{ color: 'var(--text-muted)' }}>Career Interests:</strong></p>
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginTop: '4px' }}>
                   {profile?.interests?.length > 0 ? (
                     profile.interests.map((interest, i) => (
@@ -631,11 +612,11 @@ const ProfileModule = () => {
                 </div>
               </div>
               <div>
-                <p><strong style={{ color: '#666' }}>Goals:</strong></p>
+                <p><strong style={{ color: 'var(--text-muted)' }}>Goals:</strong></p>
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginTop: '4px' }}>
                   {profile?.goals?.length > 0 ? (
                     profile.goals.map((goal, i) => (
-                      <span key={i} style={{ background: '#fff3e0', padding: '4px 12px', borderRadius: '12px', fontSize: '13px', color: '#e65100' }}>{goal}</span>
+                      <span key={i} style={{ background: 'var(--warning-bg)', padding: '4px 12px', borderRadius: '12px', fontSize: '13px', color: 'var(--warning)' }}>{goal}</span>
                     ))
                   ) : (
                     <span style={{ color: 'var(--gray-500)' }}>No goals added yet</span>
@@ -648,28 +629,28 @@ const ProfileModule = () => {
 
         {activeTab === 'saved' && (
           <div>
-            <h3 style={{ color: '#333', marginBottom: '16px' }}>💾 Saved Items</h3>
+            <h3 style={{ color: 'var(--text)', marginBottom: '16px' }}><BookmarkIcon className="icon-inline" size="1em" aria-hidden="true" /> Saved Items</h3>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '16px' }}>
-              <div style={{ background: '#f8f9fa', borderRadius: '8px', padding: '16px' }}>
-                <h4 style={{ margin: '0 0 8px 0', color: 'var(--primary)' }}>💼 Careers ({savedCareers.length})</h4>
+              <div style={{ background: 'var(--surface-muted)', borderRadius: '8px', padding: '16px' }}>
+                <h4 style={{ margin: '0 0 8px 0', color: 'var(--primary)' }}><BriefcaseIcon className="icon-inline" size="1em" aria-hidden="true" /> Careers ({savedCareers.length})</h4>
                 {savedCareers.length > 0 ? (
-                  savedCareers.map((career, i) => <div key={i} style={{ fontSize: '13px', color: '#555', padding: '4px 0' }}>• {career}</div>)
+                  savedCareers.map((career, i) => <div key={i} style={{ fontSize: '13px', color: 'var(--text-muted)', padding: '4px 0' }}>• {career}</div>)
                 ) : (
                   <span style={{ color: 'var(--gray-500)', fontSize: '13px' }}>No saved careers</span>
                 )}
               </div>
-              <div style={{ background: '#f8f9fa', borderRadius: '8px', padding: '16px' }}>
-                <h4 style={{ margin: '0 0 8px 0', color: 'var(--primary)' }}>🏛️ Universities ({savedUniversities.length})</h4>
+              <div style={{ background: 'var(--surface-muted)', borderRadius: '8px', padding: '16px' }}>
+                <h4 style={{ margin: '0 0 8px 0', color: 'var(--primary)' }}><LandmarkIcon className="icon-inline" size="1em" aria-hidden="true" /> Universities ({savedUniversities.length})</h4>
                 {savedUniversities.length > 0 ? (
-                  savedUniversities.map((uni, i) => <div key={i} style={{ fontSize: '13px', color: '#555', padding: '4px 0' }}>• {uni}</div>)
+                  savedUniversities.map((uni, i) => <div key={i} style={{ fontSize: '13px', color: 'var(--text-muted)', padding: '4px 0' }}>• {uni}</div>)
                 ) : (
                   <span style={{ color: 'var(--gray-500)', fontSize: '13px' }}>No saved universities</span>
                 )}
               </div>
-              <div style={{ background: '#f8f9fa', borderRadius: '8px', padding: '16px' }}>
-                <h4 style={{ margin: '0 0 8px 0', color: 'var(--primary)' }}>💰 Scholarships ({savedScholarships.length})</h4>
+              <div style={{ background: 'var(--surface-muted)', borderRadius: '8px', padding: '16px' }}>
+                <h4 style={{ margin: '0 0 8px 0', color: 'var(--primary)' }}><CoinsIcon className="icon-inline" size="1em" aria-hidden="true" /> Scholarships ({savedScholarships.length})</h4>
                 {savedScholarships.length > 0 ? (
-                  savedScholarships.map((sch, i) => <div key={i} style={{ fontSize: '13px', color: '#555', padding: '4px 0' }}>• {sch}</div>)
+                  savedScholarships.map((sch, i) => <div key={i} style={{ fontSize: '13px', color: 'var(--text-muted)', padding: '4px 0' }}>• {sch}</div>)
                 ) : (
                   <span style={{ color: 'var(--gray-500)', fontSize: '13px' }}>No saved scholarships</span>
                 )}
@@ -680,14 +661,14 @@ const ProfileModule = () => {
 
         {activeTab === 'certificates' && (
           <div>
-            <h3 style={{ color: '#333', marginBottom: '16px' }}>🏆 Certificates</h3>
+            <h3 style={{ color: 'var(--text)', marginBottom: '16px' }}><TrophyIcon className="icon-inline" size="1em" aria-hidden="true" /> Certificates</h3>
             {certificates.length === 0 ? (
               <p style={{ color: 'var(--gray-500)', fontSize: '13px' }}>Complete a course to earn your first certificate.</p>
             ) : (
               certificates.map((cert) => {
                 const verifyUrl = `${window.location.origin}/certificates/verify/${cert.code}`;
                 return (
-                  <div key={cert.code} style={{ background: '#f8f9fa', borderRadius: '8px', padding: '16px', marginBottom: '12px' }}>
+                  <div key={cert.code} style={{ background: 'var(--surface-muted)', borderRadius: '8px', padding: '16px', marginBottom: '12px' }}>
                     <h4 style={{ margin: '0 0 4px 0', color: 'var(--primary)' }}>{cert.course_title}</h4>
                     <p style={{ margin: '0 0 8px 0', fontSize: '13px', color: 'var(--gray-500)' }}>
                       Issued {formatDate(cert.issued_at, { long: true })} · {cert.lesson_count} lessons
@@ -702,7 +683,7 @@ const ProfileModule = () => {
                           setCopiedCertCode(cert.code);
                           setTimeout(() => setCopiedCertCode(null), 2000);
                         }}
-                        style={{ padding: '4px 10px', background: 'none', border: '1px solid #1a5f2b', color: 'var(--primary)', borderRadius: '6px', cursor: 'pointer', fontSize: '12px' }}
+                        style={{ padding: '4px 10px', background: 'none', border: '1px solid var(--primary)', color: 'var(--primary)', borderRadius: '6px', cursor: 'pointer', fontSize: '12px' }}
                       >
                         {copiedCertCode === cert.code ? 'Copied!' : 'Copy verification link'}
                       </button>
@@ -716,15 +697,15 @@ const ProfileModule = () => {
 
         {activeTab === 'school' && (
           <div>
-            <h3 style={{ color: '#333', marginBottom: '16px' }}>🏫 School</h3>
+            <h3 style={{ color: 'var(--text)', marginBottom: '16px' }}><SchoolIcon className="icon-inline" size="1em" aria-hidden="true" /> School</h3>
             {schoolInfo?.school ? (
               <div>
-                <p><strong style={{ color: '#666' }}>School:</strong> {schoolInfo.school.name}</p>
+                <p><strong style={{ color: 'var(--text-muted)' }}>School:</strong> {schoolInfo.school.name}</p>
                 <p>
-                  <strong style={{ color: '#666' }}>Join code:</strong> {schoolInfo.school.join_code}{' '}
-                  <button onClick={copySchoolCode} style={{ marginLeft: '8px', padding: '2px 10px', fontSize: '12px', background: '#f0f0f0', border: 'none', borderRadius: '6px', cursor: 'pointer' }}>
+                  <strong style={{ color: 'var(--text-muted)' }}>Join code:</strong> {schoolInfo.school.join_code}{' '}
+                  <Button variant="secondary" size="sm" onClick={copySchoolCode} style={{ marginLeft: '8px' }}>
                     Copy
-                  </button>
+                  </Button>
                 </p>
                 {schoolInfo.is_school_admin && (
                   <a href="/school-admin" style={{ display: 'inline-block', marginTop: '12px', padding: '10px 20px', background: 'var(--primary)', color: 'white', borderRadius: '8px', textDecoration: 'none' }}>
@@ -736,12 +717,12 @@ const ProfileModule = () => {
               <div>
                 <p style={{ color: 'var(--gray-500)', marginBottom: '16px' }}>You're not linked to a school yet.</p>
                 <div style={{ display: 'flex', gap: '12px', marginBottom: '16px' }}>
-                  <button onClick={() => { setSchoolFormMode('join'); setSchoolFormValue(''); }} style={{ padding: '8px 16px', background: schoolFormMode === 'join' ? 'var(--primary)' : '#f0f0f0', color: schoolFormMode === 'join' ? 'white' : '#333', border: 'none', borderRadius: '8px', cursor: 'pointer' }}>
+                  <Button size="sm" onClick={() => { setSchoolFormMode('join'); setSchoolFormValue(''); }}>
                     Join a School
-                  </button>
-                  <button onClick={() => { setSchoolFormMode('create'); setSchoolFormValue(''); }} style={{ padding: '8px 16px', background: schoolFormMode === 'create' ? 'var(--primary)' : '#f0f0f0', color: schoolFormMode === 'create' ? 'white' : '#333', border: 'none', borderRadius: '8px', cursor: 'pointer' }}>
+                  </Button>
+                  <Button size="sm" onClick={() => { setSchoolFormMode('create'); setSchoolFormValue(''); }}>
                     Create a School
-                  </button>
+                  </Button>
                 </div>
                 {schoolFormMode === 'join' && (
                   <div style={{ display: 'flex', gap: '8px', maxWidth: '400px' }}>
@@ -749,11 +730,11 @@ const ProfileModule = () => {
                       value={schoolFormValue}
                       onChange={(e) => setSchoolFormValue(e.target.value)}
                       placeholder="Enter join code"
-                      style={{ flex: 1, padding: '10px', border: '1px solid #e0e0e0', borderRadius: '8px' }}
+                      style={{ flex: 1, padding: '10px', border: '1px solid var(--border)', borderRadius: '8px' }}
                     />
-                    <button onClick={handleJoinSchool} disabled={schoolSaving} style={{ padding: '10px 20px', background: 'var(--primary)', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer' }}>
+                    <Button onClick={handleJoinSchool} disabled={schoolSaving}>
                       {schoolSaving ? 'Joining...' : 'Join'}
-                    </button>
+                    </Button>
                   </div>
                 )}
                 {schoolFormMode === 'create' && (
@@ -762,11 +743,11 @@ const ProfileModule = () => {
                       value={schoolFormValue}
                       onChange={(e) => setSchoolFormValue(e.target.value)}
                       placeholder="School name"
-                      style={{ flex: 1, padding: '10px', border: '1px solid #e0e0e0', borderRadius: '8px' }}
+                      style={{ flex: 1, padding: '10px', border: '1px solid var(--border)', borderRadius: '8px' }}
                     />
-                    <button onClick={handleCreateSchool} disabled={schoolSaving} style={{ padding: '10px 20px', background: 'var(--primary)', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer' }}>
+                    <Button onClick={handleCreateSchool} disabled={schoolSaving}>
                       {schoolSaving ? 'Creating...' : 'Create'}
-                    </button>
+                    </Button>
                   </div>
                 )}
               </div>
@@ -776,31 +757,31 @@ const ProfileModule = () => {
 
         {activeTab === 'settings' && (
           <div>
-            <h3 style={{ color: '#333', marginBottom: '16px' }}>⚙️ Settings</h3>
+            <h3 style={{ color: 'var(--text)', marginBottom: '16px' }}><SettingsIcon className="icon-inline" size="1em" aria-hidden="true" /> Settings</h3>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
               <div>
-                <p><strong style={{ color: '#666' }}>Phone Number:</strong> {profile?.phone || 'Not specified'}</p>
-                <p><strong style={{ color: '#666' }}>Location:</strong> {profile?.location || 'Not specified'}</p>
+                <p><strong style={{ color: 'var(--text-muted)' }}>Phone Number:</strong> {profile?.phone || 'Not specified'}</p>
+                <p><strong style={{ color: 'var(--text-muted)' }}>Location:</strong> {profile?.location || 'Not specified'}</p>
               </div>
               <div>
-                <p style={{ marginBottom: '8px' }}><strong style={{ color: '#666' }}>Language:</strong></p>
+                <p style={{ marginBottom: '8px' }}><strong style={{ color: 'var(--text-muted)' }}>Language:</strong></p>
                 <LanguageSwitcher style={{ marginBottom: '16px' }} />
               </div>
             </div>
 
-            <div style={{ marginTop: '24px', paddingTop: '16px', borderTop: '1px solid #eee' }}>
-              <p style={{ marginBottom: '8px' }}><strong style={{ color: '#666' }}>Parent/Guardian Email:</strong></p>
+            <div style={{ marginTop: '24px', paddingTop: '16px', borderTop: '1px solid var(--border)' }}>
+              <p style={{ marginBottom: '8px' }}><strong style={{ color: 'var(--text-muted)' }}>Parent/Guardian Email:</strong></p>
               <div style={{ display: 'flex', gap: '8px', marginBottom: '12px', maxWidth: '400px' }}>
                 <input
                   type="email"
                   value={guardianEmailValue}
                   onChange={(e) => setGuardianEmailValue(e.target.value)}
                   placeholder="parent@email.com"
-                  style={{ flex: 1, padding: '10px', border: '1px solid #e0e0e0', borderRadius: '8px' }}
+                  style={{ flex: 1, padding: '10px', border: '1px solid var(--border)', borderRadius: '8px' }}
                 />
-                <button onClick={handleSaveGuardianEmail} disabled={guardianEmailSaving} style={{ padding: '10px 20px', background: 'var(--primary)', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer' }}>
+                <Button onClick={handleSaveGuardianEmail} disabled={guardianEmailSaving}>
                   {guardianEmailSaving ? 'Saving...' : 'Save'}
-                </button>
+                </Button>
               </div>
               <p style={{ color: 'var(--gray-500)', fontSize: '13px' }}>
                 Consent given: {profile?.consent_given_at ? formatDate(profile.consent_given_at) : 'Not recorded (account predates consent tracking)'}
@@ -809,15 +790,15 @@ const ProfileModule = () => {
               <Link to="/privacy" style={{ color: 'var(--primary)', fontSize: '13px' }}>View Privacy Policy</Link>
             </div>
 
-            <div style={{ marginTop: '24px', paddingTop: '16px', borderTop: '1px solid #eee' }}>
-              <p style={{ marginBottom: '8px' }}><strong style={{ color: '#666' }}>Guardian WhatsApp Updates:</strong></p>
+            <div style={{ marginTop: '24px', paddingTop: '16px', borderTop: '1px solid var(--border)' }}>
+              <p style={{ marginBottom: '8px' }}><strong style={{ color: 'var(--text-muted)' }}>Guardian WhatsApp Updates:</strong></p>
               <div style={{ display: 'flex', gap: '8px', marginBottom: '8px', maxWidth: '400px' }}>
                 <input
                   type="tel"
                   value={guardianPhoneValue}
                   onChange={(e) => setGuardianPhoneValue(e.target.value)}
                   placeholder="+233241234567"
-                  style={{ flex: 1, padding: '10px', border: '1px solid #e0e0e0', borderRadius: '8px' }}
+                  style={{ flex: 1, padding: '10px', border: '1px solid var(--border)', borderRadius: '8px' }}
                 />
               </div>
               <label style={{ display: 'flex', alignItems: 'flex-start', gap: '8px', fontSize: '13px', cursor: 'pointer', marginBottom: '12px' }}>
@@ -829,13 +810,13 @@ const ProfileModule = () => {
                 />
                 <span>My guardian has agreed to receive a periodic WhatsApp study update at this number.</span>
               </label>
-              <button onClick={handleSaveGuardianWhatsapp} disabled={guardianPhoneSaving} style={{ padding: '10px 20px', background: 'var(--primary)', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer' }}>
+              <Button onClick={handleSaveGuardianWhatsapp} disabled={guardianPhoneSaving}>
                 {guardianPhoneSaving ? 'Saving...' : 'Save'}
-              </button>
+              </Button>
             </div>
 
-            <div style={{ marginTop: '24px', paddingTop: '16px', borderTop: '1px solid #eee' }}>
-              <p style={{ marginBottom: '8px' }}><strong style={{ color: '#666' }}>Accessibility:</strong></p>
+            <div style={{ marginTop: '24px', paddingTop: '16px', borderTop: '1px solid var(--border)' }}>
+              <p style={{ marginBottom: '8px' }}><strong style={{ color: 'var(--text-muted)' }}>Accessibility:</strong></p>
               <label style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '13px', cursor: 'pointer', marginBottom: '12px' }}>
                 <input
                   type="checkbox"
@@ -844,7 +825,7 @@ const ProfileModule = () => {
                 />
                 <span>Use a dyslexia-friendly font</span>
               </label>
-              <p style={{ marginBottom: '8px', fontSize: '13px', color: '#666' }}>Text size:</p>
+              <p style={{ marginBottom: '8px', fontSize: '13px', color: 'var(--text-muted)' }}>Text size:</p>
               <div style={{ display: 'flex', gap: '8px' }}>
                 {textScales.map((scale) => (
                   <button
@@ -853,9 +834,9 @@ const ProfileModule = () => {
                     style={{
                       padding: '8px 16px',
                       borderRadius: '8px',
-                      border: textScale === scale ? '2px solid var(--primary)' : '1px solid #e0e0e0',
-                      background: textScale === scale ? 'var(--primary-bg, #e8f5e9)' : 'white',
-                      color: '#333',
+                      border: textScale === scale ? '2px solid var(--primary)' : '1px solid var(--border)',
+                      background: textScale === scale ? 'var(--primary-bg, var(--primary-bg))' : 'white',
+                      color: 'var(--text)',
                       cursor: 'pointer',
                       fontWeight: textScale === scale ? 'bold' : 'normal',
                       textTransform: 'capitalize',

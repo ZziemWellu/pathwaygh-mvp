@@ -15,7 +15,45 @@
   --accent-bg: #fef6e0;
   --danger: #c62828;
   --success: #2e7d32;
-  --warning: #ef6c00;
+  --warning: #b34700; /* was #ef6c00 - 3.08:1 on white; used as text, needs 4.5:1 */
+
+  /* ---- Semantic roles ----
+     Components use these, not raw hex. Each text colour here is >= 4.5:1
+     on white and on --bg-warm (WCAG AA). Status colours come in
+     text / tint-background / border triplets. */
+  --text: var(--gray-800);           /* 14.4:1 */
+  --text-muted: var(--gray-600);     /* 6.0:1 - secondary copy, captions */
+  --text-subtle: var(--gray-500);    /* 5.7:1 - hints, metadata */
+  --text-on-primary: #ffffff;
+  --surface: #ffffff;                /* cards, inputs */
+  --surface-muted: var(--gray-50);   /* stat tiles, quiet panels */
+  --surface-sunken: var(--gray-100); /* progress tracks, wells */
+  --border: var(--gray-200);
+  --border-strong: var(--gray-300);
+  --primary-border: #a5d6a7;
+  --accent-strong: #9a6700;          /* gold as text - 4.87:1 */
+  --accent-border: #f0d88b;
+  --success-dark: #1b5e20;
+  --success-bg: #e8f5e9;
+  --success-border: #a5d6a7;
+  --warning-bg: #fff3e0;
+  --warning-border: #ffcc80;
+  --warning-strong: #c43e00;         /* 5.2:1 */
+  --danger-dark: #b71c1c;
+  --danger-bg: #ffebee;
+  --danger-border: #ef9a9a;
+  --info: var(--secondary);          /* 5.75:1 */
+  --info-bg: #e3f2fd;
+  --violet: #6a1b9a;                 /* 9.4:1 */
+  --violet-bg: #f3e5f5;
+  --rose: #ad1457;                   /* 7.0:1 */
+  --rose-bg: #fce4ec;
+  --earth: #8d6e63;
+
+  /* Kente-inspired stripe - the app's one signature motif (gold/green/red). */
+  --kente: repeating-linear-gradient(90deg,
+    var(--accent) 0 14px, var(--primary) 14px 22px,
+    var(--accent) 22px 36px, #b3261e 36px 42px);
 
   /* Neutral (warm-tinted, not pure grey) */
   --white: #ffffff;
@@ -127,6 +165,21 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Brand band: a thin kente stripe across the top of every screen - signed
+   in or out - as the app's signature. Not printed (certificates). */
+body::before {
+  content: '';
+  display: block;
+  height: 4px;
+  background: var(--kente);
+}
+
+@media print {
+  body::before {
+    display: none;
+  }
+}
+
 /* Browsers don't let form controls inherit the page font - without this,
    every button, input and select rendered in the browser default (Arial)
    instead of the brand typeface. */
@@ -135,6 +188,226 @@ input,
 select,
 textarea {
   font-family: inherit;
+}
+
+/* ---------- Icons ----------
+   One icon set (lucide-react). Inline icons sit in running text at the
+   text's own size (size="1em") and colour (currentColor). */
+svg.lucide {
+  flex-shrink: 0;
+}
+
+.icon-inline {
+  vertical-align: -0.125em; /* the space after it in the text provides the gap */
+}
+
+/* ---------- App header & navigation ---------- */
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.desktop-nav {
+  display: flex;
+  gap: 8px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.desktop-nav__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  background: transparent;
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 13px;
+  transition: background var(--transition-fast), color var(--transition-fast);
+}
+
+.desktop-nav__item:hover {
+  background: var(--surface-muted);
+}
+
+.desktop-nav__item.is-active {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: var(--text-on-primary);
+  font-weight: 700;
+}
+
+.desktop-nav__item:focus-visible,
+.mobile-tabbar__item:focus-visible,
+.mobile-sheet__item:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* Phone tab bar + "More" sheet (MobileTabBar.jsx) - hidden above 768px. */
+.mobile-tabbar {
+  display: none;
+}
+
+.mobile-tabbar__item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  min-height: 56px;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  position: relative;
+}
+
+.mobile-tabbar__item.is-active {
+  color: var(--primary);
+}
+
+/* Kente-striped indicator on the active tab. */
+.mobile-tabbar__item.is-active::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 28%;
+  right: 28%;
+  height: 3px;
+  border-radius: 0 0 3px 3px;
+  background: var(--kente);
+}
+
+.mobile-sheet__backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(28, 27, 22, 0.45);
+  z-index: 1100;
+  display: flex;
+  align-items: flex-end;
+}
+
+.mobile-sheet {
+  width: 100%;
+  max-height: 80vh;
+  overflow-y: auto;
+  background: var(--surface);
+  border-radius: 20px 20px 0 0;
+  padding: 8px 16px calc(16px + env(safe-area-inset-bottom));
+  box-shadow: var(--shadow-xl);
+  outline: none;
+}
+
+.mobile-sheet::before {
+  content: '';
+  display: block;
+  width: 40px;
+  height: 4px;
+  margin: 4px auto 12px;
+  border-radius: 2px;
+  background: var(--border-strong);
+}
+
+.mobile-sheet__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.mobile-sheet__name {
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: var(--text);
+}
+
+.mobile-sheet__email {
+  font-size: 13px;
+  color: var(--text-subtle);
+}
+
+.mobile-sheet__close {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 4px;
+}
+
+.mobile-sheet__list {
+  list-style: none;
+  padding: 8px 0;
+  margin: 0;
+}
+
+.mobile-sheet__item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-height: 48px;
+  padding: 0 8px;
+  background: none;
+  border: none;
+  border-radius: 10px;
+  color: var(--text);
+  font-size: 15px;
+  cursor: pointer;
+  text-align: left;
+}
+
+.mobile-sheet__item.is-active {
+  background: var(--primary-bg);
+  color: var(--primary);
+  font-weight: 700;
+}
+
+.mobile-sheet__footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+}
+
+@media (max-width: 768px) {
+  .desktop-nav,
+  .app-header__tagline,
+  .app-header__account {
+    display: none !important;
+  }
+
+  .app-header {
+    padding: 10px 0;
+  }
+
+  .mobile-tabbar {
+    display: flex;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1000;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.06);
+    padding-bottom: env(safe-area-inset-bottom);
+  }
 }
 
 /* ---------- AI tutor launcher ----------
@@ -162,9 +435,10 @@ textarea {
   padding-bottom: 96px !important;
 }
 
-@media (max-width: 640px) {
+@media (max-width: 768px) {
+  /* Sit above the bottom tab bar (56px + the phone's home-indicator inset). */
   .ai-chat-fab {
-    bottom: 16px;
+    bottom: calc(72px + env(safe-area-inset-bottom));
     right: 16px;
     width: 52px;
     height: 52px;
@@ -172,12 +446,14 @@ textarea {
   }
 
   .ai-chat-panel {
-    bottom: 16px;
+    bottom: calc(72px + env(safe-area-inset-bottom));
     right: 16px;
+    height: min(500px, calc(100dvh - 96px - env(safe-area-inset-bottom)));
   }
 
+  /* Footer content clears the tab bar and the launcher above it. */
   .app-footer-clear-fab {
-    padding-bottom: 80px !important;
+    padding-bottom: calc(140px + env(safe-area-inset-bottom)) !important;
   }
 }
 
@@ -285,15 +561,27 @@ a:hover {
 
 /* ---------- Cards ---------- */
 .card {
-  background: var(--white);
+  background: var(--surface);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-sm);
   padding: var(--spacing-lg);
-  transition: transform var(--transition-base), box-shadow var(--transition-base);
-  border: 1px solid var(--gray-200);
+  border: 1px solid var(--border);
 }
 
-.card:hover {
+/* For cards whose children manage their own spacing (e.g. a cover image
+   or a list that runs edge to edge). */
+.card--flush {
+  padding: 0;
+}
+
+/* Only clickable cards lift on hover - a static card that moves under the
+   pointer suggests it can be clicked when it can't. */
+.card--interactive {
+  cursor: pointer;
+  transition: transform var(--transition-base), box-shadow var(--transition-base);
+}
+
+.card--interactive:hover {
   transform: translateY(-2px);
   box-shadow: var(--shadow-lg);
 }
@@ -334,12 +622,26 @@ a:hover {
 }
 
 .btn-secondary {
-  background: var(--gray-200);
-  color: var(--gray-800);
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--border-strong);
 }
 
 .btn-secondary:hover {
-  background: var(--gray-300);
+  background: var(--surface-muted);
+  border-color: var(--text-subtle);
+}
+
+/* Text-style action: no fill, no border. */
+.btn-ghost {
+  background: transparent;
+  color: var(--primary);
+  padding-left: 8px;
+  padding-right: 8px;
+}
+
+.btn-ghost:hover {
+  background: var(--primary-bg);
 }
 
 .btn-success {
@@ -348,7 +650,7 @@ a:hover {
 }
 
 .btn-success:hover {
-  background: #1b5e20;
+  background: var(--success-dark);
 }
 
 .btn-danger {
@@ -357,7 +659,7 @@ a:hover {
 }
 
 .btn-danger:hover {
-  background: #b71c1c;
+  background: var(--danger-dark);
 }
 
 .btn-outline {
@@ -386,10 +688,93 @@ a:hover {
   justify-content: center;
 }
 
+.btn:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+}
+
 .btn:disabled {
   opacity: 0.6;
   cursor: not-allowed;
   transform: none !important;
+  box-shadow: none !important;
+}
+
+.btn-primary:disabled:hover { background: var(--primary); }
+.btn-secondary:disabled:hover { background: var(--surface); border-color: var(--border-strong); }
+.btn-danger:disabled:hover { background: var(--danger); }
+
+/* ---------- Page header ----------
+   Every page opens the same way: icon tile, title, optional subtitle and
+   actions, with the kente stripe as the brand accent under the title. */
+.page-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--spacing-md);
+  flex-wrap: wrap;
+  margin-bottom: var(--spacing-lg);
+}
+
+.page-header__lead {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
+}
+
+.page-header__icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: var(--primary-bg);
+  color: var(--primary);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.page-header__title {
+  font-family: var(--font-display);
+  font-size: var(--font-size-2xl);
+  line-height: 1.15;
+  color: var(--primary);
+  margin: 0;
+}
+
+.page-header__title::after {
+  content: '';
+  display: block;
+  width: 56px;
+  height: 4px;
+  margin-top: 8px;
+  border-radius: 2px;
+  background: var(--kente);
+}
+
+.page-header__subtitle {
+  color: var(--text-muted);
+  font-size: var(--font-size-base);
+  margin: 6px 0 0;
+}
+
+.page-header__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  flex-wrap: wrap;
+}
+
+@media (max-width: 640px) {
+  .page-header__title {
+    font-size: var(--font-size-xl);
+  }
+
+  .page-header__icon {
+    width: 38px;
+    height: 38px;
+  }
 }
 
 /* ---------- Form Elements ---------- */

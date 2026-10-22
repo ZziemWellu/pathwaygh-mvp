@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Trash2, Plus, X, ArrowUp, ArrowDown } from 'lucide-react';
 import api from '../../services/api';
+import Button from '../../components/ui/Button';
 
 const emptyExercise = () => ({ question: '', options: ['', '', '', ''], correct_index: 0, explanation: '' });
 
@@ -36,7 +37,7 @@ const ExerciseForm = ({ initial, onSave, onCancel }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} style={{ background: '#f8f9fa', border: '1px solid #e0e0e0', borderRadius: '10px', padding: '14px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+    <form onSubmit={handleSubmit} style={{ background: 'var(--surface-muted)', border: '1px solid var(--border)', borderRadius: '10px', padding: '14px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
       <textarea required placeholder="Question" value={form.question} onChange={(e) => setForm({ ...form, question: e.target.value })} style={{ ...inputStyle, minHeight: '50px' }} />
       <label style={labelStyle}>Options (select the correct one)</label>
       {form.options.map((option, i) => (
@@ -60,12 +61,12 @@ const ExerciseForm = ({ initial, onSave, onCancel }) => {
       </button>
       <textarea placeholder="Explanation (shown after grading)" value={form.explanation || ''} onChange={(e) => setForm({ ...form, explanation: e.target.value })} style={{ ...inputStyle, minHeight: '50px' }} />
       <div style={{ display: 'flex', gap: '8px' }}>
-        <button type="submit" disabled={saving} style={{ padding: '8px 16px', background: 'var(--primary)', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: 'bold', fontSize: '13px' }}>
+        <Button size="sm" type="submit" disabled={saving}>
           {saving ? 'Saving...' : 'Save Exercise'}
-        </button>
-        <button type="button" onClick={onCancel} style={{ padding: '8px 16px', background: '#f0f0f0', border: 'none', borderRadius: '8px', cursor: 'pointer', fontSize: '13px' }}>
+        </Button>
+        <Button variant="secondary" size="sm" type="button" onClick={onCancel}>
           Cancel
-        </button>
+        </Button>
       </div>
     </form>
   );
@@ -106,12 +107,9 @@ const AdminExerciseEditor = ({ lessonId, exercises, onChange }) => {
     <div>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
         <h4 style={{ margin: 0 }}>Exercises</h4>
-        <button
-          onClick={() => setAdding((s) => !s)}
-          style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', padding: '6px 12px', background: 'var(--primary)', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer', fontSize: '13px' }}
-        >
+        <Button size="sm" onClick={() => setAdding((s) => !s)}>
           <Plus size={14} /> Add Exercise
-        </button>
+        </Button>
       </div>
 
       {adding && <div style={{ marginBottom: '10px' }}><ExerciseForm onSave={handleCreate} onCancel={() => setAdding(false)} /></div>}
@@ -122,7 +120,7 @@ const AdminExerciseEditor = ({ lessonId, exercises, onChange }) => {
             <ExerciseForm initial={exercise} onSave={(form) => handleUpdate(exercise, form)} onCancel={() => setEditingId(null)} />
           </div>
         ) : (
-          <div key={exercise.id} style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', padding: '12px', border: '1px solid #e0e0e0', borderRadius: '8px', marginBottom: '8px' }}>
+          <div key={exercise.id} style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', padding: '12px', border: '1px solid var(--border)', borderRadius: '8px', marginBottom: '8px' }}>
             <div style={{ display: 'flex', flexDirection: 'column' }}>
               <button onClick={() => handleMove(i, -1)} disabled={i === 0} style={{ background: 'none', border: 'none', cursor: i === 0 ? 'default' : 'pointer', opacity: i === 0 ? 0.3 : 1 }}><ArrowUp size={14} /></button>
               <button onClick={() => handleMove(i, 1)} disabled={i === exercises.length - 1} style={{ background: 'none', border: 'none', cursor: i === exercises.length - 1 ? 'default' : 'pointer', opacity: i === exercises.length - 1 ? 0.3 : 1 }}><ArrowDown size={14} /></button>
@@ -139,7 +137,7 @@ const AdminExerciseEditor = ({ lessonId, exercises, onChange }) => {
   );
 };
 
-const inputStyle = { padding: '9px 11px', border: '1px solid #e0e0e0', borderRadius: '8px', fontSize: '13px', fontFamily: 'inherit' };
-const labelStyle = { fontSize: '12px', fontWeight: 'bold', color: '#666' };
+const inputStyle = { padding: '9px 11px', border: '1px solid var(--border)', borderRadius: '8px', fontSize: '13px', fontFamily: 'inherit' };
+const labelStyle = { fontSize: '12px', fontWeight: 'bold', color: 'var(--text-muted)' };
 
 export default AdminExerciseEditor;

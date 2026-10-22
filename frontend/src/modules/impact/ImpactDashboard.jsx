@@ -2,8 +2,10 @@ import React, { useEffect, useState } from 'react';
 import {
   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer
 } from 'recharts';
-import { Download } from 'lucide-react';
+import { BarChart3, Download } from 'lucide-react';
 import api from '../../services/api';
+import PageHeader from '../../components/ui/PageHeader';
+import Button from '../../components/ui/Button';
 
 const MONTHS = 6;
 
@@ -64,19 +66,18 @@ const ImpactDashboard = () => {
 
   return (
     <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '20px' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', flexWrap: 'wrap', gap: '10px' }}>
-        <h2 style={{ margin: 0 }}>Impact Dashboard</h2>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          {exportError && <span style={{ color: 'var(--danger)', fontSize: '13px' }}>{exportError}</span>}
-          <button
-            onClick={handleExport}
-            disabled={exporting}
-            style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', padding: '8px 16px', background: 'var(--primary)', color: 'white', border: 'none', borderRadius: '8px', fontSize: '13px', cursor: exporting ? 'not-allowed' : 'pointer' }}
-          >
-            <Download size={14} aria-hidden="true" /> {exporting ? 'Exporting...' : 'Export CSV'}
-          </button>
-        </div>
-      </div>
+      <PageHeader
+        icon={BarChart3}
+        title="Impact Dashboard"
+        actions={
+          <>
+            {exportError && <span style={{ color: 'var(--danger)', fontSize: '13px' }}>{exportError}</span>}
+            <Button size="sm" icon={Download} onClick={handleExport} disabled={exporting}>
+              {exporting ? 'Exporting...' : 'Export CSV'}
+            </Button>
+          </>
+        }
+      />
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: '16px', marginBottom: '24px' }}>
         <StatCard value={totals.student_count} label="Students" />
@@ -92,7 +93,7 @@ const ImpactDashboard = () => {
       </div>
 
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', marginBottom: '24px' }}>
-        <div style={{ background: 'white', border: '1px solid #e0e0e0', borderRadius: '12px', padding: '16px' }}>
+        <div className="card" style={{ padding: '16px' }}>
           <h3 style={{ marginTop: 0, fontSize: '15px' }}>Enrollment Growth</h3>
           <ResponsiveContainer width="100%" height={260}>
             <LineChart data={trends.series}>
@@ -106,7 +107,7 @@ const ImpactDashboard = () => {
           </ResponsiveContainer>
         </div>
 
-        <div style={{ background: 'white', border: '1px solid #e0e0e0', borderRadius: '12px', padding: '16px' }}>
+        <div className="card" style={{ padding: '16px' }}>
           <h3 style={{ marginTop: 0, fontSize: '15px' }}>Quiz Score Trend</h3>
           <ResponsiveContainer width="100%" height={260}>
             <LineChart data={trends.series}>
@@ -115,7 +116,7 @@ const ImpactDashboard = () => {
               <YAxis domain={[0, 100]} tick={{ fontSize: 12 }} />
               <Tooltip />
               <Legend />
-              <Line type="monotone" dataKey="average_quiz_score" stroke="#2e7d32" name="Avg. Score (%)" />
+              <Line type="monotone" dataKey="average_quiz_score" stroke="var(--success)" name="Avg. Score (%)" />
             </LineChart>
           </ResponsiveContainer>
         </div>
@@ -128,9 +129,9 @@ const ImpactDashboard = () => {
             <EmptyState text="No schools yet." />
           ) : (
             <div style={{ overflowX: 'auto' }}>
-              <table style={{ width: '100%', borderCollapse: 'collapse', background: 'white', border: '1px solid #e0e0e0', borderRadius: '12px' }}>
+              <table className="card card--flush" style={{ width: '100%', borderCollapse: 'collapse' }}>
                 <thead>
-                  <tr style={{ background: '#f5f5f5', textAlign: 'left' }}>
+                  <tr style={{ background: 'var(--surface-muted)', textAlign: 'left' }}>
                     <th style={cellStyle}>School</th>
                     <th style={cellStyle}>Country</th>
                     <th style={cellStyle}>Students</th>
@@ -140,7 +141,7 @@ const ImpactDashboard = () => {
                 </thead>
                 <tbody>
                   {by_school.map((row) => (
-                    <tr key={row.school_id ?? 'none'} style={{ borderTop: '1px solid #f0f0f0' }}>
+                    <tr key={row.school_id ?? 'none'} style={{ borderTop: '1px solid var(--surface-sunken)' }}>
                       <td style={cellStyle}>{row.school_name}</td>
                       <td style={cellStyle}>{row.country || '-'}</td>
                       <td style={cellStyle}>{row.student_count}</td>
@@ -160,9 +161,9 @@ const ImpactDashboard = () => {
             <EmptyState text="No data yet." />
           ) : (
             <div style={{ overflowX: 'auto' }}>
-              <table style={{ width: '100%', borderCollapse: 'collapse', background: 'white', border: '1px solid #e0e0e0', borderRadius: '12px' }}>
+              <table className="card card--flush" style={{ width: '100%', borderCollapse: 'collapse' }}>
                 <thead>
-                  <tr style={{ background: '#f5f5f5', textAlign: 'left' }}>
+                  <tr style={{ background: 'var(--surface-muted)', textAlign: 'left' }}>
                     <th style={cellStyle}>Country</th>
                     <th style={cellStyle}>Students</th>
                     <th style={cellStyle}>Schools</th>
@@ -170,7 +171,7 @@ const ImpactDashboard = () => {
                 </thead>
                 <tbody>
                   {by_country.map((row) => (
-                    <tr key={row.country || 'none'} style={{ borderTop: '1px solid #f0f0f0' }}>
+                    <tr key={row.country || 'none'} style={{ borderTop: '1px solid var(--surface-sunken)' }}>
                       <td style={cellStyle}>{row.country || 'Unknown'}</td>
                       <td style={cellStyle}>{row.student_count}</td>
                       <td style={cellStyle}>{row.school_count}</td>
@@ -187,7 +188,7 @@ const ImpactDashboard = () => {
 };
 
 const StatCard = ({ value, label, note }) => (
-  <div style={{ background: 'white', border: '1px solid #e0e0e0', borderRadius: '12px', padding: '16px', textAlign: 'center' }}>
+  <div className="card" style={{ padding: '16px', textAlign: 'center' }}>
     <div style={{ fontSize: '24px', fontWeight: 'bold', color: 'var(--primary)' }}>{value}</div>
     <div style={{ fontSize: '12px', color: 'var(--gray-500)' }}>{label}</div>
     {note && <div style={{ fontSize: '10px', color: 'var(--gray-500)', marginTop: '2px' }}>{note}</div>}
@@ -195,7 +196,7 @@ const StatCard = ({ value, label, note }) => (
 );
 
 const EmptyState = ({ text }) => (
-  <div style={{ textAlign: 'center', padding: '30px', color: 'var(--gray-500)', background: 'white', border: '1px solid #e0e0e0', borderRadius: '12px' }}>
+  <div className="card" style={{ textAlign: 'center', padding: '30px', color: 'var(--gray-500)' }}>
     {text}
   </div>
 );

@@ -3,6 +3,9 @@ import api from '../../../services/api';
 import { getUser } from '../../../constants/auth';
 import { useModalA11y } from '../../../hooks/useModalA11y';
 import { formatDate } from '../../../utils/date';
+import { CalendarDaysIcon, CircleCheckIcon, ClipboardListIcon, Coins, CoinsIcon, GraduationCapIcon, LandmarkIcon, LinkIcon, RocketIcon, TriangleAlertIcon } from 'lucide-react';
+import PageHeader from '../../../components/ui/PageHeader';
+import Button from '../../../components/ui/Button';
 
 const ScholarshipsPage = () => {
   const [scholarships, setScholarships] = useState([]);
@@ -99,10 +102,10 @@ const ScholarshipsPage = () => {
         scholarship_id: scholarshipId
       });
       await fetchSavedScholarships();
-      alert('✅ Scholarship saved successfully!');
+      alert('Scholarship saved successfully!');
     } catch (err) {
       console.error('Save scholarship error:', err);
-      alert('❌ Failed to save scholarship. Please try again.');
+      alert('Failed to save scholarship. Please try again.');
     }
   };
 
@@ -114,13 +117,13 @@ const ScholarshipsPage = () => {
     switch(type) {
       case 'government': return 'var(--primary)';
       case 'private': return 'var(--secondary)';
-      case 'international': return '#6a1b9a';
+      case 'international': return 'var(--violet)';
       default: return 'var(--gray-500)';
     }
   };
 
   const getStatusColor = (status) => {
-    return status === 'open' ? '#2e7d32' : 'var(--danger)';
+    return status === 'open' ? 'var(--success)' : 'var(--danger)';
   };
 
   const formatDeadline = (dateStr) => {
@@ -137,7 +140,7 @@ const ScholarshipsPage = () => {
     return (
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '300px' }}>
         <div style={{ textAlign: 'center' }}>
-          <div style={{ width: '40px', height: '40px', border: '4px solid #f0f0f0', borderTopColor: 'var(--primary)', borderRadius: '50%', animation: 'spin 0.8s linear infinite', margin: '0 auto 16px' }} />
+          <div style={{ width: '40px', height: '40px', border: '4px solid var(--surface-sunken)', borderTopColor: 'var(--primary)', borderRadius: '50%', animation: 'spin 0.8s linear infinite', margin: '0 auto 16px' }} />
           <p style={{ color: 'var(--gray-500)' }}>Loading scholarships...</p>
         </div>
       </div>
@@ -146,10 +149,12 @@ const ScholarshipsPage = () => {
 
   if (error) {
     return (
-      <div style={{ textAlign: 'center', padding: '40px' }}>
-        <h2 style={{ color: 'var(--primary)' }}>💰 Scholarships</h2>
-        <p style={{ color: 'var(--danger)' }}>⚠️ {error}</p>
-        <button onClick={fetchScholarships} style={{ padding: '8px 20px', background: 'var(--primary)', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer' }}>Retry</button>
+      <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '20px' }}>
+        <PageHeader icon={Coins} title="Scholarships" />
+        <div style={{ textAlign: 'center', padding: '20px' }}>
+          <p style={{ color: 'var(--danger)' }}><TriangleAlertIcon className="icon-inline" size="1em" aria-hidden="true" /> {error}</p>
+          <Button onClick={fetchScholarships}>Retry</Button>
+        </div>
       </div>
     );
   }
@@ -157,13 +162,10 @@ const ScholarshipsPage = () => {
   if (scholarships.length === 0) {
     return (
       <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '20px' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', flexWrap: 'wrap', gap: '10px' }}>
-          <h2 style={{ color: 'var(--primary)' }}>💰 Scholarships</h2>
-          <span style={{ color: 'var(--gray-500)' }}>0 scholarships available</span>
-        </div>
-        <div style={{ textAlign: 'center', padding: '60px 20px', background: 'white', borderRadius: '12px', border: '1px solid #e0e0e0' }}>
-          <div style={{ fontSize: '48px', marginBottom: '16px' }}>🎓</div>
-          <h3 style={{ color: '#666' }}>Scholarships Coming Soon</h3>
+        <PageHeader icon={Coins} title="Scholarships" actions={<span style={{ color: 'var(--text-subtle)' }}>0 scholarships available</span>} />
+        <div className="card" style={{ textAlign: 'center', padding: '60px 20px' }}>
+          <GraduationCapIcon size={48} color="var(--text-subtle)" strokeWidth={1.5} aria-hidden="true" style={{ marginBottom: '16px' }} />
+          <h3 style={{ color: 'var(--text-muted)' }}>Scholarships Coming Soon</h3>
           <p style={{ color: 'var(--gray-500)', maxWidth: '400px', margin: '0 auto' }}>
             We're working on adding scholarship opportunities. Check back soon!
           </p>
@@ -175,23 +177,20 @@ const ScholarshipsPage = () => {
   return (
     <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '20px' }}>
       {/* Header */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', flexWrap: 'wrap', gap: '10px' }}>
-        <h2 style={{ color: 'var(--primary)' }}>💰 Scholarships</h2>
-        <span style={{ color: 'var(--gray-500)' }}>{filteredScholarships.length} scholarships available</span>
-      </div>
+      <PageHeader icon={Coins} title="Scholarships" actions={<span style={{ color: 'var(--text-subtle)' }}>{filteredScholarships.length} scholarships available</span>} />
 
       {/* Search and Filters */}
       <div style={{ display: 'flex', gap: '12px', marginBottom: '24px', flexWrap: 'wrap' }}>
         <input
           type="text"
-          placeholder="🔍 Search scholarships..."
+          placeholder="Search scholarships..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           style={{
             flex: 1,
             minWidth: '200px',
             padding: '10px 14px',
-            border: '1px solid #e0e0e0',
+            border: '1px solid var(--border)',
             borderRadius: '8px',
             fontSize: '14px'
           }}
@@ -202,16 +201,16 @@ const ScholarshipsPage = () => {
           onChange={(e) => setFilterType(e.target.value)}
           style={{
             padding: '10px 14px',
-            border: '1px solid #e0e0e0',
+            border: '1px solid var(--border)',
             borderRadius: '8px',
             fontSize: '14px',
             background: 'white'
           }}
         >
           <option value="all">All Types</option>
-          <option value="government">🏛️ Government</option>
-          <option value="private">💼 Private</option>
-          <option value="international">🌍 International</option>
+          <option value="government">Government</option>
+          <option value="private">Private</option>
+          <option value="international">International</option>
         </select>
         <select
           aria-label="Filter by scholarship status"
@@ -219,15 +218,15 @@ const ScholarshipsPage = () => {
           onChange={(e) => setFilterStatus(e.target.value)}
           style={{
             padding: '10px 14px',
-            border: '1px solid #e0e0e0',
+            border: '1px solid var(--border)',
             borderRadius: '8px',
             fontSize: '14px',
             background: 'white'
           }}
         >
           <option value="all">All Status</option>
-          <option value="open">🟢 Open</option>
-          <option value="closed">🔴 Closed</option>
+          <option value="open">Open</option>
+          <option value="closed">Closed</option>
         </select>
       </div>
 
@@ -239,36 +238,12 @@ const ScholarshipsPage = () => {
           </p>
         ) : (
           filteredScholarships.map((sch) => (
-            <div
-              key={sch.id}
-              role="button"
-              tabIndex={0}
-              onKeyDown={(e) => {
+            <div className="card card--interactive" key={sch.id} role="button" tabIndex={0} onKeyDown={(e) => {
                 if (e.key === 'Enter' || e.key === ' ') {
                   e.preventDefault();
                   setSelectedScholarship(sch);
                 }
-              }}
-              style={{
-                border: '1px solid #e0e0e0',
-                borderRadius: '12px',
-                padding: '20px',
-                background: 'white',
-                cursor: 'pointer',
-                transition: 'all 0.2s ease',
-                boxShadow: '0 2px 4px rgba(0,0,0,0.04)',
-                position: 'relative'
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.boxShadow = '0 4px 16px rgba(0,0,0,0.1)';
-                e.currentTarget.style.transform = 'translateY(-2px)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.boxShadow = '0 2px 4px rgba(0,0,0,0.04)';
-                e.currentTarget.style.transform = 'translateY(0)';
-              }}
-              onClick={() => setSelectedScholarship(sch)}
-            >
+              }} onClick={() => setSelectedScholarship(sch)} style={{ padding: '20px', position: 'relative' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '8px' }}>
                 <h3 style={{ color: 'var(--primary)', margin: 0, fontSize: '17px' }}>{sch.title}</h3>
                 <span style={{
@@ -282,14 +257,14 @@ const ScholarshipsPage = () => {
                   {sch.status.toUpperCase()}
                 </span>
               </div>
-              <div style={{ fontSize: '13px', color: '#666', marginBottom: '4px' }}>
-                🏛️ {sch.sponsor}
+              <div style={{ fontSize: '13px', color: 'var(--text-muted)', marginBottom: '4px' }}>
+                <LandmarkIcon className="icon-inline" size="1em" aria-hidden="true" /> {sch.sponsor}
               </div>
-              <div style={{ fontSize: '13px', color: '#666', marginBottom: '4px' }}>
-                💰 {sch.amount || 'Full tuition'}
+              <div style={{ fontSize: '13px', color: 'var(--text-muted)', marginBottom: '4px' }}>
+                <CoinsIcon className="icon-inline" size="1em" aria-hidden="true" /> {sch.amount || 'Full tuition'}
               </div>
-              <div style={{ fontSize: '13px', color: '#666', marginBottom: '4px' }}>
-                📅 Deadline: {formatDeadline(sch.deadline)}
+              <div style={{ fontSize: '13px', color: 'var(--text-muted)', marginBottom: '4px' }}>
+                <CalendarDaysIcon className="icon-inline" size="1em" aria-hidden="true" /> Deadline: {formatDeadline(sch.deadline)}
               </div>
               <div style={{ marginTop: '12px' }}>
                 <span style={{
@@ -365,82 +340,61 @@ const ScholarshipsPage = () => {
             }}>
               {selectedScholarship.status.toUpperCase()}
             </span>
-            <div style={{ fontSize: '14px', color: '#666', marginBottom: '8px' }}>
-              🏛️ <strong>Sponsor:</strong> {selectedScholarship.sponsor}
+            <div style={{ fontSize: '14px', color: 'var(--text-muted)', marginBottom: '8px' }}>
+              <LandmarkIcon className="icon-inline" size="1em" aria-hidden="true" /> <strong>Sponsor:</strong> {selectedScholarship.sponsor}
             </div>
-            <div style={{ fontSize: '14px', color: '#666', marginBottom: '8px' }}>
-              💰 <strong>Coverage:</strong> {selectedScholarship.coverage || selectedScholarship.amount || 'Full tuition'}
+            <div style={{ fontSize: '14px', color: 'var(--text-muted)', marginBottom: '8px' }}>
+              <CoinsIcon className="icon-inline" size="1em" aria-hidden="true" /> <strong>Coverage:</strong> {selectedScholarship.coverage || selectedScholarship.amount || 'Full tuition'}
             </div>
-            <div style={{ fontSize: '14px', color: '#666', marginBottom: '8px' }}>
-              📅 <strong>Deadline:</strong> {formatDeadline(selectedScholarship.deadline)}
+            <div style={{ fontSize: '14px', color: 'var(--text-muted)', marginBottom: '8px' }}>
+              <CalendarDaysIcon className="icon-inline" size="1em" aria-hidden="true" /> <strong>Deadline:</strong> {formatDeadline(selectedScholarship.deadline)}
             </div>
-            <div style={{ fontSize: '14px', color: '#666', marginBottom: '8px' }}>
-              🏛️ <strong>Type:</strong> {selectedScholarship.type.toUpperCase()}
+            <div style={{ fontSize: '14px', color: 'var(--text-muted)', marginBottom: '8px' }}>
+              <LandmarkIcon className="icon-inline" size="1em" aria-hidden="true" /> <strong>Type:</strong> {selectedScholarship.type.toUpperCase()}
             </div>
             {selectedScholarship.eligibility && (
               <div style={{ margin: '12px 0' }}>
-                <strong>✅ Eligibility:</strong>
-                <p style={{ color: '#555', fontSize: '14px', margin: '4px 0 0 0' }}>{selectedScholarship.eligibility}</p>
+                <strong><CircleCheckIcon className="icon-inline" size="1em" aria-hidden="true" /> Eligibility:</strong>
+                <p style={{ color: 'var(--text-muted)', fontSize: '14px', margin: '4px 0 0 0' }}>{selectedScholarship.eligibility}</p>
               </div>
             )}
             {selectedScholarship.description && (
               <div style={{ margin: '12px 0' }}>
-                <strong>📋 Description:</strong>
-                <p style={{ color: '#555', fontSize: '14px', margin: '4px 0 0 0' }}>{selectedScholarship.description}</p>
+                <strong><ClipboardListIcon className="icon-inline" size="1em" aria-hidden="true" /> Description:</strong>
+                <p style={{ color: 'var(--text-muted)', fontSize: '14px', margin: '4px 0 0 0' }}>{selectedScholarship.description}</p>
               </div>
             )}
             {selectedScholarship.website && (
               <div style={{ margin: '12px 0' }}>
-                <strong>🔗 Website:</strong>
+                <strong><LinkIcon className="icon-inline" size="1em" aria-hidden="true" /> Website:</strong>
                 <a href={selectedScholarship.website} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--primary)' }}>
                   {selectedScholarship.website}
                 </a>
               </div>
             )}
             <div style={{ display: 'flex', gap: '12px', marginTop: '20px', flexWrap: 'wrap' }}>
-              <button
-                onClick={() => window.open(selectedScholarship.website, '_blank')}
-                style={{
-                  flex: 1,
-                  padding: '10px 20px',
-                  background: 'var(--primary)',
-                  color: 'white',
-                  border: 'none',
-                  borderRadius: '8px',
-                  cursor: 'pointer',
-                  fontWeight: 'bold'
-                }}
-              >
-                🚀 Apply Now
-              </button>
+              <Button onClick={() => window.open(selectedScholarship.website, '_blank')} style={{ flex: 1 }}>
+                <RocketIcon className="icon-inline" size="1em" aria-hidden="true" /> Apply Now
+              </Button>
               <button
                 onClick={() => {
                   saveScholarship(selectedScholarship.id);
                 }}
                 style={{
                   padding: '10px 20px',
-                  background: isSaved(selectedScholarship.id) ? 'var(--primary-bg)' : '#f0f0f0',
-                  color: isSaved(selectedScholarship.id) ? 'var(--primary)' : '#333',
-                  border: isSaved(selectedScholarship.id) ? '1px solid #1a5f2b' : '1px solid #e0e0e0',
+                  background: isSaved(selectedScholarship.id) ? 'var(--primary-bg)' : 'var(--surface-sunken)',
+                  color: isSaved(selectedScholarship.id) ? 'var(--primary)' : 'var(--text)',
+                  border: isSaved(selectedScholarship.id) ? '1px solid var(--primary)' : '1px solid var(--border)',
                   borderRadius: '8px',
                   cursor: 'pointer',
                   fontWeight: isSaved(selectedScholarship.id) ? 'bold' : 'normal'
                 }}
               >
-                {isSaved(selectedScholarship.id) ? '✅ Saved' : '💾 Save Scholarship'}
+                {isSaved(selectedScholarship.id) ? 'Saved' : 'Save Scholarship'}
               </button>
-              <button
-                onClick={() => setSelectedScholarship(null)}
-                style={{
-                  padding: '10px 20px',
-                  background: '#f0f0f0',
-                  border: '1px solid #e0e0e0',
-                  borderRadius: '8px',
-                  cursor: 'pointer'
-                }}
-              >
+              <Button variant="secondary" onClick={() => setSelectedScholarship(null)}>
                 Close
-              </button>
+              </Button>
             </div>
           </div>
         </div>

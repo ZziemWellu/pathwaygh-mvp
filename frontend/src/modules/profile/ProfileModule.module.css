@@ -14,12 +14,12 @@
 
 .header h2 {
   margin: 0;
-  color: #1a5f2b;
+  color: var(--primary);
 }
 
 .editButton {
   padding: 8px 20px;
-  background: #1a5f2b;
+  background: var(--primary);
   color: white;
   border: none;
   border-radius: 8px;
@@ -31,21 +31,21 @@
 }
 
 .editButton:hover {
-  background: #144d21;
+  background: var(--primary-dark);
 }
 
 /* Profile Card */
 .profileCard {
   background: white;
   border-radius: 16px;
-  border: 1px solid #e0e0e0;
+  border: 1px solid var(--border);
   overflow: hidden;
   margin-bottom: 24px;
 }
 
 .cover {
   height: 120px;
-  background: linear-gradient(135deg, #1a5f2b, #2d8a4e);
+  background: linear-gradient(135deg, var(--primary), var(--primary-light));
   position: relative;
 }
 
@@ -101,7 +101,7 @@
 .statCard {
   text-align: center;
   padding: 12px;
-  background: #f8f9fa;
+  background: var(--surface-muted);
   border-radius: 8px;
 }
 
@@ -112,19 +112,19 @@
 .statValue {
   font-size: 20px;
   font-weight: bold;
-  color: #1a5f2b;
+  color: var(--primary);
 }
 
 .statLabel {
   font-size: 12px;
-  color: #666666;
+  color: var(--text-muted);
 }
 
 /* Tabs */
 .tabs {
   display: flex;
   gap: 4px;
-  border-bottom: 2px solid #e0e0e0;
+  border-bottom: 2px solid var(--border);
   margin-bottom: 24px;
   padding-bottom: 0;
 }
@@ -137,30 +137,30 @@
   cursor: pointer;
   font-size: 14px;
   font-weight: normal;
-  color: #666;
+  color: var(--text-muted);
   transition: all 0.2s ease;
 }
 
 .tab:hover {
-  color: #1a5f2b;
+  color: var(--primary);
 }
 
 .tabActive {
-  border-bottom-color: #1a5f2b;
+  border-bottom-color: var(--primary);
   font-weight: bold;
-  color: #1a5f2b;
+  color: var(--primary);
 }
 
 /* Tab Content */
 .tabContent {
   background: white;
   border-radius: 12px;
-  border: 1px solid #e0e0e0;
+  border: 1px solid var(--border);
   padding: 24px;
 }
 
 .tabContent h3 {
-  color: #333;
+  color: var(--text);
   margin-bottom: 16px;
 }
 
@@ -179,13 +179,13 @@
 
 .formGroup label {
   font-size: 13px;
-  color: #666666;
+  color: var(--text-muted);
 }
 
 .formGroup input,
 .formGroup select {
   padding: 10px;
-  border: 1px solid #e0e0e0;
+  border: 1px solid var(--border);
   border-radius: 8px;
   font-size: 14px;
 }
@@ -193,7 +193,7 @@
 .formGroup input:focus,
 .formGroup select:focus {
   outline: none;
-  border-color: #1a5f2b;
+  border-color: var(--primary);
 }
 
 .formActions {
@@ -205,7 +205,7 @@
 
 .cancelButton {
   padding: 10px 24px;
-  background: #f0f0f0;
+  background: var(--surface-sunken);
   border: none;
   border-radius: 8px;
   cursor: pointer;
@@ -213,7 +213,7 @@
 
 .saveButton {
   padding: 10px 24px;
-  background: #1a5f2b;
+  background: var(--primary);
   color: white;
   border: none;
   border-radius: 8px;
@@ -221,7 +221,7 @@
 }
 
 .saveButton:hover {
-  background: #144d21;
+  background: var(--primary-dark);
 }
 
 .saveButton:disabled {
@@ -244,13 +244,13 @@
 }
 
 .tagInterest {
-  background: #e8f5e9;
-  color: #1a5f2b;
+  background: var(--primary-bg);
+  color: var(--primary);
 }
 
 .tagGoal {
-  background: #fff3e0;
-  color: #e65100;
+  background: var(--warning-bg);
+  color: var(--warning);
 }
 
 /* Saved Items Grid */
@@ -261,24 +261,24 @@
 }
 
 .savedCard {
-  background: #f8f9fa;
+  background: var(--surface-muted);
   border-radius: 8px;
   padding: 16px;
 }
 
 .savedCard h4 {
   margin: 0 0 8px 0;
-  color: #1a5f2b;
+  color: var(--primary);
 }
 
 .savedItem {
   font-size: 13px;
-  color: #555;
+  color: var(--text-muted);
   padding: 4px 0;
 }
 
 .emptyText {
-  color: #666666;
+  color: var(--text-muted);
   font-size: 13px;
 }
 

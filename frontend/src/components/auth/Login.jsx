@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import api, { extractErrorMessage } from '../../services/api';
 import { useLanguage } from '../../contexts/LanguageContext';
+import Button from '../../components/ui/Button';
 
 const Login = ({ onSuccess }) => {
   const { t } = useLanguage();
@@ -44,7 +45,7 @@ const Login = ({ onSuccess }) => {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
-            style={{ width: '100%', padding: '10px', border: '1px solid #e0e0e0', borderRadius: '8px' }}
+            style={{ width: '100%', padding: '10px', border: '1px solid var(--border)', borderRadius: '8px' }}
             placeholder={t('emailPlaceholder')}
           />
         </div>
@@ -56,26 +57,13 @@ const Login = ({ onSuccess }) => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
-            style={{ width: '100%', padding: '10px', border: '1px solid #e0e0e0', borderRadius: '8px' }}
+            style={{ width: '100%', padding: '10px', border: '1px solid var(--border)', borderRadius: '8px' }}
             placeholder="••••••••"
           />
         </div>
-        <button
-          type="submit"
-          disabled={loading}
-          style={{
-            width: '100%',
-            padding: '12px',
-            background: 'var(--primary)',
-            color: 'white',
-            border: 'none',
-            borderRadius: '8px',
-            fontSize: '16px',
-            cursor: 'pointer',
-          }}
-        >
+        <Button type="submit" disabled={loading} style={{ width: '100%' }}>
           {loading ? t('loggingIn') : t('login')}
-        </button>
+        </Button>
       </form>
     </div>
   );

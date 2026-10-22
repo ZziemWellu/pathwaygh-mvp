@@ -42,7 +42,7 @@ const WordOfTheDayCard = () => {
         disabled={learned || marking}
         style={{
           padding: '8px 18px',
-          background: learned ? '#e8f5e9' : 'var(--primary)',
+          background: learned ? 'var(--primary-bg)' : 'var(--primary)',
           color: learned ? 'var(--primary)' : 'white',
           border: 'none',
           borderRadius: '8px',

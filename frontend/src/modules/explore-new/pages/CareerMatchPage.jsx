@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { BookOpenIcon, BookmarkIcon, CircleCheckIcon, ClipboardListIcon, LandmarkIcon, MapIcon, RotateCcwIcon, Search, Target, Trophy } from 'lucide-react';
 import api from '../../../services/api';
 import { getUser } from '../../../constants/auth';
+import PageHeader from '../../../components/ui/PageHeader';
+import Button from '../../../components/ui/Button';
 
 const CareerMatchPage = () => {
   const navigate = useNavigate();
@@ -169,10 +172,10 @@ const CareerMatchPage = () => {
         results: result
       });
       setSaved(true);
-      alert('✅ Assessment saved successfully!');
+      alert('Assessment saved successfully!');
     } catch (err) {
       console.error('Save error:', err);
-      alert('❌ Failed to save assessment. Please try again.');
+      alert('Failed to save assessment. Please try again.');
     }
   };
 
@@ -190,8 +193,10 @@ const CareerMatchPage = () => {
   if (loading) {
     return (
       <div style={{ maxWidth: '800px', margin: '0 auto', padding: '20px', textAlign: 'center' }}>
-        <h2 style={{ color: 'var(--primary)', marginBottom: '20px' }}>🎯 Calculating Your Career Match</h2>
-        <div style={{ width: '60px', height: '60px', border: '4px solid #f0f0f0', borderTopColor: 'var(--primary)', borderRadius: '50%', animation: 'spin 0.8s linear infinite', margin: '0 auto 20px' }} />
+        <div style={{ textAlign: 'left' }}>
+          <PageHeader icon={Target} title="Calculating Your Career Match" />
+        </div>
+        <div style={{ width: '60px', height: '60px', border: '4px solid var(--surface-sunken)', borderTopColor: 'var(--primary)', borderRadius: '50%', animation: 'spin 0.8s linear infinite', margin: '0 auto 20px' }} />
         <p style={{ color: 'var(--gray-500)' }}>Analyzing your preferences...</p>
         <p style={{ color: 'var(--gray-500)', fontSize: '13px' }}>Finding the best career matches for you</p>
       </div>
@@ -201,21 +206,20 @@ const CareerMatchPage = () => {
   if (result) {
     return (
       <div style={{ maxWidth: '1000px', margin: '0 auto', padding: '20px' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', flexWrap: 'wrap', gap: '10px' }}>
-          <h2 style={{ color: 'var(--primary)', margin: 0 }}>🎯 Your Career Match Results</h2>
-          {saved && (
+        <PageHeader
+          icon={Target}
+          title="Your Career Match Results"
+          subtitle="Based on your preferences, here are careers that match you"
+          actions={saved && (
             <span style={{ padding: '6px 16px', background: 'var(--primary-bg)', color: 'var(--primary)', borderRadius: '20px', fontWeight: 'bold' }}>
-              ✅ Saved to Profile
+              <CircleCheckIcon className="icon-inline" size="1em" aria-hidden="true" /> Saved to Profile
             </span>
           )}
-        </div>
-        <p style={{ color: 'var(--gray-500)', marginBottom: '24px' }}>
-          Based on your preferences, here are careers that match you
-        </p>
+        />
 
         {/* Top Career Matches */}
         <div style={{ marginBottom: '30px' }}>
-          <h3 style={{ color: '#333', marginBottom: '16px' }}>📋 Top Career Matches</h3>
+          <h3 style={{ color: 'var(--text)', marginBottom: '16px' }}><ClipboardListIcon className="icon-inline" size="1em" aria-hidden="true" /> Top Career Matches</h3>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '16px' }}>
             {result.matches.map((career, i) => (
               <div
@@ -223,7 +227,7 @@ const CareerMatchPage = () => {
                 style={{
                   padding: '20px',
                   background: i === 0 ? 'var(--primary-bg)' : 'white',
-                  border: i === 0 ? '2px solid #1a5f2b' : '1px solid #e0e0e0',
+                  border: i === 0 ? '2px solid var(--primary)' : '1px solid var(--border)',
                   borderRadius: '12px',
                   cursor: 'pointer',
                   transition: 'all 0.2s ease'
@@ -232,13 +236,13 @@ const CareerMatchPage = () => {
               >
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <span style={{ fontWeight: 'bold', fontSize: '16px', color: 'var(--primary)' }}>
-                    {i === 0 && '🏆 '}{career.title}
+                    {i === 0 && <Trophy size="1em" color="var(--accent-strong)" aria-label="Top match" style={{ marginRight: '6px' }} />}{career.title}
                   </span>
                   <span style={{ fontSize: '24px', fontWeight: 'bold', color: 'var(--primary)' }}>
                     {career.match}%
                   </span>
                 </div>
-                <div style={{ height: '6px', background: '#f0f0f0', borderRadius: '3px', marginTop: '8px' }}>
+                <div style={{ height: '6px', background: 'var(--surface-sunken)', borderRadius: '3px', marginTop: '8px' }}>
                   <div style={{ width: `${career.match}%`, height: '100%', background: 'var(--primary)', borderRadius: '3px' }} />
                 </div>
                 <div style={{ fontSize: '12px', color: 'var(--gray-500)', marginTop: '8px' }}>
@@ -250,8 +254,8 @@ const CareerMatchPage = () => {
         </div>
 
         {/* Recommended SHS Electives */}
-        <div style={{ marginBottom: '24px', padding: '20px', background: 'white', borderRadius: '12px', border: '1px solid #e0e0e0' }}>
-          <h3 style={{ color: '#333', marginBottom: '12px' }}>📚 Recommended SHS Electives</h3>
+        <div className="card" style={{ marginBottom: '24px', padding: '20px' }}>
+          <h3 style={{ color: 'var(--text)', marginBottom: '12px' }}><BookOpenIcon className="icon-inline" size="1em" aria-hidden="true" /> Recommended SHS Electives</h3>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
             {result.recommendedElectives.map((elective, i) => (
               <span key={i} style={{ padding: '6px 14px', background: 'var(--primary-bg)', color: 'var(--primary)', borderRadius: '20px', fontWeight: '500' }}>
@@ -262,11 +266,11 @@ const CareerMatchPage = () => {
         </div>
 
         {/* Recommended Universities */}
-        <div style={{ marginBottom: '24px', padding: '20px', background: 'white', borderRadius: '12px', border: '1px solid #e0e0e0' }}>
-          <h3 style={{ color: '#333', marginBottom: '12px' }}>🏛️ Recommended Universities</h3>
+        <div className="card" style={{ marginBottom: '24px', padding: '20px' }}>
+          <h3 style={{ color: 'var(--text)', marginBottom: '12px' }}><LandmarkIcon className="icon-inline" size="1em" aria-hidden="true" /> Recommended Universities</h3>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
             {result.recommendedUniversities.map((uni, i) => (
-              <span key={i} style={{ padding: '6px 14px', background: '#e3f2fd', color: 'var(--secondary)', borderRadius: '20px', fontWeight: '500' }}>
+              <span key={i} style={{ padding: '6px 14px', background: 'var(--info-bg)', color: 'var(--secondary)', borderRadius: '20px', fontWeight: '500' }}>
                 {uni}
               </span>
             ))}
@@ -274,8 +278,8 @@ const CareerMatchPage = () => {
         </div>
 
         {/* Learning Path */}
-        <div style={{ marginBottom: '24px', padding: '20px', background: 'white', borderRadius: '12px', border: '1px solid #e0e0e0' }}>
-          <h3 style={{ color: '#333', marginBottom: '12px' }}>🗺️ Your Learning Path</h3>
+        <div className="card" style={{ marginBottom: '24px', padding: '20px' }}>
+          <h3 style={{ color: 'var(--text)', marginBottom: '12px' }}><MapIcon className="icon-inline" size="1em" aria-hidden="true" /> Your Learning Path</h3>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
             {result.learningPaths.map((path, i) => (
               <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
@@ -295,7 +299,7 @@ const CareerMatchPage = () => {
                 </span>
                 <div>
                   <div style={{ fontWeight: 'bold', fontSize: '14px' }}>{path.title}</div>
-                  <div style={{ fontSize: '13px', color: '#666' }}>{path.description}</div>
+                  <div style={{ fontSize: '13px', color: 'var(--text-muted)' }}>{path.description}</div>
                 </div>
               </div>
             ))}
@@ -304,49 +308,15 @@ const CareerMatchPage = () => {
 
         {/* Action Buttons */}
         <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
-          <button
-            onClick={saveAssessment}
-            style={{
-              padding: '12px 24px',
-              background: 'var(--primary)',
-              color: 'white',
-              border: 'none',
-              borderRadius: '8px',
-              cursor: 'pointer',
-              fontWeight: 'bold',
-              flex: 1
-            }}
-          >
-            💾 Save to Profile
-          </button>
-          <button
-            onClick={() => navigate('/explore/careers')}
-            style={{
-              padding: '12px 24px',
-              background: 'var(--secondary)',
-              color: 'white',
-              border: 'none',
-              borderRadius: '8px',
-              cursor: 'pointer',
-              fontWeight: 'bold',
-              flex: 1
-            }}
-          >
-            🔍 Explore All Careers
-          </button>
-          <button
-            onClick={resetAssessment}
-            style={{
-              padding: '12px 24px',
-              background: '#f0f0f0',
-              border: 'none',
-              borderRadius: '8px',
-              cursor: 'pointer',
-              flex: 1
-            }}
-          >
-            🔄 Retake Assessment
-          </button>
+          <Button onClick={saveAssessment} style={{ flex: 1 }}>
+            <BookmarkIcon className="icon-inline" size="1em" aria-hidden="true" /> Save to Profile
+          </Button>
+          <Button variant="outline" icon={Search} onClick={() => navigate('/explore/careers')} style={{ flex: 1 }}>
+            Explore All Careers
+          </Button>
+          <Button variant="secondary" onClick={resetAssessment} style={{ flex: 1 }}>
+            <RotateCcwIcon className="icon-inline" size="1em" aria-hidden="true" /> Retake Assessment
+          </Button>
         </div>
       </div>
     );
@@ -360,13 +330,12 @@ const CareerMatchPage = () => {
   return (
     <div style={{ maxWidth: '800px', margin: '0 auto', padding: '20px' }}>
       <div style={{ marginBottom: '24px' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-          <h2 style={{ color: 'var(--primary)', margin: 0 }}>🎯 Career Match</h2>
-          <span style={{ fontSize: '14px', color: 'var(--gray-500)' }}>
-            Question {step} of {questions.length}
-          </span>
-        </div>
-        <div style={{ height: '4px', background: '#f0f0f0', borderRadius: '2px' }}>
+        <PageHeader
+          icon={Target}
+          title="Career Match"
+          actions={<span style={{ fontSize: '14px', color: 'var(--text-subtle)' }}>Question {step} of {questions.length}</span>}
+        />
+        <div style={{ height: '4px', background: 'var(--surface-sunken)', borderRadius: '2px' }}>
           <div style={{ width: `${getProgress()}%`, height: '100%', background: 'var(--primary)', borderRadius: '2px', transition: 'width 0.3s ease' }} />
         </div>
         <div style={{ textAlign: 'right', fontSize: '12px', color: 'var(--gray-500)', marginTop: '4px' }}>
@@ -374,7 +343,7 @@ const CareerMatchPage = () => {
         </div>
       </div>
 
-      <div style={{ background: 'white', borderRadius: '12px', border: '1px solid #e0e0e0', padding: '30px' }}>
+      <div className="card" style={{ padding: '30px' }}>
         <h3 style={{ margin: '0 0 8px 0', fontSize: '20px' }}>{currentQuestion.question}</h3>
         {currentQuestion.description && (
           <p style={{ color: 'var(--gray-500)', fontSize: '14px', marginBottom: '16px' }}>{currentQuestion.description}</p>
@@ -400,15 +369,15 @@ const CareerMatchPage = () => {
                 }}
                 style={{
                   padding: '12px 16px',
-                  background: isSelected ? 'var(--primary-bg)' : '#f8f9fa',
-                  border: isSelected ? '2px solid #1a5f2b' : '1px solid #e0e0e0',
+                  background: isSelected ? 'var(--primary-bg)' : 'var(--surface-muted)',
+                  border: isSelected ? '2px solid var(--primary)' : '1px solid var(--border)',
                   borderRadius: '8px',
                   cursor: 'pointer',
                   textAlign: 'left',
                   fontSize: '14px',
                   transition: 'all 0.2s ease',
                   fontWeight: isSelected ? 'bold' : 'normal',
-                  color: isSelected ? 'var(--primary)' : '#333'
+                  color: isSelected ? 'var(--primary)' : 'var(--text)'
                 }}
               >
                 {option}
@@ -418,38 +387,12 @@ const CareerMatchPage = () => {
         </div>
 
         <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '24px' }}>
-          <button
-            onClick={handleBack}
-            disabled={step === 1}
-            style={{
-              padding: '10px 24px',
-              background: step === 1 ? '#f0f0f0' : 'var(--primary)',
-              color: step === 1 ? 'var(--gray-500)' : 'white',
-              border: 'none',
-              borderRadius: '8px',
-              cursor: step === 1 ? 'not-allowed' : 'pointer',
-              opacity: step === 1 ? 0.5 : 1,
-              fontWeight: 'bold'
-            }}
-          >
+          <Button onClick={handleBack} disabled={step === 1}>
             ← Back
-          </button>
-          <button
-            onClick={handleNext}
-            disabled={isMulti ? currentAnswer.length === 0 : !currentAnswer}
-            style={{
-              padding: '10px 24px',
-              background: (isMulti ? currentAnswer.length > 0 : currentAnswer) ? 'var(--primary)' : '#ccc',
-              color: 'white',
-              border: 'none',
-              borderRadius: '8px',
-              cursor: (isMulti ? currentAnswer.length > 0 : currentAnswer) ? 'pointer' : 'not-allowed',
-              opacity: (isMulti ? currentAnswer.length > 0 : currentAnswer) ? 1 : 0.5,
-              fontWeight: 'bold'
-            }}
-          >
-            {step === questions.length ? '🚀 See Results' : 'Next →'}
-          </button>
+          </Button>
+          <Button onClick={handleNext} disabled={isMulti ? currentAnswer.length === 0 : !currentAnswer}>
+            {step === questions.length ? 'See Results' : 'Next →'}
+          </Button>
         </div>
       </div>
     </div>
