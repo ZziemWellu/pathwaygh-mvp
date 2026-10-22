@@ -11,7 +11,7 @@ from pydantic import BaseModel
 from sqlalchemy.orm import Session
 
 from core.database import get_db
-from core.security import get_current_user
+from core.security import get_current_user, get_current_user_optional
 from models.quiz_attempt import QuizAttempt
 from models.skill_mastery import SkillMastery
 from models.user import User
@@ -88,7 +88,15 @@ def practice_root():
 
 
 @router.get("/subjects")
-def get_subjects(country: Optional[str] = None):
+def get_subjects(country: Optional[str] = None, current_user: Optional[User] = Depends(get_current_user_optional)):
+    # Default a signed-in student to their own country's question banks.
+    # Every country's bank reuses the same names ("Mathematics", "English
+    # Language"), so without this a Ghanaian student saw five identical
+    # "Mathematics" cards (GH/NG/SL/LR/GM) on Practice and in the tutor's
+    # subject picker, with no way to tell which syllabus each one was.
+    # An explicit ?country= still wins; anonymous callers still get all.
+    if country is None and current_user is not None:
+        country = current_user.country
     data = load_questions()
     subjects = []
     for s in data.get("subjects", []):

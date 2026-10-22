@@ -12,7 +12,7 @@ const CommunityModule = () => {
     <div style={{ maxWidth: '900px', margin: '0 auto', padding: '20px' }}>
       <h2 style={{ color: 'var(--primary)', marginBottom: '8px' }}>🤝 Community</h2>
       <p style={{ color: '#666', marginBottom: '24px' }}>
-        Connect, learn, and grow with the Pathway AI community.
+        Connect, learn, and grow with the PathwayGH community.
       </p>
 
       <h3 style={{ color: 'var(--primary)', fontSize: '16px', margin: '0 0 12px 0' }}>💬 Discussion Forums</h3>

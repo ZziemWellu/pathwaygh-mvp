@@ -3,6 +3,7 @@ import api, { extractData } from '../../services/api';
 import { getUser } from '../../constants/auth';
 import { useGamificationNotify } from '../../contexts/GamificationNotifyContext';
 import AIBonusQuestion from './AIBonusQuestion';
+import { formatDate } from '../../utils/date';
 
 const PracticeModule = () => {
   const { notify } = useGamificationNotify();
@@ -140,8 +141,10 @@ const PracticeModule = () => {
 
   const getScoreColor = (score) => {
     if (score >= 80) return '#2e7d32';
-    if (score >= 60) return '#f9a825';
-    if (score >= 40) return '#ef6c00';
+    // Every band is >= 4.5:1 on white - the old 60-79 yellow (#f9a825) was
+    // 1.97:1, unreadable as the score text itself.
+    if (score >= 60) return '#9a6700';
+    if (score >= 40) return '#c43e00';
     return 'var(--danger)';
   };
 
@@ -405,7 +408,7 @@ const PracticeModule = () => {
                   <div key={i} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px 16px', background: '#f8f9fa', borderRadius: '8px', border: '1px solid #e0e0e0', flexWrap: 'wrap', gap: '8px' }}>
                     <div>
                       <div style={{ fontWeight: 'bold', fontSize: '14px' }}>{attempt.subject || 'Quiz'}</div>
-                      <div style={{ fontSize: '12px', color: 'var(--gray-500)' }}>{attempt.date ? new Date(attempt.date).toLocaleDateString() : 'Recently'}</div>
+                      <div style={{ fontSize: '12px', color: 'var(--gray-500)' }}>{formatDate(attempt.date, { fallback: 'Recently' })}</div>
                     </div>
                     <div style={{ textAlign: 'right' }}>
                       <div style={{ fontSize: '20px', fontWeight: 'bold', color: scoreColor }}>{attempt.score || 0}%</div>

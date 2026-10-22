@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import api from '../../../services/api';
 import { getUser } from '../../../constants/auth';
 import { useModalA11y } from '../../../hooks/useModalA11y';
+import { formatDate } from '../../../utils/date';
 
 const ScholarshipsPage = () => {
   const [scholarships, setScholarships] = useState([]);
@@ -122,14 +123,14 @@ const ScholarshipsPage = () => {
     return status === 'open' ? '#2e7d32' : 'var(--danger)';
   };
 
-  const formatDate = (dateStr) => {
+  const formatDeadline = (dateStr) => {
     if (!dateStr) return 'N/A';
     const date = new Date(dateStr);
     // Some deadlines are a note rather than a fixed date (e.g. "Announced
     // annually - check the official portal") when a real one isn't known -
     // show that text as-is instead of "Invalid Date".
     if (isNaN(date.getTime())) return dateStr;
-    return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+    return formatDate(date, { long: true });
   };
 
   if (loading) {
@@ -288,7 +289,7 @@ const ScholarshipsPage = () => {
                 💰 {sch.amount || 'Full tuition'}
               </div>
               <div style={{ fontSize: '13px', color: '#666', marginBottom: '4px' }}>
-                📅 Deadline: {formatDate(sch.deadline)}
+                📅 Deadline: {formatDeadline(sch.deadline)}
               </div>
               <div style={{ marginTop: '12px' }}>
                 <span style={{
@@ -371,7 +372,7 @@ const ScholarshipsPage = () => {
               💰 <strong>Coverage:</strong> {selectedScholarship.coverage || selectedScholarship.amount || 'Full tuition'}
             </div>
             <div style={{ fontSize: '14px', color: '#666', marginBottom: '8px' }}>
-              📅 <strong>Deadline:</strong> {formatDate(selectedScholarship.deadline)}
+              📅 <strong>Deadline:</strong> {formatDeadline(selectedScholarship.deadline)}
             </div>
             <div style={{ fontSize: '14px', color: '#666', marginBottom: '8px' }}>
               🏛️ <strong>Type:</strong> {selectedScholarship.type.toUpperCase()}

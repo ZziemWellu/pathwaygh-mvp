@@ -1,10 +1,11 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Home, BookOpen, Search, PencilLine, ListChecks, User, Users, Shield, Building2, BarChart3, Layers } from 'lucide-react';
 import { useLanguage } from '../../contexts/LanguageContext';
 
-const EcosystemNavigation = ({ activeModule, setActiveModule, user }) => {
+const EcosystemNavigation = ({ user }) => {
   const navigate = useNavigate();
+  const { pathname } = useLocation();
   const { t } = useLanguage();
 
   const modules = [
@@ -21,12 +22,16 @@ const EcosystemNavigation = ({ activeModule, setActiveModule, user }) => {
     ...(user?.is_school_admin ? [{ id: 'school-admin', icon: Building2, label: t('navSchoolAdmin'), path: '/school-admin' }] : []),
   ];
 
-  const handleNavigate = (module) => {
-    if (setActiveModule) {
-      setActiveModule(module.id);
-    }
-    navigate(module.path);
-  };
+  // The active tab is derived from the URL, not remembered from the last
+  // click - otherwise deep links, refreshes, the back button and in-page
+  // links ("Browse Courses", "View course") left "Home" highlighted
+  // everywhere. Longest matching path wins, so /learn/x/lessons/y -> Learn
+  // and "/" only matches the home page itself.
+  const isOnPath = (path) =>
+    path === '/' ? pathname === '/' || pathname === '/home' : pathname === path || pathname.startsWith(`${path}/`);
+  const activeId = modules
+    .filter((m) => isOnPath(m.path))
+    .sort((a, b) => b.path.length - a.path.length)[0]?.id;
 
   return (
     <nav style={{
@@ -38,11 +43,11 @@ const EcosystemNavigation = ({ activeModule, setActiveModule, user }) => {
       alignItems: 'center'
     }}>
       {modules.map((module) => {
-        const active = activeModule === module.id;
+        const active = activeId === module.id;
         return (
           <button
             key={module.id}
-            onClick={() => handleNavigate(module)}
+            onClick={() => navigate(module.path)}
             aria-current={active ? 'page' : undefined}
             style={{
               display: 'inline-flex',

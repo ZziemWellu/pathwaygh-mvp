@@ -88,13 +88,12 @@ const AIChat = ({ user }) => {
   if (!isOpen) {
     return (
       <button
+        className="ai-chat-fab"
         onClick={() => setIsOpen(true)}
+        aria-label="Open AI tutor"
+        title="AI tutor"
         style={{
           position: 'fixed',
-          bottom: '80px',
-          right: '20px',
-          width: '60px',
-          height: '60px',
           borderRadius: '50%',
           background: 'linear-gradient(135deg, #1a5f2b, #2d8a4e)',
           color: 'white',
@@ -115,12 +114,11 @@ const AIChat = ({ user }) => {
 
   return (
     <div
+      className="ai-chat-panel"
+      role="dialog"
+      aria-label="AI tutor"
       style={{
         position: 'fixed',
-        bottom: '20px',
-        right: '20px',
-        width: '380px',
-        height: '500px',
         background: 'white',
         borderRadius: '16px',
         boxShadow: '0 10px 40px rgba(0,0,0,0.2)',
