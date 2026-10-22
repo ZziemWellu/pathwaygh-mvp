@@ -1,17 +1,15 @@
 name: Backup database
 
-# An independent backup, on top of whatever Render's Postgres plan
-# provides - the repo has no way to verify from here whether the live
-# plan includes point-in-time recovery (check the Render dashboard
-# directly), and free/Basic tiers often don't. This closes that gap
-# regardless of what that check finds.
+# An independent backup, on top of Neon's own restore window (6 hours on
+# the Free plan, up to 7 days on Launch) - this keeps 30 days of dumps
+# and survives losing the Neon account itself.
 #
-# Requires two repo secrets that don't exist yet - this workflow will
-# fail until they're added (Settings -> Secrets and variables -> Actions):
-#   BACKUP_DATABASE_URL  - the Postgres instance's *External* Database
-#                          URL from the Render dashboard (the Internal
-#                          URL only resolves inside Render's network,
-#                          not from a GitHub Actions runner).
+# Requires two repo secrets (Settings -> Secrets and variables -> Actions);
+# the workflow fails until both exist:
+#   BACKUP_DATABASE_URL  - the pathwaygh project's connection string from
+#                          the Neon console (Connect -> turn OFF "Connection
+#                          pooling" for the direct, non-pooled URL, which
+#                          pg_dump needs).
 #   BACKUP_ENCRYPTION_KEY - any long random passphrase (e.g. output of
 #                          `openssl rand -base64 32`). The dump contains
 #                          real student/guardian PII (emails, phone
@@ -42,7 +40,14 @@ jobs:
             echo "BACKUP_DATABASE_URL secret is not set - see this workflow's file header for setup." >&2
             exit 1
           fi
-          sudo apt-get update -qq && sudo apt-get install -y -qq postgresql-client
+          # Ubuntu's own postgresql-client can be older than Neon's server,
+          # and pg_dump refuses to dump a newer server major version. The
+          # PostgreSQL project's apt repo (PGDG) provides the newest client,
+          # which can dump every older server version too.
+          sudo apt-get update -qq && sudo apt-get install -y -qq postgresql-common
+          sudo /usr/share/postgresql-common/pgdg/apt.postgresql.org.sh -y >/dev/null
+          sudo apt-get install -y -qq postgresql-client
+          pg_dump --version
           pg_dump "$BACKUP_DATABASE_URL" --no-owner --no-privileges -f backup.sql
 
       - name: Encrypt dump
@@ -67,6 +72,7 @@ jobs:
         if: failure()
         env:
           GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
         run: |
           gh issue create --title "🔴 Nightly database backup failed" \
             --body "The scheduled backup run failed on $(date -u '+%Y-%m-%d %H:%M UTC'). See: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"

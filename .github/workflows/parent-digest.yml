@@ -34,6 +34,7 @@ jobs:
         if: failure()
         env:
           GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: |
           BODY="The scheduled parent/school-admin digest run failed on $(date -u '+%Y-%m-%d %H:%M UTC')."

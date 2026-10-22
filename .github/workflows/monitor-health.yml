@@ -50,6 +50,7 @@ jobs:
         if: steps.health.outputs.healthy == 'false'
         env:
           GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
         run: |
           TITLE="🔴 Backend health check failing"
           REASON="${{ steps.health.outputs.reason }}"
@@ -66,6 +67,7 @@ jobs:
         if: steps.health.outputs.healthy == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
         run: |
           TITLE="🔴 Backend health check failing"
           EXISTING=$(gh issue list --search "in:title \"$TITLE\"" --state open --json number --jq '.[0].number')
