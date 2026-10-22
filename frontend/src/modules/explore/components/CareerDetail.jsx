@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import useSavedItems from '../../../hooks/useSavedItems';
 import { BookOpenIcon, BotIcon, ChartColumnIcon, ClipboardListIcon, CoinsIcon, LandmarkIcon, MapIcon, TrendingUpIcon, TriangleAlertIcon, WrenchIcon } from 'lucide-react';
+import Button from '../../../components/ui/Button';
 
 const CareerDetail = ({ career, onClose }) => {
   const [saving, setSaving] = useState(false);
@@ -304,24 +305,9 @@ const CareerDetail = ({ career, onClose }) => {
 
         {/* Action Buttons - COMPLETE */}
         <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
-          <button
-            onClick={onClose}
-            style={{
-              padding: '10px 24px',
-              background: 'var(--primary)',
-              color: 'white',
-              border: 'none',
-              borderRadius: '8px',
-              cursor: 'pointer',
-              fontSize: '14px',
-              flex: 1,
-              transition: 'background 0.2s ease',
-            }}
-            onMouseEnter={(e) => e.currentTarget.style.background = 'var(--primary-dark)'}
-            onMouseLeave={(e) => e.currentTarget.style.background = 'var(--primary)'}
-          >
+          <Button onClick={onClose} style={{ flex: 1 }}>
             Close
-          </button>
+          </Button>
           <button
             onClick={handleSave}
             disabled={saving}

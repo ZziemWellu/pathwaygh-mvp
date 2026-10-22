@@ -4,6 +4,7 @@ import api from '../../services/api';
 import { AwardIcon, BookOpenIcon, CircleCheck, Lock, TriangleAlertIcon } from 'lucide-react';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { LessonIcon } from '../../components/ui/icons';
+import Button from '../../components/ui/Button';
 
 const CourseDetail = () => {
   const { t } = useLanguage();
@@ -101,13 +102,9 @@ const CourseDetail = () => {
           )}
         </div>
       ) : (
-        <button
-          onClick={handleEnroll}
-          disabled={enrolling}
-          style={{ padding: '12px 24px', background: enrolling ? 'var(--border-strong)' : 'var(--primary)', color: 'white', border: 'none', borderRadius: '8px', cursor: enrolling ? 'not-allowed' : 'pointer', fontWeight: 'bold', marginBottom: '20px' }}
-        >
+        <Button onClick={handleEnroll} disabled={enrolling} style={{ marginBottom: '20px' }}>
           {!enrolling && <BookOpenIcon className="icon-inline" size="1em" aria-hidden="true" />}{enrolling ? t('learnEnrolling') : t('learnEnrollInCourse')}
-        </button>
+        </Button>
       )}
 
       <h3 style={{ color: 'var(--text)' }}>{t('learnCurriculum')}</h3>

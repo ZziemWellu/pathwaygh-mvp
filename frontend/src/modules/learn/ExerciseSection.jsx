@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { CheckCircle2, XCircle, Award } from 'lucide-react';
 import api from '../../services/api';
 import { useLanguage } from '../../contexts/LanguageContext';
+import Button from '../../components/ui/Button';
 
 const ExerciseSection = ({ lessonId, exercises, bestScore }) => {
   const { t } = useLanguage();
@@ -38,7 +39,7 @@ const ExerciseSection = ({ lessonId, exercises, bestScore }) => {
   const allAnswered = exercises.every((ex) => answers[ex.id] !== undefined);
 
   return (
-    <div style={{ marginTop: '32px', padding: '24px', background: 'white', border: '1px solid var(--border)', borderRadius: '16px' }}>
+    <div className="card" style={{ marginTop: '32px', padding: '24px' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '18px', flexWrap: 'wrap', gap: '8px' }}>
         <h3 style={{ margin: 0, fontSize: '17px' }}>{t('learnPracticeExercises')}</h3>
         {bestScore !== null && bestScore !== undefined && !result && (
@@ -128,29 +129,13 @@ const ExerciseSection = ({ lessonId, exercises, bestScore }) => {
       {error && <p style={{ color: 'var(--danger)', fontSize: '13px' }}>{error}</p>}
 
       {result ? (
-        <button
-          onClick={handleRetry}
-          style={{ padding: '10px 22px', background: 'var(--surface-sunken)', color: 'var(--text)', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: 'bold' }}
-        >
+        <Button variant="secondary" onClick={handleRetry}>
           {t('learnTryAgain')}
-        </button>
+        </Button>
       ) : (
-        <button
-          data-testid="submit-exercises"
-          onClick={handleSubmit}
-          disabled={!allAnswered || submitting}
-          style={{
-            padding: '10px 22px',
-            background: !allAnswered || submitting ? 'var(--border-strong)' : 'var(--primary)',
-            color: 'white',
-            border: 'none',
-            borderRadius: '8px',
-            cursor: !allAnswered || submitting ? 'not-allowed' : 'pointer',
-            fontWeight: 'bold',
-          }}
-        >
+        <Button data-testid="submit-exercises" onClick={handleSubmit} disabled={!allAnswered || submitting}>
           {submitting ? t('learnGrading') : t('learnSubmitAnswers')}
-        </button>
+        </Button>
       )}
     </div>
   );

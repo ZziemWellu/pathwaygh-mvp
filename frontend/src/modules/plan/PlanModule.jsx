@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import api from '../../services/api';
-import { CalendarDaysIcon, ChartColumnIcon, ClipboardListIcon, TargetIcon, TriangleAlertIcon } from 'lucide-react';
+import { CalendarDaysIcon, ChartColumnIcon, ClipboardList, ClipboardListIcon, Plus, TargetIcon, TriangleAlertIcon } from 'lucide-react';
+import PageHeader from '../../components/ui/PageHeader';
+import Button from '../../components/ui/Button';
 
 // Goals are stored in more than one shape - seeded plans use
 // "exam_preparation", the create form saves "exam preparation", and the
@@ -143,8 +145,8 @@ const PlanModule = () => {
   if (loading) {
     return (
       <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '20px' }}>
-        <h2><ClipboardListIcon className="icon-inline" size="1em" aria-hidden="true" /> Plan</h2>
-        <p>Loading plans...</p>
+        <PageHeader icon={ClipboardList} title="Study Planner" />
+        <p style={{ textAlign: 'center', padding: '20px', color: 'var(--text-muted)' }}>Loading plans...</p>
       </div>
     );
   }
@@ -152,36 +154,22 @@ const PlanModule = () => {
   if (error) {
     return (
       <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '20px' }}>
-        <h2><ClipboardListIcon className="icon-inline" size="1em" aria-hidden="true" /> Plan</h2>
-        <p style={{ color: 'red' }}><TriangleAlertIcon className="icon-inline" size="1em" aria-hidden="true" /> {error}</p>
-        <button onClick={fetchPlans} style={{ padding: '8px 16px', background: 'var(--primary)', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer' }}>Retry</button>
+        <PageHeader icon={ClipboardList} title="Study Planner" />
+        <div style={{ textAlign: 'center', padding: '20px' }}>
+          <p style={{ color: 'var(--danger)' }}><TriangleAlertIcon className="icon-inline" size="1em" aria-hidden="true" /> {error}</p>
+          <Button onClick={fetchPlans}>Retry</Button>
+        </div>
       </div>
     );
   }
 
   return (
     <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '20px' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-        <h2><ClipboardListIcon className="icon-inline" size="1em" aria-hidden="true" /> Study Planner</h2>
-        <button
-          onClick={handleOpenModal}
-          style={{
-            padding: '10px 20px',
-            background: 'var(--primary)',
-            color: 'white',
-            border: 'none',
-            borderRadius: '8px',
-            cursor: 'pointer',
-            fontSize: '14px',
-            fontWeight: 'bold',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '8px'
-          }}
-        >
-          + Create Plan
-        </button>
-      </div>
+      <PageHeader
+        icon={ClipboardList}
+        title="Study Planner"
+        actions={<Button icon={Plus} onClick={handleOpenModal}>New Plan</Button>}
+      />
 
       {plans.length === 0 ? (
         <div style={{ textAlign: 'center', padding: '60px 20px', color: 'var(--gray-500)' }}>
@@ -190,17 +178,7 @@ const PlanModule = () => {
       ) : (
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '20px' }}>
           {plans.map((plan) => (
-            <div
-              key={plan.id}
-              style={{
-                border: '1px solid var(--border)',
-                borderRadius: '12px',
-                padding: '20px',
-                background: 'white',
-                position: 'relative',
-                transition: 'all 0.2s ease',
-              }}
-            >
+            <div className="card" key={plan.id} style={{ padding: '20px', position: 'relative', transition: 'all 0.2s ease' }}>
               <div style={{ position: 'absolute', top: '12px', right: '12px' }}>
                 <button
                   style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--gray-500)', fontSize: '16px' }}
@@ -378,23 +356,9 @@ const PlanModule = () => {
                   </select>
                 </div>
 
-                <button
-                  onClick={handleNext}
-                  disabled={!formData.name}
-                  style={{
-                    width: '100%',
-                    padding: '12px',
-                    background: formData.name ? 'var(--primary)' : 'var(--border-strong)',
-                    color: 'white',
-                    border: 'none',
-                    borderRadius: '8px',
-                    cursor: formData.name ? 'pointer' : 'not-allowed',
-                    fontSize: '16px',
-                    fontWeight: 'bold',
-                  }}
-                >
+                <Button onClick={handleNext} disabled={!formData.name} style={{ width: '100%' }}>
                   Next →
-                </button>
+                </Button>
               </div>
             )}
 
@@ -432,37 +396,12 @@ const PlanModule = () => {
                 </div>
 
                 <div style={{ display: 'flex', gap: '12px' }}>
-                  <button
-                    onClick={handleBack}
-                    style={{
-                      flex: 1,
-                      padding: '12px',
-                      background: 'var(--surface-sunken)',
-                      border: 'none',
-                      borderRadius: '8px',
-                      cursor: 'pointer',
-                      fontSize: '16px',
-                    }}
-                  >
+                  <Button variant="secondary" onClick={handleBack} style={{ flex: 1 }}>
                     ← Back
-                  </button>
-                  <button
-                    onClick={handleSave}
-                    disabled={saving}
-                    style={{
-                      flex: 2,
-                      padding: '12px',
-                      background: saving ? 'var(--border-strong)' : 'var(--primary)',
-                      color: 'white',
-                      border: 'none',
-                      borderRadius: '8px',
-                      cursor: saving ? 'not-allowed' : 'pointer',
-                      fontSize: '16px',
-                      fontWeight: 'bold',
-                    }}
-                  >
+                  </Button>
+                  <Button onClick={handleSave} disabled={saving} style={{ flex: 2 }}>
                     {saving ? 'Creating...' : 'Create Plan'}
-                  </button>
+                  </Button>
                 </div>
               </div>
             )}

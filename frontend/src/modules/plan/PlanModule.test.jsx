@@ -103,7 +103,7 @@ describe('PlanModule', () => {
     render(<PlanModule />);
     await screen.findByText(/no study plans yet/i);
 
-    await user.click(screen.getByRole('button', { name: '+ Create Plan' }));
+    await user.click(screen.getByRole('button', { name: 'New Plan' }));
     await user.type(screen.getByPlaceholderText(/wassce preparation plan/i), 'My New Plan');
     await user.click(screen.getByRole('button', { name: /next/i }));
 

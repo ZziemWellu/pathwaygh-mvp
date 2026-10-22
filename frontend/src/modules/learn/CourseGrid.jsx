@@ -2,7 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../../services/api';
 import { useLanguage } from '../../contexts/LanguageContext';
-import { BookOpenIcon, BookOpenTextIcon, CircleCheckIcon, TriangleAlertIcon } from 'lucide-react';
+import { BookOpen, BookOpenTextIcon, CircleCheckIcon, TriangleAlertIcon } from 'lucide-react';
+import PageHeader from '../../components/ui/PageHeader';
+import Button from '../../components/ui/Button';
 
 const CourseGrid = ({ user }) => {
   const { t } = useLanguage();
@@ -34,57 +36,54 @@ const CourseGrid = ({ user }) => {
 
   if (loading) {
     return (
-      <div style={{ textAlign: 'center', padding: '40px' }}>
-        <h2>{t('learnHeading')}</h2>
-        <p>{t('learnLoadingCourses')}</p>
+      <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '20px' }}>
+        <PageHeader icon={BookOpen} title={t('learnHeading')} />
+        <p style={{ textAlign: 'center', padding: '20px', color: 'var(--text-muted)' }}>{t('learnLoadingCourses')}</p>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div style={{ textAlign: 'center', padding: '40px' }}>
-        <h2>{t('learnHeading')}</h2>
-        <p style={{ color: 'red' }}><TriangleAlertIcon className="icon-inline" size="1em" aria-hidden="true" /> {error}</p>
-        <button onClick={fetchCourses} style={{ padding: '8px 16px', background: 'var(--primary)', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer' }}>{t('retry')}</button>
+      <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '20px' }}>
+        <PageHeader icon={BookOpen} title={t('learnHeading')} />
+        <div style={{ textAlign: 'center', padding: '20px' }}>
+          <p style={{ color: 'var(--danger)' }}><TriangleAlertIcon className="icon-inline" size="1em" aria-hidden="true" /> {error}</p>
+          <Button onClick={fetchCourses}>{t('retry')}</Button>
+        </div>
       </div>
     );
   }
 
   return (
     <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '20px' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-        <h2>{t('learnHeading')}</h2>
-        <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
-          <button
-            onClick={() => setShowEnrolledOnly(!showEnrolledOnly)}
-            style={{
-              padding: '8px 16px',
-              background: showEnrolledOnly ? 'var(--primary)' : 'var(--surface-sunken)',
-              color: showEnrolledOnly ? 'white' : 'var(--text)',
-              border: 'none',
-              borderRadius: '8px',
-              cursor: 'pointer',
-              fontWeight: showEnrolledOnly ? 'bold' : 'normal',
-            }}
-          >
-            <BookOpenIcon className="icon-inline" size="1em" aria-hidden="true" /> {showEnrolledOnly ? t('learnMyCourses') : t('learnAllCourses')}
-          </button>
-          <span style={{ color: 'var(--gray-500)', fontSize: '14px' }}>{t('learnCoursesCount').replace('{count}', courses.length)}</span>
-        </div>
-      </div>
+      <PageHeader
+        icon={BookOpen}
+        title={t('learnHeading')}
+        actions={
+          <>
+            <Button
+              variant={showEnrolledOnly ? 'primary' : 'secondary'}
+              size="sm"
+              icon={BookOpen}
+              aria-pressed={showEnrolledOnly}
+              onClick={() => setShowEnrolledOnly(!showEnrolledOnly)}
+            >
+              {showEnrolledOnly ? t('learnMyCourses') : t('learnAllCourses')}
+            </Button>
+            <span style={{ color: 'var(--text-subtle)', fontSize: '14px' }}>{t('learnCoursesCount').replace('{count}', courses.length)}</span>
+          </>
+        }
+      />
 
       {courses.length === 0 ? (
         <div style={{ textAlign: 'center', padding: '60px 20px', color: 'var(--gray-500)' }}>
           {showEnrolledOnly ? (
             <div>
               <p>{t('learnNoEnrolledCourses')}</p>
-              <button
-                onClick={() => setShowEnrolledOnly(false)}
-                style={{ marginTop: '12px', padding: '8px 20px', background: 'var(--primary)', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer' }}
-              >
+              <Button size="sm" onClick={() => setShowEnrolledOnly(false)} style={{ marginTop: '12px' }}>
                 {t('learnBrowseAllCourses')}
-              </button>
+              </Button>
             </div>
           ) : (
             <p>{t('learnNoCoursesAvailable')}</p>

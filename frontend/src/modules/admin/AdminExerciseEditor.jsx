@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Trash2, Plus, X, ArrowUp, ArrowDown } from 'lucide-react';
 import api from '../../services/api';
+import Button from '../../components/ui/Button';
 
 const emptyExercise = () => ({ question: '', options: ['', '', '', ''], correct_index: 0, explanation: '' });
 
@@ -60,12 +61,12 @@ const ExerciseForm = ({ initial, onSave, onCancel }) => {
       </button>
       <textarea placeholder="Explanation (shown after grading)" value={form.explanation || ''} onChange={(e) => setForm({ ...form, explanation: e.target.value })} style={{ ...inputStyle, minHeight: '50px' }} />
       <div style={{ display: 'flex', gap: '8px' }}>
-        <button type="submit" disabled={saving} style={{ padding: '8px 16px', background: 'var(--primary)', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: 'bold', fontSize: '13px' }}>
+        <Button size="sm" type="submit" disabled={saving}>
           {saving ? 'Saving...' : 'Save Exercise'}
-        </button>
-        <button type="button" onClick={onCancel} style={{ padding: '8px 16px', background: 'var(--surface-sunken)', border: 'none', borderRadius: '8px', cursor: 'pointer', fontSize: '13px' }}>
+        </Button>
+        <Button variant="secondary" size="sm" type="button" onClick={onCancel}>
           Cancel
-        </button>
+        </Button>
       </div>
     </form>
   );
@@ -106,12 +107,9 @@ const AdminExerciseEditor = ({ lessonId, exercises, onChange }) => {
     <div>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
         <h4 style={{ margin: 0 }}>Exercises</h4>
-        <button
-          onClick={() => setAdding((s) => !s)}
-          style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', padding: '6px 12px', background: 'var(--primary)', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer', fontSize: '13px' }}
-        >
+        <Button size="sm" onClick={() => setAdding((s) => !s)}>
           <Plus size={14} /> Add Exercise
-        </button>
+        </Button>
       </div>
 
       {adding && <div style={{ marginBottom: '10px' }}><ExerciseForm onSave={handleCreate} onCancel={() => setAdding(false)} /></div>}

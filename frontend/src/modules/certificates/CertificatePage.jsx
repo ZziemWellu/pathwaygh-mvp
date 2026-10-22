@@ -4,6 +4,7 @@ import api from '../../services/api';
 import './certificate-print.css';
 import { formatDate } from '../../utils/date';
 import { PrinterIcon } from 'lucide-react';
+import Button from '../../components/ui/Button';
 
 const CertificatePage = () => {
   const { courseSlug } = useParams();
@@ -49,12 +50,9 @@ const CertificatePage = () => {
     <div style={{ maxWidth: '800px', margin: '20px auto', padding: '20px' }}>
       <div className="no-print" style={{ marginBottom: '16px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <Link to={`/learn/${courseSlug}`} style={{ color: 'var(--primary)', fontSize: '14px' }}>← Back to course</Link>
-        <button
-          onClick={() => window.print()}
-          style={{ padding: '10px 20px', background: 'var(--primary)', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer' }}
-        >
+        <Button onClick={() => window.print()}>
           <PrinterIcon className="icon-inline" size="1em" aria-hidden="true" /> Print / Save as PDF
-        </button>
+        </Button>
       </div>
 
       <div

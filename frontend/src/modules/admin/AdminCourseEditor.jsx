@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { Plus, Trash2, ChevronRight } from 'lucide-react';
 import api from '../../services/api';
+import Button from '../../components/ui/Button';
 
 const emptyLessonForm = { title: '', slug: '', lesson_type: 'video' };
 
@@ -77,7 +78,7 @@ const AdminCourseEditor = () => {
     <div style={{ maxWidth: '800px', margin: '0 auto', padding: '20px' }}>
       <Link to="/admin" style={{ color: 'var(--primary)', fontSize: '14px' }}>← All courses</Link>
 
-      <div style={{ background: 'white', border: '1px solid var(--border)', borderRadius: '12px', padding: '18px', margin: '16px 0', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+      <div className="card" style={{ padding: '18px', margin: '16px 0', display: 'flex', flexDirection: 'column', gap: '10px' }}>
         <label htmlFor="course-title" style={labelStyle}>Title</label>
         <input id="course-title" value={course.title} onChange={(e) => setCourse({ ...course, title: e.target.value })} style={inputStyle} />
         <label htmlFor="course-description" style={labelStyle}>Description</label>
@@ -97,23 +98,20 @@ const AdminCourseEditor = () => {
           <option value="LR">Liberia</option>
           <option value="GM">The Gambia</option>
         </select>
-        <button onClick={handleSave} disabled={saving} style={{ padding: '10px', background: saving ? 'var(--border-strong)' : 'var(--primary)', color: 'white', border: 'none', borderRadius: '8px', cursor: saving ? 'not-allowed' : 'pointer', fontWeight: 'bold' }}>
+        <Button onClick={handleSave} disabled={saving}>
           {saving ? 'Saving...' : 'Save Course'}
-        </button>
+        </Button>
       </div>
 
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
         <h3 style={{ margin: 0 }}>Lessons</h3>
-        <button
-          onClick={() => setShowLessonForm((s) => !s)}
-          style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', padding: '8px 14px', background: 'var(--primary)', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer', fontSize: '13px', fontWeight: 'bold' }}
-        >
+        <Button size="sm" onClick={() => setShowLessonForm((s) => !s)}>
           <Plus size={14} /> New Lesson
-        </button>
+        </Button>
       </div>
 
       {showLessonForm && (
-        <form onSubmit={handleCreateLesson} style={{ background: 'white', border: '1px solid var(--border)', borderRadius: '12px', padding: '16px', marginBottom: '16px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+        <form className="card" onSubmit={handleCreateLesson} style={{ padding: '16px', marginBottom: '16px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
           <input required placeholder="Title" value={lessonForm.title} onChange={(e) => setLessonForm({ ...lessonForm, title: e.target.value })} style={inputStyle} />
           <input required placeholder="Slug (unique id, e.g. shs_physics_intro)" value={lessonForm.slug} onChange={(e) => setLessonForm({ ...lessonForm, slug: e.target.value })} style={inputStyle} />
           <select value={lessonForm.lesson_type} onChange={(e) => setLessonForm({ ...lessonForm, lesson_type: e.target.value })} style={inputStyle}>
@@ -121,9 +119,9 @@ const AdminCourseEditor = () => {
             <option value="text">Text</option>
             <option value="quiz">Quiz</option>
           </select>
-          <button type="submit" style={{ padding: '10px', background: 'var(--primary)', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: 'bold' }}>
+          <Button type="submit">
             Create Lesson
-          </button>
+          </Button>
         </form>
       )}
 

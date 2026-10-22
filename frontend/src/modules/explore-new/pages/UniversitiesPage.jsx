@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import api from '../../../services/api';
 import { useModalA11y } from '../../../hooks/useModalA11y';
-import { BookOpenIcon, ChartColumnIcon, LandmarkIcon, MapPinIcon, TriangleAlertIcon, TrophyIcon } from 'lucide-react';
+import { BookOpenIcon, ChartColumnIcon, Landmark, MapPinIcon, TriangleAlertIcon, TrophyIcon } from 'lucide-react';
+import PageHeader from '../../../components/ui/PageHeader';
+import Button from '../../../components/ui/Button';
 
 const UniversitiesPage = ({ user }) => {
   const [universities, setUniversities] = useState([]);
@@ -48,46 +50,28 @@ const UniversitiesPage = ({ user }) => {
 
   if (error) {
     return (
-      <div style={{ textAlign: 'center', padding: '40px' }}>
-        <h2 style={{ color: 'var(--primary)' }}><LandmarkIcon className="icon-inline" size="1em" aria-hidden="true" /> Universities</h2>
-        <p style={{ color: 'var(--danger)' }}><TriangleAlertIcon className="icon-inline" size="1em" aria-hidden="true" /> {error}</p>
-        <button onClick={fetchUniversities} style={{ padding: '8px 20px', background: 'var(--primary)', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer' }}>Retry</button>
+      <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '20px' }}>
+        <PageHeader icon={Landmark} title="Universities" />
+        <div style={{ textAlign: 'center', padding: '20px' }}>
+          <p style={{ color: 'var(--danger)' }}><TriangleAlertIcon className="icon-inline" size="1em" aria-hidden="true" /> {error}</p>
+          <Button onClick={fetchUniversities}>Retry</Button>
+        </div>
       </div>
     );
   }
 
   return (
     <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '20px' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', flexWrap: 'wrap', gap: '10px' }}>
-        <h2 style={{ color: 'var(--primary)' }}><LandmarkIcon className="icon-inline" size="1em" aria-hidden="true" /> Universities</h2>
-        <span style={{ color: 'var(--gray-500)' }}>{universities.length} universities available</span>
-      </div>
+      <PageHeader icon={Landmark} title="Universities" actions={<span style={{ color: 'var(--text-subtle)' }}>{universities.length} universities available</span>} />
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '20px' }}>
         {universities.map((uni) => (
-          <div
-            key={uni.id}
-            onClick={() => setSelectedUniversity(uni)}
-            role="button"
-            tabIndex={0}
-            onKeyDown={(e) => {
+          <div className="card card--interactive" key={uni.id} onClick={() => setSelectedUniversity(uni)} role="button" tabIndex={0} onKeyDown={(e) => {
               if (e.key === 'Enter' || e.key === ' ') {
                 e.preventDefault();
                 setSelectedUniversity(uni);
               }
-            }}
-            style={{
-              border: '1px solid var(--border)',
-              borderRadius: '12px',
-              padding: '20px',
-              background: 'white',
-              cursor: 'pointer',
-              transition: 'all 0.2s ease',
-              boxShadow: '0 2px 4px rgba(0,0,0,0.04)'
-            }}
-            onMouseEnter={(e) => { e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.1)'; }}
-            onMouseLeave={(e) => { e.currentTarget.style.boxShadow = '0 2px 4px rgba(0,0,0,0.04)'; }}
-          >
+            }} style={{ padding: '20px' }}>
             <h3 style={{ color: 'var(--primary)', margin: '0 0 8px 0' }}>{uni.name}</h3>
             {uni.location && <div style={{ fontSize: '13px', color: 'var(--text-muted)' }}><MapPinIcon className="icon-inline" size="1em" aria-hidden="true" /> {uni.location}</div>}
             {uni.cutoff && <div style={{ fontSize: '13px', color: 'var(--text-muted)' }}>Cutoff: {uni.cutoff}</div>}
@@ -169,12 +153,9 @@ const UniversitiesPage = ({ user }) => {
                 </div>
               </div>
             )}
-            <button
-              style={{ marginTop: '20px', padding: '10px 20px', background: 'var(--primary)', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer', width: '100%' }}
-              onClick={() => setSelectedUniversity(null)}
-            >
+            <Button onClick={() => setSelectedUniversity(null)} style={{ marginTop: '20px', width: '100%' }}>
               Close
-            </button>
+            </Button>
           </div>
         </div>
       )}

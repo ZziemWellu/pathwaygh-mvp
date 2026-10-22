@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import api, { extractErrorMessage } from '../../services/api';
 import { BotIcon } from 'lucide-react';
+import Button from '../../components/ui/Button';
 
 // On-demand, AI-generated bonus Mathematics practice - separate from the
 // tracked/adaptive quiz flow above (see backend/modules/ai_questions/
@@ -37,7 +38,7 @@ const AIBonusQuestion = () => {
   };
 
   return (
-    <div style={{ background: 'white', borderRadius: '12px', border: '1px solid var(--border)', padding: '20px', marginBottom: '24px' }}>
+    <div className="card" style={{ padding: '20px', marginBottom: '24px' }}>
       <h3 style={{ color: 'var(--primary)', margin: '0 0 4px 0' }}><BotIcon className="icon-inline" size="1em" aria-hidden="true" /> AI Bonus Question</h3>
       <p style={{ fontSize: '13px', color: 'var(--gray-500)', margin: '0 0 16px 0' }}>
         Unlimited extra Mathematics practice, generated on demand and checked by a calculator before you see it.
@@ -61,13 +62,9 @@ const AIBonusQuestion = () => {
           <option value="medium">Medium</option>
           <option value="hard">Hard</option>
         </select>
-        <button
-          onClick={generate}
-          disabled={loading}
-          style={{ padding: '8px 20px', background: loading ? 'var(--border-strong)' : 'var(--primary)', color: 'white', border: 'none', borderRadius: '8px', cursor: loading ? 'not-allowed' : 'pointer', fontWeight: 'bold' }}
-        >
+        <Button size="sm" onClick={generate} disabled={loading}>
           {loading ? 'Generating...' : question ? 'New Question' : 'Generate'}
-        </button>
+        </Button>
       </div>
 
       {error && <p style={{ color: 'var(--danger)', fontSize: '13px' }}>{error}</p>}

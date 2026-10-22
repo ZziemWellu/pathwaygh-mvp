@@ -1,4 +1,7 @@
 import React from 'react';
+import { ArrowLeft, ShieldCheck } from 'lucide-react';
+import PageHeader from '../../components/ui/PageHeader';
+import Button from '../../components/ui/Button';
 
 const sectionStyle = { marginBottom: '24px' };
 const headingStyle = { color: 'var(--primary)', fontSize: '17px', marginBottom: '8px' };
@@ -9,15 +12,11 @@ const PrivacyPolicy = ({ onBack }) => {
 
   return (
     <div style={{ maxWidth: '700px', margin: '0 auto', padding: '20px' }}>
-      <button
-        onClick={handleBack}
-        style={{ background: 'none', border: 'none', color: 'var(--primary)', cursor: 'pointer', textDecoration: 'underline', marginBottom: '20px', padding: 0, fontSize: '14px' }}
-      >
-        ← Back
-      </button>
+      <Button variant="ghost" size="sm" icon={ArrowLeft} onClick={handleBack} style={{ marginBottom: '16px' }}>
+        Back
+      </Button>
 
-      <h1 style={{ color: 'var(--primary)', marginBottom: '4px' }}>Privacy Policy</h1>
-      <p style={{ color: 'var(--gray-500)', fontSize: '13px', marginBottom: '28px' }}>Version 2026-09-v1 · Last updated September 2026</p>
+      <PageHeader as="h1" icon={ShieldCheck} title="Privacy Policy" subtitle="Version 2026-09-v1 · Last updated September 2026" />
 
       <section style={sectionStyle}>
         <h2 style={headingStyle}>What we collect</h2>

@@ -3,6 +3,7 @@ import api, { extractErrorMessage } from '../../services/api';
 import { getCountry } from '../../constants/auth';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { CircleCheckIcon } from 'lucide-react';
+import Button from '../../components/ui/Button';
 
 const Register = ({ onSuccess, onShowPrivacy }) => {
   const { t } = useLanguage();
@@ -114,20 +115,9 @@ const Register = ({ onSuccess, onShowPrivacy }) => {
       <div style={{ maxWidth: '400px', margin: '0 auto', textAlign: 'center' }}>
         <h2 style={{ color: 'var(--primary)' }}><CircleCheckIcon className="icon-inline" size="1em" aria-hidden="true" /> {t('registrationSuccessful')}</h2>
         <p>{t('registrationSuccessfulBody')}</p>
-        <button
-          onClick={onSuccess}
-          style={{
-            padding: '10px 24px',
-            background: 'var(--primary)',
-            color: 'white',
-            border: 'none',
-            borderRadius: '8px',
-            cursor: 'pointer',
-            marginTop: '16px'
-          }}
-        >
+        <Button onClick={onSuccess} style={{ marginTop: '16px' }}>
           {t('goToLoginNow')}
-        </button>
+        </Button>
       </div>
     );
   }
@@ -275,30 +265,9 @@ const Register = ({ onSuccess, onShowPrivacy }) => {
           </label>
         </div>
 
-        <button
-          type="submit"
-          disabled={loading}
-          style={{
-            width: '100%',
-            padding: '12px',
-            background: loading ? 'var(--border-strong)' : 'var(--primary)',
-            color: 'white',
-            border: 'none',
-            borderRadius: '8px',
-            fontSize: '16px',
-            fontWeight: 'bold',
-            cursor: loading ? 'not-allowed' : 'pointer',
-            transition: 'background 0.2s ease'
-          }}
-          onMouseEnter={(e) => {
-            if (!loading) e.currentTarget.style.background = 'var(--primary-dark)';
-          }}
-          onMouseLeave={(e) => {
-            if (!loading) e.currentTarget.style.background = 'var(--primary)';
-          }}
-        >
+        <Button type="submit" disabled={loading} style={{ width: '100%' }}>
           {loading ? t('creatingAccount') : t('register')}
-        </button>
+        </Button>
       </form>
     </div>
   );

@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { LayersIcon, PartyPopperIcon, Trash2 } from 'lucide-react';
+import { Layers, PartyPopperIcon, Trash2 } from 'lucide-react';
 import api, { extractErrorMessage } from '../../services/api';
 import { useGamificationNotify } from '../../contexts/GamificationNotifyContext';
+import PageHeader from '../../components/ui/PageHeader';
+import Button from '../../components/ui/Button';
 
 const FlashcardsModule = () => {
   const { notify } = useGamificationNotify();
@@ -78,22 +80,25 @@ const FlashcardsModule = () => {
 
   return (
     <div style={{ maxWidth: '700px', margin: '0 auto', padding: '20px' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', flexWrap: 'wrap', gap: '10px' }}>
-        <h2 style={{ margin: 0, color: 'var(--primary)' }}><LayersIcon className="icon-inline" size="1em" aria-hidden="true" /> Flashcards</h2>
-        <button onClick={() => setShowManage(!showManage)} style={{ padding: '8px 16px', border: '1px solid var(--border)', borderRadius: '8px', background: showManage ? 'var(--primary)' : 'white', color: showManage ? 'white' : 'var(--text)', cursor: 'pointer', fontSize: '13px' }}>
-          {showManage ? 'Back to review' : `Manage (${allCards.length})`}
-        </button>
-      </div>
+      <PageHeader
+        icon={Layers}
+        title="Flashcards"
+        actions={
+          <Button variant={showManage ? 'primary' : 'secondary'} size="sm" aria-pressed={showManage} onClick={() => setShowManage(!showManage)}>
+            {showManage ? 'Back to review' : `Manage (${allCards.length})`}
+          </Button>
+        }
+      />
 
       {showManage ? (
         <div>
-          <form onSubmit={createCard} style={{ background: 'white', border: '1px solid var(--border)', borderRadius: '12px', padding: '16px', marginBottom: '20px' }}>
+          <form className="card" onSubmit={createCard} style={{ padding: '16px', marginBottom: '20px' }}>
             <h3 style={{ margin: '0 0 10px 0', fontSize: '14px' }}>New flashcard</h3>
             <textarea value={front} onChange={(e) => setFront(e.target.value)} placeholder="Front (question/prompt)" rows={2} style={{ width: '100%', padding: '8px', border: '1px solid var(--border)', borderRadius: '8px', marginBottom: '8px', fontFamily: 'inherit' }} />
             <textarea value={back} onChange={(e) => setBack(e.target.value)} placeholder="Back (answer)" rows={2} style={{ width: '100%', padding: '8px', border: '1px solid var(--border)', borderRadius: '8px', marginBottom: '8px', fontFamily: 'inherit' }} />
-            <button type="submit" disabled={creating || !front.trim() || !back.trim()} style={{ padding: '8px 20px', background: 'var(--primary)', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: 'bold' }}>
+            <Button size="sm" type="submit" disabled={creating || !front.trim() || !back.trim()}>
               {creating ? 'Adding...' : 'Add Card'}
-            </button>
+            </Button>
             {error && <p style={{ color: 'var(--danger)', fontSize: '13px', marginTop: '8px' }}>{error}</p>}
           </form>
 
@@ -116,14 +121,14 @@ const FlashcardsModule = () => {
           )}
         </div>
       ) : dueCards.length === 0 ? (
-        <div style={{ textAlign: 'center', padding: '40px', background: 'white', border: '1px solid var(--border)', borderRadius: '12px' }}>
+        <div className="card" style={{ textAlign: 'center', padding: '40px' }}>
           <p style={{ color: 'var(--gray-500)' }}>No cards due for review right now.</p>
-          <button onClick={() => setShowManage(true)} style={{ marginTop: '10px', padding: '8px 20px', background: 'var(--primary)', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer' }}>
+          <Button size="sm" onClick={() => setShowManage(true)} style={{ marginTop: '10px' }}>
             Add a flashcard
-          </button>
+          </Button>
         </div>
       ) : !currentCard ? (
-        <div style={{ textAlign: 'center', padding: '40px', background: 'white', border: '1px solid var(--border)', borderRadius: '12px' }}>
+        <div className="card" style={{ textAlign: 'center', padding: '40px' }}>
           <p style={{ fontSize: '18px' }}><PartyPopperIcon className="icon-inline" size="1em" aria-hidden="true" /> All done for now!</p>
           <p style={{ color: 'var(--gray-500)' }}>You've reviewed every card due today.</p>
         </div>
@@ -132,23 +137,7 @@ const FlashcardsModule = () => {
           <p style={{ textAlign: 'center', fontSize: '13px', color: 'var(--gray-500)', marginBottom: '12px' }}>
             {reviewIndex + 1} of {dueCards.length} due today
           </p>
-          <div
-            onClick={() => setShowBack(!showBack)}
-            style={{
-              minHeight: '180px',
-              background: 'white',
-              border: '1px solid var(--border)',
-              borderRadius: '16px',
-              padding: '32px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              textAlign: 'center',
-              fontSize: '18px',
-              cursor: 'pointer',
-              marginBottom: '20px',
-            }}
-          >
+          <div className="card card--interactive" onClick={() => setShowBack(!showBack)} style={{ minHeight: '180px', padding: '32px', display: 'flex', alignItems: 'center', justifyContent: 'center', textAlign: 'center', fontSize: '18px', marginBottom: '20px' }}>
             {showBack ? currentCard.back : currentCard.front}
           </div>
           {!showBack ? (

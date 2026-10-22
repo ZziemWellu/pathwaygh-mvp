@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import api, { extractErrorMessage } from '../../services/api';
 import { useLanguage } from '../../contexts/LanguageContext';
+import Button from '../../components/ui/Button';
 
 const Login = ({ onSuccess }) => {
   const { t } = useLanguage();
@@ -60,22 +61,9 @@ const Login = ({ onSuccess }) => {
             placeholder="••••••••"
           />
         </div>
-        <button
-          type="submit"
-          disabled={loading}
-          style={{
-            width: '100%',
-            padding: '12px',
-            background: 'var(--primary)',
-            color: 'white',
-            border: 'none',
-            borderRadius: '8px',
-            fontSize: '16px',
-            cursor: 'pointer',
-          }}
-        >
+        <Button type="submit" disabled={loading} style={{ width: '100%' }}>
           {loading ? t('loggingIn') : t('login')}
-        </button>
+        </Button>
       </form>
     </div>
   );

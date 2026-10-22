@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Briefcase, Coins, Landmark, SearchIcon, Target } from 'lucide-react';
+import { Briefcase, Coins, Compass, Landmark, Target } from 'lucide-react';
+import PageHeader from '../../../components/ui/PageHeader';
 
 // Countries that sit WASSCE under WAEC - matches WASSCE_COUNTRIES in
 // App.jsx and backend/modules/plan/router.py. Career Match's content is
@@ -61,12 +62,11 @@ const ExploreLanding = ({ user }) => {
 
   return (
     <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '20px' }}>
-      <header style={{ marginBottom: '30px' }}>
-        <h1 style={{ color: 'var(--primary)', marginBottom: '8px' }}><SearchIcon className="icon-inline" size="1em" aria-hidden="true" /> Explore</h1>
-        <p style={{ color: 'var(--text-muted)', fontSize: '16px' }}>
-          Discover careers, universities, scholarships, and find your perfect path
-        </p>
-      </header>
+      <PageHeader
+        icon={Compass}
+        title="Explore"
+        subtitle="Discover careers, universities, scholarships, and find your perfect path"
+      />
 
       <div style={{
         display: 'grid',
@@ -74,33 +74,7 @@ const ExploreLanding = ({ user }) => {
         gap: '24px'
       }}>
         {features.map((feature) => (
-          <div
-            key={feature.id}
-            style={{
-              background: 'white',
-              borderRadius: '16px',
-              padding: '30px 24px',
-              border: '1px solid var(--border)',
-              boxShadow: '0 2px 8px rgba(0,0,0,0.04)',
-              transition: 'all 0.3s ease',
-              cursor: 'pointer',
-              textAlign: 'center',
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'center',
-              minHeight: '280px'
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.boxShadow = '0 8px 32px rgba(0,0,0,0.12)';
-              e.currentTarget.style.transform = 'translateY(-4px)';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.boxShadow = '0 2px 8px rgba(0,0,0,0.04)';
-              e.currentTarget.style.transform = 'translateY(0)';
-            }}
-            onClick={() => navigate(feature.path)}
-          >
+          <div className="card card--interactive" key={feature.id} onClick={() => navigate(feature.path)} style={{ padding: '30px 24px', textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '280px' }}>
             <div style={{ width: '72px', height: '72px', borderRadius: '18px', background: feature.tint, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', marginBottom: '16px' }}>
               <feature.icon size={36} color={feature.color} strokeWidth={1.75} aria-hidden="true" />
             </div>

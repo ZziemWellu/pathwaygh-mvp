@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Flame, Star, Trophy, TrophyIcon, Users } from 'lucide-react';
+import { Flame, Star, Trophy, Users } from 'lucide-react';
 import api, { extractErrorMessage } from '../../services/api';
 import { AchievementIcon } from '../../components/ui/icons';
+import PageHeader from '../../components/ui/PageHeader';
+import Button from '../../components/ui/Button';
 
 const GamificationPage = () => {
   const [profile, setProfile] = useState(null);
@@ -58,7 +60,7 @@ const GamificationPage = () => {
 
   return (
     <div style={{ maxWidth: '800px', margin: '0 auto', padding: '20px' }}>
-      <h2 style={{ color: 'var(--primary)', marginBottom: '20px' }}><TrophyIcon className="icon-inline" size="1em" aria-hidden="true" /> Your Progress</h2>
+      <PageHeader icon={Trophy} title="Your Progress" />
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: '16px', marginBottom: '28px' }}>
         <StatCard icon={Star} label="Total XP" value={profile.xp_points} color="var(--primary)" />
@@ -91,7 +93,7 @@ const GamificationPage = () => {
       </div>
 
       <h3 style={{ color: 'var(--primary)', fontSize: '16px', marginBottom: '12px' }}>School Leaderboard</h3>
-      <div style={{ background: 'white', border: '1px solid var(--border)', borderRadius: '12px', padding: '20px' }}>
+      <div className="card" style={{ padding: '20px' }}>
         {leaderboard?.reason ? (
           <p style={{ color: 'var(--gray-500)', margin: 0 }}>{leaderboard.reason}</p>
         ) : !profile.leaderboard_opt_in ? (
@@ -108,9 +110,9 @@ const GamificationPage = () => {
                 maxLength={50}
                 style={{ flex: 1, minWidth: '160px', padding: '8px 12px', border: '1px solid var(--border)', borderRadius: '8px', fontSize: '14px' }}
               />
-              <button onClick={joinLeaderboard} disabled={!displayName.trim()} style={{ padding: '8px 20px', background: displayName.trim() ? 'var(--primary)' : 'var(--border-strong)', color: 'white', border: 'none', borderRadius: '8px', cursor: displayName.trim() ? 'pointer' : 'not-allowed', fontWeight: 'bold' }}>
+              <Button size="sm" onClick={joinLeaderboard} disabled={!displayName.trim()}>
                 Join
-              </button>
+              </Button>
             </div>
             {optInError && <p style={{ color: 'var(--danger)', fontSize: '13px', marginTop: '8px' }}>{optInError}</p>}
           </div>
@@ -151,7 +153,7 @@ const GamificationPage = () => {
 };
 
 const StatCard = ({ icon: Icon, label, value, color }) => (
-  <div style={{ background: 'white', border: '1px solid var(--border)', borderRadius: '12px', padding: '16px', textAlign: 'center' }}>
+  <div className="card" style={{ padding: '16px', textAlign: 'center' }}>
     <Icon size={22} color={color} style={{ marginBottom: '6px' }} />
     <div style={{ fontSize: '22px', fontWeight: 'bold', color }}>{value}</div>
     <div style={{ fontSize: '12px', color: 'var(--gray-500)' }}>{label}</div>

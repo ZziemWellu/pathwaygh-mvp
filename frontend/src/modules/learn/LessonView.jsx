@@ -7,6 +7,7 @@ import ExerciseSection from './ExerciseSection';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { useGamificationNotify } from '../../contexts/GamificationNotifyContext';
 import { CircleCheckIcon, CirclePlayIcon, FileTextIcon, PartyPopperIcon, TriangleAlertIcon } from 'lucide-react';
+import Button from '../../components/ui/Button';
 
 const LessonView = () => {
   const { t } = useLanguage();
@@ -88,7 +89,7 @@ const LessonView = () => {
           </div>
         )
       ) : lesson.lesson_type === 'text' ? (
-        <div style={{ padding: '24px', background: 'white', border: '1px solid var(--border)', borderRadius: '12px', lineHeight: 1.7 }}>
+        <div className="card" style={{ padding: '24px', lineHeight: 1.7 }}>
           <ReactMarkdown>{lesson.content || t('learnContentComingSoon')}</ReactMarkdown>
         </div>
       ) : (
@@ -106,13 +107,9 @@ const LessonView = () => {
         {lesson.watched ? (
           <span style={{ color: 'var(--primary)', fontWeight: 'bold' }}><CircleCheckIcon className="icon-inline" size="1em" aria-hidden="true" /> {lesson.lesson_type === 'text' ? t('learnCompleted') : t('learnWatched')}</span>
         ) : (
-          <button
-            onClick={markWatched}
-            disabled={marking}
-            style={{ padding: '10px 20px', background: marking ? 'var(--border-strong)' : 'var(--primary)', color: 'white', border: 'none', borderRadius: '8px', cursor: marking ? 'not-allowed' : 'pointer' }}
-          >
+          <Button onClick={markWatched} disabled={marking}>
             {marking ? t('learnMarking') : lesson.lesson_type === 'text' ? t('learnMarkAsRead') : t('learnMarkAsWatched')}
-          </button>
+          </Button>
         )}
       </div>
 

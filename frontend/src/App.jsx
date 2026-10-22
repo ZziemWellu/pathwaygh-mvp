@@ -19,6 +19,7 @@ import ConsentBanner from './components/consent/ConsentBanner';
 import { useLanguage } from './contexts/LanguageContext';
 import PrivacyPolicy from './modules/legal/PrivacyPolicy';
 import CertificateVerify from './modules/certificates/CertificateVerify';
+import Button from 'components/ui/Button';
 
 const COUNTRY_FLAGS = { GH: GhanaFlag, NG: NigeriaFlag, SL: SierraLeoneFlag, LR: LiberiaFlag, GM: GambiaFlag };
 const COUNTRY_NAMES = { GH: 'Ghana', NG: 'Nigeria', SL: 'Sierra Leone', LR: 'Liberia', GM: 'The Gambia' };
@@ -241,17 +242,7 @@ const App = () => {
               </span>
             )}
             <LanguageSwitcher />
-            <button onClick={handleLogout} style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '6px',
-              padding: '5px 14px',
-              background: 'var(--surface-sunken)',
-              border: 'none',
-              borderRadius: '6px',
-              cursor: 'pointer',
-              fontSize: '13px'
-            }}><LogOut size={14} aria-hidden="true" /> {t('logout')}</button>
+            <Button variant="secondary" size="sm" onClick={handleLogout}><LogOut size={14} aria-hidden="true" /> {t('logout')}</Button>
           </div>
         </header>
 

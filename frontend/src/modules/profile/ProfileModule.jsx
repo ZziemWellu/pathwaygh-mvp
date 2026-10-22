@@ -5,7 +5,9 @@ import { getUser, setUser } from '../../constants/auth';
 import LanguageSwitcher from '../../components/LanguageSwitcher';
 import { useAccessibility } from '../../contexts/AccessibilityContext';
 import { formatDate } from '../../utils/date';
-import { Award, BookOpen, BookOpenIcon, BookOpenTextIcon, Bookmark, BookmarkIcon, BriefcaseIcon, CameraIcon, ClipboardList, ClipboardListIcon, CoinsIcon, FileTextIcon, FlameIcon, HourglassIcon, LandmarkIcon, PencilIcon, School, SchoolIcon, Settings, SettingsIcon, StarIcon, Target, TargetIcon, TrophyIcon, User, UserIcon } from 'lucide-react';
+import { Award, BookOpen, BookOpenIcon, BookOpenTextIcon, Bookmark, BookmarkIcon, BriefcaseIcon, CameraIcon, ClipboardList, ClipboardListIcon, CoinsIcon, FileTextIcon, FlameIcon, HourglassIcon, LandmarkIcon, Pencil, School, SchoolIcon, Settings, SettingsIcon, StarIcon, Target, TargetIcon, TrophyIcon, User } from 'lucide-react';
+import PageHeader from '../../components/ui/PageHeader';
+import Button from '../../components/ui/Button';
 
 const ProfileModule = () => {
   const { dyslexiaFont, setDyslexiaFont, textScale, setTextScale, textScales } = useAccessibility();
@@ -325,22 +327,13 @@ const ProfileModule = () => {
         </div>
       )}
 
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
-        <h2 style={{ margin: 0, color: 'var(--primary)' }}><UserIcon className="icon-inline" size="1em" aria-hidden="true" /> Profile</h2>
-        {!editing && (
-          <button onClick={handleEdit} style={{ padding: '8px 20px', background: 'var(--primary)', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer', fontSize: '14px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <PencilIcon className="icon-inline" size="1em" aria-hidden="true" /> Edit Profile
-          </button>
-        )}
-      </div>
+      <PageHeader
+        icon={User}
+        title="Profile"
+        actions={!editing && <Button icon={Pencil} onClick={handleEdit}>Edit Profile</Button>}
+      />
 
-      <div style={{
-        background: 'white',
-        borderRadius: '16px',
-        border: '1px solid var(--border)',
-        overflow: 'hidden',
-        marginBottom: '24px'
-      }}>
+      <div className="card card--flush" style={{ overflow: 'hidden', marginBottom: '24px' }}>
         <div style={{
           height: '120px',
           background: 'linear-gradient(135deg, var(--primary), var(--primary-light))',
@@ -437,22 +430,9 @@ const ProfileModule = () => {
               {profile?.role || 'Student'} • Member since {formatDate(profile?.created_at, { fallback: 'N/A' })}
             </p>
             {!editing && (
-              <button
-                onClick={handleAvatarClick}
-                style={{
-                  background: 'white',
-                  color: 'var(--primary)',
-                  border: '1px solid var(--primary)',
-                  borderRadius: '6px',
-                  padding: '4px 12px',
-                  fontSize: '12px',
-                  cursor: 'pointer',
-                  marginTop: '8px',
-                  fontWeight: '600'
-                }}
-              >
+              <Button variant="outline" size="sm" onClick={handleAvatarClick} style={{ marginTop: '8px' }}>
                 <CameraIcon className="icon-inline" size="1em" aria-hidden="true" /> Change Photo
-              </button>
+              </Button>
             )}
           </div>
           {editing ? (
@@ -505,8 +485,8 @@ const ProfileModule = () => {
                 </div>
               </div>
               <div style={{ display: 'flex', gap: '12px', justifyContent: 'flex-end' }}>
-                <button onClick={handleCancel} style={{ padding: '10px 24px', background: 'var(--surface-sunken)', border: 'none', borderRadius: '8px', cursor: 'pointer' }}>Cancel</button>
-                <button onClick={handleSave} disabled={saving} style={{ padding: '10px 24px', background: 'var(--primary)', color: 'white', border: 'none', borderRadius: '8px', cursor: saving ? 'not-allowed' : 'pointer', opacity: saving ? 0.6 : 1 }}>{saving ? 'Saving...' : 'Save Changes'}</button>
+                <Button variant="secondary" onClick={handleCancel}>Cancel</Button>
+                <Button onClick={handleSave} disabled={saving}>{saving ? 'Saving...' : 'Save Changes'}</Button>
               </div>
             </div>
           ) : (
@@ -571,7 +551,7 @@ const ProfileModule = () => {
         ))}
       </div>
 
-      <div style={{ background: 'white', borderRadius: '12px', border: '1px solid var(--border)', padding: '24px' }}>
+      <div className="card" style={{ padding: '24px' }}>
         {activeTab === 'overview' && (
           <div>
             <h3 style={{ color: 'var(--text)', marginBottom: '16px' }}><ClipboardListIcon className="icon-inline" size="1em" aria-hidden="true" /> Overview</h3>
@@ -723,9 +703,9 @@ const ProfileModule = () => {
                 <p><strong style={{ color: 'var(--text-muted)' }}>School:</strong> {schoolInfo.school.name}</p>
                 <p>
                   <strong style={{ color: 'var(--text-muted)' }}>Join code:</strong> {schoolInfo.school.join_code}{' '}
-                  <button onClick={copySchoolCode} style={{ marginLeft: '8px', padding: '2px 10px', fontSize: '12px', background: 'var(--surface-sunken)', border: 'none', borderRadius: '6px', cursor: 'pointer' }}>
+                  <Button variant="secondary" size="sm" onClick={copySchoolCode} style={{ marginLeft: '8px' }}>
                     Copy
-                  </button>
+                  </Button>
                 </p>
                 {schoolInfo.is_school_admin && (
                   <a href="/school-admin" style={{ display: 'inline-block', marginTop: '12px', padding: '10px 20px', background: 'var(--primary)', color: 'white', borderRadius: '8px', textDecoration: 'none' }}>
@@ -737,12 +717,12 @@ const ProfileModule = () => {
               <div>
                 <p style={{ color: 'var(--gray-500)', marginBottom: '16px' }}>You're not linked to a school yet.</p>
                 <div style={{ display: 'flex', gap: '12px', marginBottom: '16px' }}>
-                  <button onClick={() => { setSchoolFormMode('join'); setSchoolFormValue(''); }} style={{ padding: '8px 16px', background: schoolFormMode === 'join' ? 'var(--primary)' : 'var(--surface-sunken)', color: schoolFormMode === 'join' ? 'white' : 'var(--text)', border: 'none', borderRadius: '8px', cursor: 'pointer' }}>
+                  <Button size="sm" onClick={() => { setSchoolFormMode('join'); setSchoolFormValue(''); }}>
                     Join a School
-                  </button>
-                  <button onClick={() => { setSchoolFormMode('create'); setSchoolFormValue(''); }} style={{ padding: '8px 16px', background: schoolFormMode === 'create' ? 'var(--primary)' : 'var(--surface-sunken)', color: schoolFormMode === 'create' ? 'white' : 'var(--text)', border: 'none', borderRadius: '8px', cursor: 'pointer' }}>
+                  </Button>
+                  <Button size="sm" onClick={() => { setSchoolFormMode('create'); setSchoolFormValue(''); }}>
                     Create a School
-                  </button>
+                  </Button>
                 </div>
                 {schoolFormMode === 'join' && (
                   <div style={{ display: 'flex', gap: '8px', maxWidth: '400px' }}>
@@ -752,9 +732,9 @@ const ProfileModule = () => {
                       placeholder="Enter join code"
                       style={{ flex: 1, padding: '10px', border: '1px solid var(--border)', borderRadius: '8px' }}
                     />
-                    <button onClick={handleJoinSchool} disabled={schoolSaving} style={{ padding: '10px 20px', background: 'var(--primary)', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer' }}>
+                    <Button onClick={handleJoinSchool} disabled={schoolSaving}>
                       {schoolSaving ? 'Joining...' : 'Join'}
-                    </button>
+                    </Button>
                   </div>
                 )}
                 {schoolFormMode === 'create' && (
@@ -765,9 +745,9 @@ const ProfileModule = () => {
                       placeholder="School name"
                       style={{ flex: 1, padding: '10px', border: '1px solid var(--border)', borderRadius: '8px' }}
                     />
-                    <button onClick={handleCreateSchool} disabled={schoolSaving} style={{ padding: '10px 20px', background: 'var(--primary)', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer' }}>
+                    <Button onClick={handleCreateSchool} disabled={schoolSaving}>
                       {schoolSaving ? 'Creating...' : 'Create'}
-                    </button>
+                    </Button>
                   </div>
                 )}
               </div>
@@ -799,9 +779,9 @@ const ProfileModule = () => {
                   placeholder="parent@email.com"
                   style={{ flex: 1, padding: '10px', border: '1px solid var(--border)', borderRadius: '8px' }}
                 />
-                <button onClick={handleSaveGuardianEmail} disabled={guardianEmailSaving} style={{ padding: '10px 20px', background: 'var(--primary)', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer' }}>
+                <Button onClick={handleSaveGuardianEmail} disabled={guardianEmailSaving}>
                   {guardianEmailSaving ? 'Saving...' : 'Save'}
-                </button>
+                </Button>
               </div>
               <p style={{ color: 'var(--gray-500)', fontSize: '13px' }}>
                 Consent given: {profile?.consent_given_at ? formatDate(profile.consent_given_at) : 'Not recorded (account predates consent tracking)'}
@@ -830,9 +810,9 @@ const ProfileModule = () => {
                 />
                 <span>My guardian has agreed to receive a periodic WhatsApp study update at this number.</span>
               </label>
-              <button onClick={handleSaveGuardianWhatsapp} disabled={guardianPhoneSaving} style={{ padding: '10px 20px', background: 'var(--primary)', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer' }}>
+              <Button onClick={handleSaveGuardianWhatsapp} disabled={guardianPhoneSaving}>
                 {guardianPhoneSaving ? 'Saving...' : 'Save'}
-              </button>
+              </Button>
             </div>
 
             <div style={{ marginTop: '24px', paddingTop: '16px', borderTop: '1px solid var(--border)' }}>

@@ -3,6 +3,7 @@ import ReactMarkdown from 'react-markdown';
 import ReadAloudButton from '../common/ReadAloudButton';
 import api from '../../services/api';
 import { BookOpenIcon, BotIcon, CalculatorIcon } from 'lucide-react';
+import Button from '../../components/ui/Button';
 
 const markdownComponents = {
   p: ({ children }) => <p style={{ margin: '0 0 8px' }}>{children}</p>,
@@ -281,21 +282,9 @@ const AIChat = ({ user }) => {
             fontSize: '14px',
           }}
         />
-        <button
-          onClick={sendMessage}
-          disabled={loading || !input.trim()}
-          style={{
-            padding: '10px 16px',
-            background: loading || !input.trim() ? 'var(--border-strong)' : 'var(--primary)',
-            color: 'white',
-            border: 'none',
-            borderRadius: '8px',
-            cursor: loading || !input.trim() ? 'not-allowed' : 'pointer',
-            fontWeight: 'bold',
-          }}
-        >
+        <Button onClick={sendMessage} disabled={loading || !input.trim()}>
           Send
-        </button>
+        </Button>
       </div>
     </div>
   );

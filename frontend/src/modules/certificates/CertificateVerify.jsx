@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import api from '../../services/api';
 import { formatDate } from '../../utils/date';
 import { CircleCheckIcon, CircleXIcon } from 'lucide-react';
+import Button from '../../components/ui/Button';
 
 /**
  * Public, router-agnostic: takes `code` as a prop rather than calling
@@ -57,12 +58,9 @@ const CertificateVerify = ({ code: initialCode }) => {
           placeholder="XXXX-XXXX-XXXX"
           style={{ flex: 1, padding: '10px', border: '1px solid var(--border)', borderRadius: '8px', fontSize: '14px' }}
         />
-        <button
-          type="submit"
-          style={{ padding: '10px 20px', background: 'var(--primary)', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer' }}
-        >
+        <Button type="submit">
           Verify
-        </button>
+        </Button>
       </form>
 
       {loading && <p style={{ textAlign: 'center' }}>Checking...</p>}

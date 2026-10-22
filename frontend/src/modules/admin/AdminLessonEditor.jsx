@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
 import api from '../../services/api';
 import AdminExerciseEditor from './AdminExerciseEditor';
+import Button from '../../components/ui/Button';
 
 const AdminLessonEditor = () => {
   const { lessonId } = useParams();
@@ -57,7 +58,7 @@ const AdminLessonEditor = () => {
     <div style={{ maxWidth: '1000px', margin: '0 auto', padding: '20px' }}>
       <Link to={`/admin/courses/${lesson.course_id}`} style={{ color: 'var(--primary)', fontSize: '14px' }}>← Back to course</Link>
 
-      <div style={{ background: 'white', border: '1px solid var(--border)', borderRadius: '12px', padding: '18px', margin: '16px 0', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+      <div className="card" style={{ padding: '18px', margin: '16px 0', display: 'flex', flexDirection: 'column', gap: '10px' }}>
         <label style={labelStyle}>Title</label>
         <input value={lesson.title} onChange={(e) => setLesson({ ...lesson, title: e.target.value })} style={inputStyle} />
 
@@ -114,12 +115,12 @@ const AdminLessonEditor = () => {
           </>
         )}
 
-        <button onClick={handleSave} disabled={saving} style={{ padding: '10px', background: saving ? 'var(--border-strong)' : 'var(--primary)', color: 'white', border: 'none', borderRadius: '8px', cursor: saving ? 'not-allowed' : 'pointer', fontWeight: 'bold' }}>
+        <Button onClick={handleSave} disabled={saving}>
           {saving ? 'Saving...' : 'Save Lesson'}
-        </button>
+        </Button>
       </div>
 
-      <div style={{ background: 'white', border: '1px solid var(--border)', borderRadius: '12px', padding: '18px' }}>
+      <div className="card" style={{ padding: '18px' }}>
         <AdminExerciseEditor lessonId={lessonId} exercises={lesson.exercises} onChange={fetchLesson} />
       </div>
     </div>

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import api, { extractErrorMessage } from '../../services/api';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { CircleCheckIcon } from 'lucide-react';
+import Button from '../../components/ui/Button';
 
 const ForgotPassword = ({ onBackToLogin }) => {
   const { t } = useLanguage();
@@ -60,12 +61,9 @@ const ForgotPassword = ({ onBackToLogin }) => {
       <div style={{ maxWidth: '400px', margin: '0 auto', textAlign: 'center' }}>
         <h2 style={{ color: 'var(--primary)' }}><CircleCheckIcon className="icon-inline" size="1em" aria-hidden="true" /> {t('resetPasswordSuccessTitle')}</h2>
         <p>{t('resetPasswordSuccessBody')}</p>
-        <button
-          onClick={onBackToLogin}
-          style={{ padding: '10px 24px', background: 'var(--primary)', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer', marginTop: '16px' }}
-        >
+        <Button onClick={onBackToLogin} style={{ marginTop: '16px' }}>
           {t('goToLoginNow')}
-        </button>
+        </Button>
       </div>
     );
   }
@@ -90,13 +88,9 @@ const ForgotPassword = ({ onBackToLogin }) => {
               placeholder={t('emailPlaceholder')}
             />
           </div>
-          <button
-            type="submit"
-            disabled={loading}
-            style={{ width: '100%', padding: '12px', background: loading ? 'var(--border-strong)' : 'var(--primary)', color: 'white', border: 'none', borderRadius: '8px', fontSize: '16px', cursor: loading ? 'not-allowed' : 'pointer' }}
-          >
+          <Button type="submit" disabled={loading} style={{ width: '100%' }}>
             {loading ? t('forgotPasswordSending') : t('forgotPasswordSendCode')}
-          </button>
+          </Button>
         </form>
       ) : (
         <form onSubmit={handleReset}>
@@ -137,13 +131,9 @@ const ForgotPassword = ({ onBackToLogin }) => {
               placeholder={t('confirmPasswordPlaceholder')}
             />
           </div>
-          <button
-            type="submit"
-            disabled={loading}
-            style={{ width: '100%', padding: '12px', background: loading ? 'var(--border-strong)' : 'var(--primary)', color: 'white', border: 'none', borderRadius: '8px', fontSize: '16px', cursor: loading ? 'not-allowed' : 'pointer' }}
-          >
+          <Button type="submit" disabled={loading} style={{ width: '100%' }}>
             {loading ? t('resetPasswordSaving') : t('resetPasswordSubmit')}
-          </button>
+          </Button>
         </form>
       )}
 

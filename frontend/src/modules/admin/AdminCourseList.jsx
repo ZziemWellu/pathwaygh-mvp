@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Plus, Trash2, ChevronRight } from 'lucide-react';
+import { ChevronRight, Plus, Shield, Trash2 } from 'lucide-react';
 import api from '../../services/api';
+import PageHeader from '../../components/ui/PageHeader';
+import Button from '../../components/ui/Button';
 
 const emptyForm = { slug: '', title: '', description: '', level: 'jhs', country: 'GH' };
 
@@ -60,18 +62,14 @@ const AdminCourseList = () => {
 
   return (
     <div style={{ maxWidth: '800px', margin: '0 auto', padding: '20px' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-        <h2 style={{ margin: 0 }}>Manage Courses</h2>
-        <button
-          onClick={() => setShowForm((s) => !s)}
-          style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', padding: '10px 18px', background: 'var(--primary)', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: 'bold' }}
-        >
-          <Plus size={16} /> New Course
-        </button>
-      </div>
+      <PageHeader
+        icon={Shield}
+        title="Manage Courses"
+        actions={<Button icon={Plus} aria-expanded={showForm} onClick={() => setShowForm((s) => !s)}>New Course</Button>}
+      />
 
       {showForm && (
-        <form onSubmit={handleCreate} style={{ background: 'white', border: '1px solid var(--border)', borderRadius: '12px', padding: '18px', marginBottom: '20px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+        <form className="card" onSubmit={handleCreate} style={{ padding: '18px', marginBottom: '20px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
           <input required placeholder="Slug (e.g. shs-physics)" value={form.slug} onChange={(e) => setForm({ ...form, slug: e.target.value })} style={inputStyle} />
           <input required placeholder="Title" value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} style={inputStyle} />
           <textarea placeholder="Description" value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} style={{ ...inputStyle, minHeight: '70px' }} />
@@ -90,9 +88,9 @@ const AdminCourseList = () => {
             <option value="LR">Liberia</option>
             <option value="GM">The Gambia</option>
           </select>
-          <button type="submit" disabled={saving} style={{ padding: '10px', background: saving ? 'var(--border-strong)' : 'var(--primary)', color: 'white', border: 'none', borderRadius: '8px', cursor: saving ? 'not-allowed' : 'pointer', fontWeight: 'bold' }}>
+          <Button type="submit" disabled={saving}>
             {saving ? 'Creating...' : 'Create Course'}
-          </button>
+          </Button>
         </form>
       )}
 
