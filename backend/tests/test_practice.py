@@ -82,3 +82,34 @@ def test_quiz_submit_persists_time_spent(client, auth_headers, db_session):
     attempt = db_session.query(QuizAttempt).filter(QuizAttempt.user_id == user["id"]).order_by(QuizAttempt.id.desc()).first()
     assert attempt is not None
     assert attempt.time_spent == 45
+
+
+# --- /subjects is scoped to the student's own country. Every country's
+# bank reuses the same subject names, so unscoped a Ghanaian student saw
+# five indistinguishable "Mathematics" cards (GH/NG/SL/LR/GM).
+
+
+def test_subjects_default_to_the_signed_in_students_country(client):
+    from tests.conftest import register_user
+
+    gh = register_user(client, email="gh_student@test.com", country="GH")
+    response = client.get("/api/practice/subjects", headers={"Authorization": f"Bearer {gh['token']}"})
+    subjects = response.json()["subjects"]
+    assert {s["id"] for s in subjects} == {"mathematics", "english", "science"}
+    names = [s["name"] for s in subjects]
+    assert len(names) == len(set(names)), f"duplicate subject names shown: {names}"
+
+    ng = register_user(client, email="ng_student@test.com", country="NG")
+    response = client.get("/api/practice/subjects", headers={"Authorization": f"Bearer {ng['token']}"})
+    assert {s["id"] for s in response.json()["subjects"]} == {"mathematics_ng", "english_ng", "science_ng"}
+
+
+def test_explicit_country_query_still_overrides_the_default(client, auth_headers):
+    headers, _ = auth_headers
+    response = client.get("/api/practice/subjects?country=SL", headers=headers)
+    assert {s["id"] for s in response.json()["subjects"]} == {"mathematics_sl", "english_sl", "science_sl"}
+
+
+def test_anonymous_subjects_listing_is_unchanged(client):
+    response = client.get("/api/practice/subjects")
+    assert len(response.json()["subjects"]) == 15

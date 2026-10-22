@@ -4,6 +4,7 @@ import api from '../../services/api';
 import { getUser, setUser } from '../../constants/auth';
 import LanguageSwitcher from '../../components/LanguageSwitcher';
 import { useAccessibility } from '../../contexts/AccessibilityContext';
+import { formatDate } from '../../utils/date';
 
 const ProfileModule = () => {
   const { dyslexiaFont, setDyslexiaFont, textScale, setTextScale, textScales } = useAccessibility();
@@ -418,37 +419,41 @@ const ProfileModule = () => {
               <input ref={fileInputRef} type="file" accept="image/jpeg,image/png,image/webp,image/gif" onChange={handleFileSelect} style={{ display: 'none' }} disabled={uploading} />
             </div>
 
-            <div style={{ marginBottom: '12px' }}>
-              <h3 style={{ color: 'white', margin: 0, fontSize: '22px' }}>
-                {profile?.full_name || user?.full_name || 'Student'}
-              </h3>
-              {/* FIXED: Changed text color so it's visible */}
-              <p style={{ color: '#e0e0e0', margin: '2px 0 0 0', fontSize: '14px' }}>
-                {profile?.role || 'Student'} • Member since: {profile?.created_at ? new Date(profile.created_at).toLocaleDateString() : 'N/A'}
-              </p>
-              {!editing && (
-                <button
-                  onClick={handleAvatarClick}
-                  style={{
-                    background: 'rgba(255,255,255,0.25)',
-                    color: 'white',
-                    border: '1px solid rgba(255,255,255,0.3)',
-                    borderRadius: '4px',
-                    padding: '2px 12px',
-                    fontSize: '11px',
-                    cursor: 'pointer',
-                    marginTop: '4px',
-                    fontWeight: '500'
-                  }}
-                >
-                  📷 Change Photo
-                </button>
-              )}
-            </div>
           </div>
         </div>
 
-        <div style={{ padding: '70px 30px 30px 30px' }}>
+        <div style={{ padding: '16px 30px 30px 30px' }}>
+          {/* Name block sits on the white card beside the avatar. It used to
+              hang off the bottom of the green cover in white text, so the
+              "Member since" line was cut in half by the cover's edge and the
+              white "Change Photo" button vanished on the white card - only
+              its 📷 stayed visible, looking like a stray icon. */}
+          <div style={{ marginLeft: '120px', minHeight: '54px', marginBottom: '24px' }}>
+            <h3 style={{ color: 'var(--gray-900)', margin: 0, fontSize: '22px' }}>
+              {profile?.full_name || user?.full_name || 'Student'}
+            </h3>
+            <p style={{ color: 'var(--gray-600)', margin: '2px 0 0 0', fontSize: '14px' }}>
+              {profile?.role || 'Student'} • Member since {formatDate(profile?.created_at, { fallback: 'N/A' })}
+            </p>
+            {!editing && (
+              <button
+                onClick={handleAvatarClick}
+                style={{
+                  background: 'white',
+                  color: 'var(--primary)',
+                  border: '1px solid var(--primary)',
+                  borderRadius: '6px',
+                  padding: '4px 12px',
+                  fontSize: '12px',
+                  cursor: 'pointer',
+                  marginTop: '8px',
+                  fontWeight: '600'
+                }}
+              >
+                📷 Change Photo
+              </button>
+            )}
+          </div>
           {editing ? (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
@@ -578,7 +583,7 @@ const ProfileModule = () => {
               </div>
               <div>
                 <p><strong style={{ color: '#666' }}>Grade:</strong> {profile?.grade || 'Not specified'}</p>
-                <p><strong style={{ color: '#666' }}>Member since:</strong> {profile?.created_at ? new Date(profile.created_at).toLocaleDateString() : 'N/A'}</p>
+                <p><strong style={{ color: '#666' }}>Member since:</strong> {formatDate(profile?.created_at, { fallback: 'N/A' })}</p>
                 <p><strong style={{ color: '#666' }}>Study Streak:</strong> 🔥 {stats.studyStreak || 0} days</p>
                 <p><strong style={{ color: '#666' }}>XP:</strong> ⭐ {stats.xp || 0}</p>
               </div>
@@ -685,7 +690,7 @@ const ProfileModule = () => {
                   <div key={cert.code} style={{ background: '#f8f9fa', borderRadius: '8px', padding: '16px', marginBottom: '12px' }}>
                     <h4 style={{ margin: '0 0 4px 0', color: 'var(--primary)' }}>{cert.course_title}</h4>
                     <p style={{ margin: '0 0 8px 0', fontSize: '13px', color: 'var(--gray-500)' }}>
-                      Issued {new Date(cert.issued_at).toLocaleDateString()} · {cert.lesson_count} lessons
+                      Issued {formatDate(cert.issued_at, { long: true })} · {cert.lesson_count} lessons
                     </p>
                     <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', alignItems: 'center' }}>
                       <Link to={`/certificates/${cert.course_slug}`} style={{ color: 'var(--primary)', fontSize: '13px', fontWeight: 'bold' }}>
@@ -798,7 +803,7 @@ const ProfileModule = () => {
                 </button>
               </div>
               <p style={{ color: 'var(--gray-500)', fontSize: '13px' }}>
-                Consent given: {profile?.consent_given_at ? new Date(profile.consent_given_at).toLocaleDateString() : 'Not recorded (account predates consent tracking)'}
+                Consent given: {profile?.consent_given_at ? formatDate(profile.consent_given_at) : 'Not recorded (account predates consent tracking)'}
                 {profile?.consent_version && ` · version ${profile.consent_version}`}
               </p>
               <Link to="/privacy" style={{ color: 'var(--primary)', fontSize: '13px' }}>View Privacy Policy</Link>

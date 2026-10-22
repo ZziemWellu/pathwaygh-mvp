@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import api from '../../services/api';
+import { formatDate } from '../../utils/date';
 
 /**
  * Public, router-agnostic: takes `code` as a prop rather than calling
@@ -74,7 +75,7 @@ const CertificateVerify = ({ code: initialCode }) => {
             <p style={{ margin: '4px 0' }}><strong>{result.certificate.recipient_name}</strong></p>
             <p style={{ margin: '4px 0', color: '#333' }}>completed <strong>{result.certificate.course_title}</strong></p>
             <p style={{ margin: '4px 0', color: 'var(--gray-500)', fontSize: '13px' }}>
-              {result.certificate.lesson_count} lessons · issued {new Date(result.certificate.issued_at).toLocaleDateString()}
+              {result.certificate.lesson_count} lessons · issued {formatDate(result.certificate.issued_at, { long: true })}
             </p>
             <p style={{ marginTop: '12px', color: 'var(--gray-500)', fontSize: '12px' }}>Code: {result.certificate.code_display}</p>
           </div>

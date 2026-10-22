@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Copy } from 'lucide-react';
 import api, { extractErrorMessage } from '../../services/api';
+import { formatDate } from '../../utils/date';
 
 const CURRENCY_SYMBOLS = { GHS: 'GHS', NGN: '₦' };
 
@@ -114,7 +115,7 @@ const SchoolAdminDashboard = () => {
         </label>
         {school?.parent_consent_attested && school?.parent_consent_attested_at && (
           <p style={{ fontSize: '12px', color: '#666', marginTop: '8px', marginLeft: '26px' }}>
-            Confirmed {new Date(school.parent_consent_attested_at).toLocaleDateString()}
+            Confirmed {formatDate(school.parent_consent_attested_at)}
           </p>
         )}
       </div>

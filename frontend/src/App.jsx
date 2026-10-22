@@ -72,7 +72,6 @@ const App = () => {
   const [loading, setLoading] = useState(true);
   const [showLogin, setShowLogin] = useState(true);
   const [showForgotPassword, setShowForgotPassword] = useState(false);
-  const [activeModule, setActiveModule] = useState('home');
   const [country, setCountryState] = useState(null);
   const [showPrivacy, setShowPrivacy] = useState(false);
 
@@ -139,7 +138,7 @@ const App = () => {
       return (
         <div style={{ maxWidth: '400px', margin: '40px auto', padding: '20px' }}>
           <header style={{ textAlign: 'center', marginBottom: '30px' }}>
-            <h1 style={{ color: 'var(--primary)' }}>Pathway AI</h1>
+            <h1 style={{ color: 'var(--primary)' }}>PathwayGH</h1>
             <p style={{ color: 'var(--gray-500)' }}>{t('tagline')}</p>
           </header>
           <main>
@@ -163,7 +162,7 @@ const App = () => {
     return (
       <div style={{ maxWidth: '400px', margin: '40px auto', padding: '20px' }}>
         <header style={{ textAlign: 'center', marginBottom: '30px' }}>
-          <h1 style={{ color: 'var(--primary)', display: 'flex', alignItems: 'center', gap: '8px', justifyContent: 'center' }}><CountryFlag size={24} /> Pathway AI</h1>
+          <h1 style={{ color: 'var(--primary)', display: 'flex', alignItems: 'center', gap: '8px', justifyContent: 'center' }}><CountryFlag size={24} /> PathwayGH</h1>
           <p style={{ color: 'var(--gray-500)' }}>{t('tagline')} • {COUNTRY_NAMES[country]}</p>
         </header>
         <main>
@@ -229,7 +228,7 @@ const App = () => {
           gap: '8px'
         }}>
           <div>
-            <h1 style={{ color: 'var(--primary)', fontSize: '22px', margin: 0, display: 'flex', alignItems: 'center', gap: '8px' }}><UserCountryFlag size={22} /> Pathway AI</h1>
+            <h1 style={{ color: 'var(--primary)', fontSize: '22px', margin: 0, display: 'flex', alignItems: 'center', gap: '8px' }}><UserCountryFlag size={22} /> PathwayGH</h1>
             <span style={{ fontSize: '11px', color: 'var(--gray-500)' }}>{t('tagline')} • {COUNTRY_NAMES[user?.country] || ''}</span>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
@@ -258,13 +257,13 @@ const App = () => {
 
         <ConsentBanner user={user} onVerified={(updatedUser) => setUser(updatedUser)} />
 
-        <EcosystemNavigation activeModule={activeModule} setActiveModule={setActiveModule} user={user} />
+        <EcosystemNavigation user={user} />
 
         <main id="main-content" style={{ padding: '16px 0', width: '100%' }}>
           <Suspense fallback={<div style={{ textAlign: 'center', padding: '40px' }}>{t('loading')}</div>}>
           <Routes>
-            <Route path="/" element={<DashboardModule setActiveModule={setActiveModule} />} />
-            <Route path="/home" element={<DashboardModule setActiveModule={setActiveModule} />} />
+            <Route path="/" element={<DashboardModule />} />
+            <Route path="/home" element={<DashboardModule />} />
             <Route path="/learn" element={<CourseGrid user={user} />} />
             <Route path="/learn/:courseId" element={<CourseDetail />} />
             <Route path="/learn/:courseId/lessons/:lessonId" element={<LessonView />} />
@@ -302,7 +301,7 @@ const App = () => {
           </Suspense>
         </main>
 
-        <footer style={{ 
+        <footer className="app-footer-clear-fab" style={{ 
           textAlign: 'center', 
           padding: '16px 0', 
           color: 'var(--gray-500)', 

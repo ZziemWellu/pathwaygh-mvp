@@ -1,5 +1,5 @@
 /* ============================================================
-   PATHWAY AI - GLOBAL STYLES & RESPONSIVE FRAMEWORK
+   PATHWAYGH - GLOBAL STYLES & RESPONSIVE FRAMEWORK
    ============================================================ */
 
 /* ---------- CSS Variables (Design Tokens) ---------- */
@@ -125,6 +125,60 @@ body {
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* Browsers don't let form controls inherit the page font - without this,
+   every button, input and select rendered in the browser default (Arial)
+   instead of the brand typeface. */
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
+}
+
+/* ---------- AI tutor launcher ----------
+   Position and size live here (not inline) so phones can get their own
+   values. The launcher sat 80px up the right edge at 60px wide, hovering
+   over page text on a 390px-wide phone, and the open panel was a fixed
+   380px wide - 10px off the left edge of that same phone. */
+.ai-chat-fab {
+  bottom: 24px;
+  right: 24px;
+  width: 60px;
+  height: 60px;
+}
+
+.ai-chat-panel {
+  bottom: 20px;
+  right: 20px;
+  width: min(380px, calc(100vw - 32px));
+  height: min(500px, calc(100dvh - 40px));
+}
+
+/* Room at the bottom of every page so the last content (the footer's
+   Privacy Policy link included) can always scroll clear of the launcher. */
+.app-footer-clear-fab {
+  padding-bottom: 96px !important;
+}
+
+@media (max-width: 640px) {
+  .ai-chat-fab {
+    bottom: 16px;
+    right: 16px;
+    width: 52px;
+    height: 52px;
+    font-size: 24px !important;
+  }
+
+  .ai-chat-panel {
+    bottom: 16px;
+    right: 16px;
+  }
+
+  .app-footer-clear-fab {
+    padding-bottom: 80px !important;
+  }
 }
 
 /* ---------- Scrollbar Styling ---------- */

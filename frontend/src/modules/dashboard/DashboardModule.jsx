@@ -10,6 +10,7 @@ import { getUser } from '../../constants/auth';
 import GamificationSummary from './GamificationSummary';
 import WordOfTheDayCard from './WordOfTheDayCard';
 import './DashboardModule.css';
+import { formatDate } from '../../utils/date';
 
 const navItems = [
   { icon: BookOpen, label: 'Learn', path: '/learn', description: 'Browse courses', bg: 'var(--primary-bg)', fg: 'var(--primary)' },
@@ -19,7 +20,7 @@ const navItems = [
   { icon: Users, label: 'Community', path: '/community', description: 'Connect', bg: '#ede7f6', fg: '#5e35b1' },
 ];
 
-const DashboardModule = ({ setActiveModule }) => {
+const DashboardModule = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -51,15 +52,7 @@ const DashboardModule = ({ setActiveModule }) => {
     return 'Good Evening';
   };
 
-  const navigateTo = (path) => {
-    if (setActiveModule) {
-      if (path.startsWith('/explore')) setActiveModule('explore');
-      else if (path === '/learn') setActiveModule('learn');
-      else if (path === '/community') setActiveModule('community');
-      else setActiveModule('home');
-    }
-    navigate(path);
-  };
+  const navigateTo = (path) => navigate(path);
 
   if (loading) {
     return (
@@ -217,7 +210,7 @@ const DashboardModule = ({ setActiveModule }) => {
                   </div>
                   <div>
                     <div className="dash-timeline-title">{item.title}</div>
-                    <div className="dash-timeline-time">{item.time ? new Date(item.time).toLocaleDateString() : 'Recently'}</div>
+                    <div className="dash-timeline-time">{formatDate(item.time, { fallback: 'Recently' })}</div>
                   </div>
                 </div>
               ))}

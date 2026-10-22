@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import api from '../../services/api';
 import './certificate-print.css';
+import { formatDate } from '../../utils/date';
 
 const CertificatePage = () => {
   const { courseSlug } = useParams();
@@ -59,7 +60,7 @@ const CertificatePage = () => {
         className="certificate-print-area"
         style={{ background: 'white', border: '4px solid #1a5f2b', borderRadius: '12px', padding: '48px', textAlign: 'center' }}
       >
-        <p style={{ color: 'var(--primary)', fontWeight: 'bold', fontSize: '20px', margin: 0 }}>Pathway AI</p>
+        <p style={{ color: 'var(--primary)', fontWeight: 'bold', fontSize: '20px', margin: 0 }}>PathwayGH</p>
         <p style={{ color: 'var(--gray-500)', fontSize: '13px', marginTop: '4px' }}>Certificate of Completion</p>
 
         <p style={{ margin: '32px 0 4px 0', color: 'var(--gray-500)' }}>This certifies that</p>
@@ -67,7 +68,7 @@ const CertificatePage = () => {
         <p style={{ margin: '4px 0', color: 'var(--gray-500)' }}>has successfully completed</p>
         <p style={{ fontSize: '22px', fontWeight: 'bold', margin: '8px 0' }}>{certificate.course_title}</p>
         <p style={{ color: 'var(--gray-500)', fontSize: '13px' }}>
-          {certificate.lesson_count} lessons · issued {new Date(certificate.issued_at).toLocaleDateString()}
+          {certificate.lesson_count} lessons · issued {formatDate(certificate.issued_at, { long: true })}
         </p>
 
         <div style={{ marginTop: '40px', paddingTop: '16px', borderTop: '1px solid #eee', fontSize: '12px', color: 'var(--gray-500)' }}>

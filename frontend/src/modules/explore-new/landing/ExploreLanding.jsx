@@ -33,7 +33,10 @@ const ExploreLanding = ({ user }) => {
       icon: '💰',
       title: 'Scholarships',
       description: 'Find scholarships and funding opportunities',
-      color: '#f9a825',
+      // Deep amber, not #f9a825: this colour is both the heading text on
+      // white and the button behind white text, and #f9a825 is only 1.97:1
+      // against white (WCAG AA needs 4.5:1). #a15c00 is 5.19:1.
+      color: '#a15c00',
       path: '/explore/scholarships',
       buttonText: 'Find Scholarships'
     },
@@ -123,7 +126,7 @@ const ExploreLanding = ({ user }) => {
       </div>
 
       <footer style={{ textAlign: 'center', marginTop: '40px', padding: '20px', color: 'var(--gray-500)', borderTop: '1px solid #e0e0e0' }}>
-        <p>Discover your path with Pathway AI</p>
+        <p>Discover your path with PathwayGH</p>
       </footer>
     </div>
   );

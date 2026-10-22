@@ -1,6 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import api from '../../services/api';
 
+// Goals are stored in more than one shape - seeded plans use
+// "exam_preparation", the create form saves "exam preparation", and the
+// API default is "general_improvement" - so normalise before display
+// instead of showing students a raw code like "exam_preparation".
+const formatGoal = (goal) =>
+  goal
+    .replace(/_/g, ' ')
+    .trim()
+    .replace(/\s+/g, ' ')
+    .replace(/\b\w/g, (c) => c.toUpperCase());
+
 const PlanModule = () => {
   const [plans, setPlans] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -219,7 +230,7 @@ const PlanModule = () => {
               )}
               {plan.goal && (
                 <div style={{ marginTop: '8px', fontSize: '11px', color: 'var(--gray-500)' }}>
-                  🎯 {plan.goal}
+                  🎯 {formatGoal(plan.goal)}
                 </div>
               )}
               <div style={{ marginTop: '12px', height: '6px', background: '#f0f0f0', borderRadius: '3px' }}>
