@@ -10,6 +10,11 @@ describe('formatDate', () => {
     expect(formatDate('2026-10-22T15:30:00Z', { long: true })).toBe('22 October 2026');
   });
 
+  it('reads a bare calendar date as that day in every timezone', () => {
+    // new Date('2026-12-31') is UTC midnight, which is 30 Dec west of UTC.
+    expect(formatDate('2026-12-31', { long: true })).toBe('31 December 2026');
+  });
+
   it('accepts Date objects', () => {
     expect(formatDate(new Date(2026, 0, 5))).toBe('5 Jan 2026');
   });

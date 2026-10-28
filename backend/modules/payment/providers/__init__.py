@@ -8,8 +8,10 @@ one gateway's API into the endpoint logic.
 Every entry exposes the same two-function shape:
     initialize(*, reference, amount_minor_units, currency, email,
                callback_url, metadata) -> {"external_reference", "checkout_url", "provider_status"}
-    verify(*, reference, external_reference) -> {"status", "provider_status"}
-      where status is one of "success" | "failed" | "abandoned" | "pending"
+    verify(*, reference, external_reference) -> {"status", "provider_status",
+                                                 "amount_minor_units", "currency"}
+      where status is one of "success" | "failed" | "abandoned" | "pending",
+      and amount/currency are what the provider actually charged
 
 Only Paystack is actually wired up today. Flutterwave and MTN MoMo
 (direct) are registered so the router and its Literal validation already

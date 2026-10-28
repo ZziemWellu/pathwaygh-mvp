@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Building2, Copy } from 'lucide-react';
-import api, { extractErrorMessage } from '../../services/api';
+import { Building2, Copy, Download } from 'lucide-react';
+import api from '../../services/api';
 import { formatDate } from '../../utils/date';
 import PageHeader from '../../components/ui/PageHeader';
 import Button from '../../components/ui/Button';
-
-const CURRENCY_SYMBOLS = { GHS: 'GHS', NGN: '₦' };
+import LicenceCard from './LicenceCard';
+import './SchoolAdmin.css';
 
 const SchoolAdminDashboard = () => {
   const [data, setData] = useState(null);
@@ -13,44 +13,35 @@ const SchoolAdminDashboard = () => {
   const [error, setError] = useState(null);
   const [copied, setCopied] = useState(false);
   const [attesting, setAttesting] = useState(false);
-  const [paying, setPaying] = useState(false);
-  const [paymentError, setPaymentError] = useState(null);
-  const [paymentStatus, setPaymentStatus] = useState(null);
+  const [exporting, setExporting] = useState(false);
+  const [exportError, setExportError] = useState(null);
 
   useEffect(() => {
     fetchDashboard();
-    checkPendingPaymentReturn();
   }, []);
 
-  const checkPendingPaymentReturn = async () => {
-    const reference = new URLSearchParams(window.location.search).get('payment_reference');
-    if (!reference) return;
-
-    // Clear the query param immediately so a page refresh doesn't
-    // re-trigger a verify call against an already-settled reference.
-    window.history.replaceState({}, '', window.location.pathname);
+  const handleExport = async () => {
+    setExporting(true);
+    setExportError(null);
     try {
-      const response = await api.get(`/api/payment/verify/${reference}`);
-      setPaymentStatus(response.data);
+      const response = await api.get('/api/school/dashboard/export.csv', { responseType: 'blob' });
+      const url = window.URL.createObjectURL(new Blob([response.data], { type: 'text/csv' }));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', `${data?.school?.join_code || 'school'}-progress-${new Date().toISOString().slice(0, 10)}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.URL.revokeObjectURL(url);
     } catch (err) {
-      setPaymentError(extractErrorMessage(err, 'Could not confirm payment status. Check back shortly.'));
+      setExportError('Could not download the report. Please try again.');
+    } finally {
+      setExporting(false);
     }
   };
 
-  const handleSubscribe = async () => {
-    setPaying(true);
-    setPaymentError(null);
-    try {
-      const response = await api.post('/api/payment/initialize', { provider: 'paystack' });
-      window.location.href = response.data.checkout_url;
-    } catch (err) {
-      setPaymentError(extractErrorMessage(err, 'Could not start payment. Please try again.'));
-      setPaying(false);
-    }
-  };
-
-  const fetchDashboard = async () => {
-    setLoading(true);
+  const fetchDashboard = async ({ quiet = false } = {}) => {
+    if (!quiet) setLoading(true);
     setError(null);
     try {
       const response = await api.get('/api/school/dashboard');
@@ -85,7 +76,10 @@ const SchoolAdminDashboard = () => {
   if (error) return <div style={{ textAlign: 'center', padding: '40px', color: 'var(--danger)' }}>{error}</div>;
   if (!data) return null;
 
-  const { school, roster, summary } = data;
+  const { school, roster, summary, licence } = data;
+  // Per-student stats are part of the licence; the backend omits them on
+  // the free plan, so the columns go too.
+  const detailed = Boolean(licence?.premium);
 
   return (
     <div style={{ maxWidth: '1000px', margin: '0 auto', padding: '20px' }}>
@@ -127,33 +121,7 @@ const SchoolAdminDashboard = () => {
         )}
       </div>
 
-      <div className="card" style={{ padding: '16px', marginBottom: '24px' }}>
-        <h3 style={{ margin: '0 0 8px 0', fontSize: '15px' }}>School license</h3>
-        {paymentStatus && (
-          <div
-            style={{
-              padding: '10px 14px',
-              borderRadius: '8px',
-              marginBottom: '12px',
-              fontSize: '13px',
-              background: paymentStatus.status === 'success' ? 'var(--primary-bg)' : 'var(--warning-bg)',
-              color: paymentStatus.status === 'success' ? 'var(--primary-dark)' : 'var(--warning)',
-            }}
-          >
-            {paymentStatus.status === 'success'
-              ? `Payment confirmed - ${CURRENCY_SYMBOLS[paymentStatus.currency] || paymentStatus.currency} ${(paymentStatus.amount_minor_units / 100).toFixed(2)}.`
-              : `Payment status: ${paymentStatus.status}. If you completed checkout, this may take a moment to confirm - refresh to check again.`}
-          </div>
-        )}
-        {paymentError && <p style={{ color: 'var(--danger)', fontSize: '13px', marginBottom: '12px' }}>{paymentError}</p>}
-        <p style={{ fontSize: '13px', color: 'var(--gray-500)', margin: '0 0 12px 0' }}>
-          {summary.student_count} student{summary.student_count === 1 ? '' : 's'} enrolled. The annual institutional
-          license is billed per student.
-        </p>
-        <Button onClick={handleSubscribe} disabled={paying}>
-          {paying ? 'Redirecting to checkout...' : 'Pay / renew school license'}
-        </Button>
-      </div>
+      <LicenceCard onLicenceChange={() => fetchDashboard({ quiet: true })} />
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: '16px', marginBottom: '24px' }}>
         <div className="card" style={{ padding: '16px', textAlign: 'center' }}>
@@ -175,6 +143,18 @@ const SchoolAdminDashboard = () => {
           No students yet. Share the join code above so students can link themselves to {school?.name}.
         </div>
       ) : (
+        <>
+          <div className="school-roster__bar">
+            <h3>Students</h3>
+            {detailed ? (
+              <Button variant="secondary" size="sm" icon={Download} onClick={handleExport} disabled={exporting}>
+                {exporting ? 'Preparing…' : 'Download spreadsheet'}
+              </Button>
+            ) : (
+              <span className="school-roster__note">Progress for each student comes with the school licence.</span>
+            )}
+          </div>
+          {exportError && <p className="licence-card__error" role="alert">{exportError}</p>}
         <div style={{ overflowX: 'auto' }}>
           <table className="card card--flush" style={{ width: '100%', borderCollapse: 'collapse' }}>
             <thead>
@@ -182,10 +162,14 @@ const SchoolAdminDashboard = () => {
                 <th style={cellStyle}>Name</th>
                 <th style={cellStyle}>Email</th>
                 <th style={cellStyle}>Grade</th>
-                <th style={cellStyle}>Courses</th>
-                <th style={cellStyle}>Lessons</th>
-                <th style={cellStyle}>Quizzes</th>
-                <th style={cellStyle}>Avg. Score</th>
+                {detailed && (
+                  <>
+                    <th style={cellStyle}>Courses</th>
+                    <th style={cellStyle}>Lessons</th>
+                    <th style={cellStyle}>Quizzes</th>
+                    <th style={cellStyle}>Avg. Score</th>
+                  </>
+                )}
               </tr>
             </thead>
             <tbody>
@@ -201,15 +185,20 @@ const SchoolAdminDashboard = () => {
                   </td>
                   <td style={cellStyle}>{student.email}</td>
                   <td style={cellStyle}>{student.grade || '-'}</td>
-                  <td style={cellStyle}>{student.courses_enrolled}</td>
-                  <td style={cellStyle}>{student.lessons_completed}/{student.lessons_total}</td>
-                  <td style={cellStyle}>{student.quizzes_taken}</td>
-                  <td style={cellStyle}>{student.quizzes_taken > 0 ? `${student.average_quiz_score}%` : '-'}</td>
+                  {detailed && (
+                    <>
+                      <td style={cellStyle}>{student.courses_enrolled}</td>
+                      <td style={cellStyle}>{student.lessons_completed}/{student.lessons_total}</td>
+                      <td style={cellStyle}>{student.quizzes_taken}</td>
+                      <td style={cellStyle}>{student.quizzes_taken > 0 ? `${student.average_quiz_score}%` : '-'}</td>
+                    </>
+                  )}
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
+        </>
       )}
     </div>
   );

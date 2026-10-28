@@ -65,7 +65,12 @@ limiter = Limiter(
 )
 
 
-def hit_per_account(limit: str, scope: str, account: str) -> None:
+def hit_per_account(
+    limit: str,
+    scope: str,
+    account: str,
+    detail: str = "Too many attempts for this account - please wait and try again",
+) -> None:
     """Counts one attempt against `account` (e.g. an email address) under
     `scope`, in the same storage as the decorator limits, and raises 429
     once `limit` is exceeded. For endpoints where the account isn't known
@@ -78,4 +83,4 @@ def hit_per_account(limit: str, scope: str, account: str) -> None:
         logger.warning(f"Per-account rate limit check skipped (storage error): {e}")
         return
     if not allowed:
-        raise HTTPException(status_code=429, detail="Too many attempts for this account - please wait and try again")
+        raise HTTPException(status_code=429, detail=detail)

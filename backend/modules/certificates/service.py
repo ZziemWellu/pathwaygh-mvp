@@ -16,7 +16,9 @@ from sqlalchemy.orm import Session
 from models.certificate import Certificate
 from models.course import Course
 from models.progress import LessonProgress
+from models.school import School
 from models.user import User
+from modules.licence.service import is_premium
 
 # Excludes visually ambiguous characters (0/O, 1/I/L), same alphabet
 # convention as the school join code - this one is longer (12 chars) since
@@ -68,6 +70,11 @@ def check_and_issue_certificate(db: Session, user: User, course: Course) -> Tupl
     if not lesson_ids.issubset(watched_ids):
         return None, False
 
+    school_name = None
+    if is_premium(db, user.school_id):
+        school = db.query(School).filter(School.id == user.school_id).first()
+        school_name = school.name if school else None
+
     certificate = Certificate(
         user_id=user.id,
         course_id=course.id,
@@ -75,6 +82,7 @@ def check_and_issue_certificate(db: Session, user: User, course: Course) -> Tupl
         recipient_name=user.full_name,
         course_title=course.title,
         lesson_count=len(lesson_ids),
+        school_name=school_name,
     )
     db.add(certificate)
     try:

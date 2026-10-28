@@ -11,9 +11,10 @@ from pydantic import BaseModel
 from sqlalchemy.orm import Session
 
 from core.database import get_db
-from core.rate_limit import limiter, user_or_ip
+from core.rate_limit import hit_per_account, limiter, user_or_ip
 from core.security import get_current_user
 from models.user import User
+from modules.licence.service import TUTOR_LIMIT_FREE, TUTOR_LIMIT_LICENSED, is_premium
 from modules.practice.mastery import weak_skills_for_subject
 from modules.tutor.grounding import build_grounding_context
 from modules.tutor.mathtool import compute_math_sync
@@ -142,7 +143,7 @@ def tutor_root():
 
 
 @router.post("/chat")
-@limiter.limit("20/hour", key_func=user_or_ip)
+@limiter.limit(TUTOR_LIMIT_LICENSED, key_func=user_or_ip)
 def chat(
     request: Request,
     body: ChatRequest,
@@ -155,6 +156,16 @@ def chat(
 
     if not body.message.strip():
         raise HTTPException(status_code=400, detail="Message cannot be empty")
+
+    # Students at a licensed school get the decorator's higher allowance;
+    # everyone else is held to the standard one here.
+    if not is_premium(db, current_user.school_id):
+        hit_per_account(
+            TUTOR_LIMIT_FREE,
+            "tutor_chat",
+            f"user:{current_user.id}",
+            detail="You've reached this hour's AI tutor limit - please try again a little later",
+        )
 
     grounding = None
     try:

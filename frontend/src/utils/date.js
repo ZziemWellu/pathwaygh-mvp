@@ -8,6 +8,11 @@ const LONG = { day: 'numeric', month: 'long', year: 'numeric' }; // 22 October 2
 
 const toDate = (value) => {
   if (value === null || value === undefined || value === '') return null;
+  // A bare calendar date ("2026-12-31") is a day, not an instant: parse it
+  // as local midnight. new Date() would read it as UTC midnight and show
+  // the previous day on any device west of Greenwich.
+  const dateOnly = typeof value === 'string' && /^(\d{4})-(\d{2})-(\d{2})$/.exec(value);
+  if (dateOnly) return new Date(Number(dateOnly[1]), Number(dateOnly[2]) - 1, Number(dateOnly[3]));
   const date = value instanceof Date ? value : new Date(value);
   return isNaN(date.getTime()) ? null : date;
 };

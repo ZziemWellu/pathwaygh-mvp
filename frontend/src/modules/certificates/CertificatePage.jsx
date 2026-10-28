@@ -66,6 +66,11 @@ const CertificatePage = () => {
         <p style={{ fontSize: '32px', fontWeight: 'bold', color: 'var(--primary)', margin: '4px 0' }}>{certificate.recipient_name}</p>
         <p style={{ margin: '4px 0', color: 'var(--gray-500)' }}>has successfully completed</p>
         <p style={{ fontSize: '22px', fontWeight: 'bold', margin: '8px 0' }}>{certificate.course_title}</p>
+        {certificate.school_name && (
+          <p style={{ margin: '4px 0', color: 'var(--gray-500)' }}>
+            as a student of <strong style={{ color: 'var(--text)' }}>{certificate.school_name}</strong>
+          </p>
+        )}
         <p style={{ color: 'var(--gray-500)', fontSize: '13px' }}>
           {certificate.lesson_count} lessons · issued {formatDate(certificate.issued_at, { long: true })}
         </p>

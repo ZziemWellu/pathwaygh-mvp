@@ -7,14 +7,18 @@ anywhere in this router, which is the point: a school admin can never
 address another school's roster by guessing or editing an id.
 """
 
+import csv
+import io
 import os
 import secrets
 from datetime import datetime, timezone
 
 from fastapi import APIRouter, Depends, Header, HTTPException
+from fastapi.responses import Response
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
 
+from core.csv_safe import csv_safe
 from core.database import get_db
 from core.secrets_compare import secrets_match
 from core.security import get_current_user, require_school_admin
@@ -22,6 +26,7 @@ from core.whatsapp import send_whatsapp_message
 from models.school import School
 from models.user import User
 from modules.dashboard.aggregation import overview_for_users, summarize_overviews
+from modules.licence.service import grant_trial, join_block_reason, licence_status
 from modules.school.digest import build_school_digest_text, eligible_admins_for_digest
 
 router = APIRouter(tags=["school"])
@@ -92,6 +97,8 @@ def create_school(
     )
     db.add(school)
     db.flush()
+    # Every new school's first term is free, with the full licence.
+    grant_trial(db, school)
 
     current_user.school_id = school.id
     current_user.is_school_admin = True
@@ -112,6 +119,10 @@ def join_school(
     school = db.query(School).filter(School.join_code == code).first()
     if not school:
         raise HTTPException(status_code=404, detail="Invalid join code")
+
+    blocked = join_block_reason(db, school)
+    if blocked:
+        raise HTTPException(status_code=403, detail=blocked)
 
     current_user.school_id = school.id
     db.commit()
@@ -134,11 +145,21 @@ def set_school_consent(
     return {"success": True, "school": _school_out(school)}
 
 
-@router.get("/dashboard")
-def get_school_dashboard(current_user: User = Depends(require_school_admin), db: Session = Depends(get_db)):
-    students = db.query(User).filter(User.school_id == current_user.school_id).all()
-    overview_by_user = overview_for_users(db, [s.id for s in students])
+# Per-student stats in the roster are part of the paid licence; the free
+# plan still shows who's enrolled and the school-wide summary.
+_PER_STUDENT_FIELDS = (
+    "courses_enrolled",
+    "lessons_completed",
+    "lessons_total",
+    "quizzes_taken",
+    "average_quiz_score",
+    "average_quiz_time_seconds",
+)
 
+
+def _roster(db: Session, school_id: int) -> tuple:
+    students = db.query(User).filter(User.school_id == school_id).all()
+    overview_by_user = overview_for_users(db, [s.id for s in students])
     roster = [
         {
             "id": s.id,
@@ -150,15 +171,56 @@ def get_school_dashboard(current_user: User = Depends(require_school_admin), db:
         }
         for s in students
     ]
+    return roster, summarize_overviews(list(overview_by_user.values()))
 
+
+@router.get("/dashboard")
+def get_school_dashboard(current_user: User = Depends(require_school_admin), db: Session = Depends(get_db)):
     school = db.query(School).filter(School.id == current_user.school_id).first()
+    roster, summary = _roster(db, current_user.school_id)
+    licence = licence_status(db, school) if school else None
+
+    if not (licence and licence["premium"]):
+        for row in roster:
+            for field in _PER_STUDENT_FIELDS:
+                row.pop(field, None)
 
     return {
         "success": True,
         "school": _school_out(school) if school else None,
+        "licence": licence,
         "roster": roster,
-        "summary": summarize_overviews(list(overview_by_user.values())),
+        "summary": summary,
     }
+
+
+@router.get("/dashboard/export.csv")
+def export_school_roster(current_user: User = Depends(require_school_admin), db: Session = Depends(get_db)):
+    school = db.query(School).filter(School.id == current_user.school_id).first()
+    if not school or not licence_status(db, school)["premium"]:
+        raise HTTPException(status_code=402, detail="Downloading reports is part of the school licence")
+
+    roster, _ = _roster(db, school.id)
+    out = io.StringIO()
+    writer = csv.writer(out)
+    writer.writerow(["Name", "Email", "Grade", "Role", "Courses", "Lessons completed", "Lessons total",
+                     "Quizzes taken", "Average quiz score (%)"])
+    for row in roster:
+        writer.writerow([
+            csv_safe(row["full_name"]),
+            csv_safe(row["email"]),
+            csv_safe(row["grade"]),
+            "Admin" if row["is_school_admin"] else "Student",
+            row["courses_enrolled"], row["lessons_completed"], row["lessons_total"], row["quizzes_taken"],
+            row["average_quiz_score"] if row["quizzes_taken"] else "",
+        ])
+
+    filename = f"{school.join_code}-progress-{datetime.now(timezone.utc):%Y-%m-%d}.csv"
+    return Response(
+        content=out.getvalue(),
+        media_type="text/csv",
+        headers={"Content-Disposition": f'attachment; filename="{filename}"'},
+    )
 
 
 @router.post("/send-digests")

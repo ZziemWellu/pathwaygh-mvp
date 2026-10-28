@@ -70,6 +70,14 @@ def verify(*, reference, external_reference):
     # response.status is whether the API CALL succeeded; the actual
     # transaction status is response.data.status ("success" / "failed" /
     # "abandoned") - these are deliberately not the same thing.
-    provider_status = body["data"]["status"]
+    data = body["data"]
+    provider_status = data["status"]
     normalized_status = provider_status if provider_status in {"success", "failed", "abandoned"} else "pending"
-    return {"status": normalized_status, "provider_status": provider_status}
+    # Amount and currency as Paystack actually charged them - the router
+    # compares these against what was quoted before granting anything.
+    return {
+        "status": normalized_status,
+        "provider_status": provider_status,
+        "amount_minor_units": data.get("amount"),
+        "currency": data.get("currency"),
+    }

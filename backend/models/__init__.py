@@ -14,6 +14,7 @@ from models.practice_sms_subscriber import PracticeSmsSubscriber
 from models.progress import LessonProgress
 from models.quiz_attempt import QuizAttempt
 from models.school import School
+from models.school_licence import SchoolLicence
 from models.skill_mastery import SkillMastery
 from models.sub_skill_mastery import SubSkillMastery
 from models.user import User
@@ -31,6 +32,7 @@ __all__ = [
     "QuizAttempt",
     "Plan",
     "School",
+    "SchoolLicence",
     "Certificate",
     "SkillMastery",
     "SubSkillMastery",

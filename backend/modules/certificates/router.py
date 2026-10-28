@@ -34,6 +34,7 @@ def _certificate_out(certificate: Certificate) -> dict:
         "course_title": certificate.course_title,
         "recipient_name": certificate.recipient_name,
         "lesson_count": certificate.lesson_count,
+        "school_name": certificate.school_name,
         "issued_at": certificate.issued_at.isoformat() if certificate.issued_at else None,
     }
 

@@ -73,6 +73,9 @@ const CertificateVerify = ({ code: initialCode }) => {
             <h2 style={{ color: 'var(--primary)', margin: '0 0 12px 0' }}>Certificate Verified</h2>
             <p style={{ margin: '4px 0' }}><strong>{result.certificate.recipient_name}</strong></p>
             <p style={{ margin: '4px 0', color: 'var(--text)' }}>completed <strong>{result.certificate.course_title}</strong></p>
+            {result.certificate.school_name && (
+              <p style={{ margin: '4px 0', color: 'var(--text)' }}>at <strong>{result.certificate.school_name}</strong></p>
+            )}
             <p style={{ margin: '4px 0', color: 'var(--gray-500)', fontSize: '13px' }}>
               {result.certificate.lesson_count} lessons · issued {formatDate(result.certificate.issued_at, { long: true })}
             </p>
