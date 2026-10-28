@@ -18,6 +18,7 @@ from fastapi import APIRouter, Depends, Query
 from fastapi.responses import StreamingResponse
 from sqlalchemy.orm import Session
 
+from core.csv_safe import csv_safe
 from core.database import get_db
 from core.security import require_admin
 from models.enrollment import Enrollment
@@ -30,17 +31,6 @@ from modules.dashboard.aggregation import overview_for_users, summarize_overview
 router = APIRouter(tags=["impact"])
 
 UNSCHOOLED_LABEL = "No school (individual learners)"
-
-
-def _csv_safe(value):
-    """Neutralizes CSV/formula injection: Excel/Sheets treats a leading
-    =, +, -, or @ as the start of a formula, and School.name is arbitrary
-    user-supplied text (any authenticated user can self-service-create a
-    school with any name via POST /api/school/create)."""
-    text = "" if value is None else str(value)
-    if text and text[0] in ("=", "+", "-", "@"):
-        return "'" + text
-    return text
 
 
 def _compute_overview(db: Session) -> dict:
@@ -229,7 +219,7 @@ def export_impact_report(
     for row in overview["by_school"]:
         writer.writerow(
             [
-                _csv_safe(row["school_name"]),
+                csv_safe(row["school_name"]),
                 row["country"] or "",
                 row["student_count"],
                 row["average_completion_rate"],

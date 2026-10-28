@@ -36,6 +36,14 @@ class PaymentTransaction(Base):
     currency = Column(String(3), nullable=False)
 
     purpose = Column(String(50), nullable=False)
+
+    # What a licence purchase buys, fixed at quote time so activation
+    # grants exactly what was paid for even if the roster changes before
+    # the payment confirms. licence_kind: "term" | "year" | "top_up".
+    licence_kind = Column(String(20), nullable=True)
+    licence_seats = Column(Integer, nullable=True)
+    price_per_seat_minor = Column(Integer, nullable=True)
+
     school_id = Column(Integer, ForeignKey("schools.id"), nullable=True, index=True)
     initiated_by_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
 

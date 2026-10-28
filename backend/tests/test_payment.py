@@ -47,10 +47,22 @@ def _fake_initialize_success(*args, **kwargs):
     )
 
 
-def _fake_verify_success(*args, **kwargs):
-    return _FakePaystackResponse(
-        {"status": True, "message": "Verification successful", "data": {"status": "success"}}
-    )
+def _fake_verify(status="success", amount=160000, currency="GHS"):
+    """A Paystack verify response reporting what was actually charged."""
+
+    def _get(*args, **kwargs):
+        return _FakePaystackResponse(
+            {
+                "status": True,
+                "message": "Verification successful",
+                "data": {"status": status, "amount": amount, "currency": currency},
+            }
+        )
+
+    return _get
+
+
+_fake_verify_success = _fake_verify()
 
 
 def _fake_verify_failed(*args, **kwargs):
@@ -70,11 +82,11 @@ def test_initialize_requires_school_admin(client):
     assert response.status_code == 403
 
 
-def test_initialize_computes_amount_server_side_from_real_student_count(client, monkeypatch):
-    """The amount is never accepted from the client - it must be derived
-    from the school's actual enrolled-student count and the documented
-    GHS 80/student/year price, even if a request tried to smuggle its own
-    amount in the body."""
+def test_initialize_computes_amount_server_side_not_from_the_client(client, monkeypatch):
+    """The amount is never accepted from the client - it's derived from the
+    school's enrolled-student count (billed at the 20-student minimum
+    here) and the documented GHS 80/student/year price, even if a request
+    tried to smuggle its own amount in the body."""
     monkeypatch.setattr("modules.payment.providers.paystack.requests.post", _fake_initialize_success)
     monkeypatch.setenv("PAYSTACK_SECRET_KEY", "sk_test_fake")
 
@@ -91,20 +103,22 @@ def test_initialize_computes_amount_server_side_from_real_student_count(client, 
     assert response.status_code == 200
     data = response.json()
     assert data["currency"] == "GHS"
-    # 2 students * GHS 80.00 (8000 pesewas) = 16000, not the smuggled "1".
-    assert data["amount_minor_units"] == 16000
+    # 2 students, billed at the 20-student minimum * GHS 80.00 (8000
+    # pesewas) = 160000, not the smuggled "1".
+    assert data["amount_minor_units"] == 160000
+    assert data["quote"]["seats"] == 22  # 20 billed + 10% spare
     assert data["checkout_url"] == "https://checkout.paystack.com/fake123"
 
 
-def test_initialize_with_zero_students_still_bills_for_at_least_one(client, monkeypatch):
+def test_a_term_costs_ghs_30_per_student_with_the_same_minimum(client, monkeypatch):
     monkeypatch.setattr("modules.payment.providers.paystack.requests.post", _fake_initialize_success)
     monkeypatch.setenv("PAYSTACK_SECRET_KEY", "sk_test_fake")
 
     admin_headers, _, _ = _create_school_admin(client, "payment_solo_admin@test.com")
 
-    response = client.post("/api/payment/initialize", json={"provider": "paystack"}, headers=admin_headers)
+    response = client.post("/api/payment/initialize", json={"provider": "paystack", "plan": "term"}, headers=admin_headers)
     assert response.status_code == 200
-    assert response.json()["amount_minor_units"] == 8000
+    assert response.json()["amount_minor_units"] == 20 * 3000
 
 
 def test_initialize_rejects_a_country_with_no_documented_price(client, db_session):
@@ -118,7 +132,7 @@ def test_initialize_rejects_a_country_with_no_documented_price(client, db_sessio
 
     response = client.post("/api/payment/initialize", json={"provider": "paystack"}, headers=admin_headers)
     assert response.status_code == 400
-    assert "no institutional license price" in response.json()["detail"].lower()
+    assert "no institutional licence price" in response.json()["detail"].lower()
 
 
 def test_initialize_with_an_unintegrated_provider_fails_honestly_not_silently(client):

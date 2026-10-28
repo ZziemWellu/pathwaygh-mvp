@@ -21,6 +21,9 @@ class Certificate(Base):
     recipient_name = Column(String(255), nullable=False)
     course_title = Column(String(255), nullable=False)
     lesson_count = Column(Integer, nullable=False)
+    # The student's school, printed on the certificate when that school
+    # held a licence (or trial) at issuance. None otherwise.
+    school_name = Column(String(255), nullable=True)
 
     issued_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
     is_revoked = Column(Boolean, nullable=False, default=False)

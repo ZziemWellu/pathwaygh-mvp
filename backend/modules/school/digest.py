@@ -12,6 +12,7 @@ from sqlalchemy.orm import Session
 
 from models.school import School
 from models.user import User
+from modules.licence.service import is_premium
 from modules.dashboard.aggregation import overview_for_users, summarize_overviews
 
 SCHOOL_DIGEST_COOLDOWN_DAYS = 6
@@ -45,7 +46,7 @@ def build_school_digest_text(db: Session, admin: User) -> Optional[str]:
 
 def eligible_admins_for_digest(db: Session) -> List[User]:
     cutoff = datetime.utcnow() - timedelta(days=SCHOOL_DIGEST_COOLDOWN_DAYS)
-    return (
+    admins = (
         db.query(User)
         .filter(
             User.is_school_admin.is_(True),
@@ -56,3 +57,5 @@ def eligible_admins_for_digest(db: Session) -> List[User]:
         )
         .all()
     )
+    # The weekly school digest is part of the school licence (or trial).
+    return [admin for admin in admins if is_premium(db, admin.school_id)]
