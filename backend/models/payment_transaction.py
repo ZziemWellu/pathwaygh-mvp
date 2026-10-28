@@ -36,8 +36,8 @@ class PaymentTransaction(Base):
     currency = Column(String(3), nullable=False)
 
     purpose = Column(String(50), nullable=False)
-    school_id = Column(Integer, ForeignKey("schools.id"), nullable=True)
-    initiated_by_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    school_id = Column(Integer, ForeignKey("schools.id"), nullable=True, index=True)
+    initiated_by_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
 
     created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
     updated_at = Column(

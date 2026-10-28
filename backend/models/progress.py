@@ -10,7 +10,7 @@ class LessonProgress(Base):
 
     id = Column(Integer, primary_key=True)
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
-    lesson_id = Column(Integer, ForeignKey("lessons.id"), nullable=False)
+    lesson_id = Column(Integer, ForeignKey("lessons.id"), nullable=False, index=True)
     watched = Column(Boolean, nullable=False, default=False)
     watched_at = Column(DateTime, nullable=True)
 

@@ -21,7 +21,7 @@ router = APIRouter(tags=["auth"])
 class RegisterRequest(BaseModel):
     email: EmailStr
     full_name: str = Field(min_length=1, max_length=255)
-    password: str
+    password: str = Field(min_length=8, max_length=128)
     country: Literal["GH", "NG", "SL", "LR", "GM"]
     consent_confirmed: bool
     guardian_email: EmailStr
@@ -43,7 +43,7 @@ class ForgotPasswordRequest(BaseModel):
 class ResetPasswordRequest(BaseModel):
     email: EmailStr
     token: str
-    new_password: str = Field(min_length=6)
+    new_password: str = Field(min_length=8, max_length=128)
 
 
 def _user_out(user: User) -> dict:
@@ -87,7 +87,7 @@ def register(request: Request, body: RegisterRequest, db: Session = Depends(get_
     db.commit()
     db.refresh(user)
 
-    token = create_access_token(user.id)
+    token = create_access_token(user.id, user.token_version or 0)
     return {"success": True, "token": token, "user": _user_out(user)}
 
 
@@ -99,7 +99,7 @@ def login(request: Request, body: LoginRequest, db: Session = Depends(get_db)):
     if not user or not verify_password(body.password, user.password_hash):
         raise HTTPException(status_code=401, detail="Invalid credentials")
 
-    token = create_access_token(user.id)
+    token = create_access_token(user.id, user.token_version or 0)
     return {"success": True, "token": token, "user": _user_out(user)}
 
 

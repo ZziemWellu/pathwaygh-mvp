@@ -4,6 +4,7 @@ Practice Module Router
 
 import random
 import uuid
+from datetime import datetime, timedelta, timezone
 from typing import Dict, Optional
 
 from fastapi import APIRouter, Depends, HTTPException
@@ -12,6 +13,7 @@ from sqlalchemy.orm import Session
 
 from core.database import get_db
 from core.security import get_current_user, get_current_user_optional
+from models.active_quiz import ActiveQuiz
 from models.quiz_attempt import QuizAttempt
 from models.skill_mastery import SkillMastery
 from models.user import User
@@ -43,10 +45,31 @@ class QuizSubmitRequest(BaseModel):
     time_spent: Optional[int] = 30
 
 
-# In-flight quizzes are ephemeral session state (the correct answers must stay
-# server-side while a quiz is being taken); completed results are persisted
-# to QuizAttempt below so history survives a restart.
-active_quizzes: Dict[str, dict] = {}
+# In-flight quizzes keep their correct answers server-side between start and
+# submit. They live in the database (ActiveQuiz), not process memory, so any
+# worker can accept the submit and a deploy doesn't lose a student's quiz.
+# Completed results are persisted to QuizAttempt.
+ACTIVE_QUIZ_TTL = timedelta(hours=6)
+# Per-question maps keyed by question index - JSON storage turns int keys
+# into strings, so they're converted back on load.
+_INDEXED_KEYS = ("correct_answers", "topic_ids", "subject_ids", "sub_skills")
+
+
+def _save_active_quiz(db: Session, quiz_id: str, user_id: int, data: dict) -> None:
+    cutoff = datetime.now(timezone.utc).replace(tzinfo=None) - ACTIVE_QUIZ_TTL
+    db.query(ActiveQuiz).filter(ActiveQuiz.created_at < cutoff).delete(synchronize_session=False)
+    db.add(ActiveQuiz(id=quiz_id, user_id=user_id, data=data))
+    db.commit()
+
+
+def _load_active_quiz(db: Session, quiz_id: str, user_id: int):
+    row = db.get(ActiveQuiz, quiz_id)
+    if row is None or row.user_id != user_id:
+        return None, None
+    data = dict(row.data)
+    for key in _INDEXED_KEYS:
+        data[key] = {int(k): v for k, v in (data.get(key) or {}).items()}
+    return data, row
 
 
 def get_all_questions(
@@ -200,7 +223,7 @@ def start_quiz(
             for q in selected
         ],
     }
-    active_quizzes[quiz_id] = quiz_data
+    _save_active_quiz(db, quiz_id, current_user.id, quiz_data)
 
     return {"success": True, "id": quiz_id, "questions": quiz_data["questions"], "total": len(quiz_data["questions"])}
 
@@ -211,8 +234,8 @@ def submit_quiz(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
-    quiz = active_quizzes.get(request.quiz_id)
-    if not quiz or quiz["user_id"] != current_user.id:
+    quiz, quiz_row = _load_active_quiz(db, request.quiz_id, current_user.id)
+    if not quiz:
         raise HTTPException(status_code=404, detail="Quiz not found")
 
     correct_answers = quiz.get("correct_answers", {})
@@ -258,9 +281,8 @@ def submit_quiz(
         )
     )
     gamification = award_for_quiz_completed(db, current_user, correct_count) if total > 0 else None
+    db.delete(quiz_row)  # same transaction as the attempt: a quiz can't be submitted twice
     db.commit()
-
-    del active_quizzes[request.quiz_id]
 
     return {
         "success": True,

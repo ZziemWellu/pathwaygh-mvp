@@ -93,3 +93,11 @@ def test_a_classroom_logging_in_from_one_ip_is_not_locked_out(client):
         )
     statuses = [client.post("/api/auth/login", json={"email": e, "password": "secret123"}).status_code for e in emails]
     assert statuses == [200] * 12
+
+
+def test_register_rejects_a_password_shorter_than_8_characters(client):
+    response = client.post(
+        "/api/auth/register",
+        json={"email": "shortpw@test.com", "full_name": "A", "password": "abc1234", "country": "GH", "consent_confirmed": True, "guardian_email": "g@test.com"},
+    )
+    assert response.status_code == 422

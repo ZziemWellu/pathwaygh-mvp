@@ -16,7 +16,7 @@ class PeerQuestion(Base):
     __tablename__ = "peer_questions"
 
     id = Column(Integer, primary_key=True)
-    user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
     subject_id = Column(String(100), nullable=True)
     body = Column(Text, nullable=False)
     status = Column(String(20), nullable=False, default="visible")  # visible | pending_review | removed

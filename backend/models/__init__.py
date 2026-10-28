@@ -1,3 +1,4 @@
+from models.active_quiz import ActiveQuiz
 from models.certificate import Certificate
 from models.course import Course, Exercise, Lesson
 from models.enrollment import Enrollment
@@ -19,6 +20,7 @@ from models.user import User
 from models.vocabulary_progress import VocabularyProgress
 
 __all__ = [
+    "ActiveQuiz",
     "User",
     "Course",
     "Lesson",

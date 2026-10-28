@@ -15,8 +15,8 @@ class PeerAnswer(Base):
     __tablename__ = "peer_answers"
 
     id = Column(Integer, primary_key=True)
-    question_id = Column(Integer, ForeignKey("peer_questions.id"), nullable=False)
-    user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    question_id = Column(Integer, ForeignKey("peer_questions.id"), nullable=False, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
     body = Column(Text, nullable=False)
     status = Column(String(20), nullable=False, default="visible")  # visible | pending_review | removed
     flagged_count = Column(Integer, nullable=False, default=0)

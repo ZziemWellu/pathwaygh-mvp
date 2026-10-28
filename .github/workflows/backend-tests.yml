@@ -32,3 +32,54 @@ jobs:
 
       - name: Run tests
         run: pytest -v
+
+  # Production runs Postgres 18. SQLite (above) is fast but differs - it
+  # can't run the migration chain at all, and it returns naive datetimes -
+  # so this job proves migrations apply and roll back, then runs the whole
+  # suite against real Postgres.
+  postgres:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+    services:
+      postgres:
+        image: postgres:18
+        env:
+          POSTGRES_PASSWORD: ci
+          POSTGRES_DB: pathwaygh
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      DATABASE_URL: postgresql+psycopg2://postgres:ci@localhost:5432/pathwaygh
+      TEST_DATABASE_URL: postgresql+psycopg2://postgres:ci@localhost:5432/pgtest
+      SECRET_KEY: ci-test-secret
+      FRONTEND_URL: http://localhost:3000
+      PGPASSWORD: ci
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install -r requirements-dev.txt
+
+      - name: Migrations apply, roll back one step, and re-apply
+        run: |
+          alembic upgrade head
+          alembic downgrade -1
+          alembic upgrade head
+          alembic current | grep -q "(head)"
+
+      - name: Run tests on Postgres
+        run: |
+          psql -h localhost -U postgres -c "CREATE DATABASE pgtest"
+          pytest -q

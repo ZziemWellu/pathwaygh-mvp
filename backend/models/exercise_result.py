@@ -10,8 +10,8 @@ class ExerciseResult(Base):
     __tablename__ = "exercise_results"
 
     id = Column(Integer, primary_key=True)
-    user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
-    lesson_id = Column(Integer, ForeignKey("lessons.id"), nullable=False)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
+    lesson_id = Column(Integer, ForeignKey("lessons.id"), nullable=False, index=True)
     score = Column(Integer, nullable=False)  # percentage 0-100
     correct_count = Column(Integer, nullable=False)
     total_questions = Column(Integer, nullable=False)

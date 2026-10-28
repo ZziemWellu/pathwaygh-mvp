@@ -21,6 +21,7 @@ from pydantic import BaseModel
 from sqlalchemy.orm import Session
 
 from core.database import get_db
+from core.secrets_compare import secrets_match
 from core.rate_limit import limiter
 from models.practice_sms_subscriber import PracticeSmsSubscriber
 from modules.practice_sms.eligibility import build_practice_sms_text, eligible_subscribers_for_practice_sms
@@ -163,7 +164,7 @@ def inbound_sms(
     Talking's documented incoming-SMS webhook format, not guessed.
     """
     expected_token = os.getenv("PRACTICE_SMS_INBOUND_SECRET")
-    if expected_token and token != expected_token:
+    if expected_token and not secrets_match(token, expected_token):
         logger.warning("Rejected an inbound SMS webhook call with a missing/incorrect token")
         return {"success": True}
 
@@ -203,7 +204,7 @@ def send_batch(x_digest_secret: str = Header(...), db: Session = Depends(get_db)
     expected = os.getenv("DIGEST_TRIGGER_SECRET")
     if not expected:
         raise HTTPException(status_code=503, detail="Practice SMS sending is not configured")
-    if x_digest_secret != expected:
+    if not secrets_match(x_digest_secret, expected):
         raise HTTPException(status_code=401, detail="Invalid digest secret")
 
     sent = skipped = failed = 0

@@ -150,3 +150,48 @@ def test_subject_mastery_is_none_before_any_practice(client, auth_headers):
     headers, _ = auth_headers
     subjects = client.get("/api/practice/subjects", headers=headers).json()["subjects"]
     assert all(s["mastery"] is None and s["topics_practised"] == 0 for s in subjects)
+
+
+# --- in-progress quizzes live in the database (multi-worker safe) --------
+
+
+def test_started_quiz_is_stored_in_the_database_and_removed_on_submit(client, db_session, auth_headers):
+    from models.active_quiz import ActiveQuiz
+
+    headers, _ = auth_headers
+    quiz = client.post("/api/practice/quiz/start", json={"subject_id": "mathematics", "question_count": 3}, headers=headers).json()
+    assert db_session.get(ActiveQuiz, quiz["id"]) is not None
+
+    answers = {str(i): KNOWN_ANSWERS[q["id"]] for i, q in enumerate(quiz["questions"])}
+    first = client.post("/api/practice/quiz/submit", json={"quiz_id": quiz["id"], "answers": answers}, headers=headers)
+    assert first.status_code == 200
+    assert first.json()["score"] == 100  # answer keys survive the JSON round trip (int -> str -> int)
+    db_session.expire_all()
+    assert db_session.get(ActiveQuiz, quiz["id"]) is None
+
+    again = client.post("/api/practice/quiz/submit", json={"quiz_id": quiz["id"], "answers": answers}, headers=headers)
+    assert again.status_code == 404
+
+
+def test_a_quiz_cannot_be_submitted_by_another_student(client):
+    from tests.conftest import register_user
+
+    owner = register_user(client, email="owner@test.com")
+    other = register_user(client, email="other@test.com")
+    quiz = client.post("/api/practice/quiz/start", json={"subject_id": "mathematics"}, headers={"Authorization": f"Bearer {owner['token']}"}).json()
+    response = client.post("/api/practice/quiz/submit", json={"quiz_id": quiz["id"], "answers": {}}, headers={"Authorization": f"Bearer {other['token']}"})
+    assert response.status_code == 404
+
+
+def test_stale_in_progress_quizzes_are_purged(client, db_session, auth_headers):
+    from datetime import datetime, timedelta, timezone
+
+    from models.active_quiz import ActiveQuiz
+
+    headers, user = auth_headers
+    stale = ActiveQuiz(id="quiz_stale", user_id=user["id"], data={}, created_at=datetime.now(timezone.utc).replace(tzinfo=None) - timedelta(hours=7))
+    db_session.add(stale)
+    db_session.commit()
+    client.post("/api/practice/quiz/start", json={"subject_id": "mathematics"}, headers=headers)
+    db_session.expire_all()
+    assert db_session.get(ActiveQuiz, "quiz_stale") is None

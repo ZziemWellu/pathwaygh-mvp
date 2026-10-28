@@ -12,7 +12,7 @@ class Certificate(Base):
 
     id = Column(Integer, primary_key=True)
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
-    course_id = Column(Integer, ForeignKey("courses.id"), nullable=False)
+    course_id = Column(Integer, ForeignKey("courses.id"), nullable=False, index=True)
     code = Column(String(20), unique=True, nullable=False, index=True)
 
     # Snapshots taken at issuance, never live-joined - a certificate already

@@ -15,6 +15,7 @@ from fastapi import APIRouter, Depends, Header, HTTPException
 from sqlalchemy.orm import Session
 
 from core.database import get_db
+from core.secrets_compare import secrets_match
 from core.whatsapp import send_whatsapp_message
 from modules.parent.digest import build_digest_text, eligible_users_for_digest
 
@@ -31,7 +32,7 @@ def send_digests(x_digest_secret: str = Header(...), db: Session = Depends(get_d
     expected = os.getenv("DIGEST_TRIGGER_SECRET")
     if not expected:
         raise HTTPException(status_code=503, detail="Digest sending is not configured")
-    if x_digest_secret != expected:
+    if not secrets_match(x_digest_secret, expected):
         raise HTTPException(status_code=401, detail="Invalid digest secret")
 
     sent = skipped = failed = 0
