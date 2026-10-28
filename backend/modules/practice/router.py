@@ -29,7 +29,9 @@ router = APIRouter(tags=["practice"])
 
 
 class QuizStartRequest(BaseModel):
-    subject_id: str
+    # None = a mixed "quick quiz" across every subject in the student's
+    # country; each question still credits mastery to its own subject.
+    subject_id: Optional[str] = None
     topic: Optional[str] = None
     difficulty: Optional[str] = None
     question_count: Optional[int] = 5
@@ -88,7 +90,11 @@ def practice_root():
 
 
 @router.get("/subjects")
-def get_subjects(country: Optional[str] = None, current_user: Optional[User] = Depends(get_current_user_optional)):
+def get_subjects(
+    country: Optional[str] = None,
+    current_user: Optional[User] = Depends(get_current_user_optional),
+    db: Session = Depends(get_db),
+):
     # Default a signed-in student to their own country's question banks.
     # Every country's bank reuses the same names ("Mathematics", "English
     # Language"), so without this a Ghanaian student saw five identical
@@ -98,6 +104,13 @@ def get_subjects(country: Optional[str] = None, current_user: Optional[User] = D
     if country is None and current_user is not None:
         country = current_user.country
     data = load_questions()
+    # Per-subject mastery (mean decayed mastery of the topics practised), so
+    # Practice can show progress per subject. None until the student has
+    # answered something in that subject.
+    mastery_by_subject: dict = {}
+    if current_user is not None:
+        for m in db.query(SkillMastery).filter(SkillMastery.user_id == current_user.id).all():
+            mastery_by_subject.setdefault(m.subject_id, []).append(effective_mastery(m))
     subjects = []
     for s in data.get("subjects", []):
         if country and s.get("country") != country:
@@ -108,8 +121,17 @@ def get_subjects(country: Optional[str] = None, current_user: Optional[User] = D
             q_count = len(t.get("questions", []))
             question_count += q_count
             topics.append({"id": t["id"], "name": t["name"], "question_count": q_count})
+        practised = mastery_by_subject.get(s["id"], [])
         subjects.append(
-            {"id": s["id"], "name": s["name"], "icon": s.get("icon", "\U0001F4DA"), "topics": topics, "question_count": question_count}
+            {
+                "id": s["id"],
+                "name": s["name"],
+                "icon": s.get("icon", "\U0001F4DA"),
+                "topics": topics,
+                "question_count": question_count,
+                "mastery": round(sum(practised) / len(practised) * 100) if practised else None,
+                "topics_practised": len(practised),
+            }
         )
     return {"success": True, "subjects": subjects}
 
@@ -150,7 +172,7 @@ def start_quiz(
 
         mastery_rows = (
             db.query(SkillMastery)
-            .filter(SkillMastery.user_id == current_user.id, SkillMastery.subject_id == request.subject_id)
+            .filter(SkillMastery.user_id == current_user.id, SkillMastery.subject_id.in_({q["subject_id"] for q in questions}))
             .all()
         )
         masteries = {m.topic_id: effective_mastery(m) for m in mastery_rows}
@@ -171,6 +193,7 @@ def start_quiz(
         "topic": request.topic,
         "correct_answers": {i: q["correct"] for i, q in enumerate(selected)},
         "topic_ids": {i: q.get("topic_id") for i, q in enumerate(selected)},
+        "subject_ids": {i: q.get("subject_id") for i, q in enumerate(selected)},
         "sub_skills": {i: q.get("sub_skill") for i, q in enumerate(selected)},
         "questions": [
             {"id": q["id"], "question": q["question"], "options": q.get("options", []), "difficulty": q.get("difficulty", "medium")}
@@ -196,7 +219,7 @@ def submit_quiz(
     topic_ids = quiz.get("topic_ids", {})
     sub_skills = quiz.get("sub_skills", {})
     quiz_questions = quiz.get("questions", [])
-    subject_id = quiz.get("subject_id")
+    subject_ids = quiz.get("subject_ids", {})
     correct_count = 0
     results = []
     # Fresh per request: a single quiz commonly has multiple questions from
@@ -212,6 +235,7 @@ def submit_quiz(
         results.append({"question_index": idx, "user_answer": answer, "correct_answer": correct_answers.get(idx, ""), "is_correct": is_correct})
 
         topic_id = topic_ids.get(idx)
+        subject_id = subject_ids.get(idx) or quiz.get("subject_id")
         if topic_id and subject_id and idx < len(quiz_questions):
             num_options = len(quiz_questions[idx].get("options", []))
             record_topic_attempt(db, mastery_cache, current_user.id, subject_id, topic_id, is_correct, num_options)

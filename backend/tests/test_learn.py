@@ -68,3 +68,46 @@ def test_lesson_progress_persists(client, db_session, auth_headers):
 
     lesson = client.get("/api/learn/lessons/test-lesson", headers=headers)
     assert lesson.json()["watched"] is True
+
+
+# --- course list carries progress, length and the next lesson -----------
+
+
+def test_course_list_reports_progress_duration_and_next_lesson(client, db_session, auth_headers):
+    from models.course import Course, Lesson
+
+    course = Course(slug="prog-course", title="Progress Course", level="shs")
+    db_session.add(course)
+    db_session.flush()
+    l1 = Lesson(course_id=course.id, slug="prog-1", title="One", lesson_type="video", order_index=0, duration_minutes=30, is_free_preview=True)
+    l2 = Lesson(course_id=course.id, slug="prog-2", title="Two", lesson_type="video", order_index=1, duration_minutes=45)
+    db_session.add_all([l1, l2])
+    db_session.commit()
+    headers, _ = auth_headers
+
+    item = next(c for c in client.get("/api/learn/courses", headers=headers).json() if c["id"] == "prog-course")
+    assert item["duration_minutes"] == 75
+    assert item["progress"] == 0
+    assert item["next_lesson"] == {"id": "prog-1", "title": "One", "is_free_preview": True}
+
+    client.post("/api/learn/courses/prog-course/enroll", headers=headers)
+    client.post("/api/learn/lessons/prog-1/progress", json={"watched": True}, headers=headers)
+    item = next(c for c in client.get("/api/learn/courses", headers=headers).json() if c["id"] == "prog-course")
+    assert item["lessons_completed"] == 1
+    assert item["progress"] == 50
+    assert item["next_lesson"]["id"] == "prog-2"
+
+
+def test_course_duration_is_none_when_any_lesson_lacks_one(client, db_session):
+    from models.course import Course, Lesson
+
+    course = Course(slug="partial-course", title="Partial", level="jhs")
+    db_session.add(course)
+    db_session.flush()
+    db_session.add_all([
+        Lesson(course_id=course.id, slug="p-1", title="A", lesson_type="video", order_index=0, duration_minutes=20),
+        Lesson(course_id=course.id, slug="p-2", title="B", lesson_type="video", order_index=1),
+    ])
+    db_session.commit()
+    item = next(c for c in client.get("/api/learn/courses").json() if c["id"] == "partial-course")
+    assert item["duration_minutes"] is None

@@ -113,3 +113,40 @@ def test_explicit_country_query_still_overrides_the_default(client, auth_headers
 def test_anonymous_subjects_listing_is_unchanged(client):
     response = client.get("/api/practice/subjects")
     assert len(response.json()["subjects"]) == 15
+
+
+# --- mixed quick quiz + per-subject mastery ------------------------------
+
+
+def test_quick_quiz_without_subject_mixes_the_students_country_subjects(client, auth_headers):
+    headers, _ = auth_headers  # registered in GH
+    response = client.post("/api/practice/quiz/start", json={"question_count": 10}, headers=headers)
+    assert response.status_code == 200, response.text
+    quiz = response.json()
+    assert len(quiz["questions"]) == 10
+    gh_ids = {"mathematics", "english", "science"}
+    with open(QUESTIONS_FILE, "r", encoding="utf-8") as f:
+        bank = {q["id"]: s["id"] for s in json.load(f)["subjects"] for t in s["topics"] for q in t["questions"]}
+    assert {bank[q["id"]] for q in quiz["questions"]} <= gh_ids
+
+
+def test_quick_quiz_answers_credit_each_questions_own_subject(client, auth_headers):
+    headers, _ = auth_headers
+    quiz = client.post("/api/practice/quiz/start", json={"question_count": 10}, headers=headers).json()
+    answers = {str(i): KNOWN_ANSWERS[q["id"]] for i, q in enumerate(quiz["questions"])}
+    submitted = client.post("/api/practice/quiz/submit", json={"quiz_id": quiz["id"], "answers": answers}, headers=headers)
+    assert submitted.status_code == 200, submitted.text
+
+    with open(QUESTIONS_FILE, "r", encoding="utf-8") as f:
+        bank = {q["id"]: s["id"] for s in json.load(f)["subjects"] for t in s["topics"] for q in t["questions"]}
+    expected_subjects = {bank[q["id"]] for q in quiz["questions"]}
+    subjects = client.get("/api/practice/subjects", headers=headers).json()["subjects"]
+    practised = {s["id"] for s in subjects if s["mastery"] is not None}
+    assert practised == expected_subjects
+    assert all(0 <= s["mastery"] <= 100 for s in subjects if s["mastery"] is not None)
+
+
+def test_subject_mastery_is_none_before_any_practice(client, auth_headers):
+    headers, _ = auth_headers
+    subjects = client.get("/api/practice/subjects", headers=headers).json()["subjects"]
+    assert all(s["mastery"] is None and s["topics_practised"] == 0 for s in subjects)

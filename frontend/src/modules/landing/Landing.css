@@ -1,0 +1,464 @@
+/* Signed-out landing page. Colours come from the design tokens in
+   styles/globals.css; layout is fluid down to a 360px phone. */
+.landing {
+  color: var(--text);
+  background: var(--bg-warm);
+}
+
+.landing__inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.landing__section {
+  padding-top: 72px;
+  padding-bottom: 72px;
+}
+
+.landing__bar {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.landing__brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 22px;
+  color: var(--primary);
+}
+
+.landing__nav {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  flex-wrap: wrap;
+  font-weight: 600;
+}
+
+.landing__nav a {
+  color: var(--gray-700);
+  text-decoration: none;
+}
+
+.landing__nav a:hover {
+  color: var(--primary);
+}
+
+.landing__hero {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 32px 24px 72px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 56px;
+}
+
+.landing__hero-copy {
+  flex: 999 1 520px;
+  min-width: 0;
+}
+
+.landing__eyebrow {
+  display: inline-block;
+  margin: 0 0 18px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: var(--accent-bg);
+  border: 1px solid var(--accent-border);
+  color: var(--accent-strong);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.landing__eyebrow--plain {
+  padding: 0;
+  border: none;
+  background: none;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-size: 13px;
+  margin-bottom: 10px;
+}
+
+.landing__title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(38px, 6vw, 60px);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  color: var(--gray-900);
+}
+
+.landing__title span {
+  color: var(--primary);
+}
+
+.landing__lede {
+  margin: 24px 0 0;
+  max-width: 560px;
+  font-size: clamp(17px, 2vw, 20px);
+  line-height: 1.55;
+  color: var(--gray-700);
+}
+
+.landing__ctas {
+  margin-top: 32px;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.landing__label {
+  margin: 36px 0 12px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-subtle);
+}
+
+.landing__countries {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.landing__countries li {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+/* Decorative phone preview of the student Home screen. */
+.landing__phone {
+  flex: 1 1 300px;
+  display: flex;
+  justify-content: center;
+}
+
+.landing__phone-screen {
+  width: 280px;
+  height: 560px;
+  border-radius: 34px;
+  border: 12px solid var(--gray-900);
+  background: var(--bg-warm);
+  box-shadow: 0 30px 60px rgba(28, 27, 22, 0.25);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  font-size: 12px;
+}
+
+.landing__phone-band {
+  height: 5px;
+  background: var(--kente);
+}
+
+.landing__phone-head {
+  padding: 12px 14px 4px;
+  font-family: var(--font-display);
+  font-weight: 800;
+  color: var(--primary);
+  font-size: 14px;
+}
+
+.landing__phone-greet {
+  padding: 4px 14px 0;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 17px;
+}
+
+.landing__phone-greet small {
+  display: block;
+  font-family: var(--font-family);
+  font-weight: 400;
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.landing__phone-next {
+  margin: 12px 14px 0;
+  padding: 12px;
+  border-radius: 14px;
+  background: var(--primary);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.landing__phone-next small {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent-border);
+}
+
+.landing__phone-next strong {
+  font-family: var(--font-display);
+  font-size: 14px;
+}
+
+.landing__phone-next em {
+  margin-top: 8px;
+  align-self: flex-start;
+  font-style: normal;
+  font-weight: 700;
+  padding: 6px 12px;
+  border-radius: 8px;
+  background: var(--accent);
+  color: var(--gray-900);
+}
+
+.landing__phone-row {
+  margin: 8px 14px 0;
+  padding: 10px 12px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  font-weight: 600;
+}
+
+.landing__phone-tabs {
+  margin-top: auto;
+  height: 46px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+.landing__phone-tabs b {
+  color: var(--primary);
+}
+
+.landing__band {
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 72px 0;
+}
+
+.landing__h2 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(28px, 4vw, 38px);
+  color: var(--gray-900);
+}
+
+.landing__h2::after {
+  content: '';
+  display: block;
+  width: 64px;
+  height: 5px;
+  margin-top: 10px;
+  border-radius: 3px;
+  background: var(--kente);
+}
+
+.landing__steps {
+  list-style: none;
+  margin: 40px 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 24px;
+}
+
+.landing__steps li {
+  padding: 28px;
+  border-radius: 18px;
+  background: var(--bg-warm);
+  border: 1px solid var(--border);
+}
+
+.landing__step-num {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--primary);
+  color: white;
+  font-family: var(--font-display);
+  font-weight: 800;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.landing__steps h3,
+.landing__features h3 {
+  margin: 18px 0 8px;
+  font-family: var(--font-display);
+  font-size: 20px;
+}
+
+.landing__steps p,
+.landing__features p {
+  margin: 0;
+  color: var(--gray-700);
+  line-height: 1.6;
+}
+
+.landing__features {
+  margin-top: 40px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.landing__tile {
+  width: 48px;
+  height: 48px;
+  border-radius: 13px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.landing__tile--primary { background: var(--primary-bg); color: var(--primary); }
+.landing__tile--accent { background: var(--accent-bg); color: var(--accent-strong); }
+.landing__tile--violet { background: var(--violet-bg); color: var(--violet); }
+.landing__tile--info { background: var(--info-bg); color: var(--info); }
+.landing__tile--rose { background: var(--rose-bg); color: var(--rose); }
+
+.landing__languages {
+  background: var(--primary);
+  color: white;
+  padding: 64px 0;
+}
+
+.landing__languages-inner {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 32px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.landing__languages-inner > div {
+  flex: 999 1 460px;
+  min-width: 0;
+}
+
+.landing__languages h2 {
+  margin: 0;
+  color: white; /* global h2 colour would otherwise win: dark on dark green */
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(26px, 3.5vw, 34px);
+}
+
+.landing__languages p {
+  margin: 14px 0 0;
+  max-width: 560px;
+  font-size: 18px;
+  line-height: 1.6;
+  color: var(--primary-bg);
+}
+
+.landing__languages ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.landing__languages li {
+  padding: 12px 20px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  font-weight: 700;
+}
+
+.landing__languages li.is-accent {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--gray-900);
+}
+
+.landing__schools {
+  padding: 40px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 28px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.landing__schools > div {
+  flex: 999 1 420px;
+  min-width: 0;
+}
+
+.landing__schools h2 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(24px, 3vw, 32px);
+}
+
+.landing__schools p {
+  margin: 14px 0 0;
+  font-size: 17px;
+  line-height: 1.6;
+  color: var(--gray-700);
+}
+
+.landing__footer {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+  color: var(--text-subtle);
+  font-size: 14px;
+}
+
+@media (max-width: 640px) {
+  .landing__nav a {
+    display: none; /* section links are in-page; the CTAs stay */
+  }
+
+  .landing__phone {
+    display: none; /* the real app is one tap away on a phone */
+  }
+
+  .landing__schools {
+    padding: 24px;
+  }
+}

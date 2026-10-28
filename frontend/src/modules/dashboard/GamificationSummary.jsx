@@ -6,7 +6,9 @@ import api from '../../services/api';
 // A compact, always-visible entry point to the full progress page
 // (modules/gamification/GamificationPage.jsx) - without this, XP and
 // streaks exist only in API responses no student ever sees.
-const GamificationSummary = () => {
+// hideWhenEmpty: render nothing for a brand-new student (0 XP) instead of
+// leading with zeros.
+const GamificationSummary = ({ hideWhenEmpty = false }) => {
   const navigate = useNavigate();
   const [profile, setProfile] = useState(null);
 
@@ -15,6 +17,7 @@ const GamificationSummary = () => {
   }, []);
 
   if (!profile) return null;
+  if (hideWhenEmpty && !profile.xp_points) return null;
 
   return (
     <button

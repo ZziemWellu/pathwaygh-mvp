@@ -3,6 +3,9 @@ Dashboard Module Router - real aggregation over enrollments, lesson
 progress, and quiz history. No fabricated numbers.
 """
 
+from datetime import timedelta
+from typing import Optional
+
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
@@ -10,6 +13,7 @@ from core.database import get_db
 from core.security import get_current_user
 from models.course import Course, Lesson
 from models.enrollment import Enrollment
+from models.gamification import GamificationProfile, today_utc
 from models.progress import LessonProgress
 from models.quiz_attempt import QuizAttempt
 from models.skill_mastery import SkillMastery
@@ -57,12 +61,7 @@ def get_dashboard_summary(current_user: User = Depends(get_current_user), db: Se
         if continue_learning is None:
             next_lesson = next((l for l in lessons if l.id not in watched_lesson_ids), None)
             if next_lesson:
-                continue_learning = {
-                    "course_id": course.slug,
-                    "course_title": course.title,
-                    "lesson_id": next_lesson.slug,
-                    "lesson_title": next_lesson.title,
-                }
+                continue_learning = _lesson_step(course, lessons, next_lesson)
 
     quiz_attempts = (
         db.query(QuizAttempt)
@@ -121,6 +120,7 @@ def get_dashboard_summary(current_user: User = Depends(get_current_user), db: Se
     recent_activity.sort(key=lambda a: a["time"] or "", reverse=True)
 
     overview = overview_for_users(db, [current_user.id])[current_user.id]
+    profile = db.query(GamificationProfile).filter(GamificationProfile.user_id == current_user.id).first()
 
     return {
         "success": True,
@@ -130,4 +130,69 @@ def get_dashboard_summary(current_user: User = Depends(get_current_user), db: Se
         "weak_subjects": weak_subjects,
         "weak_topics": weak_topics,
         "recent_activity": recent_activity[:6],
+        "next_step": _next_step(db, current_user, continue_learning, watched_lesson_ids),
+        "week": _week_activity(profile),
     }
+
+
+def _lesson_step(course: Course, lessons: list, lesson: Lesson) -> dict:
+    return {
+        "course_id": course.slug,
+        "course_title": course.title,
+        "lesson_id": lesson.slug,
+        "lesson_title": lesson.title,
+        "lesson_number": lessons.index(lesson) + 1,
+        "lessons_total": len(lessons),
+        "duration_minutes": lesson.duration_minutes,
+        "is_free_preview": lesson.is_free_preview,
+    }
+
+
+def level_from_grade(grade: Optional[str]) -> Optional[str]:
+    """'JHS 2' -> 'jhs', 'SHS 1' -> 'shs', 'University' -> 'university'.
+    Grade is the profile's free-text field (the Profile form offers exactly
+    these values), so match on the prefix rather than the exact string."""
+    if not grade:
+        return None
+    g = grade.strip().lower()
+    for level in ("jhs", "shs"):
+        if g.startswith(level):
+            return level
+    return "university" if g.startswith("univ") else None
+
+
+def _next_step(db: Session, user: User, continue_learning: Optional[dict], watched_ids: set) -> dict:
+    """The single most useful thing for this student to do next, so Home can
+    lead with one clear action instead of a page of zero counters:
+    continue an enrolled course > start the first course at their level >
+    ask their level > (nothing course-shaped left) practise."""
+    if continue_learning:
+        return {"kind": "continue", **continue_learning}
+    level = level_from_grade(user.grade)
+    if level is None:
+        return {"kind": "choose_level"}
+    if level in ("jhs", "shs"):
+        courses = db.query(Course).filter(Course.level == level).all()
+        # The student's own country first, then alphabetical for stability.
+        courses.sort(key=lambda c: (c.country != user.country, c.title))
+        for course in courses:
+            lessons = sorted(course.lessons, key=lambda l: l.order_index)
+            lesson = next((l for l in lessons if l.id not in watched_ids), None)
+            if lesson:
+                return {"kind": "start", "level": level, **_lesson_step(course, lessons, lesson)}
+    return {"kind": "practice", "level": level}
+
+
+def _week_activity(profile: Optional[GamificationProfile]) -> list:
+    """Monday-Sunday of the current week, each marked active or not.
+    current_streak_days counts consecutive active days ending on
+    last_activity_date, so those days are known-active without storing a
+    per-day history."""
+    today = today_utc()
+    monday = today - timedelta(days=today.weekday())
+    active = set()
+    if profile and profile.last_activity_date and profile.current_streak_days:
+        for i in range(min(profile.current_streak_days, 7)):
+            active.add(profile.last_activity_date - timedelta(days=i))
+    days = (monday + timedelta(days=i) for i in range(7))
+    return [{"date": d.isoformat(), "active": d in active, "is_today": d == today} for d in days]
