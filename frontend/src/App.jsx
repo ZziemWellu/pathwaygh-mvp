@@ -8,7 +8,7 @@ import NigeriaFlag from './components/common/NigeriaFlag';
 import SierraLeoneFlag from './components/common/SierraLeoneFlag';
 import LiberiaFlag from './components/common/LiberiaFlag';
 import GambiaFlag from './components/common/GambiaFlag';
-import { User, LogOut } from 'lucide-react';
+import { ArrowLeft, LogOut, User } from 'lucide-react';
 import Login from './components/auth/Login';
 import Register from './components/auth/Register';
 import ForgotPassword from './components/auth/ForgotPassword';
@@ -21,6 +21,7 @@ import PrivacyPolicy from './modules/legal/PrivacyPolicy';
 import CertificateVerify from './modules/certificates/CertificateVerify';
 import Button from './components/ui/Button';
 import MobileTabBar from './components/common/MobileTabBar';
+import Landing from './modules/landing/Landing';
 
 const COUNTRY_FLAGS = { GH: GhanaFlag, NG: NigeriaFlag, SL: SierraLeoneFlag, LR: LiberiaFlag, GM: GambiaFlag };
 const COUNTRY_NAMES = { GH: 'Ghana', NG: 'Nigeria', SL: 'Sierra Leone', LR: 'Liberia', GM: 'The Gambia' };
@@ -76,6 +77,9 @@ const App = () => {
   const [showForgotPassword, setShowForgotPassword] = useState(false);
   const [country, setCountryState] = useState(null);
   const [showPrivacy, setShowPrivacy] = useState(false);
+  // First-time visitors (no country chosen on this device yet) see the
+  // landing page; a returning device goes straight to sign-in as before.
+  const [showLanding, setShowLanding] = useState(() => !getCountry());
 
   useEffect(() => {
     const userData = getUser();
@@ -90,6 +94,18 @@ const App = () => {
   const handleCountrySelect = (code) => {
     persistCountry(code);
     setCountryState(code);
+  };
+
+  const startRegistration = () => {
+    setShowLanding(false);
+    setShowForgotPassword(false);
+    setShowLogin(false);
+  };
+
+  const startSignIn = () => {
+    setShowLanding(false);
+    setShowForgotPassword(false);
+    setShowLogin(true);
   };
 
   const handleChangeCountry = () => {
@@ -136,12 +152,19 @@ const App = () => {
       return <PrivacyPolicy onBack={() => setShowPrivacy(false)} />;
     }
 
-    if (!country) {
+    if (showLanding) {
+      return <Landing onGetStarted={startRegistration} onSignIn={startSignIn} onShowPrivacy={() => setShowPrivacy(true)} />;
+    }
+
+    // Registering needs a country (it scopes courses and questions); signing
+    // in doesn't - the account already has one - so login skips the picker.
+    if (!country && !showLogin) {
       return (
         <div style={{ maxWidth: '400px', margin: '40px auto', padding: '20px' }}>
+          <Button variant="ghost" size="sm" icon={ArrowLeft} onClick={() => setShowLanding(true)}>Back</Button>
           <header style={{ textAlign: 'center', marginBottom: '30px' }}>
             <h1 style={{ color: 'var(--primary)' }}>PathwayGH</h1>
-            <p style={{ color: 'var(--gray-500)' }}>{t('tagline')}</p>
+            <p style={{ color: 'var(--text-subtle)' }}>{t('tagline')}</p>
           </header>
           <main>
             <div style={{ textAlign: 'center', marginBottom: '16px' }}>
@@ -160,12 +183,13 @@ const App = () => {
       );
     }
 
-    const CountryFlag = COUNTRY_FLAGS[country];
+    const CountryFlag = country ? COUNTRY_FLAGS[country] : null;
     return (
       <div style={{ maxWidth: '400px', margin: '40px auto', padding: '20px' }}>
+        <Button variant="ghost" size="sm" icon={ArrowLeft} onClick={() => setShowLanding(true)}>Back</Button>
         <header style={{ textAlign: 'center', marginBottom: '30px' }}>
-          <h1 style={{ color: 'var(--primary)', display: 'flex', alignItems: 'center', gap: '8px', justifyContent: 'center' }}><CountryFlag size={24} /> PathwayGH</h1>
-          <p style={{ color: 'var(--gray-500)' }}>{t('tagline')} • {COUNTRY_NAMES[country]}</p>
+          <h1 style={{ color: 'var(--primary)', display: 'flex', alignItems: 'center', gap: '8px', justifyContent: 'center' }}>{CountryFlag && <CountryFlag size={24} />} PathwayGH</h1>
+          <p style={{ color: 'var(--text-subtle)' }}>{t('tagline')}{country ? ` • ${COUNTRY_NAMES[country]}` : ''}</p>
         </header>
         <main>
           {showForgotPassword ? (
@@ -189,11 +213,13 @@ const App = () => {
               </button>
             </p>
           )}
-          <p style={{ textAlign: 'center', marginTop: '8px' }}>
-            <button onClick={handleChangeCountry} style={{ background: 'none', border: 'none', color: 'var(--gray-500)', cursor: 'pointer', textDecoration: 'underline', fontSize: '13px' }}>
-              {t('changeCountry')}
-            </button>
-          </p>
+          {country && (
+            <p style={{ textAlign: 'center', marginTop: '8px' }}>
+              <button onClick={handleChangeCountry} style={{ background: 'none', border: 'none', color: 'var(--text-subtle)', cursor: 'pointer', textDecoration: 'underline', fontSize: '13px' }}>
+                {t('changeCountry')}
+              </button>
+            </p>
+          )}
           <p style={{ textAlign: 'center', marginTop: '8px' }}>
             <LanguageSwitcher />
           </p>

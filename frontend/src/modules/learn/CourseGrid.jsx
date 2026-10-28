@@ -1,17 +1,36 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import api from '../../services/api';
 import { useLanguage } from '../../contexts/LanguageContext';
-import { BookOpen, BookOpenTextIcon, CircleCheckIcon, TriangleAlertIcon } from 'lucide-react';
+import { BookOpen, BookOpenText, Calculator, CircleCheck, FlaskConical, Languages, TriangleAlertIcon } from 'lucide-react';
 import PageHeader from '../../components/ui/PageHeader';
 import Button from '../../components/ui/Button';
+import './Learn.css';
+
+// [id, label]: undefined label = t('learnAllCourses'), null = t('learnMyCourses').
+const FILTERS = [['all', undefined], ['jhs', 'JHS'], ['shs', 'SHS'], ['mine', null]];
+
+// Cover art per subject, from the course title (courses carry no subject field).
+const coverTheme = (title = '') => {
+  const tt = title.toLowerCase();
+  if (tt.includes('math')) return { Icon: Calculator, tone: 'primary', label: 'Mathematics' };
+  if (tt.includes('english') || tt.includes('literature')) return { Icon: Languages, tone: 'info', label: 'English Language' };
+  if (tt.includes('biology') || tt.includes('science') || tt.includes('chemistry') || tt.includes('physics')) {
+    return { Icon: FlaskConical, tone: 'earth', label: tt.includes('biology') ? 'Biology' : 'Science' };
+  }
+  return { Icon: BookOpenText, tone: 'primary', label: 'Course' };
+};
+
+const formatMinutes = (m) => (m >= 60 ? `${Math.floor(m / 60)} h${m % 60 ? ` ${m % 60} min` : ''}` : `${m} min`);
 
 const CourseGrid = ({ user }) => {
   const { t } = useLanguage();
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [showEnrolledOnly, setShowEnrolledOnly] = useState(false);
+  // 'all' | 'jhs' | 'shs' | 'mine'; levels filter client-side, 'mine' uses /enrolled.
+  const [filter, setFilter] = useState('all');
+  const showEnrolledOnly = filter === 'mine';
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -33,6 +52,8 @@ const CourseGrid = ({ user }) => {
       setLoading(false);
     }
   };
+
+  const visible = filter === 'jhs' || filter === 'shs' ? courses.filter((c) => c.level === filter) : courses;
 
   if (loading) {
     return (
@@ -60,28 +81,29 @@ const CourseGrid = ({ user }) => {
       <PageHeader
         icon={BookOpen}
         title={t('learnHeading')}
-        actions={
-          <>
-            <Button
-              variant={showEnrolledOnly ? 'primary' : 'secondary'}
-              size="sm"
-              icon={BookOpen}
-              aria-pressed={showEnrolledOnly}
-              onClick={() => setShowEnrolledOnly(!showEnrolledOnly)}
-            >
-              {showEnrolledOnly ? t('learnMyCourses') : t('learnAllCourses')}
-            </Button>
-            <span style={{ color: 'var(--text-subtle)', fontSize: '14px' }}>{t('learnCoursesCount').replace('{count}', courses.length)}</span>
-          </>
-        }
+        actions={<span style={{ color: 'var(--text-subtle)', fontSize: '14px' }}>{t('learnCoursesCount').replace('{count}', visible.length)}</span>}
       />
 
-      {courses.length === 0 ? (
-        <div style={{ textAlign: 'center', padding: '60px 20px', color: 'var(--gray-500)' }}>
-          {showEnrolledOnly ? (
+      <div role="group" aria-label="Filter courses" className="learn-filters">
+        {FILTERS.map(([id, label]) => (
+          <button
+            key={id}
+            type="button"
+            aria-pressed={filter === id}
+            className={`learn-chip${filter === id ? ' is-active' : ''}`}
+            onClick={() => setFilter(id)}
+          >
+            {label === null ? t('learnMyCourses') : label === undefined ? t('learnAllCourses') : label}
+          </button>
+        ))}
+      </div>
+
+      {visible.length === 0 ? (
+        <div style={{ textAlign: 'center', padding: '60px 20px', color: 'var(--text-subtle)' }}>
+          {filter === 'mine' ? (
             <div>
               <p>{t('learnNoEnrolledCourses')}</p>
-              <Button size="sm" onClick={() => setShowEnrolledOnly(false)} style={{ marginTop: '12px' }}>
+              <Button size="sm" onClick={() => setFilter('all')} style={{ marginTop: '12px' }}>
                 {t('learnBrowseAllCourses')}
               </Button>
             </div>
@@ -90,49 +112,57 @@ const CourseGrid = ({ user }) => {
           )}
         </div>
       ) : (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '20px' }}>
-          {courses.map((course) => (
-            <div
-              key={course.id}
-              onClick={() => navigate(`/learn/${course.id}`)}
-              style={{
-                border: course.enrolled ? '2px solid var(--primary)' : '1px solid var(--border)',
-                borderRadius: '12px',
-                padding: '20px',
-                background: 'white',
-                cursor: 'pointer',
-                transition: 'all 0.2s ease',
-                position: 'relative',
-                boxShadow: course.enrolled ? '0 2px 8px rgba(26,95,43,0.1)' : '0 2px 4px rgba(0,0,0,0.04)',
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.boxShadow = '0 4px 16px rgba(0,0,0,0.1)';
-                e.currentTarget.style.transform = 'translateY(-2px)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.boxShadow = course.enrolled ? '0 2px 8px rgba(26,95,43,0.1)' : '0 2px 4px rgba(0,0,0,0.04)';
-                e.currentTarget.style.transform = 'translateY(0)';
-              }}
-            >
-              {course.enrolled && (
-                <div style={{ position: 'absolute', top: '12px', right: '12px', background: 'var(--primary)', color: 'white', padding: '2px 10px', borderRadius: '12px', fontSize: '11px', fontWeight: 'bold' }}>
-                  <CircleCheckIcon className="icon-inline" size="1em" aria-hidden="true" /> {t('learnEnrolledBadge')}
+        <ul className="learn-grid">
+          {visible.map((course) => {
+            const theme = coverTheme(course.title);
+            const started = course.lessons_completed > 0;
+            const freeFirst = !course.enrolled && course.lessons_completed === 0 && course.next_lesson?.is_free_preview;
+            const meta = [
+              t('learnLessonsCount').replace('{count}', course.lesson_count || 0),
+              course.duration_minutes && formatMinutes(course.duration_minutes),
+              freeFirst && 'first lesson free',
+            ].filter(Boolean).join(' · ');
+            const resume = course.enrolled && course.next_lesson;
+            return (
+              <li key={course.id} className="card card--flush learn-card">
+                <div className={`learn-cover learn-cover--${theme.tone}`}>
+                  <span className="learn-cover__icon"><theme.Icon size={30} strokeWidth={1.8} aria-hidden="true" /></span>
+                  <span className="learn-cover__subject">{theme.label}</span>
+                  {course.level && <span className="learn-cover__level">{course.level.toUpperCase()}</span>}
                 </div>
-              )}
-              <h3 style={{ color: 'var(--primary)', margin: '0 0 8px 0', paddingRight: '80px' }}>{course.title}</h3>
-              {course.level && (
-                <span style={{ background: 'var(--primary-bg)', padding: '2px 10px', borderRadius: '12px', fontSize: '11px', display: 'inline-block' }}>
-                  {course.level.toUpperCase()}
-                </span>
-              )}
-              <p style={{ color: 'var(--text-muted)', fontSize: '14px', margin: '12px 0' }}>{course.description}</p>
-              <div style={{ fontSize: '12px', color: 'var(--gray-500)' }}><BookOpenTextIcon className="icon-inline" size="1em" aria-hidden="true" /> {t('learnLessonsCount').replace('{count}', course.lesson_count || 0)}</div>
-              <div style={{ marginTop: '12px', fontSize: '12px', color: 'var(--primary)', textAlign: 'center' }}>
-                {course.enrolled ? t('learnContinueLearning') : t('learnViewCourse')}
-              </div>
-            </div>
-          ))}
-        </div>
+                <div className="learn-card__body">
+                  <h2 className="learn-card__title"><Link to={`/learn/${course.id}`}>{course.title}</Link></h2>
+                  {course.description && <p className="learn-card__desc">{course.description}</p>}
+                  <p className="learn-card__meta">{meta}</p>
+                  {course.enrolled && (
+                    <p className="learn-card__enrolled"><CircleCheck size={14} aria-hidden="true" /> {t('learnEnrolledBadge')}</p>
+                  )}
+                  <div className="learn-card__foot">
+                    <div
+                      className="learn-card__track"
+                      role="progressbar"
+                      aria-label={`${course.title} progress`}
+                      aria-valuenow={course.progress || 0}
+                      aria-valuemin={0}
+                      aria-valuemax={100}
+                    >
+                      <div style={{ width: `${course.progress || 0}%` }} />
+                    </div>
+                    <span className="learn-card__status">
+                      {started ? `${course.lessons_completed}/${course.lesson_count}` : 'Not started'}
+                    </span>
+                    <Button
+                      size="sm"
+                      onClick={() => navigate(resume ? `/learn/${course.id}/lessons/${course.next_lesson.id}` : `/learn/${course.id}`)}
+                    >
+                      {resume ? 'Continue' : t('learnViewCourse')}
+                    </Button>
+                  </div>
+                </div>
+              </li>
+            );
+          })}
+        </ul>
       )}
     </div>
   );

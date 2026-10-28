@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import api, { extractData } from '../../services/api';
 import { getUser } from '../../constants/auth';
 import { useGamificationNotify } from '../../contexts/GamificationNotifyContext';
-import { BookOpen, BookOpenIcon, ChartColumn, ChartColumnIcon, CircleCheckIcon, CircleXIcon, Dumbbell, FileText, HouseIcon, PenLine, RocketIcon, RotateCcwIcon, Star, ThumbsUp, TimerIcon, TrendingUp, TrendingUpIcon, TriangleAlertIcon, X } from 'lucide-react';
+import { BookOpen, ChartColumnIcon, CircleCheckIcon, CircleXIcon, Dumbbell, FileText, HouseIcon, PenLine, RotateCcwIcon, Star, ThumbsUp, TimerIcon, TriangleAlertIcon, X, Zap } from 'lucide-react';
 import AIBonusQuestion from './AIBonusQuestion';
+import './Practice.css';
 import { SubjectIcon } from '../../components/ui/icons';
 import { formatDate } from '../../utils/date';
 import PageHeader from '../../components/ui/PageHeader';
@@ -19,9 +21,11 @@ const PracticeModule = () => {
   const [quizResults, setQuizResults] = useState(null);
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [quizHistory, setQuizHistory] = useState([]);
-  const [showHistory, setShowHistory] = useState(false);
+  // One view at a time (tabs): 'subjects' | 'history' | 'stats'.
+  const [view, setView] = useState('subjects');
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [quizLabel, setQuizLabel] = useState('Quiz');
   const [statistics, setStatistics] = useState(null);
-  const [showStats, setShowStats] = useState(false);
   const [timeSpent, setTimeSpent] = useState(0);
   const [timerInterval, setTimerInterval] = useState(null);
   
@@ -31,6 +35,12 @@ const PracticeModule = () => {
     fetchSubjects();
     fetchQuizHistory();
     fetchStatistics();
+    // Home's "Quick quiz" links here with ?quick=1: start the mixed quiz
+    // straight away, and drop the flag so a refresh doesn't restart it.
+    if (searchParams.get('quick') === '1') {
+      setSearchParams({}, { replace: true });
+      startQuiz();
+    }
     return () => {
       if (timerInterval) clearInterval(timerInterval);
     };
@@ -75,7 +85,9 @@ const PracticeModule = () => {
     }
   };
 
+  // No subjectId = a mixed quick quiz across all of the student's subjects.
   const startQuiz = async (subjectId) => {
+    setQuizLabel(subjectId ? subjects.find((s) => s.id === subjectId)?.name || 'Quiz' : 'Quick quiz');
     setQuiz(null);
     setQuizResults(null);
     setQuizAnswers({});
@@ -231,7 +243,7 @@ const PracticeModule = () => {
             </div>
             <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', justifyContent: 'center' }}>
               <Button onClick={resetQuiz}><RotateCcwIcon className="icon-inline" size="1em" aria-hidden="true" /> Retry Quiz</Button>
-              <Button variant="secondary" onClick={() => setShowStats(true)}><ChartColumnIcon className="icon-inline" size="1em" aria-hidden="true" /> Stats</Button>
+              <Button variant="secondary" onClick={() => { resetQuiz(); setView('stats'); }}><ChartColumnIcon className="icon-inline" size="1em" aria-hidden="true" /> Stats</Button>
               <Button variant="secondary" onClick={resetQuiz}><HouseIcon className="icon-inline" size="1em" aria-hidden="true" /> Back</Button>
             </div>
           </div>
@@ -243,7 +255,7 @@ const PracticeModule = () => {
       <div style={{ maxWidth: '800px', margin: '0 auto', padding: '20px' }}>
         <PageHeader
           icon={FileText}
-          title="Quiz"
+          title={quizLabel}
           actions={
             <>
               <span style={{ fontWeight: 'bold', color: 'var(--primary)' }}><TimerIcon className="icon-inline" size="1em" aria-hidden="true" /> {formatTime(timeSpent)}</span>
@@ -305,139 +317,155 @@ const PracticeModule = () => {
 
   return (
     <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '20px' }}>
-      <PageHeader
-        icon={PenLine}
-        title="Practice"
-        actions={
+      <PageHeader icon={PenLine} title="Practice" subtitle={`WASSCE-style questions · ${subjects.length} subjects`} />
+
+      <div role="tablist" aria-label="Practice views" className="practice-tabs">
+        {[['subjects', 'Subjects'], ['history', 'History'], ['stats', 'Stats']].map(([id, label]) => (
+          <button
+            key={id}
+            type="button"
+            role="tab"
+            id={`practice-tab-${id}`}
+            aria-selected={view === id}
+            aria-controls="practice-panel"
+            className={`practice-tab${view === id ? ' is-active' : ''}`}
+            onClick={() => setView(id)}
+          >
+            {label}
+          </button>
+        ))}
+      </div>
+
+      <div id="practice-panel" role="tabpanel" aria-labelledby={`practice-tab-${view}`}>
+        {view === 'subjects' && (
           <>
-            <Button variant={showHistory ? 'primary' : 'secondary'} size="sm" icon={ChartColumn} aria-pressed={showHistory} onClick={() => setShowHistory(!showHistory)}>
-              {showHistory ? 'Back' : 'History'}
-            </Button>
-            <Button variant={showStats ? 'primary' : 'secondary'} size="sm" icon={TrendingUp} aria-pressed={showStats} onClick={() => setShowStats(!showStats)}>
-              Stats
-            </Button>
-            <span style={{ color: 'var(--text-subtle)', fontSize: '14px' }}><BookOpenIcon className="icon-inline" size="1em" aria-hidden="true" /> {subjects.length} subjects</span>
-          </>
-        }
-      />
+            <section className="practice-quick" aria-label="Quick quiz">
+              <span className="practice-quick__icon"><Zap size={24} aria-hidden="true" /></span>
+              <span className="practice-quick__text">
+                <strong>Quick quiz</strong>
+                <span>5 mixed questions from all your subjects · about 5 min</span>
+              </span>
+              <button type="button" className="practice-quick__go" onClick={() => startQuiz()}>Go</button>
+            </section>
 
-      <AIBonusQuestion />
-
-      {showStats && statistics && (
-        <div className="card" style={{ padding: '24px', marginBottom: '24px' }}>
-          <h3 style={{ color: 'var(--primary)', margin: '0 0 16px 0' }}><TrendingUpIcon className="icon-inline" size="1em" aria-hidden="true" /> Your Statistics</h3>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', gap: '16px' }}>
-            <div style={{ textAlign: 'center', padding: '12px', background: 'var(--surface-muted)', borderRadius: '8px' }}>
-              <span style={{ display: 'block', fontSize: '28px', fontWeight: 'bold', color: 'var(--primary)' }}>{statistics.total_quizzes || 0}</span>
-              <span style={{ display: 'block', fontSize: '12px', color: 'var(--gray-500)' }}>Total Quizzes</span>
-            </div>
-            <div style={{ textAlign: 'center', padding: '12px', background: 'var(--surface-muted)', borderRadius: '8px' }}>
-              <span style={{ display: 'block', fontSize: '28px', fontWeight: 'bold', color: 'var(--primary)' }}>{statistics.average_score || 0}%</span>
-              <span style={{ display: 'block', fontSize: '12px', color: 'var(--gray-500)' }}>Average Score</span>
-            </div>
-            <div style={{ textAlign: 'center', padding: '12px', background: 'var(--surface-muted)', borderRadius: '8px' }}>
-              <span style={{ display: 'block', fontSize: '28px', fontWeight: 'bold', color: 'var(--primary)' }}>{statistics.best_score || 0}%</span>
-              <span style={{ display: 'block', fontSize: '12px', color: 'var(--gray-500)' }}>Best Score</span>
-            </div>
-            <div style={{ textAlign: 'center', padding: '12px', background: 'var(--surface-muted)', borderRadius: '8px' }}>
-              <span style={{ display: 'block', fontSize: '28px', fontWeight: 'bold', color: 'var(--primary)' }}>{statistics.accuracy || 0}%</span>
-              <span style={{ display: 'block', fontSize: '12px', color: 'var(--gray-500)' }}>Accuracy</span>
-            </div>
-          </div>
-
-          {statistics.topic_mastery && statistics.topic_mastery.length > 0 && (
-            <div style={{ marginTop: '20px' }}>
-              <h4 style={{ color: 'var(--primary)', margin: '0 0 12px 0', fontSize: '14px' }}>Your topic mastery</h4>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                {statistics.topic_mastery.map((topic) => {
-                  const pct = Math.round(topic.mastery_probability * 100);
+            <h2 className="practice-h2">Your subjects</h2>
+            {subjects.length === 0 ? (
+              <p style={{ textAlign: 'center', padding: '40px', color: 'var(--text-subtle)' }}>No practice subjects available.</p>
+            ) : (
+              <ul className="practice-subjects">
+                {subjects.map((subject) => {
+                  const topics = (subject.topics || []).map((topic) => (typeof topic === 'string' ? topic : topic.name)).filter(Boolean);
+                  const mastery = subject.mastery;
                   return (
-                    <div key={`${topic.subject_id}-${topic.topic_id}`}>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px', marginBottom: '4px' }}>
-                        <span>{topic.topic_name}</span>
-                        <span style={{ color: 'var(--gray-500)' }}>{pct}%</span>
+                    <li key={subject.id} className="card practice-subject">
+                      <div className="practice-subject__head">
+                        <span className="practice-subject__icon"><SubjectIcon id={subject.id} size={26} strokeWidth={1.8} /></span>
+                        <span className="practice-subject__text">
+                          <strong>{subject.name}</strong>
+                          <span>{[...topics, `${subject.question_count || 0} questions`].join(' · ')}</span>
+                        </span>
                       </div>
-                      <div style={{ height: '6px', background: 'var(--surface-sunken)', borderRadius: '3px', overflow: 'hidden' }}>
-                        <div style={{ width: `${pct}%`, height: '100%', background: pct < 50 ? 'var(--warning)' : 'var(--primary)', borderRadius: '3px' }} />
+                      <div className="practice-subject__foot">
+                        <div
+                          className="practice-subject__track"
+                          role="progressbar"
+                          aria-label={`${subject.name} mastery`}
+                          aria-valuenow={mastery ?? 0}
+                          aria-valuemin={0}
+                          aria-valuemax={100}
+                        >
+                          <div style={{ width: `${mastery ?? 0}%` }} />
+                        </div>
+                        <span className="practice-subject__status">{mastery == null ? 'Not started' : `${mastery}% mastery`}</span>
+                        <Button size="sm" onClick={() => startQuiz(subject.id)} aria-label={`Start ${subject.name} quiz`}>
+                          {mastery == null ? 'Start' : 'Practise'}
+                        </Button>
+                      </div>
+                    </li>
+                  );
+                })}
+              </ul>
+            )}
+
+            <AIBonusQuestion />
+          </>
+        )}
+
+        {view === 'stats' && (
+          statistics?.total_quizzes > 0 ? (
+            <div className="card" style={{ padding: '24px' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', gap: '16px' }}>
+                <StatBox value={statistics.total_quizzes || 0} label="Total quizzes" />
+                <StatBox value={`${statistics.average_score || 0}%`} label="Average score" />
+                <StatBox value={`${statistics.best_score || 0}%`} label="Best score" />
+                <StatBox value={`${statistics.accuracy || 0}%`} label="Accuracy" />
+              </div>
+
+              {statistics.topic_mastery && statistics.topic_mastery.length > 0 && (
+                <div style={{ marginTop: '20px' }}>
+                  <h3 style={{ color: 'var(--primary)', margin: '0 0 12px 0', fontSize: '15px' }}>Your topic mastery</h3>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                    {statistics.topic_mastery.map((topic) => {
+                      const pct = Math.round(topic.mastery_probability * 100);
+                      return (
+                        <div key={`${topic.subject_id}-${topic.topic_id}`}>
+                          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px', marginBottom: '4px' }}>
+                            <span>{topic.topic_name}</span>
+                            <span style={{ color: 'var(--text-subtle)' }}>{pct}%</span>
+                          </div>
+                          <div style={{ height: '6px', background: 'var(--surface-sunken)', borderRadius: '3px', overflow: 'hidden' }}>
+                            <div style={{ width: `${pct}%`, height: '100%', background: pct < 50 ? 'var(--warning)' : 'var(--primary)', borderRadius: '3px' }} />
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                  <p style={{ fontSize: '12px', color: 'var(--text-subtle)', marginTop: '10px' }}>
+                    Practice quizzes automatically focus more on your weaker topics.
+                  </p>
+                </div>
+              )}
+            </div>
+          ) : (
+            <p style={{ textAlign: 'center', padding: '40px', color: 'var(--text-subtle)' }}>No statistics yet - finish a quiz to see them.</p>
+          )
+        )}
+
+        {view === 'history' && (
+          <div className="card" style={{ padding: '24px' }}>
+            {quizHistory.length === 0 ? (
+              <p style={{ textAlign: 'center', padding: '40px', color: 'var(--text-subtle)' }}>No quiz attempts yet. Start your first quiz!</p>
+            ) : (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                {quizHistory.slice().reverse().map((attempt, i) => {
+                  const scoreColor = getScoreColor(attempt.score || 0);
+                  return (
+                    <div key={i} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px 16px', background: 'var(--surface-muted)', borderRadius: '8px', border: '1px solid var(--border)', flexWrap: 'wrap', gap: '8px' }}>
+                      <div>
+                        <div style={{ fontWeight: 'bold', fontSize: '14px' }}>{attempt.subject || 'Quick quiz'}</div>
+                        <div style={{ fontSize: '12px', color: 'var(--text-subtle)' }}>{formatDate(attempt.date, { fallback: 'Recently' })}</div>
+                      </div>
+                      <div style={{ textAlign: 'right' }}>
+                        <div style={{ fontSize: '20px', fontWeight: 'bold', color: scoreColor }}>{attempt.score || 0}%</div>
+                        <div style={{ fontSize: '12px', color: 'var(--text-subtle)' }}>{attempt.correct || 0}/{attempt.total || 0} correct</div>
                       </div>
                     </div>
                   );
                 })}
               </div>
-              <p style={{ fontSize: '11px', color: 'var(--gray-500)', marginTop: '10px' }}>
-                Practice quizzes automatically focus more on your weaker topics.
-              </p>
-            </div>
-          )}
-
-          <Button variant="secondary" size="sm" onClick={() => setShowStats(false)} style={{ marginTop: '16px' }}>Close</Button>
-        </div>
-      )}
-
-      {showHistory ? (
-        <div className="card" style={{ padding: '24px' }}>
-          <h3 style={{ color: 'var(--primary)', margin: '0 0 16px 0' }}><ChartColumnIcon className="icon-inline" size="1em" aria-hidden="true" /> Quiz History</h3>
-          {quizHistory.length === 0 ? (
-            <p style={{ textAlign: 'center', padding: '40px', color: 'var(--gray-500)' }}>No quiz attempts yet. Start your first quiz!</p>
-          ) : (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-              {quizHistory.slice().reverse().map((attempt, i) => {
-                const scoreColor = getScoreColor(attempt.score || 0);
-                return (
-                  <div key={i} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px 16px', background: 'var(--surface-muted)', borderRadius: '8px', border: '1px solid var(--border)', flexWrap: 'wrap', gap: '8px' }}>
-                    <div>
-                      <div style={{ fontWeight: 'bold', fontSize: '14px' }}>{attempt.subject || 'Quiz'}</div>
-                      <div style={{ fontSize: '12px', color: 'var(--gray-500)' }}>{formatDate(attempt.date, { fallback: 'Recently' })}</div>
-                    </div>
-                    <div style={{ textAlign: 'right' }}>
-                      <div style={{ fontSize: '20px', fontWeight: 'bold', color: scoreColor }}>{attempt.score || 0}%</div>
-                      <div style={{ fontSize: '12px', color: 'var(--gray-500)' }}>{attempt.correct || 0}/{attempt.total || 0} correct</div>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          )}
-        </div>
-      ) : (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', gap: '20px' }}>
-          {subjects.length === 0 ? (
-            <p style={{ gridColumn: '1 / -1', textAlign: 'center', padding: '40px', color: 'var(--gray-500)' }}>No practice subjects available.</p>
-          ) : (
-            subjects.map((subject) => (
-              <div className="card card--interactive" key={subject.id} onClick={() => startQuiz(subject.id)} style={{ padding: '24px', textAlign: 'center' }}>
-                <div style={{ width: '72px', height: '72px', borderRadius: '18px', background: 'var(--primary-bg)', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <SubjectIcon id={subject.id} size={36} color="var(--primary)" strokeWidth={1.75} />
-                </div>
-                <h3 style={{ color: 'var(--primary)', margin: '12px 0' }}>{subject.name}</h3>
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', justifyContent: 'center', marginBottom: '12px' }}>
-                  {subject.topics?.slice(0, 3).map((topic, i) => (
-                    <span key={i} style={{ background: 'var(--surface-sunken)', padding: '4px 10px', borderRadius: '12px', fontSize: '11px', color: 'var(--text-muted)' }}>
-                      {typeof topic === 'string' ? topic : topic.name || topic}
-                    </span>
-                  ))}
-                  {subject.topics?.length > 3 && (
-                    <span style={{ background: 'var(--primary-bg)', padding: '4px 10px', borderRadius: '12px', fontSize: '11px', color: 'var(--primary)' }}>
-                      +{subject.topics.length - 3} more
-                    </span>
-                  )}
-                </div>
-                <div style={{ fontSize: '12px', color: 'var(--gray-500)', marginBottom: '16px' }}>
-                  {subject.question_count || 0} questions available
-                </div>
-                <Button onClick={(e) => {
-                    e.stopPropagation();
-                    startQuiz(subject.id);
-                  }} style={{ width: '100%' }}>
-                  <RocketIcon className="icon-inline" size="1em" aria-hidden="true" /> Start Quiz
-                </Button>
-              </div>
-            ))
-          )}
-        </div>
-      )}
+            )}
+          </div>
+        )}
+      </div>
     </div>
   );
 };
 
 export default PracticeModule;
+
+const StatBox = ({ value, label }) => (
+  <div style={{ textAlign: 'center', padding: '12px', background: 'var(--surface-muted)', borderRadius: '8px' }}>
+    <span style={{ display: 'block', fontSize: '28px', fontWeight: 'bold', color: 'var(--primary)' }}>{value}</span>
+    <span style={{ display: 'block', fontSize: '12px', color: 'var(--text-subtle)' }}>{label}</span>
+  </div>
+);

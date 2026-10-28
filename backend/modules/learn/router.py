@@ -44,15 +44,30 @@ def _exercise_out(exercise: Exercise) -> dict:
     return {"id": exercise.id, "question": exercise.question, "options": exercise.options}
 
 
-def _course_out(course: Course, enrolled_ids: set) -> dict:
+def _course_out(course: Course, enrolled_ids: set, watched_ids: frozenset = frozenset()) -> dict:
+    lessons = sorted(course.lessons, key=lambda lesson: lesson.order_index)
+    completed = sum(1 for lesson in lessons if lesson.id in watched_ids)
+    next_lesson = next((lesson for lesson in lessons if lesson.id not in watched_ids), None)
+    # Total running time only when every lesson has a duration - a partial
+    # sum would understate the course and read as fact.
+    durations = [lesson.duration_minutes for lesson in lessons]
+    total_minutes = sum(durations) if lessons and all(d for d in durations) else None
     return {
         "id": course.slug,
         "title": course.title,
         "description": course.description,
         "level": course.level,
         "country": course.country,
-        "lesson_count": len(course.lessons),
+        "lesson_count": len(lessons),
         "enrolled": course.id in enrolled_ids,
+        "duration_minutes": total_minutes,
+        "lessons_completed": completed,
+        "progress": round(completed / len(lessons) * 100) if lessons else 0,
+        "next_lesson": (
+            {"id": next_lesson.slug, "title": next_lesson.title, "is_free_preview": next_lesson.is_free_preview}
+            if next_lesson
+            else None
+        ),
     }
 
 
@@ -100,14 +115,16 @@ def get_courses(
         query = query.filter(Course.title.ilike(like))
 
     enrolled_ids = _enrolled_course_ids(db, current_user)
-    return [_course_out(c, enrolled_ids) for c in query.all()]
+    watched_ids = frozenset(_watched_lesson_ids(db, current_user))
+    return [_course_out(c, enrolled_ids, watched_ids) for c in query.all()]
 
 
 @router.get("/enrolled")
 def get_enrolled_courses(db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
     enrolled_ids = _enrolled_course_ids(db, current_user)
     courses = db.query(Course).filter(Course.id.in_(enrolled_ids)).all() if enrolled_ids else []
-    return [_course_out(c, enrolled_ids) for c in courses]
+    watched_ids = frozenset(_watched_lesson_ids(db, current_user))
+    return [_course_out(c, enrolled_ids, watched_ids) for c in courses]
 
 
 @router.get("/courses/{course_slug}")
@@ -123,7 +140,7 @@ def get_course(
     watched_ids = _watched_lesson_ids(db, current_user)
     enrolled_ids = _enrolled_course_ids(db, current_user)
     return {
-        **_course_out(course, enrolled_ids),
+        **_course_out(course, enrolled_ids, frozenset(watched_ids)),
         "lessons": [_lesson_out(lesson, watched_ids) for lesson in course.lessons],
     }
 

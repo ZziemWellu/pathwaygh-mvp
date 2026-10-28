@@ -5,6 +5,8 @@ import api from '../../services/api';
 import { BookOpenIcon, BotIcon, CalculatorIcon } from 'lucide-react';
 import Button from '../../components/ui/Button';
 
+export const OPEN_TUTOR_EVENT = 'pathwaygh:open-tutor';
+
 const markdownComponents = {
   p: ({ children }) => <p style={{ margin: '0 0 8px' }}>{children}</p>,
   ul: ({ children }) => <ul style={{ margin: '0 0 8px', paddingLeft: '18px' }}>{children}</ul>,
@@ -23,6 +25,14 @@ const AIChat = ({ user }) => {
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+
+  // Other screens (e.g. Home's "Ask the AI tutor") open the panel with
+  // window.dispatchEvent(new Event(OPEN_TUTOR_EVENT)).
+  useEffect(() => {
+    const open = () => setIsOpen(true);
+    window.addEventListener(OPEN_TUTOR_EVENT, open);
+    return () => window.removeEventListener(OPEN_TUTOR_EVENT, open);
+  }, []);
   const [subjects, setSubjects] = useState([]);
   const [selectedSubject, setSelectedSubject] = useState('');
   const messagesEndRef = useRef(null);
