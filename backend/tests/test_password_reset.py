@@ -107,3 +107,63 @@ def test_reset_token_cannot_be_reused(client, monkeypatch):
         json={"email": "reset-reuse@test.com", "token": captured["token"], "new_password": "secondnewpass123"},
     )
     assert second.status_code == 400
+
+
+def _reset_via_email_code(client, monkeypatch, email, new_password):
+    import secrets as secrets_module
+
+    captured = {}
+    real = secrets_module.token_urlsafe
+
+    def capture(n):
+        captured["token"] = real(n)
+        return captured["token"]
+
+    monkeypatch.setattr(secrets_module, "token_urlsafe", capture)
+    client.post("/api/auth/forgot-password", json={"email": email})
+    monkeypatch.setattr(secrets_module, "token_urlsafe", real)
+    return client.post("/api/auth/reset-password", json={"email": email, "token": captured["token"], "new_password": new_password})
+
+
+def test_password_reset_signs_out_existing_sessions(client, monkeypatch):
+    old = register_user(client, email="sessions@test.com", password="original123")
+    old_headers = {"Authorization": f"Bearer {old['token']}"}
+    assert client.get("/api/auth/me", headers=old_headers).status_code == 200
+
+    assert _reset_via_email_code(client, monkeypatch, "sessions@test.com", "brandnewpass123").status_code == 200
+
+    stale = client.get("/api/auth/me", headers=old_headers)
+    assert stale.status_code == 401
+    assert stale.json()["detail"] == "Session expired - please sign in again"
+
+    fresh = client.post("/api/auth/login", json={"email": "sessions@test.com", "password": "brandnewpass123"}).json()["token"]
+    assert client.get("/api/auth/me", headers={"Authorization": f"Bearer {fresh}"}).status_code == 200
+
+
+def test_tokens_issued_before_session_versioning_still_work(client):
+    # Tokens minted before "ver" existed carry no version claim; they must
+    # keep working (as version 0) so deploying this doesn't log everyone out.
+    from datetime import datetime, timedelta, timezone
+
+    import jwt
+
+    from core.security import ALGORITHM, SECRET_KEY
+
+    user = register_user(client, email="legacy@test.com")["user"]
+    legacy = jwt.encode({"sub": str(user["id"]), "exp": datetime.now(timezone.utc) + timedelta(hours=1)}, SECRET_KEY, algorithm=ALGORITHM)
+    assert client.get("/api/auth/me", headers={"Authorization": f"Bearer {legacy}"}).status_code == 200
+
+
+def test_tampered_or_unsigned_tokens_are_rejected(client):
+    import jwt
+
+    user = register_user(client, email="tamper@test.com")["user"]
+    forged = jwt.encode({"sub": str(user["id"]), "ver": 0, "exp": 9999999999}, "not-the-real-secret", algorithm="HS256")
+    unsigned = jwt.encode({"sub": str(user["id"]), "exp": 9999999999}, None, algorithm="none")
+    for token in (forged, unsigned, "garbage"):
+        assert client.get("/api/auth/me", headers={"Authorization": f"Bearer {token}"}).status_code == 401
+
+
+def test_reset_rejects_a_short_new_password(client, monkeypatch):
+    register_user(client, email="short-reset@test.com", password="original123")
+    assert _reset_via_email_code(client, monkeypatch, "short-reset@test.com", "abc123").status_code == 422

@@ -37,7 +37,7 @@ const Register = ({ onSuccess, onShowPrivacy }) => {
     }
 
     // Validate password length
-    if (formData.password.length < 6) {
+    if (formData.password.length < 8) {
       setError(t('passwordTooShort'));
       return;
     }
@@ -190,7 +190,7 @@ const Register = ({ onSuccess, onShowPrivacy }) => {
             value={formData.password}
             onChange={handleChange}
             required
-            minLength="6"
+            minLength="8"
             style={{
               width: '100%',
               padding: '10px',

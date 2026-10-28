@@ -32,8 +32,12 @@ class User(Base):
         Integer,
         ForeignKey("schools.id", use_alter=True, name="fk_users_school_id"),
         nullable=True,
+        index=True,
     )
     is_school_admin = Column(Boolean, nullable=False, default=False)
+    # Session version embedded in every JWT ("ver"); incrementing it - on
+    # password reset - invalidates all tokens issued before.
+    token_version = Column(Integer, nullable=False, default=0, server_default="0")
 
     # Consent (child-data protection). Nullable and never backfilled for
     # existing users - a fabricated consent timestamp would be a false

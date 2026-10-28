@@ -1,3 +1,4 @@
+import os
 import sys
 from pathlib import Path
 
@@ -16,6 +17,13 @@ from core.rate_limit import limiter
 
 @pytest.fixture(scope="session")
 def engine():
+    # TEST_DATABASE_URL runs the suite against a real database - CI sets it
+    # to a Postgres service matching production, since SQLite differs (e.g.
+    # it returns naive datetimes and skips some constraint checks). Unset,
+    # tests use a fast in-memory SQLite.
+    url = os.getenv("TEST_DATABASE_URL")
+    if url:
+        return create_engine(url, pool_pre_ping=True)
     return create_engine(
         "sqlite:///:memory:",
         connect_args={"check_same_thread": False},
@@ -23,8 +31,19 @@ def engine():
     )
 
 
+def _sqlite_foreign_keys(engine, enabled: bool):
+    # SQLite ignores foreign keys unless asked. Enforce them during each test
+    # (so a test that would violate one on Postgres fails here too), but not
+    # while dropping tables - users and schools reference each other, which
+    # makes any drop order violate a key.
+    if engine.dialect.name == "sqlite":
+        with engine.connect() as conn:
+            conn.exec_driver_sql(f"PRAGMA foreign_keys={'ON' if enabled else 'OFF'}")
+
+
 @pytest.fixture()
 def db_session(engine):
+    _sqlite_foreign_keys(engine, True)
     Base.metadata.create_all(engine)
     TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
     session = TestingSessionLocal()
@@ -32,6 +51,7 @@ def db_session(engine):
         yield session
     finally:
         session.close()
+        _sqlite_foreign_keys(engine, False)
         Base.metadata.drop_all(engine)
 
 

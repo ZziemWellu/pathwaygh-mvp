@@ -7,7 +7,7 @@ from datetime import datetime, timedelta, timezone
 
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
-from jose import JWTError, jwt
+import jwt
 from passlib.context import CryptContext
 from sqlalchemy.orm import Session
 
@@ -41,26 +41,48 @@ def verify_password(plain_password: str, password_hash: str) -> bool:
     return pwd_context.verify(plain_password, password_hash)
 
 
-def create_access_token(user_id: int) -> str:
+def create_access_token(user_id: int, token_version: int = 0) -> str:
+    # "ver" ties the token to the user's current session version: bumping
+    # User.token_version (e.g. on password reset) invalidates every token
+    # issued before it.
     expire = datetime.now(timezone.utc) + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
-    payload = {"sub": str(user_id), "exp": expire}
+    payload = {"sub": str(user_id), "ver": token_version, "exp": expire}
     return jwt.encode(payload, SECRET_KEY, algorithm=ALGORITHM)
 
 
-def _decode_token(token: str) -> int:
-    credentials_exception = HTTPException(
+def _credentials_exception(detail: str = "Could not validate credentials") -> HTTPException:
+    return HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
-        detail="Could not validate credentials",
+        detail=detail,
         headers={"WWW-Authenticate": "Bearer"},
     )
+
+
+def _decode_claims(token: str) -> tuple:
+    """(user_id, token_version). Tokens issued before versioning carry no
+    "ver" and count as version 0, so existing sessions stay valid until the
+    user's first version bump."""
     try:
-        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-        user_id = payload.get("sub")
-        if user_id is None:
-            raise credentials_exception
-        return int(user_id)
-    except JWTError as e:
-        raise credentials_exception from e
+        # PyJWT (python-jose was dropped: unmaintained, with an unpatched
+        # algorithm-confusion advisory). algorithms= pins HS256 explicitly.
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM], options={"require": ["exp", "sub"]})
+        return int(payload["sub"]), int(payload.get("ver", 0))
+    except (jwt.PyJWTError, ValueError, TypeError) as e:
+        raise _credentials_exception() from e
+
+
+def _decode_token(token: str) -> int:
+    return _decode_claims(token)[0]
+
+
+def _user_for_token(token: str, db: Session):
+    user_id, version = _decode_claims(token)
+    user = db.query(User).filter(User.id == user_id).first()
+    if user is None:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="User not found")
+    if version != (user.token_version or 0):
+        raise _credentials_exception("Session expired - please sign in again")
+    return user
 
 
 def get_current_user(
@@ -72,11 +94,7 @@ def get_current_user(
             detail="Not authenticated",
             headers={"WWW-Authenticate": "Bearer"},
         )
-    user_id = _decode_token(token)
-    user = db.query(User).filter(User.id == user_id).first()
-    if user is None:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="User not found")
-    return user
+    return _user_for_token(token, db)
 
 
 def get_current_user_optional(
@@ -86,10 +104,9 @@ def get_current_user_optional(
     if not token:
         return None
     try:
-        user_id = _decode_token(token)
+        return _user_for_token(token, db)
     except HTTPException:
         return None
-    return db.query(User).filter(User.id == user_id).first()
 
 
 def require_admin(user: User = Depends(get_current_user)) -> User:

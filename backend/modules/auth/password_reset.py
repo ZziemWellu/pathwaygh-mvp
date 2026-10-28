@@ -61,5 +61,8 @@ def reset_password(user: User, token: str, new_password: str) -> None:
         raise HTTPException(status_code=400, detail="Incorrect or invalid reset code")
 
     user.password_hash = hash_password(new_password)
+    # Sign out every existing session: a reset usually means the old
+    # password (and so any session made with it) may be compromised.
+    user.token_version = (user.token_version or 0) + 1
     user.password_reset_token_hash = None
     user.password_reset_expires_at = None

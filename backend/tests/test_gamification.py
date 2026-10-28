@@ -31,14 +31,26 @@ def _join_a_school(client, email):
 # --- service.py -----------------------------------------------------------
 
 
+def _user_id(db_session, n):
+    """A real user row for service-level tests. Profiles reference users by
+    foreign key - Postgres enforces it (SQLite doesn't by default, which is
+    how bare ids like user_id=1 used to pass)."""
+    user = User(email=f"gamer{n}@test.com", full_name=f"Gamer {n}", password_hash="x", guardian_email="g@test.com")
+    db_session.add(user)
+    db_session.flush()
+    return user.id
+
+
 def test_get_or_create_profile_creates_once(db_session):
-    profile1 = get_or_create_profile(db_session, user_id=1)
-    profile2 = get_or_create_profile(db_session, user_id=1)
+    uid = _user_id(db_session, 1)
+    profile1 = get_or_create_profile(db_session, user_id=uid)
+    profile2 = get_or_create_profile(db_session, user_id=uid)
     assert profile1.id == profile2.id
 
 
 def test_streak_starts_at_one_on_first_activity(db_session):
-    profile = get_or_create_profile(db_session, user_id=2)
+    uid = _user_id(db_session, 2)
+    profile = get_or_create_profile(db_session, user_id=uid)
     _record_activity(profile)
     assert profile.current_streak_days == 1
     assert profile.longest_streak_days == 1
@@ -46,14 +58,16 @@ def test_streak_starts_at_one_on_first_activity(db_session):
 
 
 def test_streak_does_not_double_count_same_day(db_session):
-    profile = get_or_create_profile(db_session, user_id=3)
+    uid = _user_id(db_session, 3)
+    profile = get_or_create_profile(db_session, user_id=uid)
     _record_activity(profile)
     _record_activity(profile)
     assert profile.current_streak_days == 1
 
 
 def test_streak_continues_on_consecutive_day(db_session):
-    profile = get_or_create_profile(db_session, user_id=4)
+    uid = _user_id(db_session, 4)
+    profile = get_or_create_profile(db_session, user_id=uid)
     profile.current_streak_days = 5
     profile.longest_streak_days = 5
     profile.last_activity_date = today_utc() - timedelta(days=1)
@@ -65,7 +79,8 @@ def test_streak_continues_on_consecutive_day(db_session):
 
 
 def test_streak_resets_after_a_gap(db_session):
-    profile = get_or_create_profile(db_session, user_id=5)
+    uid = _user_id(db_session, 5)
+    profile = get_or_create_profile(db_session, user_id=uid)
     profile.current_streak_days = 10
     profile.longest_streak_days = 10
     profile.last_activity_date = today_utc() - timedelta(days=3)

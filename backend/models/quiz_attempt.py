@@ -10,7 +10,7 @@ class QuizAttempt(Base):
     __tablename__ = "quiz_attempts"
 
     id = Column(Integer, primary_key=True)
-    user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
     quiz_id = Column(String(100), nullable=False)
     subject_id = Column(String(100), nullable=True)
     score = Column(Integer, nullable=False)

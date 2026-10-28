@@ -36,7 +36,7 @@ const ForgotPassword = ({ onBackToLogin }) => {
       setError(t('passwordsDoNotMatch'));
       return;
     }
-    if (newPassword.length < 6) {
+    if (newPassword.length < 8) {
       setError(t('passwordTooShort'));
       return;
     }
@@ -114,7 +114,7 @@ const ForgotPassword = ({ onBackToLogin }) => {
               value={newPassword}
               onChange={(e) => setNewPassword(e.target.value)}
               required
-              minLength="6"
+              minLength="8"
               style={{ width: '100%', padding: '10px', border: '1px solid var(--border)', borderRadius: '8px' }}
               placeholder={t('passwordPlaceholder')}
             />
