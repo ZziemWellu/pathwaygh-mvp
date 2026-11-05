@@ -9,7 +9,7 @@ DIGEST_SECRET = "test-digest-secret"
 
 
 def _extract_code(caplog_text: str) -> str:
-    match = re.search(r"Your PathwayGH practice code is (\d{6})", caplog_text)
+    match = re.search(r"Your Learning Hotspot practice code is (\d{6})", caplog_text)
     assert match, f"no verification code found in log output: {caplog_text}"
     return match.group(1)
 
@@ -151,7 +151,7 @@ def test_subscribe_creates_an_unverified_subscriber_and_sends_a_code(client, db_
     assert subscriber is not None
     assert subscriber.verified is False
     assert subscriber.verification_code_hash is not None
-    assert "Your PathwayGH practice code is" in caplog.text
+    assert "Your Learning Hotspot practice code is" in caplog.text
 
 
 def test_subscribe_again_within_the_resend_cooldown_is_rejected(client):

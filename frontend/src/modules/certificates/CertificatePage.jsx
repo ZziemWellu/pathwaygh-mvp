@@ -59,7 +59,7 @@ const CertificatePage = () => {
         className="certificate-print-area"
         style={{ background: 'white', border: '4px solid var(--primary)', borderRadius: '12px', padding: '48px', textAlign: 'center' }}
       >
-        <p style={{ color: 'var(--primary)', fontWeight: 'bold', fontSize: '20px', margin: 0 }}>PathwayGH</p>
+        <p style={{ color: 'var(--primary)', fontWeight: 'bold', fontSize: '20px', margin: 0 }}>Learning Hotspot</p>
         <p style={{ color: 'var(--gray-500)', fontSize: '13px', marginTop: '4px' }}>Certificate of Completion</p>
 
         <p style={{ margin: '32px 0 4px 0', color: 'var(--gray-500)' }}>This certifies that</p>

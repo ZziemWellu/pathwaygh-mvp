@@ -109,7 +109,7 @@ const DashboardModule = () => {
       <section className="dash-next" aria-label="Your next step">
         {step?.kind === 'choose_level' ? (
           <>
-            <p className="dash-next-eyebrow">Let&apos;s personalise PathwayGH</p>
+            <p className="dash-next-eyebrow">Let&apos;s personalise Learning Hotspot</p>
             <h2>Which class are you in?</h2>
             <p className="dash-next-meta">We&apos;ll pick the right courses and practice for you.</p>
             <div className="dash-grade-grid" role="group" aria-label="Choose your class">

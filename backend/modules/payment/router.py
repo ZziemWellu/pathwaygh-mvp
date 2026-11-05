@@ -5,7 +5,7 @@ Provider-abstracted (see providers/). What a school pays is always
 computed server-side by modules/licence/service.py from its actual
 enrolled-student count and the documented prices - never accepted from
 the client. The redirect target after checkout is likewise built
-server-side from FRONTEND_URL, to avoid an open redirect.
+server-side from the first FRONTEND_URL address, to avoid an open redirect.
 
 A licence is granted only after the provider's own record says the
 payment succeeded AND that record's amount and currency match what was
@@ -28,6 +28,7 @@ from sqlalchemy.orm import Session
 from starlette.concurrency import run_in_threadpool
 
 from core.database import get_db
+from core.frontend_urls import primary_frontend_url
 from core.rate_limit import limiter
 from core.security import require_school_admin
 from models.payment_transaction import PaymentTransaction
@@ -103,7 +104,7 @@ def initialize_payment(
         )
 
     reference = f"pay_{uuid.uuid4().hex[:12]}"
-    frontend_url = os.getenv("FRONTEND_URL", "https://pathwaygh-frontend.onrender.com")
+    frontend_url = primary_frontend_url()
     purpose = f"school_licence_{request.plan}"
 
     transaction = PaymentTransaction(

@@ -12,7 +12,7 @@ class PaymentTransaction(Base):
     Ghana, Nigeria, Sierra Leone, Liberia, and The Gambia well, so this
     table - not any one provider's own dashboard - is the durable record
     of what was charged, to whom, and its current status, regardless of
-    which provider handled it or how many providers PathwayGH ends up
+    which provider handled it or how many providers Learning Hotspot ends up
     using across its 5 countries."""
 
     __tablename__ = "payment_transactions"

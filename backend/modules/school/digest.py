@@ -34,7 +34,7 @@ def build_school_digest_text(db: Session, admin: User) -> Optional[str]:
     school_name = school.name if school else "your school"
 
     lines = [
-        f"PathwayGH weekly update for {school_name}:",
+        f"Learning Hotspot weekly update for {school_name}:",
         f"- Students: {summary['student_count']}",
         f"- Average lesson completion: {summary['average_completion_rate']}%",
     ]

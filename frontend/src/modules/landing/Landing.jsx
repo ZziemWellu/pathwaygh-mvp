@@ -43,12 +43,12 @@ const FEATURES = [
 ];
 
 // What a signed-out visitor (or a hackathon judge) sees first: what
-// PathwayGH is and who it's for, before being asked for anything.
+// Learning Hotspot is and who it's for, before being asked for anything.
 const Landing = ({ onGetStarted, onSignIn, onShowPrivacy }) => (
   <div className="landing">
     <header className="landing__bar">
       <span className="landing__brand">
-        <GhanaFlag size={22} /> PathwayGH
+        <GhanaFlag size={22} /> Learning Hotspot
       </span>
       <nav className="landing__nav" aria-label="Landing">
         <a href="#how">How it works</a>
@@ -85,10 +85,10 @@ const Landing = ({ onGetStarted, onSignIn, onShowPrivacy }) => (
           </ul>
         </div>
 
-        <div className="landing__phone" role="img" aria-label="Preview of the PathwayGH student home screen">
+        <div className="landing__phone" role="img" aria-label="Preview of the Learning Hotspot student home screen">
           <div className="landing__phone-screen" aria-hidden="true">
             <div className="landing__phone-band" />
-            <div className="landing__phone-head">PathwayGH</div>
+            <div className="landing__phone-head">Learning Hotspot</div>
             <div className="landing__phone-greet">Good afternoon, Ama<small>SHS · Ghana</small></div>
             <div className="landing__phone-next">
               <small>Your next step</small>
@@ -154,7 +154,7 @@ const Landing = ({ onGetStarted, onSignIn, onShowPrivacy }) => (
         <div className="card landing__schools">
           <div>
             <p className="landing__eyebrow landing__eyebrow--plain">For schools</p>
-            <h2>Bring PathwayGH to your classrooms</h2>
+            <h2>Bring Learning Hotspot to your classrooms</h2>
             <p>
               Students join with your school&apos;s code. You see every class&apos;s course completion and quiz
               results, and parents get progress updates.
@@ -168,7 +168,7 @@ const Landing = ({ onGetStarted, onSignIn, onShowPrivacy }) => (
     </main>
 
     <footer className="landing__footer">
-      <span>© 2026 PathwayGH · Powered by Zziem Technologies</span>
+      <span>© 2026 Learning Hotspot · Powered by Zziem Technologies</span>
       <button type="button" className="btn btn-ghost btn-sm" onClick={onShowPrivacy}>Privacy Policy</button>
     </footer>
   </div>

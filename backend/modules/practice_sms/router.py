@@ -4,7 +4,7 @@ roadmap item #6 (see the Sept 2026 feature-phone-fallback scoping doc).
 
 /subscribe, /verify, /resend-code, and /unsubscribe are deliberately
 public (no get_current_user auth): the whole point is reaching students
-who may never have been able to create a PathwayGH account at all, since
+who may never have been able to create a Learning Hotspot account at all, since
 the smartphone PWA can't reach them. /send-batch is cron-callable only,
 mirroring modules/parent/router.py's send-digests (shared-secret header,
 not user auth).

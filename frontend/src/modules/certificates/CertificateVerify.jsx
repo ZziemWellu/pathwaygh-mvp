@@ -48,7 +48,7 @@ const CertificateVerify = ({ code: initialCode }) => {
     <div style={{ maxWidth: '500px', margin: '40px auto', padding: '20px' }}>
       <h1 style={{ color: 'var(--primary)', textAlign: 'center' }}>Certificate Verification</h1>
       <p style={{ color: 'var(--gray-500)', textAlign: 'center', marginBottom: '24px' }}>
-        Check whether a PathwayGH certificate code is genuine.
+        Check whether a Learning Hotspot certificate code is genuine.
       </p>
 
       <form onSubmit={handleManualSubmit} style={{ display: 'flex', gap: '8px', marginBottom: '24px' }}>

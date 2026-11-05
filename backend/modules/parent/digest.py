@@ -25,7 +25,7 @@ def build_digest_text(db: Session, user: User) -> Optional[str]:
         # Nothing meaningful to report yet - don't send a content-free message.
         return None
 
-    lines = [f"PathwayGH weekly update for {user.full_name}:"]
+    lines = [f"Learning Hotspot weekly update for {user.full_name}:"]
 
     if overview["lessons_total"] > 0:
         lines.append(f"- Lessons completed: {overview['lessons_completed']}/{overview['lessons_total']}")

@@ -1,7 +1,7 @@
 {
-  "name": "PathwayGH - Education & Career Ecosystem",
-  "short_name": "PathwayGH",
-  "description": "AI-powered education and career guidance for Ghanaian students",
+  "name": "Learning Hotspot - Education & Career Ecosystem",
+  "short_name": "Learning Hotspot",
+  "description": "AI-powered learning and career guidance for students in Ghana and across Africa",
   "start_url": "/",
   "display": "standalone",
   "orientation": "portrait",

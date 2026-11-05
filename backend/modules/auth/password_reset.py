@@ -37,9 +37,9 @@ def issue_password_reset_token(user: User) -> None:
 
     send_email(
         to=user.email,
-        subject="PathwayGH - Reset your password",
+        subject="Learning Hotspot - Reset your password",
         body=(
-            f"Someone requested a password reset for this PathwayGH account.\n\n"
+            f"Someone requested a password reset for this Learning Hotspot account.\n\n"
             f"Your reset code is: {token}\n\n"
             f"This code expires in {RESET_TOKEN_TTL_MINUTES} minutes. "
             f"If you did not request this, you can ignore this email - your password will not change."

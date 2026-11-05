@@ -200,7 +200,7 @@ def export_impact_report(
     buffer = io.StringIO()
     writer = csv.writer(buffer)
 
-    writer.writerow(["PathwayGH Impact Report", f"Generated {today}"])
+    writer.writerow(["Learning Hotspot Impact Report", f"Generated {today}"])
     writer.writerow([])
 
     writer.writerow(["Metric", "Value"])
