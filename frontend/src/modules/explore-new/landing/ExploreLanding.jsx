@@ -107,7 +107,7 @@ const ExploreLanding = ({ user }) => {
       </div>
 
       <footer style={{ textAlign: 'center', marginTop: '40px', padding: '20px', color: 'var(--gray-500)', borderTop: '1px solid var(--border)' }}>
-        <p>Discover your path with PathwayGH</p>
+        <p>Discover your path with Learning Hotspot</p>
       </footer>
     </div>
   );

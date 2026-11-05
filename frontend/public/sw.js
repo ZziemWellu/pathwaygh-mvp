@@ -1,4 +1,4 @@
-// PathwayGH - Progressive Web App Service Worker
+// Learning Hotspot - Progressive Web App Service Worker
 const CACHE_NAME = 'pathway-ai-v3';
 const STATIC_CACHE = 'pathway-ai-static-v3';
 const DYNAMIC_CACHE = 'pathway-ai-dynamic-v3';
@@ -161,7 +161,7 @@ self.addEventListener('push', event => {
   const data = event.data ? event.data.json() : {};
   
   const options = {
-    body: data.body || 'New update from PathwayGH',
+    body: data.body || 'New update from Learning Hotspot',
     icon: '/icons/icon-192x192.png',
     badge: '/icons/badge-72x72.png',
     vibrate: [200, 100, 200],
@@ -176,7 +176,7 @@ self.addEventListener('push', event => {
   
   event.waitUntil(
     self.registration.showNotification(
-      data.title || 'PathwayGH Update',
+      data.title || 'Learning Hotspot Update',
       options
     )
   );
@@ -196,4 +196,4 @@ self.addEventListener('notificationclick', event => {
   );
 });
 
-console.log('✅ PathwayGH Service Worker loaded');
+console.log('✅ Learning Hotspot Service Worker loaded');

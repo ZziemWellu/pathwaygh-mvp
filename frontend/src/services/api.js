@@ -5,7 +5,7 @@
 import axios from 'axios';
 import { getToken, clearSession } from '../constants/auth';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://pathwaygh-backend.onrender.com';
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://api.learninghotspot.africa';
 
 console.log('API Base URL:', API_BASE_URL);
 

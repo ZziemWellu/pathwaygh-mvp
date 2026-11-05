@@ -1,5 +1,5 @@
 """
-PATHWAY AI - Main Application Entry Point
+Learning Hotspot - Main Application Entry Point
 Version: 3.0.0 - Fixed Import Paths
 """
 
@@ -34,7 +34,7 @@ logger = logging.getLogger(__name__)
 
 # Create FastAPI app
 app = FastAPI(
-    title="PATHWAY AI Education Ecosystem",
+    title="Learning Hotspot API",
     description="AI-Powered Learning and Career Guidance Platform",
     version="3.0.0",
     docs_url="/api/docs",
@@ -42,8 +42,9 @@ app = FastAPI(
 )
 
 # CORS Configuration
-FRONTEND_URL = os.getenv("FRONTEND_URL", "https://pathwaygh-frontend.onrender.com")
-ALLOWED_ORIGINS = [FRONTEND_URL, "http://localhost:5173"]
+# FRONTEND_URL may list several comma-separated addresses (see core/frontend_urls.py).
+from core.frontend_urls import frontend_urls
+ALLOWED_ORIGINS = frontend_urls() + ["http://localhost:5173"]
 
 app.add_middleware(
     CORSMiddleware,
@@ -67,7 +68,7 @@ app.add_middleware(SlowAPIMiddleware)
 @app.get("/")
 def root():
     return {
-        "name": "PATHWAY AI Education Ecosystem",
+        "name": "Learning Hotspot API",
         "version": "3.0.0",
         "status": "running",
         "endpoints": {
@@ -146,7 +147,7 @@ def health():
 # ============================================
 
 print("=" * 60)
-print("🚀 PATHWAY AI - Loading Modules")
+print("🚀 Learning Hotspot - Loading Modules")
 print("=" * 60)
 
 # Define all modules

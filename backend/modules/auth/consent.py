@@ -54,9 +54,9 @@ def issue_consent_otp(user: User) -> None:
 
     send_email(
         to=user.guardian_email,
-        subject="PathwayGH - Confirm parental consent",
+        subject="Learning Hotspot - Confirm parental consent",
         body=(
-            f"{user.full_name} has registered on PathwayGH and listed you as their guardian.\n\n"
+            f"{user.full_name} has registered on Learning Hotspot and listed you as their guardian.\n\n"
             f"Your verification code is: {code}\n\n"
             f"This code expires in {OTP_TTL_MINUTES} minutes. If you did not expect this, you can ignore this email."
         ),

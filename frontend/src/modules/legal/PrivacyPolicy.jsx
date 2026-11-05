@@ -21,7 +21,7 @@ const PrivacyPolicy = ({ onBack }) => {
       <section style={sectionStyle}>
         <h2 style={headingStyle}>What we collect</h2>
         <p style={bodyStyle}>
-          When you create a PathwayGH account we collect your name, email address, password
+          When you create a Learning Hotspot account we collect your name, email address, password
           (stored securely, never in plain text), and country. As you use the platform, we also
           store optional profile details you choose to add (school, grade, bio, phone, location,
           interests, goals, subjects), your course enrollments, lesson completion, and quiz
@@ -33,13 +33,13 @@ const PrivacyPolicy = ({ onBack }) => {
       <section style={sectionStyle}>
         <h2 style={headingStyle}>Age and consent</h2>
         <p style={bodyStyle}>
-          PathwayGH is built for secondary-school students, many of whom are minors. There are
+          Learning Hotspot is built for secondary-school students, many of whom are minors. There are
           two ways an account gets created:
         </p>
         <p style={bodyStyle}>
           <strong>Signing up yourself:</strong> you confirm you are at least 13 years old, and
           that if you are under 18 you have your parent or guardian's permission to create an
-          account and use PathwayGH.
+          account and use Learning Hotspot.
         </p>
         <p style={bodyStyle}>
           <strong>Signing up through your school:</strong> your school administrator can confirm

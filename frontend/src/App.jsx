@@ -163,7 +163,7 @@ const App = () => {
         <div style={{ maxWidth: '400px', margin: '40px auto', padding: '20px' }}>
           <Button variant="ghost" size="sm" icon={ArrowLeft} onClick={() => setShowLanding(true)}>Back</Button>
           <header style={{ textAlign: 'center', marginBottom: '30px' }}>
-            <h1 style={{ color: 'var(--primary)' }}>PathwayGH</h1>
+            <h1 style={{ color: 'var(--primary)' }}>Learning Hotspot</h1>
             <p style={{ color: 'var(--text-subtle)' }}>{t('tagline')}</p>
           </header>
           <main>
@@ -188,7 +188,7 @@ const App = () => {
       <div style={{ maxWidth: '400px', margin: '40px auto', padding: '20px' }}>
         <Button variant="ghost" size="sm" icon={ArrowLeft} onClick={() => setShowLanding(true)}>Back</Button>
         <header style={{ textAlign: 'center', marginBottom: '30px' }}>
-          <h1 style={{ color: 'var(--primary)', display: 'flex', alignItems: 'center', gap: '8px', justifyContent: 'center' }}>{CountryFlag && <CountryFlag size={24} />} PathwayGH</h1>
+          <h1 style={{ color: 'var(--primary)', display: 'flex', alignItems: 'center', gap: '8px', justifyContent: 'center' }}>{CountryFlag && <CountryFlag size={24} />} Learning Hotspot</h1>
           <p style={{ color: 'var(--text-subtle)' }}>{t('tagline')}{country ? ` • ${COUNTRY_NAMES[country]}` : ''}</p>
         </header>
         <main>
@@ -248,7 +248,7 @@ const App = () => {
         <a href="#main-content" className="skip-link">Skip to main content</a>
         <header className="app-header">
           <div>
-            <h1 style={{ color: 'var(--primary)', fontSize: '22px', margin: 0, display: 'flex', alignItems: 'center', gap: '8px' }}><UserCountryFlag size={22} /> PathwayGH</h1>
+            <h1 style={{ color: 'var(--primary)', fontSize: '22px', margin: 0, display: 'flex', alignItems: 'center', gap: '8px' }}><UserCountryFlag size={22} /> Learning Hotspot</h1>
             <span className="app-header__tagline" style={{ fontSize: '11px', color: 'var(--text-subtle)' }}>{t('tagline')} • {COUNTRY_NAMES[user?.country] || ''}</span>
           </div>
           {/* On phones these move into the tab bar's "More" sheet (MobileTabBar). */}

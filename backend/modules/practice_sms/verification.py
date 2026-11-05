@@ -42,7 +42,7 @@ def issue_verification_code(subscriber: PracticeSmsSubscriber) -> bool:
     subscriber.verification_attempts = 0
     subscriber.verification_code_sent_at = _now()
 
-    message = f"Your PathwayGH practice code is {code}. Reply with this code to confirm free daily practice questions."
+    message = f"Your Learning Hotspot practice code is {code}. Reply with this code to confirm free daily practice questions."
     try:
         provider = get_provider_for_country(subscriber.country)
         return provider["send"](to=subscriber.phone_number, message=message)

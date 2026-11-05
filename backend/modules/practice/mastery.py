@@ -4,7 +4,7 @@ slot allocation that uses it to bias practice-quiz question selection
 toward a student's weakest topics.
 
 Fixed-parameter BKT: these are standard literature defaults, not fitted
-from PathwayGH's own attempt data - there isn't enough attempt volume yet
+from Learning Hotspot's own attempt data - there isn't enough attempt volume yet
 to fit parameters honestly. This is an explicit, documented starting
 point, not a calibrated model. Guess probability is computed per-question
 from the actual option count rather than a fixed constant, since not
@@ -39,7 +39,7 @@ P_SLIP = 0.1
 # population shifts - without needing any training pipeline. 21 days is a
 # literature-plausible starting half-life (comparable to short-term-
 # retention constants used in spaced-repetition systems), not fitted from
-# PathwayGH's own data - same documented-default status as P_TRANSIT/
+# Learning Hotspot's own data - same documented-default status as P_TRANSIT/
 # P_SLIP above. Decay reverts toward DEFAULT_PRIOR (the "no information"
 # baseline) rather than toward zero, since forgetting means "we're no
 # longer confident," not "definitely doesn't know this."
