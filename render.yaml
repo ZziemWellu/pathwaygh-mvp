@@ -69,7 +69,7 @@ services:
       - key: SMTP_FROM
         sync: false
       - key: FRONTEND_URL
-        value: https://pathwaygh-frontend.onrender.com
+        value: https://www.learninghotspot.africa,https://learninghotspot.africa,https://pathwaygh-frontend.onrender.com
 
   - type: web
     name: pathwaygh-frontend
@@ -79,7 +79,7 @@ services:
     staticPublishPath: dist
     envVars:
       - key: VITE_API_URL
-        value: https://pathwaygh-backend.onrender.com
+        value: https://api.learninghotspot.africa
     routes:
       - type: rewrite
         source: /*
