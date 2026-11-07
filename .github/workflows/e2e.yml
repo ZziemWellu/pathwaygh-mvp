@@ -54,7 +54,7 @@ jobs:
         run: |
           npm install --no-save playwright@1.49.1
           npx playwright install --with-deps chromium
-          node e2e/smoke.mjs
+          node e2e/smoke.js
 
       - name: Backend log on failure
         if: failure()

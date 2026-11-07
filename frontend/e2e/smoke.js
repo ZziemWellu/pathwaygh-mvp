@@ -1,6 +1,6 @@
 // End-to-end smoke test against a running frontend and backend, on a throwaway
 // database. Runs on every pull request (.github/workflows/e2e.yml). Locally:
-//   CHROME_PATH=/path/to/chrome node e2e/smoke.mjs
+//   CHROME_PATH=/path/to/chrome node e2e/smoke.js
 import { chromium } from 'playwright';
 
 const BASE = process.env.E2E_BASE_URL || 'http://localhost:4173';
