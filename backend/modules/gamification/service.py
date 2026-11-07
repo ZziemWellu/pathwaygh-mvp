@@ -3,7 +3,7 @@ XP, streaks, and achievement-unlocking. Called from the real activity
 endpoints (modules/learn/router.py's lesson-progress update,
 modules/practice/router.py's quiz submit) right after the real event is
 persisted - never on a schedule, so "you just earned X" is always true
-at the moment it's shown, the same discipline check_and_issue_certificate
+at the moment it's shown, the same discipline other awards
 already follows for course completion.
 """
 
@@ -82,7 +82,7 @@ def check_and_award_achievements(db: Session, user: User, profile: GamificationP
 
 def award_for_lesson_completed(db: Session, user: User) -> dict:
     """Does not commit - the caller (modules/learn/router.py) commits
-    alongside the LessonProgress/Certificate changes already in that
+    alongside the LessonProgress changes already in that
     request."""
     profile = get_or_create_profile(db, user.id)
     profile.xp_points += XP_PER_LESSON

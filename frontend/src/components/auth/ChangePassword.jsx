@@ -32,7 +32,7 @@ const ChangePassword = ({ user, onChanged, onLogout }) => {
     }
   };
 
-  const field = { width: '100%', padding: '10px', border: '1px solid var(--border)', borderRadius: '8px', fontSize: '14px' };
+  const field = { width: '100%', padding: '10px', border: '1px solid var(--border)', borderRadius: '8px', fontSize: '15px' };
   const label = { display: 'block', marginBottom: '4px', fontWeight: 'bold' };
   const row = { marginBottom: '16px' };
 

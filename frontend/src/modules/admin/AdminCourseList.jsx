@@ -104,7 +104,7 @@ const AdminCourseList = () => {
         >
           <div style={{ flex: 1 }}>
             <div style={{ fontWeight: 'bold' }}>{course.title}</div>
-            <div style={{ fontSize: '12px', color: 'var(--gray-500)' }}>{course.slug} · {course.level?.toUpperCase()} · {course.country} · {course.lesson_count} lessons</div>
+            <div style={{ fontSize: '14px', color: 'var(--gray-500)' }}>{course.slug} · {course.level?.toUpperCase()} · {course.country} · {course.lesson_count} lessons</div>
           </div>
           <button
             onClick={(e) => { e.stopPropagation(); handleDelete(course); }}
@@ -119,7 +119,7 @@ const AdminCourseList = () => {
   );
 };
 
-const inputStyle = { padding: '10px 12px', border: '1px solid var(--border)', borderRadius: '8px', fontSize: '14px', fontFamily: 'inherit' };
+const inputStyle = { padding: '10px 12px', border: '1px solid var(--border)', borderRadius: '8px', fontSize: '15px', fontFamily: 'inherit' };
 
 // Visually hidden but still announced by screen readers - this form's other
 // fields lean on placeholder text alone, but a <select>'s value never shows

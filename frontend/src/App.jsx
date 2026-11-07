@@ -1,6 +1,6 @@
 import ChangePassword from './components/auth/ChangePassword';
 import React, { useState, useEffect, lazy, Suspense } from 'react';
-import { BrowserRouter, Routes, Route, Navigate, Link, useParams } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate, Link } from 'react-router-dom';
 import './App.css';
 import { getUser, isAuthenticated, login as authLogin, logout as authLogout, getCountry, setCountry as persistCountry, removeCountry } from './constants/auth';
 import EcosystemNavigation from './components/common/EcosystemNavigation';
@@ -19,7 +19,6 @@ import AIChat from './components/ai/AIChat';
 import ConsentBanner from './components/consent/ConsentBanner';
 import { useLanguage } from './contexts/LanguageContext';
 import PrivacyPolicy from './modules/legal/PrivacyPolicy';
-import CertificateVerify from './modules/certificates/CertificateVerify';
 import Button from './components/ui/Button';
 import MobileTabBar from './components/common/MobileTabBar';
 import Landing from './modules/landing/Landing';
@@ -33,14 +32,6 @@ const COUNTRY_NAMES = { GH: 'Ghana', NG: 'Nigeria', SL: 'Sierra Leone', LR: 'Lib
 // deliberately excluded from WASSCE-specific features like Career Match.
 const WASSCE_COUNTRIES = ['GH', 'SL', 'LR', 'GM'];
 
-// CertificateVerify takes `code` as a prop (never useParams internally)
-// since App.jsx also renders it directly, pre-BrowserRouter, for a
-// logged-out visitor's cold page load. This wrapper supplies that prop
-// from the route param for the in-app (already-routed) case.
-const CertificateVerifyRoute = () => {
-  const { code } = useParams();
-  return <CertificateVerify code={code} />;
-};
 
 // Route-level code splitting: each of these becomes its own chunk instead of
 // bloating the single main bundle every visitor downloads up front.
@@ -68,7 +59,6 @@ const AdminCourseEditor = lazy(() => import('./modules/admin/AdminCourseEditor')
 const AdminLessonEditor = lazy(() => import('./modules/admin/AdminLessonEditor'));
 const SchoolAdminDashboard = lazy(() => import('./modules/school-admin/SchoolAdminDashboard'));
 const ImpactDashboard = lazy(() => import('./modules/impact/ImpactDashboard'));
-const CertificatePage = lazy(() => import('./modules/certificates/CertificatePage'));
 
 const App = () => {
   const { t } = useLanguage();
@@ -132,18 +122,6 @@ const App = () => {
     setIsAuth(false);
   };
 
-  // A shared certificate-verification link must work for a logged-out
-  // visitor with empty localStorage landing directly on the URL (e.g. from
-  // LinkedIn) - short-circuit before loading/auth/country gates and before
-  // BrowserRouter mounts, since none of that should gate a read-only public
-  // page. This only fires on a cold/hard page load - client-side <Link>/
-  // useNavigate navigation never re-executes this function body - so the
-  // in-router /certificates/verify/:code route below still handles the
-  // case of an already-logged-in user clicking a verify link in-app.
-  const certifyMatch = window.location.pathname.match(/^\/certificates\/verify\/([^/]+)\/?$/);
-  if (certifyMatch) {
-    return <CertificateVerify code={decodeURIComponent(certifyMatch[1])} />;
-  }
 
   if (loading) {
     return <div style={{ textAlign: 'center', padding: '40px' }}>{t('loading')}</div>;
@@ -175,9 +153,9 @@ const App = () => {
             <CountrySelector onSelect={handleCountrySelect} />
           </main>
           <footer style={{ textAlign: 'center', marginTop: '24px' }}>
-            <p style={{ color: 'var(--gray-500)', fontSize: '13px', margin: '0 0 4px 0' }}>{t('copyright')}</p>
-            <p style={{ color: 'var(--gray-500)', fontSize: '12px', margin: '0 0 8px 0' }}>{t('poweredBy')}</p>
-            <button onClick={() => setShowPrivacy(true)} style={{ background: 'none', border: 'none', color: 'var(--gray-500)', cursor: 'pointer', textDecoration: 'underline', fontSize: '12px' }}>
+            <p style={{ color: 'var(--gray-500)', fontSize: '15px', margin: '0 0 4px 0' }}>{t('copyright')}</p>
+            <p style={{ color: 'var(--gray-500)', fontSize: '14px', margin: '0 0 8px 0' }}>{t('poweredBy')}</p>
+            <button onClick={() => setShowPrivacy(true)} style={{ background: 'none', border: 'none', color: 'var(--gray-500)', cursor: 'pointer', textDecoration: 'underline', fontSize: '14px' }}>
               {t('footerPrivacyPolicy')}
             </button>
           </footer>
@@ -210,14 +188,14 @@ const App = () => {
           )}
           {showLogin && !showForgotPassword && (
             <p style={{ textAlign: 'center', marginTop: '8px' }}>
-              <button onClick={() => setShowForgotPassword(true)} style={{ background: 'none', border: 'none', color: 'var(--gray-500)', cursor: 'pointer', textDecoration: 'underline', fontSize: '13px' }}>
+              <button onClick={() => setShowForgotPassword(true)} style={{ background: 'none', border: 'none', color: 'var(--gray-500)', cursor: 'pointer', textDecoration: 'underline', fontSize: '15px' }}>
                 {t('forgotPasswordLink')}
               </button>
             </p>
           )}
           {country && (
             <p style={{ textAlign: 'center', marginTop: '8px' }}>
-              <button onClick={handleChangeCountry} style={{ background: 'none', border: 'none', color: 'var(--text-subtle)', cursor: 'pointer', textDecoration: 'underline', fontSize: '13px' }}>
+              <button onClick={handleChangeCountry} style={{ background: 'none', border: 'none', color: 'var(--text-subtle)', cursor: 'pointer', textDecoration: 'underline', fontSize: '15px' }}>
                 {t('changeCountry')}
               </button>
             </p>
@@ -228,8 +206,8 @@ const App = () => {
         </main>
         <footer style={{ textAlign: 'center', marginTop: '40px', padding: '20px', color: 'var(--gray-500)', borderTop: '1px solid var(--border)' }}>
           <p>{t('copyright')}</p>
-          <p style={{ fontSize: '12px', margin: '4px 0 8px 0' }}>{t('poweredBy')}</p>
-          <button onClick={() => setShowPrivacy(true)} style={{ background: 'none', border: 'none', color: 'var(--gray-500)', cursor: 'pointer', textDecoration: 'underline', fontSize: '12px' }}>
+          <p style={{ fontSize: '14px', margin: '4px 0 8px 0' }}>{t('poweredBy')}</p>
+          <button onClick={() => setShowPrivacy(true)} style={{ background: 'none', border: 'none', color: 'var(--gray-500)', cursor: 'pointer', textDecoration: 'underline', fontSize: '14px' }}>
             {t('footerPrivacyPolicy')}
           </button>
         </footer>
@@ -262,15 +240,15 @@ const App = () => {
         <header className="app-header">
           <div>
             <h1 style={{ color: 'var(--primary)', fontSize: '22px', margin: 0, display: 'flex', alignItems: 'center', gap: '8px' }}><UserCountryFlag size={22} /> Learning Hotspot</h1>
-            <span className="app-header__tagline" style={{ fontSize: '11px', color: 'var(--text-subtle)' }}>{t('tagline')} • {COUNTRY_NAMES[user?.country] || ''}</span>
+            <span className="app-header__tagline" style={{ fontSize: '13px', color: 'var(--text-subtle)' }}>{t('tagline')} • {COUNTRY_NAMES[user?.country] || ''}</span>
           </div>
           {/* On phones these move into the tab bar's "More" sheet (MobileTabBar). */}
           <div className="app-header__account" style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-            <span style={{ color: 'var(--text-muted)', fontSize: '13px', display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
-              <User size={14} aria-hidden="true" /> {user?.full_name || user?.name || t('student')}
-            </span>
+            <Link to="/profile" aria-label={`${user?.full_name || user?.name || t('student')}: ${t('navProfile')}`} style={{ color: 'var(--text-muted)', fontSize: '15px', display: 'inline-flex', alignItems: 'center', gap: '6px', textDecoration: 'underline' }}>
+              <User size={16} aria-hidden="true" /> {user?.full_name || user?.name || t('student')}
+            </Link>
             {user?.is_admin && (
-              <span style={{ fontSize: '11px', fontWeight: 'bold', color: 'var(--primary)', background: 'var(--primary-bg)', border: '1px solid var(--primary-border)', borderRadius: '999px', padding: '3px 10px' }}>
+              <span style={{ fontSize: '13px', fontWeight: 'bold', color: 'var(--primary)', background: 'var(--primary-bg)', border: '1px solid var(--primary-border)', borderRadius: '999px', padding: '3px 10px' }}>
                 {t('admin')}
               </span>
             )}
@@ -304,7 +282,8 @@ const App = () => {
             
             <Route path="/practice" element={<PracticeModule />} />
             <Route path="/flashcards" element={<FlashcardsModule />} />
-            <Route path="/school-choice" element={<SchoolChoiceModule />} />
+            <Route path="/explore/school-selection" element={<SchoolChoiceModule />} />
+            <Route path="/school-choice" element={<Navigate to="/explore/school-selection" replace />} />
             <Route path="/progress" element={<GamificationPage />} />
             <Route path="/plan" element={<PlanModule />} />
             <Route path="/profile" element={<ProfileModule />} />
@@ -318,8 +297,6 @@ const App = () => {
             <Route path="/school-admin" element={user?.is_school_admin ? <SchoolAdminDashboard /> : <Navigate to="/" />} />
             <Route path="/impact" element={user?.is_admin ? <ImpactDashboard /> : <Navigate to="/" />} />
             <Route path="/privacy" element={<PrivacyPolicy />} />
-            <Route path="/certificates/verify/:code" element={<CertificateVerifyRoute />} />
-            <Route path="/certificates/:courseSlug" element={<CertificatePage />} />
 
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>
@@ -331,11 +308,11 @@ const App = () => {
           padding: '16px 0', 
           color: 'var(--gray-500)', 
           borderTop: '1px solid var(--border)', 
-          fontSize: '13px' 
+          fontSize: '15px' 
         }}>
           <p>{t('copyright')}</p>
-          <p style={{ fontSize: '12px', margin: '4px 0 8px 0' }}>{t('poweredBy')}</p>
-          <Link to="/privacy" style={{ color: 'var(--gray-500)', fontSize: '12px', textDecoration: 'underline' }}>
+          <p style={{ fontSize: '14px', margin: '4px 0 8px 0' }}>{t('poweredBy')}</p>
+          <Link to="/privacy" style={{ color: 'var(--gray-500)', fontSize: '14px', textDecoration: 'underline' }}>
             {t('footerPrivacyPolicy')}
           </Link>
         </footer>

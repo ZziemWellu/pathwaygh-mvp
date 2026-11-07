@@ -40,7 +40,7 @@ const AIBonusQuestion = () => {
   return (
     <div className="card" style={{ padding: '20px', marginBottom: '24px' }}>
       <h3 style={{ color: 'var(--primary)', margin: '0 0 4px 0' }}><BotIcon className="icon-inline" size="1em" aria-hidden="true" /> AI Bonus Question</h3>
-      <p style={{ fontSize: '13px', color: 'var(--gray-500)', margin: '0 0 16px 0' }}>
+      <p style={{ fontSize: '15px', color: 'var(--gray-500)', margin: '0 0 16px 0' }}>
         Unlimited extra Mathematics practice, generated on demand and checked by a calculator before you see it.
         Doesn't count toward your tracked stats above.
       </p>
@@ -51,12 +51,12 @@ const AIBonusQuestion = () => {
           value={topic}
           onChange={(e) => setTopic(e.target.value)}
           placeholder="Topic (optional), e.g. algebra"
-          style={{ flex: 1, minWidth: '160px', padding: '8px 12px', border: '1px solid var(--border)', borderRadius: '8px', fontSize: '14px' }}
+          style={{ flex: 1, minWidth: '160px', padding: '8px 12px', border: '1px solid var(--border)', borderRadius: '8px', fontSize: '15px' }}
         />
         <select
           value={difficulty}
           onChange={(e) => setDifficulty(e.target.value)}
-          style={{ padding: '8px 12px', border: '1px solid var(--border)', borderRadius: '8px', fontSize: '14px' }}
+          style={{ padding: '8px 12px', border: '1px solid var(--border)', borderRadius: '8px', fontSize: '15px' }}
         >
           <option value="easy">Easy</option>
           <option value="medium">Medium</option>
@@ -67,7 +67,7 @@ const AIBonusQuestion = () => {
         </Button>
       </div>
 
-      {error && <p style={{ color: 'var(--danger)', fontSize: '13px' }}>{error}</p>}
+      {error && <p style={{ color: 'var(--danger)', fontSize: '15px' }}>{error}</p>}
 
       {question && (
         <div style={{ padding: '16px', background: 'var(--surface-muted)', borderRadius: '8px' }}>
@@ -93,7 +93,7 @@ const AIBonusQuestion = () => {
                     border: isSelected ? '2px solid var(--primary)' : '1px solid var(--border)',
                     background,
                     cursor: selected ? 'default' : 'pointer',
-                    fontSize: '14px',
+                    fontSize: '15px',
                   }}
                 >
                   {String.fromCharCode(65 + i)}. {option}
@@ -102,7 +102,7 @@ const AIBonusQuestion = () => {
             })}
           </div>
           {selected && (
-            <div style={{ fontSize: '13px' }}>
+            <div style={{ fontSize: '15px' }}>
               <p style={{ fontWeight: 'bold', color: selected === question.correct ? 'var(--primary)' : 'var(--danger)', margin: '0 0 6px 0' }}>
                 {selected === question.correct ? 'Correct!' : `Not quite - the answer is ${question.correct}`}
               </p>

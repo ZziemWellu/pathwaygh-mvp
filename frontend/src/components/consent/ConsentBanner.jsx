@@ -57,7 +57,7 @@ const ConsentBanner = ({ user, onVerified }) => {
         borderRadius: '8px',
         padding: '12px 16px',
         margin: '12px 0',
-        fontSize: '13px',
+        fontSize: '15px',
       }}
     >
       <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: '10px', justifyContent: 'space-between' }}>

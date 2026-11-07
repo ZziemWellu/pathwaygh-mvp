@@ -192,7 +192,7 @@ const ScholarshipsPage = () => {
             padding: '10px 14px',
             border: '1px solid var(--border)',
             borderRadius: '8px',
-            fontSize: '14px'
+            fontSize: '15px'
           }}
         />
         <select
@@ -203,7 +203,7 @@ const ScholarshipsPage = () => {
             padding: '10px 14px',
             border: '1px solid var(--border)',
             borderRadius: '8px',
-            fontSize: '14px',
+            fontSize: '15px',
             background: 'white'
           }}
         >
@@ -220,7 +220,7 @@ const ScholarshipsPage = () => {
             padding: '10px 14px',
             border: '1px solid var(--border)',
             borderRadius: '8px',
-            fontSize: '14px',
+            fontSize: '15px',
             background: 'white'
           }}
         >
@@ -249,7 +249,7 @@ const ScholarshipsPage = () => {
                 <span style={{
                   padding: '2px 10px',
                   borderRadius: '12px',
-                  fontSize: '11px',
+                  fontSize: '13px',
                   fontWeight: 'bold',
                   background: getStatusColor(sch.status),
                   color: 'white'
@@ -257,27 +257,27 @@ const ScholarshipsPage = () => {
                   {sch.status.toUpperCase()}
                 </span>
               </div>
-              <div style={{ fontSize: '13px', color: 'var(--text-muted)', marginBottom: '4px' }}>
+              <div style={{ fontSize: '15px', color: 'var(--text-muted)', marginBottom: '4px' }}>
                 <LandmarkIcon className="icon-inline" size="1em" aria-hidden="true" /> {sch.sponsor}
               </div>
-              <div style={{ fontSize: '13px', color: 'var(--text-muted)', marginBottom: '4px' }}>
+              <div style={{ fontSize: '15px', color: 'var(--text-muted)', marginBottom: '4px' }}>
                 <CoinsIcon className="icon-inline" size="1em" aria-hidden="true" /> {sch.amount || 'Full tuition'}
               </div>
-              <div style={{ fontSize: '13px', color: 'var(--text-muted)', marginBottom: '4px' }}>
+              <div style={{ fontSize: '15px', color: 'var(--text-muted)', marginBottom: '4px' }}>
                 <CalendarDaysIcon className="icon-inline" size="1em" aria-hidden="true" /> Deadline: {formatDeadline(sch.deadline)}
               </div>
               <div style={{ marginTop: '12px' }}>
                 <span style={{
                   padding: '2px 10px',
                   borderRadius: '12px',
-                  fontSize: '11px',
+                  fontSize: '13px',
                   background: getTypeColor(sch.type),
                   color: 'white'
                 }}>
                   {sch.type.toUpperCase()}
                 </span>
               </div>
-              <div style={{ fontSize: '12px', color: 'var(--gray-500)', marginTop: '12px' }}>
+              <div style={{ fontSize: '14px', color: 'var(--gray-500)', marginTop: '12px' }}>
                 Click for full details →
               </div>
             </div>
@@ -331,7 +331,7 @@ const ScholarshipsPage = () => {
             <span style={{
               padding: '2px 12px',
               borderRadius: '12px',
-              fontSize: '12px',
+              fontSize: '14px',
               fontWeight: 'bold',
               background: getStatusColor(selectedScholarship.status),
               color: 'white',
@@ -340,28 +340,28 @@ const ScholarshipsPage = () => {
             }}>
               {selectedScholarship.status.toUpperCase()}
             </span>
-            <div style={{ fontSize: '14px', color: 'var(--text-muted)', marginBottom: '8px' }}>
+            <div style={{ fontSize: '15px', color: 'var(--text-muted)', marginBottom: '8px' }}>
               <LandmarkIcon className="icon-inline" size="1em" aria-hidden="true" /> <strong>Sponsor:</strong> {selectedScholarship.sponsor}
             </div>
-            <div style={{ fontSize: '14px', color: 'var(--text-muted)', marginBottom: '8px' }}>
+            <div style={{ fontSize: '15px', color: 'var(--text-muted)', marginBottom: '8px' }}>
               <CoinsIcon className="icon-inline" size="1em" aria-hidden="true" /> <strong>Coverage:</strong> {selectedScholarship.coverage || selectedScholarship.amount || 'Full tuition'}
             </div>
-            <div style={{ fontSize: '14px', color: 'var(--text-muted)', marginBottom: '8px' }}>
+            <div style={{ fontSize: '15px', color: 'var(--text-muted)', marginBottom: '8px' }}>
               <CalendarDaysIcon className="icon-inline" size="1em" aria-hidden="true" /> <strong>Deadline:</strong> {formatDeadline(selectedScholarship.deadline)}
             </div>
-            <div style={{ fontSize: '14px', color: 'var(--text-muted)', marginBottom: '8px' }}>
+            <div style={{ fontSize: '15px', color: 'var(--text-muted)', marginBottom: '8px' }}>
               <LandmarkIcon className="icon-inline" size="1em" aria-hidden="true" /> <strong>Type:</strong> {selectedScholarship.type.toUpperCase()}
             </div>
             {selectedScholarship.eligibility && (
               <div style={{ margin: '12px 0' }}>
                 <strong><CircleCheckIcon className="icon-inline" size="1em" aria-hidden="true" /> Eligibility:</strong>
-                <p style={{ color: 'var(--text-muted)', fontSize: '14px', margin: '4px 0 0 0' }}>{selectedScholarship.eligibility}</p>
+                <p style={{ color: 'var(--text-muted)', fontSize: '15px', margin: '4px 0 0 0' }}>{selectedScholarship.eligibility}</p>
               </div>
             )}
             {selectedScholarship.description && (
               <div style={{ margin: '12px 0' }}>
                 <strong><ClipboardListIcon className="icon-inline" size="1em" aria-hidden="true" /> Description:</strong>
-                <p style={{ color: 'var(--text-muted)', fontSize: '14px', margin: '4px 0 0 0' }}>{selectedScholarship.description}</p>
+                <p style={{ color: 'var(--text-muted)', fontSize: '15px', margin: '4px 0 0 0' }}>{selectedScholarship.description}</p>
               </div>
             )}
             {selectedScholarship.website && (

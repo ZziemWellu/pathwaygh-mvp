@@ -91,7 +91,7 @@ const SchoolAdminDashboard = () => {
         actions={
           <button
             type="button"
-            style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '8px 14px', background: 'var(--primary-bg)', color: 'var(--text)', border: '1px solid var(--primary-border)', borderRadius: '8px', fontSize: '13px', cursor: 'pointer' }}
+            style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '8px 14px', background: 'var(--primary-bg)', color: 'var(--text)', border: '1px solid var(--primary-border)', borderRadius: '8px', fontSize: '15px', cursor: 'pointer' }}
             onClick={copyJoinCode}
             title="Click to copy"
             aria-label={`Copy join code ${school?.join_code || ''}`}
@@ -112,12 +112,12 @@ const SchoolAdminDashboard = () => {
             onChange={(e) => toggleConsent(e.target.checked)}
             style={{ marginTop: '3px' }}
           />
-          <span style={{ fontSize: '13px' }}>
+          <span style={{ fontSize: '15px' }}>
             Our school has obtained parental or guardian consent for enrolled students under 18 to use this platform, as part of our standard enrollment process.
           </span>
         </label>
         {school?.parent_consent_attested && school?.parent_consent_attested_at && (
-          <p style={{ fontSize: '12px', color: 'var(--text-muted)', marginTop: '8px', marginLeft: '26px' }}>
+          <p style={{ fontSize: '14px', color: 'var(--text-muted)', marginTop: '8px', marginLeft: '26px' }}>
             Confirmed {formatDate(school.parent_consent_attested_at)}
           </p>
         )}
@@ -129,15 +129,15 @@ const SchoolAdminDashboard = () => {
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: '16px', marginBottom: '24px' }}>
         <div className="card" style={{ padding: '16px', textAlign: 'center' }}>
           <div style={{ fontSize: '28px', fontWeight: 'bold', color: 'var(--primary)' }}>{summary.student_count}</div>
-          <div style={{ fontSize: '12px', color: 'var(--gray-500)' }}>Students</div>
+          <div style={{ fontSize: '14px', color: 'var(--gray-500)' }}>Students</div>
         </div>
         <div className="card" style={{ padding: '16px', textAlign: 'center' }}>
           <div style={{ fontSize: '28px', fontWeight: 'bold', color: 'var(--primary)' }}>{summary.average_completion_rate}%</div>
-          <div style={{ fontSize: '12px', color: 'var(--gray-500)' }}>Avg. Completion</div>
+          <div style={{ fontSize: '14px', color: 'var(--gray-500)' }}>Avg. Completion</div>
         </div>
         <div className="card" style={{ padding: '16px', textAlign: 'center' }}>
           <div style={{ fontSize: '28px', fontWeight: 'bold', color: 'var(--primary)' }}>{summary.average_quiz_score}%</div>
-          <div style={{ fontSize: '12px', color: 'var(--gray-500)' }}>Avg. Quiz Score</div>
+          <div style={{ fontSize: '14px', color: 'var(--gray-500)' }}>Avg. Quiz Score</div>
         </div>
       </div>
 
@@ -182,7 +182,7 @@ const SchoolAdminDashboard = () => {
                   <td style={cellStyle}>
                     {student.full_name}
                     {student.is_school_admin && (
-                      <span style={{ marginLeft: '6px', fontSize: '10px', fontWeight: 'bold', color: 'var(--primary)', background: 'var(--primary-bg)', padding: '2px 8px', borderRadius: '999px' }}>
+                      <span style={{ marginLeft: '6px', fontSize: '13px', fontWeight: 'bold', color: 'var(--primary)', background: 'var(--primary-bg)', padding: '2px 8px', borderRadius: '999px' }}>
                         Admin
                       </span>
                     )}
@@ -211,6 +211,6 @@ const SchoolAdminDashboard = () => {
   );
 };
 
-const cellStyle = { padding: '10px 14px', fontSize: '13px' };
+const cellStyle = { padding: '10px 14px', fontSize: '15px' };
 
 export default SchoolAdminDashboard;

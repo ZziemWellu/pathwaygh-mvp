@@ -93,13 +93,13 @@ const FlashcardsModule = () => {
       {showManage ? (
         <div>
           <form className="card" onSubmit={createCard} style={{ padding: '16px', marginBottom: '20px' }}>
-            <h3 style={{ margin: '0 0 10px 0', fontSize: '14px' }}>New flashcard</h3>
+            <h3 style={{ margin: '0 0 10px 0', fontSize: '15px' }}>New flashcard</h3>
             <textarea value={front} onChange={(e) => setFront(e.target.value)} placeholder="Front (question/prompt)" rows={2} style={{ width: '100%', padding: '8px', border: '1px solid var(--border)', borderRadius: '8px', marginBottom: '8px', fontFamily: 'inherit' }} />
             <textarea value={back} onChange={(e) => setBack(e.target.value)} placeholder="Back (answer)" rows={2} style={{ width: '100%', padding: '8px', border: '1px solid var(--border)', borderRadius: '8px', marginBottom: '8px', fontFamily: 'inherit' }} />
             <Button size="sm" type="submit" disabled={creating || !front.trim() || !back.trim()}>
               {creating ? 'Adding...' : 'Add Card'}
             </Button>
-            {error && <p style={{ color: 'var(--danger)', fontSize: '13px', marginTop: '8px' }}>{error}</p>}
+            {error && <p style={{ color: 'var(--danger)', fontSize: '15px', marginTop: '8px' }}>{error}</p>}
           </form>
 
           {allCards.length === 0 ? (
@@ -109,8 +109,8 @@ const FlashcardsModule = () => {
               {allCards.map((c) => (
                 <div key={c.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 14px', background: 'white', border: '1px solid var(--border)', borderRadius: '8px' }}>
                   <div>
-                    <div style={{ fontSize: '13px', fontWeight: 'bold' }}>{c.front}</div>
-                    <div style={{ fontSize: '12px', color: 'var(--gray-500)' }}>{c.back}</div>
+                    <div style={{ fontSize: '15px', fontWeight: 'bold' }}>{c.front}</div>
+                    <div style={{ fontSize: '14px', color: 'var(--gray-500)' }}>{c.back}</div>
                   </div>
                   <button onClick={() => deleteCard(c.id)} aria-label={`Delete flashcard: ${c.front}`} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--danger)' }}>
                     <Trash2 size={16} />
@@ -134,14 +134,14 @@ const FlashcardsModule = () => {
         </div>
       ) : (
         <div>
-          <p style={{ textAlign: 'center', fontSize: '13px', color: 'var(--gray-500)', marginBottom: '12px' }}>
+          <p style={{ textAlign: 'center', fontSize: '15px', color: 'var(--gray-500)', marginBottom: '12px' }}>
             {reviewIndex + 1} of {dueCards.length} due today
           </p>
           <div className="card card--interactive" onClick={() => setShowBack(!showBack)} style={{ minHeight: '180px', padding: '32px', display: 'flex', alignItems: 'center', justifyContent: 'center', textAlign: 'center', fontSize: '18px', marginBottom: '20px' }}>
             {showBack ? currentCard.back : currentCard.front}
           </div>
           {!showBack ? (
-            <p style={{ textAlign: 'center', color: 'var(--gray-500)', fontSize: '13px' }}>Tap the card to reveal the answer</p>
+            <p style={{ textAlign: 'center', color: 'var(--gray-500)', fontSize: '15px' }}>Tap the card to reveal the answer</p>
           ) : (
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '8px' }}>
               <RatingButton label="Again" color="var(--danger)" onClick={() => rate('again')} />
@@ -157,7 +157,7 @@ const FlashcardsModule = () => {
 };
 
 const RatingButton = ({ label, color, onClick }) => (
-  <button onClick={onClick} style={{ padding: '10px 0', background: color, color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: 'bold', fontSize: '13px' }}>
+  <button onClick={onClick} style={{ padding: '10px 0', background: color, color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: 'bold', fontSize: '15px' }}>
     {label}
   </button>
 );

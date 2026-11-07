@@ -21,7 +21,7 @@ const MobileTabBar = ({ user, onLogout }) => {
   const activeId = useActiveNavId(items);
   const primary = items.filter((item) => item.primary);
   const secondary = items.filter((item) => !item.primary);
-  const moreActive = secondary.some((item) => item.id === activeId);
+  const moreActive = secondary.some((item) => item.id === activeId) || pathname === '/profile';
 
   const closeMore = useCallback(() => setMoreOpen(false), []);
   useModalA11y({ isOpen: moreOpen, onClose: closeMore, containerRef: sheetRef });
@@ -79,8 +79,10 @@ const MobileTabBar = ({ user, onLogout }) => {
           >
             <div className="mobile-sheet__header">
               <div>
-                <div className="mobile-sheet__name">{user?.full_name || user?.name || t('student')}</div>
-                {(user?.email || user?.username) && <div className="mobile-sheet__email">{user.email || user.username}</div>}
+                <button type="button" className="mobile-sheet__profile" onClick={() => go('/profile')}>
+                  <span className="mobile-sheet__name">{user?.full_name || user?.name || t('student')}</span>
+                  <span className="mobile-sheet__email">{user?.email || user?.username ? `${user.email || user.username} · ` : ''}{t('navProfile')}</span>
+                </button>
               </div>
               <button type="button" className="mobile-sheet__close" aria-label="Close menu" onClick={closeMore}>
                 <X size={20} aria-hidden="true" />
@@ -105,7 +107,7 @@ const MobileTabBar = ({ user, onLogout }) => {
               })}
             </ul>
             <div className="mobile-sheet__footer">
-              <LanguageSwitcher style={{ fontSize: '14px', padding: '8px 10px' }} />
+              <LanguageSwitcher style={{ fontSize: '15px', padding: '8px 10px' }} />
               <button type="button" className="btn btn-secondary btn-sm" onClick={onLogout}>
                 <LogOut size={14} aria-hidden="true" /> {t('logout')}
               </button>

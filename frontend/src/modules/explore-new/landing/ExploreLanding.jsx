@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Briefcase, Coins, Compass, Landmark, Target } from 'lucide-react';
+import { Briefcase, Coins, Compass, Landmark, School, Target } from 'lucide-react';
+import { canUseSchoolSelection } from '../../../components/common/navItems';
 import PageHeader from '../../../components/ui/PageHeader';
 
 // Countries that sit WASSCE under WAEC - matches WASSCE_COUNTRIES in
@@ -55,10 +56,23 @@ const ExploreLanding = ({ user }) => {
       path: '/explore/career-match',
       buttonText: 'Start Assessment',
       wassceOnly: true
+    },
+    {
+      id: 'school-selection',
+      icon: School,
+      tint: 'var(--primary-bg)',
+      title: 'School Selection',
+      description: 'Plan your SHS choices and check them against the CSSPS rules',
+      color: 'var(--primary)',
+      path: '/explore/school-selection',
+      buttonText: 'Plan My Choices',
+      schoolSelectionOnly: true
     }
   ];
 
-  const features = allFeatures.filter((f) => !f.wassceOnly || WASSCE_COUNTRIES.includes(user?.country));
+  const features = allFeatures.filter(
+    (f) => (!f.wassceOnly || WASSCE_COUNTRIES.includes(user?.country)) && (!f.schoolSelectionOnly || canUseSchoolSelection(user)),
+  );
 
   return (
     <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '20px' }}>
@@ -81,7 +95,7 @@ const ExploreLanding = ({ user }) => {
             <h3 style={{ color: feature.color, marginBottom: '8px', fontSize: '20px' }}>
               {feature.title}
             </h3>
-            <p style={{ color: 'var(--text-muted)', fontSize: '14px', marginBottom: '20px', lineHeight: '1.5' }}>
+            <p style={{ color: 'var(--text-muted)', fontSize: '15px', marginBottom: '20px', lineHeight: '1.5' }}>
               {feature.description}
             </p>
             <button
@@ -92,7 +106,7 @@ const ExploreLanding = ({ user }) => {
                 border: 'none',
                 borderRadius: '8px',
                 cursor: 'pointer',
-                fontSize: '14px',
+                fontSize: '15px',
                 fontWeight: '600',
                 transition: 'all 0.2s ease',
                 width: '100%'

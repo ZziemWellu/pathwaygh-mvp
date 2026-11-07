@@ -24,7 +24,7 @@
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 15px;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -84,7 +84,7 @@
 .profileName p {
   color: rgba(255,255,255,0.8);
   margin: 2px 0 0 0;
-  font-size: 14px;
+  font-size: 15px;
 }
 
 .profileInfo {
@@ -116,7 +116,7 @@
 }
 
 .statLabel {
-  font-size: 12px;
+  font-size: 14px;
   color: var(--text-muted);
 }
 
@@ -135,7 +135,7 @@
   border: none;
   border-bottom: 3px solid transparent;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 15px;
   font-weight: normal;
   color: var(--text-muted);
   transition: all 0.2s ease;
@@ -178,7 +178,7 @@
 }
 
 .formGroup label {
-  font-size: 13px;
+  font-size: 15px;
   color: var(--text-muted);
 }
 
@@ -187,7 +187,7 @@
   padding: 10px;
   border: 1px solid var(--border);
   border-radius: 8px;
-  font-size: 14px;
+  font-size: 15px;
 }
 
 .formGroup input:focus,
@@ -240,7 +240,7 @@
 .tag {
   padding: 4px 12px;
   border-radius: 12px;
-  font-size: 13px;
+  font-size: 15px;
 }
 
 .tagInterest {
@@ -272,14 +272,14 @@
 }
 
 .savedItem {
-  font-size: 13px;
+  font-size: 15px;
   color: var(--text-muted);
   padding: 4px 0;
 }
 
 .emptyText {
   color: var(--text-muted);
-  font-size: 13px;
+  font-size: 15px;
 }
 
 /* Responsive */

@@ -38,12 +38,12 @@ const AdminStudentLevel = () => {
     }
   };
 
-  const field = { padding: '8px', border: '1px solid var(--border)', borderRadius: '6px', fontSize: '14px' };
+  const field = { padding: '8px', border: '1px solid var(--border)', borderRadius: '6px', fontSize: '15px' };
 
   return (
     <section className="card" style={{ padding: '16px 20px', marginBottom: '20px' }}>
       <h2 style={{ margin: '0 0 6px', fontSize: '18px' }}>Correct a student&apos;s level</h2>
-      <p style={{ margin: '0 0 10px', fontSize: '14px', color: 'var(--text-muted)' }}>
+      <p style={{ margin: '0 0 10px', fontSize: '15px', color: 'var(--text-muted)' }}>
         Enter their exact email or username. Each change is recorded with your reason.
       </p>
       <form onSubmit={find} style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
@@ -51,7 +51,7 @@ const AdminStudentLevel = () => {
         <Button type="submit" size="sm" disabled={identifier.trim().length < 3}>Find</Button>
       </form>
       {student && (
-        <div style={{ marginTop: '12px', fontSize: '14px' }}>
+        <div style={{ marginTop: '12px', fontSize: '15px' }}>
           <p style={{ margin: '0 0 8px' }}>
             <strong>{student.full_name}</strong> · {student.country} · {student.level ? student.level.toUpperCase() : 'no level'}{student.grade ? ` · ${student.grade}` : ''}
           </p>
@@ -67,8 +67,8 @@ const AdminStudentLevel = () => {
           </div>
         </div>
       )}
-      {message && <p style={{ color: 'var(--primary)', fontSize: '14px' }}>{message}</p>}
-      {error && <p role="alert" style={{ color: 'var(--danger)', fontSize: '14px' }}>{error}</p>}
+      {message && <p style={{ color: 'var(--primary)', fontSize: '15px' }}>{message}</p>}
+      {error && <p role="alert" style={{ color: 'var(--danger)', fontSize: '15px' }}>{error}</p>}
     </section>
   );
 };

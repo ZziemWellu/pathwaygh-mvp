@@ -38,7 +38,7 @@ const SchoolChoiceModule = () => {
         setRows(fromResponse(draftResponse.data.choices, loadedRules.total_choices));
         setCheck(draftResponse.data.check);
       } catch (err) {
-        setError(extractErrorMessage(err, 'Could not load the school-choice helper.'));
+        setError(extractErrorMessage(err, 'Could not load School Selection.'));
       } finally {
         setLoading(false);
       }
@@ -96,7 +96,7 @@ const SchoolChoiceModule = () => {
   if (!rules) {
     return (
       <div className="school-choice">
-        <PageHeader icon={School} title="School choice helper" />
+        <PageHeader icon={School} title="School Selection" />
         <p role="alert" className="school-choice__error">{error}</p>
       </div>
     );
@@ -115,7 +115,7 @@ const SchoolChoiceModule = () => {
     <div className="school-choice">
       <PageHeader
         icon={School}
-        title="School choice helper"
+        title="School Selection"
         subtitle={`Plan your ${rules.total_choices} CSSPS choices and check them against the ${rules.year} rules`}
       />
 

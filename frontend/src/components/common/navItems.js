@@ -3,24 +3,23 @@
 // can't drift apart.
 import { useLocation } from 'react-router-dom';
 import {
-  BarChart3, BookOpen, Building2, Home, Layers, ListChecks, PencilLine, School, Search, Shield, Trophy, User, Users,
+  BarChart3, BookOpen, Building2, Home, Layers, ListChecks, PencilLine, Search, Shield, Trophy, Users,
 } from 'lucide-react';
 
-// CSSPS is Ghana's SHS placement system, so it's for JHS students there.
-const canUseSchoolChoice = (user) =>
+// CSSPS is Ghana's SHS placement system, so School Selection (under Explore)
+// is for JHS students there.
+export const canUseSchoolSelection = (user) =>
   user?.is_admin || user?.is_school_admin || (user?.country === 'GH' && (!user?.level || user?.level === 'jhs'));
 
 // `primary` items are the phone tab bar's direct tabs; the rest live under "More".
 export const getNavItems = (user, t) => [
   { id: 'home', icon: Home, label: t('navHome'), path: '/', primary: true },
+  { id: 'plan', icon: ListChecks, label: t('navPlan'), path: '/plan' },
   { id: 'learn', icon: BookOpen, label: t('navLearn'), path: '/learn', primary: true },
   { id: 'practice', icon: PencilLine, label: t('navPractice'), path: '/practice', primary: true },
-  { id: 'explore', icon: Search, label: t('navExplore'), path: '/explore', primary: true },
-  ...(canUseSchoolChoice(user) ? [{ id: 'school-choice', icon: School, label: t('navSchoolChoice'), path: '/school-choice' }] : []),
   { id: 'flashcards', icon: Layers, label: t('navFlashcards'), path: '/flashcards' },
-  { id: 'plan', icon: ListChecks, label: t('navPlan'), path: '/plan' },
   { id: 'progress', icon: Trophy, label: t('navProgress'), path: '/progress' },
-  { id: 'profile', icon: User, label: t('navProfile'), path: '/profile' },
+  { id: 'explore', icon: Search, label: t('navExplore'), path: '/explore', primary: true },
   ...(user?.level === 'primary' ? [] : [{ id: 'community', icon: Users, label: t('navCommunity'), path: '/community' }]),
   ...(user?.is_admin ? [{ id: 'admin', icon: Shield, label: t('navAdmin'), path: '/admin' }] : []),
   ...(user?.is_admin ? [{ id: 'impact', icon: BarChart3, label: t('navImpact'), path: '/impact' }] : []),

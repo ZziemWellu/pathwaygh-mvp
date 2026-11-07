@@ -104,7 +104,7 @@ const CareerDetail = ({ career, onClose }) => {
                 color: 'var(--primary)',
                 padding: '4px 14px',
                 borderRadius: '20px',
-                fontSize: '13px',
+                fontSize: '15px',
                 fontWeight: 'bold',
               }}>
                 {career.category}
@@ -116,7 +116,7 @@ const CareerDetail = ({ career, onClose }) => {
                 color: 'var(--warning)',
                 padding: '4px 14px',
                 borderRadius: '20px',
-                fontSize: '13px',
+                fontSize: '15px',
               }}>
                 {career.difficulty}
               </span>
@@ -154,25 +154,25 @@ const CareerDetail = ({ career, onClose }) => {
         }}>
           {career.salary_range && (
             <div style={{ padding: '14px', background: 'var(--surface-muted)', borderRadius: '10px' }}>
-              <div style={{ fontSize: '11px', color: 'var(--gray-500)' }}><CoinsIcon className="icon-inline" size="1em" aria-hidden="true" /> Salary Range</div>
+              <div style={{ fontSize: '13px', color: 'var(--gray-500)' }}><CoinsIcon className="icon-inline" size="1em" aria-hidden="true" /> Salary Range</div>
               <div style={{ fontSize: '16px', fontWeight: 'bold', color: 'var(--primary)' }}>{career.salary_range}</div>
             </div>
           )}
           {career.demand && (
             <div style={{ padding: '14px', background: 'var(--surface-muted)', borderRadius: '10px' }}>
-              <div style={{ fontSize: '11px', color: 'var(--gray-500)' }}><ChartColumnIcon className="icon-inline" size="1em" aria-hidden="true" /> Job Demand</div>
+              <div style={{ fontSize: '13px', color: 'var(--gray-500)' }}><ChartColumnIcon className="icon-inline" size="1em" aria-hidden="true" /> Job Demand</div>
               <div style={{ fontSize: '16px', fontWeight: 'bold', color: 'var(--primary)' }}>{career.demand}</div>
             </div>
           )}
           {career.growth && (
             <div style={{ padding: '14px', background: 'var(--surface-muted)', borderRadius: '10px' }}>
-              <div style={{ fontSize: '11px', color: 'var(--gray-500)' }}><TrendingUpIcon className="icon-inline" size="1em" aria-hidden="true" /> Growth Outlook</div>
+              <div style={{ fontSize: '13px', color: 'var(--gray-500)' }}><TrendingUpIcon className="icon-inline" size="1em" aria-hidden="true" /> Growth Outlook</div>
               <div style={{ fontSize: '16px', fontWeight: 'bold', color: 'var(--primary)' }}>{career.growth}</div>
             </div>
           )}
           {career.ai_score && (
             <div style={{ padding: '14px', background: 'var(--surface-muted)', borderRadius: '10px' }}>
-              <div style={{ fontSize: '11px', color: 'var(--gray-500)' }}><BotIcon className="icon-inline" size="1em" aria-hidden="true" /> AI Suitability</div>
+              <div style={{ fontSize: '13px', color: 'var(--gray-500)' }}><BotIcon className="icon-inline" size="1em" aria-hidden="true" /> AI Suitability</div>
               <div style={{ fontSize: '16px', fontWeight: 'bold', color: 'var(--primary)' }}>{career.ai_score}%</div>
             </div>
           )}
@@ -189,7 +189,7 @@ const CareerDetail = ({ career, onClose }) => {
                   color: 'var(--secondary)',
                   padding: '4px 14px',
                   borderRadius: '16px',
-                  fontSize: '13px',
+                  fontSize: '15px',
                 }}>
                   {subject}
                 </span>
@@ -209,7 +209,7 @@ const CareerDetail = ({ career, onClose }) => {
                   color: 'var(--violet)',
                   padding: '4px 14px',
                   borderRadius: '16px',
-                  fontSize: '13px',
+                  fontSize: '15px',
                 }}>
                   {skill}
                 </span>
@@ -229,7 +229,7 @@ const CareerDetail = ({ career, onClose }) => {
                   color: 'var(--primary)',
                   padding: '4px 14px',
                   borderRadius: '16px',
-                  fontSize: '13px',
+                  fontSize: '15px',
                 }}>
                   {uni}
                 </span>
@@ -261,15 +261,15 @@ const CareerDetail = ({ career, onClose }) => {
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    fontSize: '13px',
+                    fontSize: '15px',
                     fontWeight: 'bold',
                     flexShrink: 0,
                   }}>
                     {i + 1}
                   </span>
                   <div>
-                    <div style={{ fontWeight: 'bold', fontSize: '14px' }}>{step.title}</div>
-                    <div style={{ fontSize: '12px', color: 'var(--gray-500)' }}>{step.duration}</div>
+                    <div style={{ fontWeight: 'bold', fontSize: '15px' }}>{step.title}</div>
+                    <div style={{ fontSize: '14px', color: 'var(--gray-500)' }}>{step.duration}</div>
                   </div>
                 </div>
               ))}
@@ -318,7 +318,7 @@ const CareerDetail = ({ career, onClose }) => {
               border: saved ? '2px solid var(--primary)' : '1px solid var(--primary)',
               borderRadius: '8px',
               cursor: saving ? 'default' : 'pointer',
-              fontSize: '14px',
+              fontSize: '15px',
               flex: 1,
               transition: 'all 0.2s ease',
               opacity: saving ? 0.6 : 1,

@@ -7,7 +7,6 @@ import pytest
 
 import modules.licence.service as licence
 import modules.tutor.router as tutor_router
-from models.certificate import Certificate
 from models.course import Course, Lesson
 from models.payment_transaction import PaymentTransaction
 from models.school import School
@@ -393,20 +392,3 @@ def test_licensed_school_students_skip_the_standard_tutor_allowance(client, db_s
     assert calls and calls[0][0] == licence.TUTOR_LIMIT_FREE
 
 
-def test_certificates_carry_the_school_name_only_for_licensed_schools(client, db_session):
-    _, _, school = _create_school(client, "lic_cert@test.com")
-    _, student_headers, _ = _join(client, "lic_cert_student@test.com", school["join_code"])
-
-    def complete(slug):
-        course = Course(slug=slug, title="Cert", description="d", level="jhs")
-        db_session.add(course)
-        db_session.flush()
-        lesson = Lesson(course_id=course.id, slug=f"{slug}-1", title="L", lesson_type="video", order_index=0)
-        db_session.add(lesson)
-        db_session.commit()
-        client.post(f"/api/learn/lessons/{lesson.slug}/progress", json={"watched": True}, headers=student_headers)
-        return db_session.query(Certificate).filter(Certificate.course_id == course.id).one()
-
-    assert complete("lic-cert-a").school_name == "Licence School"
-    _end_trial(db_session, school["id"])
-    assert complete("lic-cert-b").school_name is None

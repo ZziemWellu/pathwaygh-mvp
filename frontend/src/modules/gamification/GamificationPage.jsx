@@ -86,8 +86,8 @@ const GamificationPage = () => {
             <div style={{ marginBottom: '6px' }}>
               <AchievementIcon id={a.id} size={32} strokeWidth={1.75} color={a.earned ? 'var(--accent-strong)' : 'var(--text-subtle)'} />
             </div>
-            <div style={{ fontSize: '13px', fontWeight: 'bold' }}>{a.name}</div>
-            <div style={{ fontSize: '11px', color: 'var(--gray-500)', marginTop: '4px' }}>{a.description}</div>
+            <div style={{ fontSize: '15px', fontWeight: 'bold' }}>{a.name}</div>
+            <div style={{ fontSize: '13px', color: 'var(--gray-500)', marginTop: '4px' }}>{a.description}</div>
           </div>
         ))}
       </div>
@@ -98,7 +98,7 @@ const GamificationPage = () => {
           <p style={{ color: 'var(--gray-500)', margin: 0 }}>{leaderboard.reason}</p>
         ) : !profile.leaderboard_opt_in ? (
           <div>
-            <p style={{ fontSize: '13px', color: 'var(--gray-500)', marginBottom: '10px' }}>
+            <p style={{ fontSize: '15px', color: 'var(--gray-500)', marginBottom: '10px' }}>
               Join with a nickname to see how you compare with other students at your school. Your real name is never shown, and this is nationwide-invisible - only students at your own school can see it.
             </p>
             <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
@@ -108,19 +108,19 @@ const GamificationPage = () => {
                 onChange={(e) => setDisplayName(e.target.value)}
                 placeholder="Choose a nickname"
                 maxLength={50}
-                style={{ flex: 1, minWidth: '160px', padding: '8px 12px', border: '1px solid var(--border)', borderRadius: '8px', fontSize: '14px' }}
+                style={{ flex: 1, minWidth: '160px', padding: '8px 12px', border: '1px solid var(--border)', borderRadius: '8px', fontSize: '15px' }}
               />
               <Button size="sm" onClick={joinLeaderboard} disabled={!displayName.trim()}>
                 Join
               </Button>
             </div>
-            {optInError && <p style={{ color: 'var(--danger)', fontSize: '13px', marginTop: '8px' }}>{optInError}</p>}
+            {optInError && <p style={{ color: 'var(--danger)', fontSize: '15px', marginTop: '8px' }}>{optInError}</p>}
           </div>
         ) : (
           <div>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
-              <span style={{ fontSize: '13px', color: 'var(--gray-500)' }}>Playing as <strong>{profile.leaderboard_display_name}</strong></span>
-              <button onClick={leaveLeaderboard} style={{ padding: '4px 12px', background: 'none', border: '1px solid var(--border)', borderRadius: '6px', cursor: 'pointer', fontSize: '12px' }}>Leave</button>
+              <span style={{ fontSize: '15px', color: 'var(--gray-500)' }}>Playing as <strong>{profile.leaderboard_display_name}</strong></span>
+              <button onClick={leaveLeaderboard} style={{ padding: '4px 12px', background: 'none', border: '1px solid var(--border)', borderRadius: '6px', cursor: 'pointer', fontSize: '14px' }}>Leave</button>
             </div>
             {leaderboard.leaderboard.length === 0 ? (
               <p style={{ color: 'var(--gray-500)', margin: 0 }}>No one else at your school has joined yet.</p>
@@ -136,7 +136,7 @@ const GamificationPage = () => {
                       background: row.is_you ? 'var(--primary-bg)' : 'var(--surface-muted)',
                       borderRadius: '8px',
                       fontWeight: row.is_you ? 'bold' : 'normal',
-                      fontSize: '13px',
+                      fontSize: '15px',
                     }}
                   >
                     <span>#{row.rank} {row.display_name}{row.is_you ? ' (you)' : ''}</span>
@@ -156,7 +156,7 @@ const StatCard = ({ icon: Icon, label, value, color }) => (
   <div className="card" style={{ padding: '16px', textAlign: 'center' }}>
     <Icon size={22} color={color} style={{ marginBottom: '6px' }} />
     <div style={{ fontSize: '22px', fontWeight: 'bold', color }}>{value}</div>
-    <div style={{ fontSize: '12px', color: 'var(--gray-500)' }}>{label}</div>
+    <div style={{ fontSize: '14px', color: 'var(--gray-500)' }}>{label}</div>
   </div>
 );
 

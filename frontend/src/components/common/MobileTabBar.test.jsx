@@ -49,10 +49,12 @@ describe('MobileTabBar', () => {
     renderAt('/');
     await userEvent.click(within(tabBar()).getByRole('button', { name: 'More' }));
     const sheet = screen.getByRole('dialog', { name: 'More' });
-    for (const label of ['Flashcards', 'Plan', 'Progress', 'Profile', 'Community']) {
+    for (const label of ['Plan', 'Flashcards', 'Progress', 'Community']) {
       expect(within(sheet).getByRole('button', { name: label })).toBeInTheDocument();
     }
-    expect(within(sheet).getByText('Ama Mensah')).toBeInTheDocument();
+    // Profile is reached from the name, not from the list.
+    expect(within(sheet).getByRole('button', { name: /Ama Mensah/ })).toBeInTheDocument();
+    expect(within(sheet).queryByRole('button', { name: 'Profile' })).not.toBeInTheDocument();
     expect(within(sheet).getByRole('combobox', { name: /language/i })).toBeInTheDocument();
   });
 

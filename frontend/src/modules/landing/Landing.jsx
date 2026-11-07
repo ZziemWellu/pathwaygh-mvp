@@ -25,7 +25,7 @@ const STEPS = [
   },
   {
     title: 'Learn and practise every day',
-    body: "Watch short lessons, take WASSCE-style quizzes and ask the AI tutor when you're stuck. Earn a certificate for each course.",
+    body: "Watch short video lessons, take WASSCE-past questions quizzes and ask the AI tutor when you're stuck.",
   },
   {
     title: 'Plan what comes next',
@@ -34,7 +34,7 @@ const STEPS = [
 ];
 
 const FEATURES = [
-  { icon: PlayCircle, tint: 'primary', title: 'Video courses', body: 'Short lessons for primary, JHS and SHS subjects, with progress tracking and a verifiable certificate when you finish.' },
+  { icon: PlayCircle, tint: 'primary', title: 'Video courses', body: 'Short lessons for primary, JHS and SHS subjects, with progress tracking.' },
   { icon: Bot, tint: 'accent', title: 'Practice with an AI tutor', body: 'Exam-style quizzes, and a tutor that gives hints before answers and double-checks its maths with a calculator.' },
   { icon: GraduationCap, tint: 'violet', title: 'Career Match & universities', body: 'Careers matched to your interests, WASSCE subject requirements, university programmes and scholarships.' },
   { icon: Layers, tint: 'info', title: 'Flashcards & Word of the Day', body: "Spaced-repetition flashcards bring back what you're about to forget; a new word every day builds vocabulary." },

@@ -5,7 +5,7 @@ import { getUser, setUser } from '../../constants/auth';
 import LanguageSwitcher from '../../components/LanguageSwitcher';
 import { useAccessibility } from '../../contexts/AccessibilityContext';
 import { formatDate } from '../../utils/date';
-import { Award, BookOpen, BookOpenIcon, BookOpenTextIcon, Bookmark, BookmarkIcon, BriefcaseIcon, CameraIcon, ClipboardList, ClipboardListIcon, CoinsIcon, FileTextIcon, FlameIcon, HourglassIcon, LandmarkIcon, Pencil, School, SchoolIcon, Settings, SettingsIcon, StarIcon, Target, TargetIcon, TrophyIcon, User } from 'lucide-react';
+import { BookOpen, BookOpenIcon, BookOpenTextIcon, Bookmark, BookmarkIcon, BriefcaseIcon, CameraIcon, ClipboardList, ClipboardListIcon, CoinsIcon, FileTextIcon, FlameIcon, HourglassIcon, LandmarkIcon, Pencil, School, SchoolIcon, Settings, SettingsIcon, StarIcon, Target, TargetIcon, User } from 'lucide-react';
 import PageHeader from '../../components/ui/PageHeader';
 import Button from '../../components/ui/Button';
 
@@ -47,8 +47,6 @@ const ProfileModule = () => {
   const [savedCareers, setSavedCareers] = useState([]);
   const [savedUniversities, setSavedUniversities] = useState([]);
   const [savedScholarships, setSavedScholarships] = useState([]);
-  const [certificates, setCertificates] = useState([]);
-  const [copiedCertCode, setCopiedCertCode] = useState(null);
   const [schoolInfo, setSchoolInfo] = useState(null);
   const [schoolFormMode, setSchoolFormMode] = useState(null); // null | 'create' | 'join'
   const [schoolFormValue, setSchoolFormValue] = useState('');
@@ -82,15 +80,13 @@ const ProfileModule = () => {
       const statsRes = await api.get('/api/dashboard/statistics').catch(() => ({ data: {} }));
       setStats(prev => ({ ...prev, ...statsRes.data }));
 
-      const [careersRes, uniRes, schRes, certRes] = await Promise.all([
+      const [careersRes, uniRes, schRes] = await Promise.all([
         api.get('/api/profile/saved/careers').catch(() => ({ data: { careers: [] } })),
         api.get('/api/profile/saved/universities').catch(() => ({ data: { universities: [] } })),
         api.get('/api/profile/saved/scholarships').catch(() => ({ data: { scholarships: [] } })),
-        api.get('/api/certificates/me').catch(() => ({ data: { certificates: [] } })),
       ]);
       setSavedCareers(careersRes.data?.careers || []);
       setSavedUniversities(uniRes.data?.universities || []);
-      setCertificates(certRes.data?.certificates || []);
       setSavedScholarships(schRes.data?.scholarships || []);
 
       const schoolRes = await api.get('/api/school/me').catch(() => ({ data: { school: null, is_school_admin: false } }));
@@ -230,7 +226,6 @@ const ProfileModule = () => {
     { id: 'academic', icon: BookOpen, label: 'Academic' },
     { id: 'goals', icon: Target, label: 'Goals' },
     { id: 'saved', icon: Bookmark, label: 'Saved' },
-    { id: 'certificates', icon: Award, label: 'Certificates' },
     { id: 'school', icon: School, label: 'School' },
     { id: 'settings', icon: Settings, label: 'Settings' },
   ];
@@ -394,7 +389,7 @@ const ProfileModule = () => {
                     right: 0,
                     background: 'rgba(0,0,0,0.6)',
                     color: 'white',
-                    fontSize: '10px',
+                    fontSize: '13px',
                     textAlign: 'center',
                     padding: '4px 0',
                     opacity: 0,
@@ -416,7 +411,7 @@ const ProfileModule = () => {
                   color: 'white',
                   padding: '4px 12px',
                   borderRadius: '12px',
-                  fontSize: '11px',
+                  fontSize: '13px',
                   whiteSpace: 'nowrap'
                 }}>
                   Uploading {uploadProgress}%
@@ -438,7 +433,7 @@ const ProfileModule = () => {
             <h3 style={{ color: 'var(--gray-900)', margin: 0, fontSize: '22px' }}>
               {profile?.full_name || user?.full_name || 'Student'}
             </h3>
-            <p style={{ color: 'var(--gray-600)', margin: '2px 0 0 0', fontSize: '14px' }}>
+            <p style={{ color: 'var(--gray-600)', margin: '2px 0 0 0', fontSize: '15px' }}>
               {profile?.role || 'Student'} • Member since {formatDate(profile?.created_at, { fallback: 'N/A' })}
             </p>
             {!editing && (
@@ -451,42 +446,42 @@ const ProfileModule = () => {
             <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
                 <div>
-                  <label style={{ display: 'block', fontSize: '13px', color: 'var(--gray-500)', marginBottom: '4px' }}>Full Name</label>
+                  <label style={{ display: 'block', fontSize: '15px', color: 'var(--gray-500)', marginBottom: '4px' }}>Full Name</label>
                   <input name="full_name" value={formData.full_name || ''} onChange={handleChange} style={{ width: '100%', padding: '10px', border: '1px solid var(--border)', borderRadius: '8px' }} />
                 </div>
                 <div>
-                  <label style={{ display: 'block', fontSize: '13px', color: 'var(--gray-500)', marginBottom: '4px' }}>Email</label>
+                  <label style={{ display: 'block', fontSize: '15px', color: 'var(--gray-500)', marginBottom: '4px' }}>Email</label>
                   <input name="email" value={formData.email || ''} onChange={handleChange} style={{ width: '100%', padding: '10px', border: '1px solid var(--border)', borderRadius: '8px' }} disabled />
                 </div>
                 <div>
-                  <label style={{ display: 'block', fontSize: '13px', color: 'var(--gray-500)', marginBottom: '4px' }}>School</label>
+                  <label style={{ display: 'block', fontSize: '15px', color: 'var(--gray-500)', marginBottom: '4px' }}>School</label>
                   <input name="school" value={formData.school || ''} onChange={handleChange} placeholder="Your school name" style={{ width: '100%', padding: '10px', border: '1px solid var(--border)', borderRadius: '8px' }} />
                 </div>
                 <div>
-                  <label style={{ display: 'block', fontSize: '13px', color: 'var(--gray-500)', marginBottom: '4px' }}>Grade/Level</label>
+                  <label style={{ display: 'block', fontSize: '15px', color: 'var(--gray-500)', marginBottom: '4px' }}>Grade/Level</label>
                   <select name="grade" value={formData.grade || ''} onChange={handleChange} style={{ width: '100%', padding: '10px', border: '1px solid var(--border)', borderRadius: '8px' }}>
                     <option value="">Select Grade</option>
                     {gradesFrom(profile?.level).map((grade) => <option key={grade} value={grade}>{grade}</option>)}
                   </select>
                 </div>
                 <div>
-                  <label style={{ display: 'block', fontSize: '13px', color: 'var(--gray-500)', marginBottom: '4px' }}>Bio / About Me</label>
+                  <label style={{ display: 'block', fontSize: '15px', color: 'var(--gray-500)', marginBottom: '4px' }}>Bio / About Me</label>
                   <textarea name="bio" value={formData.bio || ''} onChange={handleChange} placeholder="Tell us about yourself..." rows="3" style={{ width: '100%', padding: '10px', border: '1px solid var(--border)', borderRadius: '8px', resize: 'vertical' }} />
                 </div>
                 <div>
-                  <label style={{ display: 'block', fontSize: '13px', color: 'var(--gray-500)', marginBottom: '4px' }}>Phone Number</label>
+                  <label style={{ display: 'block', fontSize: '15px', color: 'var(--gray-500)', marginBottom: '4px' }}>Phone Number</label>
                   <input name="phone" value={formData.phone || ''} onChange={handleChange} placeholder="+233 XX XXX XXXX" style={{ width: '100%', padding: '10px', border: '1px solid var(--border)', borderRadius: '8px' }} />
                 </div>
                 <div>
-                  <label style={{ display: 'block', fontSize: '13px', color: 'var(--gray-500)', marginBottom: '4px' }}>Location</label>
+                  <label style={{ display: 'block', fontSize: '15px', color: 'var(--gray-500)', marginBottom: '4px' }}>Location</label>
                   <input name="location" value={formData.location || ''} onChange={handleChange} placeholder="Accra, Kumasi, ..." style={{ width: '100%', padding: '10px', border: '1px solid var(--border)', borderRadius: '8px' }} />
                 </div>
                 <div>
-                  <label style={{ display: 'block', fontSize: '13px', color: 'var(--gray-500)', marginBottom: '4px' }}>Career Interests (comma separated)</label>
+                  <label style={{ display: 'block', fontSize: '15px', color: 'var(--gray-500)', marginBottom: '4px' }}>Career Interests (comma separated)</label>
                   <input name="interests" value={formData.interests?.join(', ') || ''} onChange={(e) => handleArrayChange(e, 'interests')} placeholder="Engineering, Medicine, Technology, ..." style={{ width: '100%', padding: '10px', border: '1px solid var(--border)', borderRadius: '8px' }} />
                 </div>
                 <div>
-                  <label style={{ display: 'block', fontSize: '13px', color: 'var(--gray-500)', marginBottom: '4px' }}>Learning Goals (comma separated)</label>
+                  <label style={{ display: 'block', fontSize: '15px', color: 'var(--gray-500)', marginBottom: '4px' }}>Learning Goals (comma separated)</label>
                   <input name="goals" value={formData.goals?.join(', ') || ''} onChange={(e) => handleArrayChange(e, 'goals')} placeholder="Pass WASSCE, Study Engineering, ..." style={{ width: '100%', padding: '10px', border: '1px solid var(--border)', borderRadius: '8px' }} />
                 </div>
               </div>
@@ -500,27 +495,27 @@ const ProfileModule = () => {
               <div style={{ textAlign: 'center', padding: '12px', background: 'var(--surface-muted)', borderRadius: '8px' }}>
                 <div style={{ fontSize: '24px' }}><BookOpenIcon className="icon-inline" size="1em" aria-hidden="true" /></div>
                 <div style={{ fontSize: '20px', fontWeight: 'bold', color: 'var(--primary)' }}>{stats.coursesCompleted || 0}</div>
-                <div style={{ fontSize: '12px', color: 'var(--gray-500)' }}>Courses</div>
+                <div style={{ fontSize: '14px', color: 'var(--gray-500)' }}>Courses</div>
               </div>
               <div style={{ textAlign: 'center', padding: '12px', background: 'var(--surface-muted)', borderRadius: '8px' }}>
                 <div style={{ fontSize: '24px' }}><BookOpenTextIcon className="icon-inline" size="1em" aria-hidden="true" /></div>
                 <div style={{ fontSize: '20px', fontWeight: 'bold', color: 'var(--primary)' }}>{stats.totalLessons || 0}</div>
-                <div style={{ fontSize: '12px', color: 'var(--gray-500)' }}>Lessons</div>
+                <div style={{ fontSize: '14px', color: 'var(--gray-500)' }}>Lessons</div>
               </div>
               <div style={{ textAlign: 'center', padding: '12px', background: 'var(--surface-muted)', borderRadius: '8px' }}>
                 <div style={{ fontSize: '24px' }}><FileTextIcon className="icon-inline" size="1em" aria-hidden="true" /></div>
                 <div style={{ fontSize: '20px', fontWeight: 'bold', color: 'var(--primary)' }}>{stats.quizzesTaken || 0}</div>
-                <div style={{ fontSize: '12px', color: 'var(--gray-500)' }}>Quizzes</div>
+                <div style={{ fontSize: '14px', color: 'var(--gray-500)' }}>Quizzes</div>
               </div>
               <div style={{ textAlign: 'center', padding: '12px', background: 'var(--surface-muted)', borderRadius: '8px' }}>
                 <div style={{ fontSize: '24px' }}><FlameIcon className="icon-inline" size="1em" aria-hidden="true" /></div>
                 <div style={{ fontSize: '20px', fontWeight: 'bold', color: 'var(--primary)' }}>{stats.studyStreak || 0}</div>
-                <div style={{ fontSize: '12px', color: 'var(--gray-500)' }}>Day Streak</div>
+                <div style={{ fontSize: '14px', color: 'var(--gray-500)' }}>Day Streak</div>
               </div>
               <div style={{ textAlign: 'center', padding: '12px', background: 'var(--surface-muted)', borderRadius: '8px' }}>
                 <div style={{ fontSize: '24px' }}><StarIcon className="icon-inline" size="1em" aria-hidden="true" /></div>
                 <div style={{ fontSize: '20px', fontWeight: 'bold', color: 'var(--primary)' }}>{stats.xp || 0}</div>
-                <div style={{ fontSize: '12px', color: 'var(--gray-500)' }}>XP</div>
+                <div style={{ fontSize: '14px', color: 'var(--gray-500)' }}>XP</div>
               </div>
             </div>
           )}
@@ -545,7 +540,7 @@ const ProfileModule = () => {
               border: 'none',
               borderBottom: activeTab === tab.id ? '3px solid var(--primary)' : '3px solid transparent',
               cursor: 'pointer',
-              fontSize: '14px',
+              fontSize: '15px',
               fontWeight: activeTab === tab.id ? 'bold' : 'normal',
               color: activeTab === tab.id ? 'var(--primary)' : 'var(--text-muted)',
               transition: 'all 0.2s ease',
@@ -610,7 +605,7 @@ const ProfileModule = () => {
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginTop: '4px' }}>
                   {profile?.interests?.length > 0 ? (
                     profile.interests.map((interest, i) => (
-                      <span key={i} style={{ background: 'var(--primary-bg)', padding: '4px 12px', borderRadius: '12px', fontSize: '13px', color: 'var(--primary)' }}>{interest}</span>
+                      <span key={i} style={{ background: 'var(--primary-bg)', padding: '4px 12px', borderRadius: '12px', fontSize: '15px', color: 'var(--primary)' }}>{interest}</span>
                     ))
                   ) : (
                     <span style={{ color: 'var(--gray-500)' }}>No interests added yet</span>
@@ -622,7 +617,7 @@ const ProfileModule = () => {
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginTop: '4px' }}>
                   {profile?.goals?.length > 0 ? (
                     profile.goals.map((goal, i) => (
-                      <span key={i} style={{ background: 'var(--warning-bg)', padding: '4px 12px', borderRadius: '12px', fontSize: '13px', color: 'var(--warning)' }}>{goal}</span>
+                      <span key={i} style={{ background: 'var(--warning-bg)', padding: '4px 12px', borderRadius: '12px', fontSize: '15px', color: 'var(--warning)' }}>{goal}</span>
                     ))
                   ) : (
                     <span style={{ color: 'var(--gray-500)' }}>No goals added yet</span>
@@ -640,64 +635,28 @@ const ProfileModule = () => {
               <div style={{ background: 'var(--surface-muted)', borderRadius: '8px', padding: '16px' }}>
                 <h4 style={{ margin: '0 0 8px 0', color: 'var(--primary)' }}><BriefcaseIcon className="icon-inline" size="1em" aria-hidden="true" /> Careers ({savedCareers.length})</h4>
                 {savedCareers.length > 0 ? (
-                  savedCareers.map((career, i) => <div key={i} style={{ fontSize: '13px', color: 'var(--text-muted)', padding: '4px 0' }}>• {career}</div>)
+                  savedCareers.map((career, i) => <div key={i} style={{ fontSize: '15px', color: 'var(--text-muted)', padding: '4px 0' }}>• {career}</div>)
                 ) : (
-                  <span style={{ color: 'var(--gray-500)', fontSize: '13px' }}>No saved careers</span>
+                  <span style={{ color: 'var(--gray-500)', fontSize: '15px' }}>No saved careers</span>
                 )}
               </div>
               <div style={{ background: 'var(--surface-muted)', borderRadius: '8px', padding: '16px' }}>
                 <h4 style={{ margin: '0 0 8px 0', color: 'var(--primary)' }}><LandmarkIcon className="icon-inline" size="1em" aria-hidden="true" /> Universities ({savedUniversities.length})</h4>
                 {savedUniversities.length > 0 ? (
-                  savedUniversities.map((uni, i) => <div key={i} style={{ fontSize: '13px', color: 'var(--text-muted)', padding: '4px 0' }}>• {uni}</div>)
+                  savedUniversities.map((uni, i) => <div key={i} style={{ fontSize: '15px', color: 'var(--text-muted)', padding: '4px 0' }}>• {uni}</div>)
                 ) : (
-                  <span style={{ color: 'var(--gray-500)', fontSize: '13px' }}>No saved universities</span>
+                  <span style={{ color: 'var(--gray-500)', fontSize: '15px' }}>No saved universities</span>
                 )}
               </div>
               <div style={{ background: 'var(--surface-muted)', borderRadius: '8px', padding: '16px' }}>
                 <h4 style={{ margin: '0 0 8px 0', color: 'var(--primary)' }}><CoinsIcon className="icon-inline" size="1em" aria-hidden="true" /> Scholarships ({savedScholarships.length})</h4>
                 {savedScholarships.length > 0 ? (
-                  savedScholarships.map((sch, i) => <div key={i} style={{ fontSize: '13px', color: 'var(--text-muted)', padding: '4px 0' }}>• {sch}</div>)
+                  savedScholarships.map((sch, i) => <div key={i} style={{ fontSize: '15px', color: 'var(--text-muted)', padding: '4px 0' }}>• {sch}</div>)
                 ) : (
-                  <span style={{ color: 'var(--gray-500)', fontSize: '13px' }}>No saved scholarships</span>
+                  <span style={{ color: 'var(--gray-500)', fontSize: '15px' }}>No saved scholarships</span>
                 )}
               </div>
             </div>
-          </div>
-        )}
-
-        {activeTab === 'certificates' && (
-          <div>
-            <h3 style={{ color: 'var(--text)', marginBottom: '16px' }}><TrophyIcon className="icon-inline" size="1em" aria-hidden="true" /> Certificates</h3>
-            {certificates.length === 0 ? (
-              <p style={{ color: 'var(--gray-500)', fontSize: '13px' }}>Complete a course to earn your first certificate.</p>
-            ) : (
-              certificates.map((cert) => {
-                const verifyUrl = `${window.location.origin}/certificates/verify/${cert.code}`;
-                return (
-                  <div key={cert.code} style={{ background: 'var(--surface-muted)', borderRadius: '8px', padding: '16px', marginBottom: '12px' }}>
-                    <h4 style={{ margin: '0 0 4px 0', color: 'var(--primary)' }}>{cert.course_title}</h4>
-                    <p style={{ margin: '0 0 8px 0', fontSize: '13px', color: 'var(--gray-500)' }}>
-                      Issued {formatDate(cert.issued_at, { long: true })} · {cert.lesson_count} lessons
-                    </p>
-                    <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', alignItems: 'center' }}>
-                      <Link to={`/certificates/${cert.course_slug}`} style={{ color: 'var(--primary)', fontSize: '13px', fontWeight: 'bold' }}>
-                        View / Print
-                      </Link>
-                      <button
-                        onClick={() => {
-                          navigator.clipboard.writeText(verifyUrl);
-                          setCopiedCertCode(cert.code);
-                          setTimeout(() => setCopiedCertCode(null), 2000);
-                        }}
-                        style={{ padding: '4px 10px', background: 'none', border: '1px solid var(--primary)', color: 'var(--primary)', borderRadius: '6px', cursor: 'pointer', fontSize: '12px' }}
-                      >
-                        {copiedCertCode === cert.code ? 'Copied!' : 'Copy verification link'}
-                      </button>
-                    </div>
-                  </div>
-                );
-              })
-            )}
           </div>
         )}
 
@@ -789,11 +748,11 @@ const ProfileModule = () => {
                   {guardianEmailSaving ? 'Saving...' : 'Save'}
                 </Button>
               </div>
-              <p style={{ color: 'var(--gray-500)', fontSize: '13px' }}>
+              <p style={{ color: 'var(--gray-500)', fontSize: '15px' }}>
                 Consent given: {profile?.consent_given_at ? formatDate(profile.consent_given_at) : 'Not recorded (account predates consent tracking)'}
                 {profile?.consent_version && ` · version ${profile.consent_version}`}
               </p>
-              <Link to="/privacy" style={{ color: 'var(--primary)', fontSize: '13px' }}>View Privacy Policy</Link>
+              <Link to="/privacy" style={{ color: 'var(--primary)', fontSize: '15px' }}>View Privacy Policy</Link>
             </div>
 
             <div style={{ marginTop: '24px', paddingTop: '16px', borderTop: '1px solid var(--border)' }}>
@@ -807,7 +766,7 @@ const ProfileModule = () => {
                   style={{ flex: 1, padding: '10px', border: '1px solid var(--border)', borderRadius: '8px' }}
                 />
               </div>
-              <label style={{ display: 'flex', alignItems: 'flex-start', gap: '8px', fontSize: '13px', cursor: 'pointer', marginBottom: '12px' }}>
+              <label style={{ display: 'flex', alignItems: 'flex-start', gap: '8px', fontSize: '15px', cursor: 'pointer', marginBottom: '12px' }}>
                 <input
                   type="checkbox"
                   checked={guardianWhatsappOptIn}
@@ -823,7 +782,7 @@ const ProfileModule = () => {
 
             <div style={{ marginTop: '24px', paddingTop: '16px', borderTop: '1px solid var(--border)' }}>
               <p style={{ marginBottom: '8px' }}><strong style={{ color: 'var(--text-muted)' }}>Accessibility:</strong></p>
-              <label style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '13px', cursor: 'pointer', marginBottom: '12px' }}>
+              <label style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '15px', cursor: 'pointer', marginBottom: '12px' }}>
                 <input
                   type="checkbox"
                   checked={dyslexiaFont}
@@ -831,7 +790,7 @@ const ProfileModule = () => {
                 />
                 <span>Use a dyslexia-friendly font</span>
               </label>
-              <p style={{ marginBottom: '8px', fontSize: '13px', color: 'var(--text-muted)' }}>Text size:</p>
+              <p style={{ marginBottom: '8px', fontSize: '15px', color: 'var(--text-muted)' }}>Text size:</p>
               <div style={{ display: 'flex', gap: '8px' }}>
                 {textScales.map((scale) => (
                   <button

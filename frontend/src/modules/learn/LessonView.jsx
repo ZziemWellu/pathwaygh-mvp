@@ -43,8 +43,8 @@ const LessonView = () => {
       const response = await api.post(`/api/learn/lessons/${lessonId}/progress`, { watched: true });
       setLesson((prev) => ({ ...prev, watched: true }));
       notify(response.data.gamification);
-      if (response.data.certificate_issued) {
-        setJustCompleted({ code: response.data.certificate_code });
+      if (response.data.course_completed) {
+        setJustCompleted(true);
       }
     } catch (err) {
       console.error('Progress update error:', err);
@@ -67,7 +67,7 @@ const LessonView = () => {
 
   return (
     <div style={{ maxWidth: '800px', margin: '0 auto', padding: '20px' }}>
-      <Link to={`/learn/${courseId}`} style={{ color: 'var(--primary)', fontSize: '14px' }}>{t('learnBackToCourse')}</Link>
+      <Link to={`/learn/${courseId}`} style={{ color: 'var(--primary)', fontSize: '15px' }}>{t('learnBackToCourse')}</Link>
 
       <h2 style={{ color: 'var(--primary)', margin: '12px 0 16px 0' }}>{lesson.title}</h2>
 
@@ -115,10 +115,7 @@ const LessonView = () => {
 
       {justCompleted && (
         <div style={{ marginTop: '16px', padding: '16px', background: 'var(--primary-bg)', border: '1px solid var(--primary-border)', borderRadius: '12px', textAlign: 'center' }}>
-          <p style={{ margin: '0 0 8px 0', fontWeight: 'bold', color: 'var(--primary)' }}><PartyPopperIcon className="icon-inline" size="1em" aria-hidden="true" /> {t('learnCourseCompleteBanner')}</p>
-          <Link to={`/certificates/${courseId}`} style={{ color: 'var(--primary)', fontWeight: 'bold', textDecoration: 'underline' }}>
-            {t('learnViewCertificateLink')}
-          </Link>
+          <p style={{ margin: 0, fontWeight: 'bold', color: 'var(--primary)' }}><PartyPopperIcon className="icon-inline" size="1em" aria-hidden="true" /> {t('learnCourseCompleteBanner')}</p>
         </div>
       )}
 

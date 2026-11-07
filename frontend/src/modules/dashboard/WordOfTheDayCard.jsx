@@ -34,9 +34,9 @@ const WordOfTheDayCard = () => {
         <BookMarked size={17} /> Word of the Day
       </h2>
       <p style={{ margin: '0 0 4px 0', fontSize: '18px', fontWeight: 'bold' }}>{word.word}</p>
-      <p style={{ margin: '0 0 8px 0', fontSize: '12px', color: 'var(--gray-500)' }}>{word.phonetic} · {word.part_of_speech}</p>
-      <p style={{ margin: '0 0 8px 0', fontSize: '14px' }}>{word.definition}</p>
-      <p style={{ margin: '0 0 12px 0', fontSize: '13px', color: 'var(--gray-600)', fontStyle: 'italic' }}>"{word.context_sentence}"</p>
+      <p style={{ margin: '0 0 8px 0', fontSize: '14px', color: 'var(--gray-500)' }}>{word.phonetic} · {word.part_of_speech}</p>
+      <p style={{ margin: '0 0 8px 0', fontSize: '15px' }}>{word.definition}</p>
+      <p style={{ margin: '0 0 12px 0', fontSize: '15px', color: 'var(--gray-600)', fontStyle: 'italic' }}>"{word.context_sentence}"</p>
       <button
         onClick={markLearned}
         disabled={learned || marking}
@@ -48,7 +48,7 @@ const WordOfTheDayCard = () => {
           borderRadius: '8px',
           cursor: learned ? 'default' : 'pointer',
           fontWeight: 'bold',
-          fontSize: '13px',
+          fontSize: '15px',
         }}
       >
         {learned ? '✓ Learned' : marking ? 'Marking...' : 'Mark as learned'}

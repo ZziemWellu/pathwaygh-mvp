@@ -87,7 +87,7 @@ const CourseGrid = ({ user }) => {
       <PageHeader
         icon={BookOpen}
         title={t('learnHeading')}
-        actions={<span style={{ color: 'var(--text-subtle)', fontSize: '14px' }}>{t('learnCoursesCount').replace('{count}', visible.length)}</span>}
+        actions={<span style={{ color: 'var(--text-subtle)', fontSize: '15px' }}>{t('learnCoursesCount').replace('{count}', visible.length)}</span>}
       />
 
       <div role="group" aria-label="Filter courses" className="learn-filters">

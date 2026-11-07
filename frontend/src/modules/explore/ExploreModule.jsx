@@ -175,19 +175,19 @@ const ExploreModule = () => {
                       color: 'var(--primary)',
                       padding: '2px 10px',
                       borderRadius: '12px',
-                      fontSize: '11px',
+                      fontSize: '13px',
                       fontWeight: 'bold',
                     }}>
                       {career.category}
                     </span>
                   )}
                 </div>
-                <p style={{ color: 'var(--text-muted)', fontSize: '14px', margin: '8px 0' }}>{career.description}</p>
-                <div style={{ display: 'flex', gap: '12px', fontSize: '12px', color: 'var(--gray-500)', marginTop: '8px' }}>
+                <p style={{ color: 'var(--text-muted)', fontSize: '15px', margin: '8px 0' }}>{career.description}</p>
+                <div style={{ display: 'flex', gap: '12px', fontSize: '14px', color: 'var(--gray-500)', marginTop: '8px' }}>
                   {career.salary_range && <span><CoinsIcon className="icon-inline" size="1em" aria-hidden="true" /> {career.salary_range}</span>}
                   {career.demand && <span><ChartColumnIcon className="icon-inline" size="1em" aria-hidden="true" /> {career.demand}</span>}
                 </div>
-                <div style={{ marginTop: '12px', fontSize: '12px', color: 'var(--primary)', textAlign: 'center' }}>
+                <div style={{ marginTop: '12px', fontSize: '14px', color: 'var(--primary)', textAlign: 'center' }}>
                   Click for full details →
                 </div>
               </div>
@@ -205,8 +205,8 @@ const ExploreModule = () => {
             universities.map((uni) => (
               <div className="card card--interactive" key={uni.id} onClick={() => openUniversityDetail(uni)} style={{ padding: '20px' }}>
                 <h3 style={{ color: 'var(--primary)', margin: '0 0 8px 0', fontSize: '18px' }}>{uni.name}</h3>
-                {uni.location && <div style={{ color: 'var(--text-muted)', fontSize: '14px' }}><MapPinIcon className="icon-inline" size="1em" aria-hidden="true" /> {uni.location}</div>}
-                {uni.cutoff && <div style={{ color: 'var(--gray-500)', fontSize: '13px' }}>Cutoff: {uni.cutoff}</div>}
+                {uni.location && <div style={{ color: 'var(--text-muted)', fontSize: '15px' }}><MapPinIcon className="icon-inline" size="1em" aria-hidden="true" /> {uni.location}</div>}
+                {uni.cutoff && <div style={{ color: 'var(--gray-500)', fontSize: '15px' }}>Cutoff: {uni.cutoff}</div>}
                 {uni.programs && uni.programs.length > 0 && (
                   <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginTop: '8px' }}>
                     {uni.programs.slice(0, 2).map((p, i) => (
@@ -214,7 +214,7 @@ const ExploreModule = () => {
                         background: 'var(--surface-sunken)',
                         padding: '2px 10px',
                         borderRadius: '12px',
-                        fontSize: '11px',
+                        fontSize: '13px',
                         color: 'var(--text-muted)',
                       }}>
                         {p}
@@ -225,7 +225,7 @@ const ExploreModule = () => {
                         background: 'var(--surface-sunken)',
                         padding: '2px 10px',
                         borderRadius: '12px',
-                        fontSize: '11px',
+                        fontSize: '13px',
                         color: 'var(--text-muted)',
                       }}>
                         +{uni.programs.length - 2} more
@@ -233,7 +233,7 @@ const ExploreModule = () => {
                     )}
                   </div>
                 )}
-                <div style={{ marginTop: '12px', fontSize: '12px', color: 'var(--primary)', textAlign: 'center' }}>
+                <div style={{ marginTop: '12px', fontSize: '14px', color: 'var(--primary)', textAlign: 'center' }}>
                   Click for full details →
                 </div>
               </div>

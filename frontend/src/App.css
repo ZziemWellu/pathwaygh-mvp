@@ -66,7 +66,7 @@ body {
 }
 
 .header-subtitle {
-  font-size: 12px;
+  font-size: 14px;
   color: var(--text-muted);
 }
 
@@ -77,7 +77,7 @@ body {
 }
 
 .user-badge {
-  font-size: 13px;
+  font-size: 15px;
   color: var(--text-muted);
   background: var(--surface-sunken);
   padding: 4px 12px;
@@ -90,7 +90,7 @@ body {
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  font-size: 13px;
+  font-size: 15px;
 }
 
 .logout-button:hover {
@@ -103,7 +103,7 @@ body {
   padding: 16px;
   color: var(--text-muted);
   border-top: 1px solid var(--border);
-  font-size: 13px;
+  font-size: 15px;
 }
 
 /* Auth Container - Only for login/register */
@@ -126,7 +126,7 @@ body {
 
 .auth-header p {
   color: var(--text-muted);
-  font-size: 14px;
+  font-size: 15px;
 }
 
 .auth-footer {
@@ -152,7 +152,7 @@ body {
   border: 1px solid var(--border);
   border-radius: 8px;
   cursor: pointer;
-  font-size: 13px;
+  font-size: 15px;
   color: var(--text);
   transition: all 0.2s;
 }
