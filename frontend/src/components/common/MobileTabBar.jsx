@@ -107,7 +107,7 @@ const MobileTabBar = ({ user, onLogout }) => {
               })}
             </ul>
             <div className="mobile-sheet__footer">
-              <LanguageSwitcher style={{ fontSize: '15px', padding: '8px 10px' }} />
+              <LanguageSwitcher style={{ fontSize: '0.9375rem', padding: '8px 10px' }} />
               <button type="button" className="btn btn-secondary btn-sm" onClick={onLogout}>
                 <LogOut size={14} aria-hidden="true" /> {t('logout')}
               </button>

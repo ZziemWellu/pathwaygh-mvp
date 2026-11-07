@@ -61,11 +61,11 @@ const CourseDetail = () => {
 
   return (
     <div style={{ maxWidth: '800px', margin: '0 auto', padding: '20px' }}>
-      <Link to="/learn" style={{ color: 'var(--primary)', fontSize: '15px' }}>{t('learnAllCoursesLink')}</Link>
+      <Link to="/learn" style={{ color: 'var(--primary)', fontSize: '0.9375rem' }}>{t('learnAllCoursesLink')}</Link>
 
       <h2 style={{ color: 'var(--primary)', margin: '12px 0 4px 0' }}>{course.title}</h2>
       {course.level && (
-        <span style={{ background: 'var(--primary-bg)', padding: '2px 10px', borderRadius: '12px', fontSize: '14px' }}>
+        <span style={{ background: 'var(--primary-bg)', padding: '2px 10px', borderRadius: '12px', fontSize: '0.875rem' }}>
           {course.level.toUpperCase()}
         </span>
       )}
@@ -73,7 +73,7 @@ const CourseDetail = () => {
 
       {course.enrolled ? (
         <div style={{ marginBottom: '20px' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '15px', color: 'var(--text-muted)', marginBottom: '4px' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.9375rem', color: 'var(--text-muted)', marginBottom: '4px' }}>
             <span>{t('learnYourProgress')}</span>
             <span>{t('learnProgressSummary').replace('{watched}', watchedCount).replace('{total}', course.lessons.length).replace('{pct}', progressPct)}</span>
           </div>
@@ -116,7 +116,7 @@ const CourseDetail = () => {
               </span>
               <div style={{ flex: 1 }}>
                 <div style={{ fontWeight: 500 }}>{lesson.title}</div>
-                <div style={{ fontSize: '14px', color: 'var(--gray-500)' }}>
+                <div style={{ fontSize: '0.875rem', color: 'var(--gray-500)' }}>
                   {lesson.duration_minutes ? t('learnMinutes').replace('{count}', lesson.duration_minutes) : ''}
                   {lesson.is_free_preview && ` ${t('learnFreePreview')}`}
                 </div>

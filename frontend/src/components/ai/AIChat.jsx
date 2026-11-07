@@ -11,11 +11,11 @@ const markdownComponents = {
   p: ({ children }) => <p style={{ margin: '0 0 8px' }}>{children}</p>,
   ul: ({ children }) => <ul style={{ margin: '0 0 8px', paddingLeft: '18px' }}>{children}</ul>,
   ol: ({ children }) => <ol style={{ margin: '0 0 8px', paddingLeft: '18px' }}>{children}</ol>,
-  h1: ({ children }) => <div style={{ fontWeight: 'bold', fontSize: '15px', margin: '4px 0' }}>{children}</div>,
-  h2: ({ children }) => <div style={{ fontWeight: 'bold', fontSize: '15px', margin: '4px 0' }}>{children}</div>,
-  h3: ({ children }) => <div style={{ fontWeight: 'bold', fontSize: '15px', margin: '4px 0' }}>{children}</div>,
+  h1: ({ children }) => <div style={{ fontWeight: 'bold', fontSize: '0.9375rem', margin: '4px 0' }}>{children}</div>,
+  h2: ({ children }) => <div style={{ fontWeight: 'bold', fontSize: '0.9375rem', margin: '4px 0' }}>{children}</div>,
+  h3: ({ children }) => <div style={{ fontWeight: 'bold', fontSize: '0.9375rem', margin: '4px 0' }}>{children}</div>,
   hr: () => <hr style={{ border: 'none', borderTop: '1px solid var(--border)', margin: '8px 0' }} />,
-  code: ({ children }) => <code style={{ background: 'var(--surface-sunken)', padding: '1px 4px', borderRadius: '4px', fontSize: '15px' }}>{children}</code>,
+  code: ({ children }) => <code style={{ background: 'var(--surface-sunken)', padding: '1px 4px', borderRadius: '4px', fontSize: '0.9375rem' }}>{children}</code>,
 };
 
 const AIChat = ({ user }) => {
@@ -110,7 +110,7 @@ const AIChat = ({ user }) => {
           background: 'linear-gradient(135deg, var(--primary), var(--primary-light))',
           color: 'white',
           border: 'none',
-          fontSize: '28px',
+          fontSize: '1.75rem',
           cursor: 'pointer',
           boxShadow: '0 4px 20px rgba(0,0,0,0.3)',
           zIndex: 999,
@@ -153,15 +153,15 @@ const AIChat = ({ user }) => {
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <span style={{ fontSize: '24px' }}><BotIcon className="icon-inline" size="1em" aria-hidden="true" /></span>
+          <span style={{ fontSize: '1.5rem' }}><BotIcon className="icon-inline" size="1em" aria-hidden="true" /></span>
           <div>
-            <div style={{ fontWeight: 'bold', fontSize: '16px' }}>AI Tutor</div>
-            <div style={{ fontSize: '13px', opacity: 0.8 }}>Online • Powered by AI</div>
+            <div style={{ fontWeight: 'bold', fontSize: '1rem' }}>AI Tutor</div>
+            <div style={{ fontSize: '0.8125rem', opacity: 0.8 }}>Online • Powered by AI</div>
           </div>
         </div>
         <button
           onClick={() => setIsOpen(false)}
-          style={{ background: 'none', border: 'none', color: 'white', fontSize: '20px', cursor: 'pointer' }}
+          style={{ background: 'none', border: 'none', color: 'white', fontSize: '1.25rem', cursor: 'pointer' }}
         >
           ✕
         </button>
@@ -181,7 +181,7 @@ const AIChat = ({ user }) => {
           style={{
             width: '100%',
             padding: '6px 8px',
-            fontSize: '15px',
+            fontSize: '0.9375rem',
             borderRadius: '6px',
             border: '1px solid var(--border)',
             color: 'var(--text)',
@@ -229,12 +229,12 @@ const AIChat = ({ user }) => {
                   <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '6px', marginTop: '4px' }}>
                     <ReadAloudButton text={msg.content} />
                     {msg.grounded && (
-                      <span style={{ fontSize: '13px', color: 'var(--primary)', background: 'var(--primary-bg)', padding: '2px 8px', borderRadius: '10px' }}>
+                      <span style={{ fontSize: '0.8125rem', color: 'var(--primary)', background: 'var(--primary-bg)', padding: '2px 8px', borderRadius: '10px' }}>
                         <BookOpenIcon className="icon-inline" size="1em" aria-hidden="true" /> grounded in curriculum
                       </span>
                     )}
                     {msg.computedMath && (
-                      <span style={{ fontSize: '13px', color: 'var(--primary)', background: 'var(--primary-bg)', padding: '2px 8px', borderRadius: '10px' }}>
+                      <span style={{ fontSize: '0.8125rem', color: 'var(--primary)', background: 'var(--primary-bg)', padding: '2px 8px', borderRadius: '10px' }}>
                         <CalculatorIcon className="icon-inline" size="1em" aria-hidden="true" /> verified: {msg.computedMath.expression} = {msg.computedMath.result}
                       </span>
                     )}
@@ -289,7 +289,7 @@ const AIChat = ({ user }) => {
             border: '1px solid var(--border)',
             borderRadius: '8px',
             outline: 'none',
-            fontSize: '15px',
+            fontSize: '0.9375rem',
           }}
         />
         <Button onClick={sendMessage} disabled={loading || !input.trim()}>

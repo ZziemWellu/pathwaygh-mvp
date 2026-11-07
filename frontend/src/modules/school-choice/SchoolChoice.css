@@ -6,7 +6,7 @@
 
 .school-choice h2 {
   margin: 0 0 8px;
-  font-size: 18px;
+  font-size: 1.125rem;
 }
 
 .school-choice ul {
@@ -24,7 +24,7 @@
 
 .school-choice__note {
   margin: 10px 0 0;
-  font-size: 15px;
+  font-size: 0.9375rem;
   color: var(--text-subtle);
 }
 
@@ -42,12 +42,12 @@
   padding: 10px 4px;
   border: 1px solid var(--border);
   border-radius: 8px;
-  font-size: 14px;
+  font-size: 0.875rem;
   text-align: center;
 }
 
 .school-choice__meter strong {
-  font-size: 18px;
+  font-size: 1.125rem;
 }
 
 .school-choice__meter.is-over {
@@ -110,7 +110,7 @@
   flex-direction: column;
   gap: 4px;
   min-width: 0;
-  font-size: 15px;
+  font-size: 0.9375rem;
   color: var(--text-subtle);
 }
 
@@ -122,7 +122,7 @@
   border-radius: 6px;
   background: var(--surface, #fff);
   color: var(--text);
-  font-size: 15px;
+  font-size: 0.9375rem;
 }
 
 .school-choice__actions {

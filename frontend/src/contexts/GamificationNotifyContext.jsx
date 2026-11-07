@@ -56,12 +56,12 @@ const GamificationToast = ({ toast, onDismiss }) => (
     {toast.achievements.map((a) => (
       <div key={a.id} style={{ marginBottom: '6px' }}>
         <AchievementIcon id={a.id} size={22} color="var(--accent-strong)" style={{ marginRight: '8px', verticalAlign: '-5px' }} />
-        <strong style={{ fontSize: '15px' }}>Achievement unlocked: {a.name}</strong>
-        <div style={{ fontSize: '14px', color: 'var(--gray-500, var(--text-muted))' }}>{a.description}</div>
+        <strong style={{ fontSize: '0.9375rem' }}>Achievement unlocked: {a.name}</strong>
+        <div style={{ fontSize: '0.875rem', color: 'var(--gray-500, var(--text-muted))' }}>{a.description}</div>
       </div>
     ))}
     {toast.xp > 0 && (
-      <div style={{ fontSize: '15px', color: 'var(--primary)', fontWeight: 'bold' }}>+{toast.xp} XP</div>
+      <div style={{ fontSize: '0.9375rem', color: 'var(--primary)', fontWeight: 'bold' }}>+{toast.xp} XP</div>
     )}
   </div>
 );

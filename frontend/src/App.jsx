@@ -153,9 +153,9 @@ const App = () => {
             <CountrySelector onSelect={handleCountrySelect} />
           </main>
           <footer style={{ textAlign: 'center', marginTop: '24px' }}>
-            <p style={{ color: 'var(--gray-500)', fontSize: '15px', margin: '0 0 4px 0' }}>{t('copyright')}</p>
-            <p style={{ color: 'var(--gray-500)', fontSize: '14px', margin: '0 0 8px 0' }}>{t('poweredBy')}</p>
-            <button onClick={() => setShowPrivacy(true)} style={{ background: 'none', border: 'none', color: 'var(--gray-500)', cursor: 'pointer', textDecoration: 'underline', fontSize: '14px' }}>
+            <p style={{ color: 'var(--gray-500)', fontSize: '0.9375rem', margin: '0 0 4px 0' }}>{t('copyright')}</p>
+            <p style={{ color: 'var(--gray-500)', fontSize: '0.875rem', margin: '0 0 8px 0' }}>{t('poweredBy')}</p>
+            <button onClick={() => setShowPrivacy(true)} style={{ background: 'none', border: 'none', color: 'var(--gray-500)', cursor: 'pointer', textDecoration: 'underline', fontSize: '0.875rem' }}>
               {t('footerPrivacyPolicy')}
             </button>
           </footer>
@@ -188,14 +188,14 @@ const App = () => {
           )}
           {showLogin && !showForgotPassword && (
             <p style={{ textAlign: 'center', marginTop: '8px' }}>
-              <button onClick={() => setShowForgotPassword(true)} style={{ background: 'none', border: 'none', color: 'var(--gray-500)', cursor: 'pointer', textDecoration: 'underline', fontSize: '15px' }}>
+              <button onClick={() => setShowForgotPassword(true)} style={{ background: 'none', border: 'none', color: 'var(--gray-500)', cursor: 'pointer', textDecoration: 'underline', fontSize: '0.9375rem' }}>
                 {t('forgotPasswordLink')}
               </button>
             </p>
           )}
           {country && (
             <p style={{ textAlign: 'center', marginTop: '8px' }}>
-              <button onClick={handleChangeCountry} style={{ background: 'none', border: 'none', color: 'var(--text-subtle)', cursor: 'pointer', textDecoration: 'underline', fontSize: '15px' }}>
+              <button onClick={handleChangeCountry} style={{ background: 'none', border: 'none', color: 'var(--text-subtle)', cursor: 'pointer', textDecoration: 'underline', fontSize: '0.9375rem' }}>
                 {t('changeCountry')}
               </button>
             </p>
@@ -206,8 +206,8 @@ const App = () => {
         </main>
         <footer style={{ textAlign: 'center', marginTop: '40px', padding: '20px', color: 'var(--gray-500)', borderTop: '1px solid var(--border)' }}>
           <p>{t('copyright')}</p>
-          <p style={{ fontSize: '14px', margin: '4px 0 8px 0' }}>{t('poweredBy')}</p>
-          <button onClick={() => setShowPrivacy(true)} style={{ background: 'none', border: 'none', color: 'var(--gray-500)', cursor: 'pointer', textDecoration: 'underline', fontSize: '14px' }}>
+          <p style={{ fontSize: '0.875rem', margin: '4px 0 8px 0' }}>{t('poweredBy')}</p>
+          <button onClick={() => setShowPrivacy(true)} style={{ background: 'none', border: 'none', color: 'var(--gray-500)', cursor: 'pointer', textDecoration: 'underline', fontSize: '0.875rem' }}>
             {t('footerPrivacyPolicy')}
           </button>
         </footer>
@@ -239,16 +239,20 @@ const App = () => {
         <a href="#main-content" className="skip-link">Skip to main content</a>
         <header className="app-header">
           <div>
-            <h1 style={{ color: 'var(--primary)', fontSize: '22px', margin: 0, display: 'flex', alignItems: 'center', gap: '8px' }}><UserCountryFlag size={22} /> Learning Hotspot</h1>
-            <span className="app-header__tagline" style={{ fontSize: '13px', color: 'var(--text-subtle)' }}>{t('tagline')} • {COUNTRY_NAMES[user?.country] || ''}</span>
+            <h1 style={{ color: 'var(--primary)', fontSize: '1.375rem', margin: 0, display: 'flex', alignItems: 'center', gap: '8px' }}><UserCountryFlag size={22} /> Learning Hotspot</h1>
+            <span className="app-header__tagline" style={{ fontSize: '0.8125rem', color: 'var(--text-subtle)' }}>{t('tagline')} • {COUNTRY_NAMES[user?.country] || ''}</span>
           </div>
+          <Link to="/profile" className="app-header__phone-profile" aria-label={`${user?.full_name || user?.name || t('student')}: ${t('navProfile')}`}>
+            <User size={18} aria-hidden="true" />
+            <span>{(user?.full_name || user?.name || t('student')).split(' ')[0]}</span>
+          </Link>
           {/* On phones these move into the tab bar's "More" sheet (MobileTabBar). */}
           <div className="app-header__account" style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-            <Link to="/profile" aria-label={`${user?.full_name || user?.name || t('student')}: ${t('navProfile')}`} style={{ color: 'var(--text-muted)', fontSize: '15px', display: 'inline-flex', alignItems: 'center', gap: '6px', textDecoration: 'underline' }}>
+            <Link to="/profile" aria-label={`${user?.full_name || user?.name || t('student')}: ${t('navProfile')}`} style={{ color: 'var(--text-muted)', fontSize: '0.9375rem', display: 'inline-flex', alignItems: 'center', gap: '6px', textDecoration: 'underline' }}>
               <User size={16} aria-hidden="true" /> {user?.full_name || user?.name || t('student')}
             </Link>
             {user?.is_admin && (
-              <span style={{ fontSize: '13px', fontWeight: 'bold', color: 'var(--primary)', background: 'var(--primary-bg)', border: '1px solid var(--primary-border)', borderRadius: '999px', padding: '3px 10px' }}>
+              <span style={{ fontSize: '0.8125rem', fontWeight: 'bold', color: 'var(--primary)', background: 'var(--primary-bg)', border: '1px solid var(--primary-border)', borderRadius: '999px', padding: '3px 10px' }}>
                 {t('admin')}
               </span>
             )}
@@ -308,11 +312,11 @@ const App = () => {
           padding: '16px 0', 
           color: 'var(--gray-500)', 
           borderTop: '1px solid var(--border)', 
-          fontSize: '15px' 
+          fontSize: '0.9375rem' 
         }}>
           <p>{t('copyright')}</p>
-          <p style={{ fontSize: '14px', margin: '4px 0 8px 0' }}>{t('poweredBy')}</p>
-          <Link to="/privacy" style={{ color: 'var(--gray-500)', fontSize: '14px', textDecoration: 'underline' }}>
+          <p style={{ fontSize: '0.875rem', margin: '4px 0 8px 0' }}>{t('poweredBy')}</p>
+          <Link to="/privacy" style={{ color: 'var(--gray-500)', fontSize: '0.875rem', textDecoration: 'underline' }}>
             {t('footerPrivacyPolicy')}
           </Link>
         </footer>

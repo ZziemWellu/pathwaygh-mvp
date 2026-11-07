@@ -92,10 +92,10 @@ const ExploreLanding = ({ user }) => {
             <div style={{ width: '72px', height: '72px', borderRadius: '18px', background: feature.tint, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', marginBottom: '16px' }}>
               <feature.icon size={36} color={feature.color} strokeWidth={1.75} aria-hidden="true" />
             </div>
-            <h3 style={{ color: feature.color, marginBottom: '8px', fontSize: '20px' }}>
+            <h3 style={{ color: feature.color, marginBottom: '8px', fontSize: '1.25rem' }}>
               {feature.title}
             </h3>
-            <p style={{ color: 'var(--text-muted)', fontSize: '15px', marginBottom: '20px', lineHeight: '1.5' }}>
+            <p style={{ color: 'var(--text-muted)', fontSize: '0.9375rem', marginBottom: '20px', lineHeight: '1.5' }}>
               {feature.description}
             </p>
             <button
@@ -106,7 +106,7 @@ const ExploreLanding = ({ user }) => {
                 border: 'none',
                 borderRadius: '8px',
                 cursor: 'pointer',
-                fontSize: '15px',
+                fontSize: '0.9375rem',
                 fontWeight: '600',
                 transition: 'all 0.2s ease',
                 width: '100%'

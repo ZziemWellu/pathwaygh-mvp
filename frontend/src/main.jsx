@@ -6,6 +6,15 @@ import { GamificationNotifyProvider } from './contexts/GamificationNotifyContext
 import { LanguageProvider } from './contexts/LanguageContext'
 import './styles/globals.css'
 
+// After a deploy, a tab left open asks for page files that no longer exist.
+// Reload once to pick up the new version, instead of leaving a broken screen.
+window.addEventListener('vite:preloadError', (event) => {
+  if (sessionStorage.getItem('reloaded-for-new-version')) return
+  sessionStorage.setItem('reloaded-for-new-version', '1')
+  event.preventDefault()
+  window.location.reload()
+})
+
 // Register service worker for PWA
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {

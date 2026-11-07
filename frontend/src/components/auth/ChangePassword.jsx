@@ -32,13 +32,13 @@ const ChangePassword = ({ user, onChanged, onLogout }) => {
     }
   };
 
-  const field = { width: '100%', padding: '10px', border: '1px solid var(--border)', borderRadius: '8px', fontSize: '15px' };
+  const field = { width: '100%', padding: '10px', border: '1px solid var(--border)', borderRadius: '8px', fontSize: '0.9375rem' };
   const label = { display: 'block', marginBottom: '4px', fontWeight: 'bold' };
   const row = { marginBottom: '16px' };
 
   return (
     <main style={{ maxWidth: '400px', margin: '40px auto', padding: '0 16px' }}>
-      <h1 style={{ color: 'var(--primary)', fontSize: '24px' }}>Choose your own password</h1>
+      <h1 style={{ color: 'var(--primary)', fontSize: '1.5rem' }}>Choose your own password</h1>
       <p>
         Welcome, {user?.full_name}. Your school gave you a password to start with.
         Please choose a new one that only you know. Ask a parent or teacher if you need help.

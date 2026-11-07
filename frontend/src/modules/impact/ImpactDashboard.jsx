@@ -71,7 +71,7 @@ const ImpactDashboard = () => {
         title="Impact Dashboard"
         actions={
           <>
-            {exportError && <span style={{ color: 'var(--danger)', fontSize: '15px' }}>{exportError}</span>}
+            {exportError && <span style={{ color: 'var(--danger)', fontSize: '0.9375rem' }}>{exportError}</span>}
             <Button size="sm" icon={Download} onClick={handleExport} disabled={exporting}>
               {exporting ? 'Exporting...' : 'Export CSV'}
             </Button>
@@ -94,7 +94,7 @@ const ImpactDashboard = () => {
 
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', marginBottom: '24px' }}>
         <div className="card" style={{ padding: '16px' }}>
-          <h3 style={{ marginTop: 0, fontSize: '15px' }}>Enrollment Growth</h3>
+          <h3 style={{ marginTop: 0, fontSize: '0.9375rem' }}>Enrollment Growth</h3>
           <ResponsiveContainer width="100%" height={260}>
             <LineChart data={trends.series}>
               <CartesianGrid strokeDasharray="3 3" />
@@ -108,7 +108,7 @@ const ImpactDashboard = () => {
         </div>
 
         <div className="card" style={{ padding: '16px' }}>
-          <h3 style={{ marginTop: 0, fontSize: '15px' }}>Quiz Score Trend</h3>
+          <h3 style={{ marginTop: 0, fontSize: '0.9375rem' }}>Quiz Score Trend</h3>
           <ResponsiveContainer width="100%" height={260}>
             <LineChart data={trends.series}>
               <CartesianGrid strokeDasharray="3 3" />
@@ -124,7 +124,7 @@ const ImpactDashboard = () => {
 
       <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '20px' }}>
         <div>
-          <h3 style={{ fontSize: '15px' }}>By School</h3>
+          <h3 style={{ fontSize: '0.9375rem' }}>By School</h3>
           {by_school.length === 0 ? (
             <EmptyState text="No schools yet." />
           ) : (
@@ -156,7 +156,7 @@ const ImpactDashboard = () => {
         </div>
 
         <div>
-          <h3 style={{ fontSize: '15px' }}>By Country</h3>
+          <h3 style={{ fontSize: '0.9375rem' }}>By Country</h3>
           {by_country.length === 0 ? (
             <EmptyState text="No data yet." />
           ) : (
@@ -189,9 +189,9 @@ const ImpactDashboard = () => {
 
 const StatCard = ({ value, label, note }) => (
   <div className="card" style={{ padding: '16px', textAlign: 'center' }}>
-    <div style={{ fontSize: '24px', fontWeight: 'bold', color: 'var(--primary)' }}>{value}</div>
-    <div style={{ fontSize: '14px', color: 'var(--gray-500)' }}>{label}</div>
-    {note && <div style={{ fontSize: '13px', color: 'var(--gray-500)', marginTop: '2px' }}>{note}</div>}
+    <div style={{ fontSize: '1.5rem', fontWeight: 'bold', color: 'var(--primary)' }}>{value}</div>
+    <div style={{ fontSize: '0.875rem', color: 'var(--gray-500)' }}>{label}</div>
+    {note && <div style={{ fontSize: '0.8125rem', color: 'var(--gray-500)', marginTop: '2px' }}>{note}</div>}
   </div>
 );
 
@@ -201,6 +201,6 @@ const EmptyState = ({ text }) => (
   </div>
 );
 
-const cellStyle = { padding: '10px 14px', fontSize: '15px' };
+const cellStyle = { padding: '10px 14px', fontSize: '0.9375rem' };
 
 export default ImpactDashboard;

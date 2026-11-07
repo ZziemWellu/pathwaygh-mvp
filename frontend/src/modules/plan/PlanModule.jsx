@@ -181,7 +181,7 @@ const PlanModule = () => {
             <div className="card" key={plan.id} style={{ padding: '20px', position: 'relative', transition: 'all 0.2s ease' }}>
               <div style={{ position: 'absolute', top: '12px', right: '12px' }}>
                 <button
-                  style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--gray-500)', fontSize: '16px' }}
+                  style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--gray-500)', fontSize: '1rem' }}
                   onClick={() => handleDelete(plan.id)}
                   aria-label={`Delete ${plan.name}`}
                 >
@@ -191,24 +191,24 @@ const PlanModule = () => {
               <h3 style={{ color: 'var(--primary)', margin: '0 0 8px 0', paddingRight: '24px' }}>
                 {plan.name}
               </h3>
-              <p style={{ color: 'var(--text-muted)', fontSize: '15px', margin: '0 0 8px 0' }}>
+              <p style={{ color: 'var(--text-muted)', fontSize: '0.9375rem', margin: '0 0 8px 0' }}>
                 {plan.description}
               </p>
-              <div style={{ display: 'flex', gap: '12px', fontSize: '14px', color: 'var(--gray-500)', flexWrap: 'wrap' }}>
+              <div style={{ display: 'flex', gap: '12px', fontSize: '0.875rem', color: 'var(--gray-500)', flexWrap: 'wrap' }}>
                 <span><CalendarDaysIcon className="icon-inline" size="1em" aria-hidden="true" /> {plan.duration_months || plan.duration || 'N/A'} months</span>
                 <span><ChartColumnIcon className="icon-inline" size="1em" aria-hidden="true" /> {plan.progress || 0}% complete</span>
               </div>
               {plan.subjects && plan.subjects.length > 0 && (
                 <div style={{ marginTop: '8px', display: 'flex', flexWrap: 'wrap', gap: '4px' }}>
                   {plan.subjects.map((subject, i) => (
-                    <span key={i} style={{ background: 'var(--surface-sunken)', padding: '2px 8px', borderRadius: '4px', fontSize: '13px', color: 'var(--text-muted)' }}>
+                    <span key={i} style={{ background: 'var(--surface-sunken)', padding: '2px 8px', borderRadius: '4px', fontSize: '0.8125rem', color: 'var(--text-muted)' }}>
                       {subject}
                     </span>
                   ))}
                 </div>
               )}
               {plan.goal && (
-                <div style={{ marginTop: '8px', fontSize: '13px', color: 'var(--gray-500)' }}>
+                <div style={{ marginTop: '8px', fontSize: '0.8125rem', color: 'var(--gray-500)' }}>
                   <TargetIcon className="icon-inline" size="1em" aria-hidden="true" /> {formatGoal(plan.goal)}
                 </div>
               )}
@@ -261,7 +261,7 @@ const PlanModule = () => {
               <h2 style={{ color: 'var(--primary)', margin: 0 }}><ClipboardListIcon className="icon-inline" size="1em" aria-hidden="true" /> Create Study Plan</h2>
               <button
                 onClick={handleCloseModal}
-                style={{ background: 'none', border: 'none', fontSize: '24px', cursor: 'pointer', color: 'var(--gray-500)' }}
+                style={{ background: 'none', border: 'none', fontSize: '1.5rem', cursor: 'pointer', color: 'var(--gray-500)' }}
               >
                 ✕
               </button>
@@ -283,7 +283,7 @@ const PlanModule = () => {
                       padding: '10px',
                       border: '1px solid var(--border)',
                       borderRadius: '8px',
-                      fontSize: '15px',
+                      fontSize: '0.9375rem',
                     }}
                     required
                   />
@@ -304,7 +304,7 @@ const PlanModule = () => {
                       padding: '10px',
                       border: '1px solid var(--border)',
                       borderRadius: '8px',
-                      fontSize: '15px',
+                      fontSize: '0.9375rem',
                       resize: 'vertical',
                     }}
                   />
@@ -326,7 +326,7 @@ const PlanModule = () => {
                       padding: '10px',
                       border: '1px solid var(--border)',
                       borderRadius: '8px',
-                      fontSize: '15px',
+                      fontSize: '0.9375rem',
                     }}
                   />
                 </div>
@@ -344,7 +344,7 @@ const PlanModule = () => {
                       padding: '10px',
                       border: '1px solid var(--border)',
                       borderRadius: '8px',
-                      fontSize: '15px',
+                      fontSize: '0.9375rem',
                     }}
                   >
                     <option value="">Select a goal</option>

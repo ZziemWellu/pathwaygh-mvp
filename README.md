@@ -39,7 +39,6 @@ Visit: http://localhost:5173
 - 📝 **Practice** - Subject quizzes with scored history
 - 📅 **Plan** - Study plans and roadmaps
 - 👤 **Profile** - Student profiles with saved careers/universities/scholarships
-- 🎓 **Certificates** - Verifiable course-completion certificates, checkable while logged out
 - 🏫 **School Admin** - Self-service school creation, join-code enrollment, per-class roster and completion reporting
 - 📈 **Impact Dashboard** - Platform-wide completion/quiz-score trends by school and country, exportable as CSV
 - 🤖 **AI Tutor** - Gemini-backed chat grounded in course content, with Socratic hints and deterministic math checking

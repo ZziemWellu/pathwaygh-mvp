@@ -192,7 +192,7 @@ const ScholarshipsPage = () => {
             padding: '10px 14px',
             border: '1px solid var(--border)',
             borderRadius: '8px',
-            fontSize: '15px'
+            fontSize: '0.9375rem'
           }}
         />
         <select
@@ -203,7 +203,7 @@ const ScholarshipsPage = () => {
             padding: '10px 14px',
             border: '1px solid var(--border)',
             borderRadius: '8px',
-            fontSize: '15px',
+            fontSize: '0.9375rem',
             background: 'white'
           }}
         >
@@ -220,7 +220,7 @@ const ScholarshipsPage = () => {
             padding: '10px 14px',
             border: '1px solid var(--border)',
             borderRadius: '8px',
-            fontSize: '15px',
+            fontSize: '0.9375rem',
             background: 'white'
           }}
         >
@@ -245,11 +245,11 @@ const ScholarshipsPage = () => {
                 }
               }} onClick={() => setSelectedScholarship(sch)} style={{ padding: '20px', position: 'relative' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '8px' }}>
-                <h3 style={{ color: 'var(--primary)', margin: 0, fontSize: '17px' }}>{sch.title}</h3>
+                <h3 style={{ color: 'var(--primary)', margin: 0, fontSize: '1.0625rem' }}>{sch.title}</h3>
                 <span style={{
                   padding: '2px 10px',
                   borderRadius: '12px',
-                  fontSize: '13px',
+                  fontSize: '0.8125rem',
                   fontWeight: 'bold',
                   background: getStatusColor(sch.status),
                   color: 'white'
@@ -257,27 +257,27 @@ const ScholarshipsPage = () => {
                   {sch.status.toUpperCase()}
                 </span>
               </div>
-              <div style={{ fontSize: '15px', color: 'var(--text-muted)', marginBottom: '4px' }}>
+              <div style={{ fontSize: '0.9375rem', color: 'var(--text-muted)', marginBottom: '4px' }}>
                 <LandmarkIcon className="icon-inline" size="1em" aria-hidden="true" /> {sch.sponsor}
               </div>
-              <div style={{ fontSize: '15px', color: 'var(--text-muted)', marginBottom: '4px' }}>
+              <div style={{ fontSize: '0.9375rem', color: 'var(--text-muted)', marginBottom: '4px' }}>
                 <CoinsIcon className="icon-inline" size="1em" aria-hidden="true" /> {sch.amount || 'Full tuition'}
               </div>
-              <div style={{ fontSize: '15px', color: 'var(--text-muted)', marginBottom: '4px' }}>
+              <div style={{ fontSize: '0.9375rem', color: 'var(--text-muted)', marginBottom: '4px' }}>
                 <CalendarDaysIcon className="icon-inline" size="1em" aria-hidden="true" /> Deadline: {formatDeadline(sch.deadline)}
               </div>
               <div style={{ marginTop: '12px' }}>
                 <span style={{
                   padding: '2px 10px',
                   borderRadius: '12px',
-                  fontSize: '13px',
+                  fontSize: '0.8125rem',
                   background: getTypeColor(sch.type),
                   color: 'white'
                 }}>
                   {sch.type.toUpperCase()}
                 </span>
               </div>
-              <div style={{ fontSize: '14px', color: 'var(--gray-500)', marginTop: '12px' }}>
+              <div style={{ fontSize: '0.875rem', color: 'var(--gray-500)', marginTop: '12px' }}>
                 Click for full details →
               </div>
             </div>
@@ -322,7 +322,7 @@ const ScholarshipsPage = () => {
           >
             <button
               aria-label="Close"
-              style={{ float: 'right', background: 'none', border: 'none', fontSize: '24px', cursor: 'pointer', color: 'var(--gray-500)' }}
+              style={{ float: 'right', background: 'none', border: 'none', fontSize: '1.5rem', cursor: 'pointer', color: 'var(--gray-500)' }}
               onClick={() => setSelectedScholarship(null)}
             >
               ✕
@@ -331,7 +331,7 @@ const ScholarshipsPage = () => {
             <span style={{
               padding: '2px 12px',
               borderRadius: '12px',
-              fontSize: '14px',
+              fontSize: '0.875rem',
               fontWeight: 'bold',
               background: getStatusColor(selectedScholarship.status),
               color: 'white',
@@ -340,28 +340,28 @@ const ScholarshipsPage = () => {
             }}>
               {selectedScholarship.status.toUpperCase()}
             </span>
-            <div style={{ fontSize: '15px', color: 'var(--text-muted)', marginBottom: '8px' }}>
+            <div style={{ fontSize: '0.9375rem', color: 'var(--text-muted)', marginBottom: '8px' }}>
               <LandmarkIcon className="icon-inline" size="1em" aria-hidden="true" /> <strong>Sponsor:</strong> {selectedScholarship.sponsor}
             </div>
-            <div style={{ fontSize: '15px', color: 'var(--text-muted)', marginBottom: '8px' }}>
+            <div style={{ fontSize: '0.9375rem', color: 'var(--text-muted)', marginBottom: '8px' }}>
               <CoinsIcon className="icon-inline" size="1em" aria-hidden="true" /> <strong>Coverage:</strong> {selectedScholarship.coverage || selectedScholarship.amount || 'Full tuition'}
             </div>
-            <div style={{ fontSize: '15px', color: 'var(--text-muted)', marginBottom: '8px' }}>
+            <div style={{ fontSize: '0.9375rem', color: 'var(--text-muted)', marginBottom: '8px' }}>
               <CalendarDaysIcon className="icon-inline" size="1em" aria-hidden="true" /> <strong>Deadline:</strong> {formatDeadline(selectedScholarship.deadline)}
             </div>
-            <div style={{ fontSize: '15px', color: 'var(--text-muted)', marginBottom: '8px' }}>
+            <div style={{ fontSize: '0.9375rem', color: 'var(--text-muted)', marginBottom: '8px' }}>
               <LandmarkIcon className="icon-inline" size="1em" aria-hidden="true" /> <strong>Type:</strong> {selectedScholarship.type.toUpperCase()}
             </div>
             {selectedScholarship.eligibility && (
               <div style={{ margin: '12px 0' }}>
                 <strong><CircleCheckIcon className="icon-inline" size="1em" aria-hidden="true" /> Eligibility:</strong>
-                <p style={{ color: 'var(--text-muted)', fontSize: '15px', margin: '4px 0 0 0' }}>{selectedScholarship.eligibility}</p>
+                <p style={{ color: 'var(--text-muted)', fontSize: '0.9375rem', margin: '4px 0 0 0' }}>{selectedScholarship.eligibility}</p>
               </div>
             )}
             {selectedScholarship.description && (
               <div style={{ margin: '12px 0' }}>
                 <strong><ClipboardListIcon className="icon-inline" size="1em" aria-hidden="true" /> Description:</strong>
-                <p style={{ color: 'var(--text-muted)', fontSize: '15px', margin: '4px 0 0 0' }}>{selectedScholarship.description}</p>
+                <p style={{ color: 'var(--text-muted)', fontSize: '0.9375rem', margin: '4px 0 0 0' }}>{selectedScholarship.description}</p>
               </div>
             )}
             {selectedScholarship.website && (

@@ -82,7 +82,7 @@ const CareerDetail = ({ career, onClose }) => {
             right: '20px',
             background: 'none',
             border: 'none',
-            fontSize: '24px',
+            fontSize: '1.5rem',
             cursor: 'pointer',
             color: 'var(--gray-500)',
           }}
@@ -94,7 +94,7 @@ const CareerDetail = ({ career, onClose }) => {
 
         {/* Header */}
         <div style={{ marginBottom: '24px' }}>
-          <h2 style={{ color: 'var(--primary)', margin: '0 0 8px 0', fontSize: '28px' }}>
+          <h2 style={{ color: 'var(--primary)', margin: '0 0 8px 0', fontSize: '1.75rem' }}>
             {career.title}
           </h2>
           <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
@@ -104,7 +104,7 @@ const CareerDetail = ({ career, onClose }) => {
                 color: 'var(--primary)',
                 padding: '4px 14px',
                 borderRadius: '20px',
-                fontSize: '15px',
+                fontSize: '0.9375rem',
                 fontWeight: 'bold',
               }}>
                 {career.category}
@@ -116,7 +116,7 @@ const CareerDetail = ({ career, onClose }) => {
                 color: 'var(--warning)',
                 padding: '4px 14px',
                 borderRadius: '20px',
-                fontSize: '15px',
+                fontSize: '0.9375rem',
               }}>
                 {career.difficulty}
               </span>
@@ -141,7 +141,7 @@ const CareerDetail = ({ career, onClose }) => {
 
         {/* Overview */}
         <div style={{ marginBottom: '20px' }}>
-          <h3 style={{ color: 'var(--text)', fontSize: '16px', marginBottom: '8px' }}><ClipboardListIcon className="icon-inline" size="1em" aria-hidden="true" /> Overview</h3>
+          <h3 style={{ color: 'var(--text)', fontSize: '1rem', marginBottom: '8px' }}><ClipboardListIcon className="icon-inline" size="1em" aria-hidden="true" /> Overview</h3>
           <p style={{ color: 'var(--text-muted)', lineHeight: '1.6' }}>{career.description}</p>
         </div>
 
@@ -154,26 +154,26 @@ const CareerDetail = ({ career, onClose }) => {
         }}>
           {career.salary_range && (
             <div style={{ padding: '14px', background: 'var(--surface-muted)', borderRadius: '10px' }}>
-              <div style={{ fontSize: '13px', color: 'var(--gray-500)' }}><CoinsIcon className="icon-inline" size="1em" aria-hidden="true" /> Salary Range</div>
-              <div style={{ fontSize: '16px', fontWeight: 'bold', color: 'var(--primary)' }}>{career.salary_range}</div>
+              <div style={{ fontSize: '0.8125rem', color: 'var(--gray-500)' }}><CoinsIcon className="icon-inline" size="1em" aria-hidden="true" /> Salary Range</div>
+              <div style={{ fontSize: '1rem', fontWeight: 'bold', color: 'var(--primary)' }}>{career.salary_range}</div>
             </div>
           )}
           {career.demand && (
             <div style={{ padding: '14px', background: 'var(--surface-muted)', borderRadius: '10px' }}>
-              <div style={{ fontSize: '13px', color: 'var(--gray-500)' }}><ChartColumnIcon className="icon-inline" size="1em" aria-hidden="true" /> Job Demand</div>
-              <div style={{ fontSize: '16px', fontWeight: 'bold', color: 'var(--primary)' }}>{career.demand}</div>
+              <div style={{ fontSize: '0.8125rem', color: 'var(--gray-500)' }}><ChartColumnIcon className="icon-inline" size="1em" aria-hidden="true" /> Job Demand</div>
+              <div style={{ fontSize: '1rem', fontWeight: 'bold', color: 'var(--primary)' }}>{career.demand}</div>
             </div>
           )}
           {career.growth && (
             <div style={{ padding: '14px', background: 'var(--surface-muted)', borderRadius: '10px' }}>
-              <div style={{ fontSize: '13px', color: 'var(--gray-500)' }}><TrendingUpIcon className="icon-inline" size="1em" aria-hidden="true" /> Growth Outlook</div>
-              <div style={{ fontSize: '16px', fontWeight: 'bold', color: 'var(--primary)' }}>{career.growth}</div>
+              <div style={{ fontSize: '0.8125rem', color: 'var(--gray-500)' }}><TrendingUpIcon className="icon-inline" size="1em" aria-hidden="true" /> Growth Outlook</div>
+              <div style={{ fontSize: '1rem', fontWeight: 'bold', color: 'var(--primary)' }}>{career.growth}</div>
             </div>
           )}
           {career.ai_score && (
             <div style={{ padding: '14px', background: 'var(--surface-muted)', borderRadius: '10px' }}>
-              <div style={{ fontSize: '13px', color: 'var(--gray-500)' }}><BotIcon className="icon-inline" size="1em" aria-hidden="true" /> AI Suitability</div>
-              <div style={{ fontSize: '16px', fontWeight: 'bold', color: 'var(--primary)' }}>{career.ai_score}%</div>
+              <div style={{ fontSize: '0.8125rem', color: 'var(--gray-500)' }}><BotIcon className="icon-inline" size="1em" aria-hidden="true" /> AI Suitability</div>
+              <div style={{ fontSize: '1rem', fontWeight: 'bold', color: 'var(--primary)' }}>{career.ai_score}%</div>
             </div>
           )}
         </div>
@@ -181,7 +181,7 @@ const CareerDetail = ({ career, onClose }) => {
         {/* WASSCE Subjects */}
         {career.required_subjects && career.required_subjects.length > 0 && (
           <div style={{ marginBottom: '20px' }}>
-            <h3 style={{ color: 'var(--text)', fontSize: '16px', marginBottom: '8px' }}><BookOpenIcon className="icon-inline" size="1em" aria-hidden="true" /> Required WASSCE Subjects</h3>
+            <h3 style={{ color: 'var(--text)', fontSize: '1rem', marginBottom: '8px' }}><BookOpenIcon className="icon-inline" size="1em" aria-hidden="true" /> Required WASSCE Subjects</h3>
             <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
               {career.required_subjects.map((subject, i) => (
                 <span key={i} style={{
@@ -189,7 +189,7 @@ const CareerDetail = ({ career, onClose }) => {
                   color: 'var(--secondary)',
                   padding: '4px 14px',
                   borderRadius: '16px',
-                  fontSize: '15px',
+                  fontSize: '0.9375rem',
                 }}>
                   {subject}
                 </span>
@@ -201,7 +201,7 @@ const CareerDetail = ({ career, onClose }) => {
         {/* Skills */}
         {career.skills && career.skills.length > 0 && (
           <div style={{ marginBottom: '20px' }}>
-            <h3 style={{ color: 'var(--text)', fontSize: '16px', marginBottom: '8px' }}><WrenchIcon className="icon-inline" size="1em" aria-hidden="true" /> Key Skills</h3>
+            <h3 style={{ color: 'var(--text)', fontSize: '1rem', marginBottom: '8px' }}><WrenchIcon className="icon-inline" size="1em" aria-hidden="true" /> Key Skills</h3>
             <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
               {career.skills.map((skill, i) => (
                 <span key={i} style={{
@@ -209,7 +209,7 @@ const CareerDetail = ({ career, onClose }) => {
                   color: 'var(--violet)',
                   padding: '4px 14px',
                   borderRadius: '16px',
-                  fontSize: '15px',
+                  fontSize: '0.9375rem',
                 }}>
                   {skill}
                 </span>
@@ -221,7 +221,7 @@ const CareerDetail = ({ career, onClose }) => {
         {/* Universities */}
         {career.universities && career.universities.length > 0 && (
           <div style={{ marginBottom: '20px' }}>
-            <h3 style={{ color: 'var(--text)', fontSize: '16px', marginBottom: '8px' }}><LandmarkIcon className="icon-inline" size="1em" aria-hidden="true" /> Recommended Universities</h3>
+            <h3 style={{ color: 'var(--text)', fontSize: '1rem', marginBottom: '8px' }}><LandmarkIcon className="icon-inline" size="1em" aria-hidden="true" /> Recommended Universities</h3>
             <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
               {career.universities.map((uni, i) => (
                 <span key={i} style={{
@@ -229,7 +229,7 @@ const CareerDetail = ({ career, onClose }) => {
                   color: 'var(--primary)',
                   padding: '4px 14px',
                   borderRadius: '16px',
-                  fontSize: '15px',
+                  fontSize: '0.9375rem',
                 }}>
                   {uni}
                 </span>
@@ -241,7 +241,7 @@ const CareerDetail = ({ career, onClose }) => {
         {/* Learning Roadmap */}
         {career.roadmap && career.roadmap.length > 0 && (
           <div style={{ marginBottom: '20px' }}>
-            <h3 style={{ color: 'var(--text)', fontSize: '16px', marginBottom: '12px' }}><MapIcon className="icon-inline" size="1em" aria-hidden="true" /> Learning Roadmap</h3>
+            <h3 style={{ color: 'var(--text)', fontSize: '1rem', marginBottom: '12px' }}><MapIcon className="icon-inline" size="1em" aria-hidden="true" /> Learning Roadmap</h3>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
               {career.roadmap.map((step, i) => (
                 <div key={i} style={{
@@ -261,15 +261,15 @@ const CareerDetail = ({ career, onClose }) => {
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    fontSize: '15px',
+                    fontSize: '0.9375rem',
                     fontWeight: 'bold',
                     flexShrink: 0,
                   }}>
                     {i + 1}
                   </span>
                   <div>
-                    <div style={{ fontWeight: 'bold', fontSize: '15px' }}>{step.title}</div>
-                    <div style={{ fontSize: '14px', color: 'var(--gray-500)' }}>{step.duration}</div>
+                    <div style={{ fontWeight: 'bold', fontSize: '0.9375rem' }}>{step.title}</div>
+                    <div style={{ fontSize: '0.875rem', color: 'var(--gray-500)' }}>{step.duration}</div>
                   </div>
                 </div>
               ))}
@@ -288,7 +288,7 @@ const CareerDetail = ({ career, onClose }) => {
           }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <span style={{ fontWeight: 'bold', color: 'var(--primary)' }}><BotIcon className="icon-inline" size="1em" aria-hidden="true" /> Your Match Score</span>
-              <span style={{ fontSize: '24px', fontWeight: 'bold', color: 'var(--primary)' }}>
+              <span style={{ fontSize: '1.5rem', fontWeight: 'bold', color: 'var(--primary)' }}>
                 {career.ai_match}%
               </span>
             </div>
@@ -318,7 +318,7 @@ const CareerDetail = ({ career, onClose }) => {
               border: saved ? '2px solid var(--primary)' : '1px solid var(--primary)',
               borderRadius: '8px',
               cursor: saving ? 'default' : 'pointer',
-              fontSize: '15px',
+              fontSize: '0.9375rem',
               flex: 1,
               transition: 'all 0.2s ease',
               opacity: saving ? 0.6 : 1,

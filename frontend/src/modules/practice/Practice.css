@@ -16,7 +16,7 @@
   background: transparent;
   color: var(--text-muted);
   font-weight: 700;
-  font-size: 15px;
+  font-size: 0.9375rem;
   cursor: pointer;
 }
 
@@ -63,11 +63,11 @@
 
 .practice-quick__text strong {
   font-family: var(--font-display);
-  font-size: 17px;
+  font-size: 1.0625rem;
 }
 
 .practice-quick__text span {
-  font-size: 15px;
+  font-size: 0.9375rem;
   color: var(--primary-bg);
 }
 
@@ -79,7 +79,7 @@
   background: var(--accent);
   color: var(--gray-900);
   font-weight: 700;
-  font-size: 15px;
+  font-size: 0.9375rem;
   cursor: pointer;
 }
 
@@ -95,7 +95,7 @@
 .practice-h2 {
   margin: 0 0 12px;
   font-family: var(--font-display);
-  font-size: 18px;
+  font-size: 1.125rem;
   font-weight: 700;
 }
 
@@ -145,11 +145,11 @@
 
 .practice-subject__text strong {
   font-family: var(--font-display);
-  font-size: 17px;
+  font-size: 1.0625rem;
 }
 
 .practice-subject__text span {
-  font-size: 15px;
+  font-size: 0.9375rem;
   color: var(--text-muted);
 }
 
@@ -176,7 +176,7 @@
 }
 
 .practice-subject__status {
-  font-size: 15px;
+  font-size: 0.9375rem;
   font-weight: 600;
   color: var(--text-muted);
   white-space: nowrap;
