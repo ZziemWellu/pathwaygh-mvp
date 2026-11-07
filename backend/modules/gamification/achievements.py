@@ -17,7 +17,8 @@ from typing import Callable, Dict
 
 from sqlalchemy.orm import Session
 
-from models.certificate import Certificate
+from models.course import Course
+from models.enrollment import Enrollment
 from models.flashcard import Flashcard
 from models.gamification import GamificationProfile
 from models.progress import LessonProgress
@@ -50,7 +51,16 @@ def _mastery_achieved(db: Session, user: User, profile: GamificationProfile) -> 
 
 
 def _course_complete(db: Session, user: User, profile: GamificationProfile) -> bool:
-    return db.query(Certificate).filter(Certificate.user_id == user.id, Certificate.is_revoked.is_(False)).count() >= 1
+    watched = {
+        lesson_id
+        for (lesson_id,) in db.query(LessonProgress.lesson_id).filter(
+            LessonProgress.user_id == user.id, LessonProgress.watched.is_(True)
+        )
+    }
+    if not watched:
+        return False
+    courses = db.query(Course).join(Enrollment, Enrollment.course_id == Course.id).filter(Enrollment.user_id == user.id)
+    return any(course.lessons and {lesson.id for lesson in course.lessons} <= watched for course in courses)
 
 
 def _wordsmith(db: Session, user: User, profile: GamificationProfile) -> bool:

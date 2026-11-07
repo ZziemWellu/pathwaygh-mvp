@@ -18,7 +18,6 @@ from models.enrollment import Enrollment
 from models.exercise_result import ExerciseResult
 from models.progress import LessonProgress
 from models.user import User
-from modules.certificates.service import check_and_issue_certificate
 from modules.gamification.service import award_for_lesson_completed
 
 router = APIRouter()
@@ -95,7 +94,7 @@ def _sees_every_course(user: Optional[User]) -> bool:
 def _require_course_access(db: Session, user: Optional[User], course: Course) -> None:
     """A student only opens courses for their own level and country. Courses
     they already enrolled in stay open, so moving up from JHS to SHS doesn't
-    lock away finished work or certificates. Skills courses have no school
+    lock away finished work. Skills courses have no school
     level and are open to any level; an older account with no level yet isn't
     narrowed by level until it chooses one."""
     if _sees_every_course(user):
@@ -304,18 +303,15 @@ def update_lesson_progress(
         gamification = award_for_lesson_completed(db, current_user)
     db.commit()
 
-    certificate_issued = False
-    certificate_code = None
-    if payload.watched:
-        certificate, created = check_and_issue_certificate(db, current_user, lesson.course)
-        if created:
-            certificate_issued = True
-            certificate_code = certificate.code
+    # Only as this lesson finishes the course, so the congratulations show once.
+    course_completed = False
+    if is_new_watch:
+        lesson_ids = {course_lesson.id for course_lesson in lesson.course.lessons}
+        course_completed = lesson_ids <= _watched_lesson_ids(db, current_user)
 
     return {
         "success": True,
         "watched": progress.watched,
-        "certificate_issued": certificate_issued,
-        "certificate_code": certificate_code,
+        "course_completed": course_completed,
         "gamification": gamification,
     }

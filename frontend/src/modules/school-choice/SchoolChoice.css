@@ -24,7 +24,7 @@
 
 .school-choice__note {
   margin: 10px 0 0;
-  font-size: 13px;
+  font-size: 15px;
   color: var(--text-subtle);
 }
 
@@ -42,7 +42,7 @@
   padding: 10px 4px;
   border: 1px solid var(--border);
   border-radius: 8px;
-  font-size: 12px;
+  font-size: 14px;
   text-align: center;
 }
 
@@ -110,7 +110,7 @@
   flex-direction: column;
   gap: 4px;
   min-width: 0;
-  font-size: 13px;
+  font-size: 15px;
   color: var(--text-subtle);
 }
 
@@ -122,7 +122,7 @@
   border-radius: 6px;
   background: var(--surface, #fff);
   color: var(--text);
-  font-size: 14px;
+  font-size: 15px;
 }
 
 .school-choice__actions {

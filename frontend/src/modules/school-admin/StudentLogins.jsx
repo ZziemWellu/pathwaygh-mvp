@@ -45,24 +45,24 @@ const StudentLogins = ({ onIssued, consentConfirmed }) => {
       <h2 style={{ margin: '0 0 6px', fontSize: '18px', display: 'flex', alignItems: 'center', gap: '8px' }}>
         <KeyRound size={18} aria-hidden="true" /> Create logins for pupils with no email
       </h2>
-      <p style={{ margin: '0 0 10px', fontSize: '14px', color: 'var(--text-muted)' }}>
+      <p style={{ margin: '0 0 10px', fontSize: '15px', color: 'var(--text-muted)' }}>
         Add one pupil per line: name, class, and a parent&apos;s phone if you have it. Up to 50 at a time.
         Pupils choose their own password the first time they sign in.
       </p>
       {!consentConfirmed && (
-        <p style={{ fontSize: '14px', color: 'var(--danger)' }}>
+        <p style={{ fontSize: '15px', color: 'var(--danger)' }}>
           First tick the box above to confirm your school has collected parents&apos; consent.
         </p>
       )}
       <form onSubmit={submit}>
-        <label htmlFor="student-lines" style={{ display: 'block', fontWeight: 'bold', fontSize: '14px', marginBottom: '4px' }}>Pupils</label>
+        <label htmlFor="student-lines" style={{ display: 'block', fontWeight: 'bold', fontSize: '15px', marginBottom: '4px' }}>Pupils</label>
         <textarea
           id="student-lines"
           rows={5}
           value={text}
           onChange={(e) => setText(e.target.value)}
           placeholder={'Ama Mensah, Primary 4, 024 123 4567\nKofi Boateng, Primary 5'}
-          style={{ width: '100%', padding: '10px', border: '1px solid var(--border)', borderRadius: '8px', fontSize: '14px' }}
+          style={{ width: '100%', padding: '10px', border: '1px solid var(--border)', borderRadius: '8px', fontSize: '15px' }}
         />
         <Button type="submit" disabled={saving || !text.trim() || !consentConfirmed} style={{ marginTop: '8px' }}>
           {saving ? 'Creating…' : 'Create logins'}
@@ -73,7 +73,7 @@ const StudentLogins = ({ onIssued, consentConfirmed }) => {
         <div style={{ marginTop: '16px' }}>
           <p style={{ fontWeight: 'bold' }}>Print these now. You won&apos;t be able to see these passwords again.</p>
           <div style={{ overflowX: 'auto' }}>
-            <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '14px' }}>
+            <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '15px' }}>
               <thead>
                 <tr style={{ textAlign: 'left' }}><th>Name</th><th>Class</th><th>Username</th><th>Password</th></tr>
               </thead>

@@ -101,7 +101,7 @@ def _require_eligible(user: User) -> None:
     if user.is_admin or user.is_school_admin:
         return
     if user.country != "GH" or user.level not in (None, "jhs"):
-        raise HTTPException(status_code=403, detail="The school-choice helper is for JHS students in Ghana")
+        raise HTTPException(status_code=403, detail="School Selection is for JHS students in Ghana")
 
 
 @router.get("/rules")

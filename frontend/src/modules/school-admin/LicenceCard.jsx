@@ -24,7 +24,6 @@ const INCLUDED = [
   'Progress for every student, with a spreadsheet download',
   'Weekly WhatsApp summary for the school admin',
   'More AI tutor time for your students',
-  "Your school's name on students' certificates",
 ];
 
 const day = (value) => formatDate(value, { long: true });

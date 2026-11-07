@@ -47,7 +47,7 @@
 
 .dash-next-eyebrow {
   margin: 0;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -65,7 +65,7 @@
 
 .dash-next-meta {
   margin: 0;
-  font-size: 14px;
+  font-size: 15px;
   color: var(--primary-bg);
 }
 
@@ -98,7 +98,7 @@
 
 .dash-next-note {
   margin: 14px 0 0;
-  font-size: 13px;
+  font-size: 15px;
   color: var(--primary-bg);
 }
 
@@ -110,7 +110,7 @@
   font-weight: 700;
   text-decoration: underline;
   cursor: pointer;
-  font-size: 13px;
+  font-size: 15px;
 }
 
 .dash-next-error {
@@ -119,7 +119,7 @@
   border-radius: 8px;
   background: var(--danger-bg);
   color: var(--danger);
-  font-size: 13px;
+  font-size: 15px;
 }
 
 .dash-grade-grid {
@@ -136,7 +136,7 @@
   background: rgba(255, 255, 255, 0.12);
   color: white;
   font-weight: 700;
-  font-size: 14px;
+  font-size: 15px;
   cursor: pointer;
 }
 
@@ -207,7 +207,7 @@
 }
 
 .dash-today-text span {
-  font-size: 13px;
+  font-size: 15px;
   color: var(--text-muted);
 }
 
@@ -231,7 +231,7 @@
 
 .dash-week > p {
   margin: 6px 0 14px;
-  font-size: 14px;
+  font-size: 15px;
   color: var(--text-muted);
 }
 
@@ -243,7 +243,7 @@
   grid-template-columns: repeat(7, minmax(0, 1fr));
   gap: 6px;
   text-align: center;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 700;
   color: var(--text-muted);
   max-width: 420px;
@@ -344,7 +344,7 @@
 }
 
 .dash-ring-caption {
-  font-size: 11px;
+  font-size: 13px;
   color: var(--gray-500);
   margin-top: 4px;
 }
@@ -385,7 +385,7 @@
 }
 
 .dash-stat-label {
-  font-size: 11px;
+  font-size: 13px;
   color: var(--gray-500);
 }
 
@@ -400,7 +400,7 @@
   border-radius: 12px;
   font-family: var(--font-display);
   font-weight: 600;
-  font-size: 14px;
+  font-size: 15px;
   cursor: pointer;
   transition: background 0.15s ease, transform 0.15s ease;
   white-space: nowrap;
@@ -461,7 +461,7 @@
 }
 
 .dash-course-badge {
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 700;
   padding: 3px 10px;
   border-radius: 999px;
@@ -511,8 +511,8 @@
   z-index: 1;
 }
 
-.dash-timeline-title { font-size: 14px; color: var(--gray-800); }
-.dash-timeline-time { font-size: 12px; color: var(--gray-500); margin-top: 2px; }
+.dash-timeline-title { font-size: 15px; color: var(--gray-800); }
+.dash-timeline-time { font-size: 14px; color: var(--gray-500); margin-top: 2px; }
 
 /* ---------- Skeleton ---------- */
 .dash-skeleton {

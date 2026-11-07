@@ -234,12 +234,12 @@ const DashboardModule = () => {
         <div className="dash-card dash-focus" style={{ marginTop: '20px' }}>
           <h2 className="dash-section-title" style={{ color: 'var(--accent-strong)' }}><HelpCircle size={17} /> Focus areas</h2>
           {weak_subjects.length > 0 && (
-            <p style={{ margin: 0, color: 'var(--accent-strong)', fontSize: '14px' }}>
+            <p style={{ margin: 0, color: 'var(--accent-strong)', fontSize: '15px' }}>
               Your quiz scores are lower in <strong>{weak_subjects.join(', ')}</strong>. Revisit these in Practice to strengthen them.
             </p>
           )}
           {weak_topics && weak_topics.length > 0 && (
-            <p style={{ margin: weak_subjects.length > 0 ? '8px 0 0 0' : 0, color: 'var(--accent-strong)', fontSize: '13px' }}>
+            <p style={{ margin: weak_subjects.length > 0 ? '8px 0 0 0' : 0, color: 'var(--accent-strong)', fontSize: '15px' }}>
               Weakest topics: <strong>{weak_topics.map((t) => `${t.topic_name} (${t.subject_id})`).join(', ')}</strong>
             </p>
           )}

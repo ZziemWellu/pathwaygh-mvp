@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams, Link } from 'react-router-dom';
 import api from '../../services/api';
-import { AwardIcon, BookOpenIcon, CircleCheck, Lock, TriangleAlertIcon } from 'lucide-react';
+import { BookOpenIcon, CircleCheck, Lock, TriangleAlertIcon } from 'lucide-react';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { LessonIcon } from '../../components/ui/icons';
 import Button from '../../components/ui/Button';
@@ -18,17 +18,6 @@ const CourseDetail = () => {
   useEffect(() => {
     fetchCourse();
   }, [courseId]);
-
-  useEffect(() => {
-    // Idempotent retroactive safety-net: covers a course that was already
-    // 100% complete before this feature existed, or any edge case where the
-    // auto-issue trigger on the lesson-progress endpoint didn't fire.
-    if (!course || course.lessons.length === 0) return;
-    const watched = course.lessons.filter((l) => l.watched).length;
-    if (watched === course.lessons.length) {
-      api.post(`/api/certificates/check/${courseId}`).catch(() => {});
-    }
-  }, [course, courseId]);
 
   const fetchCourse = async () => {
     setLoading(true);
@@ -69,15 +58,14 @@ const CourseDetail = () => {
 
   const watchedCount = course.lessons.filter((l) => l.watched).length;
   const progressPct = course.lessons.length ? Math.round((watchedCount / course.lessons.length) * 100) : 0;
-  const isComplete = course.lessons.length > 0 && watchedCount === course.lessons.length;
 
   return (
     <div style={{ maxWidth: '800px', margin: '0 auto', padding: '20px' }}>
-      <Link to="/learn" style={{ color: 'var(--primary)', fontSize: '14px' }}>{t('learnAllCoursesLink')}</Link>
+      <Link to="/learn" style={{ color: 'var(--primary)', fontSize: '15px' }}>{t('learnAllCoursesLink')}</Link>
 
       <h2 style={{ color: 'var(--primary)', margin: '12px 0 4px 0' }}>{course.title}</h2>
       {course.level && (
-        <span style={{ background: 'var(--primary-bg)', padding: '2px 10px', borderRadius: '12px', fontSize: '12px' }}>
+        <span style={{ background: 'var(--primary-bg)', padding: '2px 10px', borderRadius: '12px', fontSize: '14px' }}>
           {course.level.toUpperCase()}
         </span>
       )}
@@ -85,21 +73,13 @@ const CourseDetail = () => {
 
       {course.enrolled ? (
         <div style={{ marginBottom: '20px' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px', color: 'var(--text-muted)', marginBottom: '4px' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '15px', color: 'var(--text-muted)', marginBottom: '4px' }}>
             <span>{t('learnYourProgress')}</span>
             <span>{t('learnProgressSummary').replace('{watched}', watchedCount).replace('{total}', course.lessons.length).replace('{pct}', progressPct)}</span>
           </div>
           <div style={{ height: '6px', background: 'var(--surface-sunken)', borderRadius: '3px' }}>
             <div style={{ width: `${progressPct}%`, height: '100%', background: 'var(--primary)', borderRadius: '3px', transition: 'width 0.4s ease' }} />
           </div>
-          {isComplete && (
-            <Link
-              to={`/certificates/${courseId}`}
-              style={{ display: 'inline-block', marginTop: '10px', color: 'var(--primary)', fontWeight: 'bold', textDecoration: 'underline' }}
-            >
-              <AwardIcon className="icon-inline" size="1em" aria-hidden="true" /> {t('learnViewCertificate')}
-            </Link>
-          )}
         </div>
       ) : (
         <Button onClick={handleEnroll} disabled={enrolling} style={{ marginBottom: '20px' }}>
@@ -136,7 +116,7 @@ const CourseDetail = () => {
               </span>
               <div style={{ flex: 1 }}>
                 <div style={{ fontWeight: 500 }}>{lesson.title}</div>
-                <div style={{ fontSize: '12px', color: 'var(--gray-500)' }}>
+                <div style={{ fontSize: '14px', color: 'var(--gray-500)' }}>
                   {lesson.duration_minutes ? t('learnMinutes').replace('{count}', lesson.duration_minutes) : ''}
                   {lesson.is_free_preview && ` ${t('learnFreePreview')}`}
                 </div>

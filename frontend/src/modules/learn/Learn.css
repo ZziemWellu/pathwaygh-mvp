@@ -14,7 +14,7 @@
   background: var(--surface);
   color: var(--text);
   font-weight: 700;
-  font-size: 14px;
+  font-size: 15px;
   cursor: pointer;
 }
 
@@ -96,7 +96,7 @@
 .learn-cover__subject {
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: 13px;
+  font-size: 15px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
@@ -109,7 +109,7 @@
   border-radius: 999px;
   background: var(--accent);
   color: var(--gray-900);
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 800;
 }
 
@@ -140,14 +140,14 @@
 
 .learn-card__desc {
   margin: 6px 0 0;
-  font-size: 14px;
+  font-size: 15px;
   line-height: 1.5;
   color: var(--gray-700);
 }
 
 .learn-card__meta {
   margin: 10px 0 0;
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 600;
   color: var(--text-muted);
 }
@@ -157,7 +157,7 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 700;
   color: var(--success);
 }
@@ -185,7 +185,7 @@
 }
 
 .learn-card__status {
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 600;
   color: var(--text-muted);
   white-space: nowrap;

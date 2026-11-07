@@ -5,8 +5,8 @@ Model (from the Oct 2026 pricing research - Khan Academy, IXL, Seesaw,
 Wayground, Siyavula, Ghanaian school software):
 - Learning stays free for every student, always. A licence buys the
   school-level layer: unlimited students, per-student reporting and CSV
-  export, the weekly WhatsApp school digest, a higher AI-tutor allowance
-  for the school's students, and the school's name on certificates.
+  export, the weekly WhatsApp school digest, and a higher AI-tutor allowance
+  for the school's students.
 - Free plan: up to FREE_STUDENT_LIMIT students and the summary dashboard.
 - Every new school gets its first term free (the trial).
 - Priced per enrolled student, per term or per academic year (cheaper),

@@ -14,7 +14,7 @@ const LanguageSwitcher = ({ style }) => {
         padding: '4px 8px',
         border: '1px solid var(--border)',
         borderRadius: '6px',
-        fontSize: '12px',
+        fontSize: '14px',
         background: 'white',
         color: 'var(--gray-500)',
         cursor: 'pointer',

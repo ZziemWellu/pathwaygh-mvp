@@ -95,7 +95,7 @@ const UniversityDetail = ({ university, onClose }) => {
             <LandmarkIcon className="icon-inline" size="1em" aria-hidden="true" /> {university.name}
           </h2>
           {university.location && (
-            <div style={{ color: 'var(--text-muted)', fontSize: '14px' }}>
+            <div style={{ color: 'var(--text-muted)', fontSize: '15px' }}>
               <MapPinIcon className="icon-inline" size="1em" aria-hidden="true" /> {university.location}
             </div>
           )}
@@ -124,19 +124,19 @@ const UniversityDetail = ({ university, onClose }) => {
         }}>
           {university.cutoff && (
             <div style={{ padding: '14px', background: 'var(--surface-muted)', borderRadius: '10px' }}>
-              <div style={{ fontSize: '11px', color: 'var(--gray-500)' }}><ChartColumnIcon className="icon-inline" size="1em" aria-hidden="true" /> Cutoff</div>
+              <div style={{ fontSize: '13px', color: 'var(--gray-500)' }}><ChartColumnIcon className="icon-inline" size="1em" aria-hidden="true" /> Cutoff</div>
               <div style={{ fontSize: '16px', fontWeight: 'bold', color: 'var(--primary)' }}>{university.cutoff}</div>
             </div>
           )}
           {university.ranking && (
             <div style={{ padding: '14px', background: 'var(--surface-muted)', borderRadius: '10px' }}>
-              <div style={{ fontSize: '11px', color: 'var(--gray-500)' }}><TrophyIcon className="icon-inline" size="1em" aria-hidden="true" /> Ranking</div>
+              <div style={{ fontSize: '13px', color: 'var(--gray-500)' }}><TrophyIcon className="icon-inline" size="1em" aria-hidden="true" /> Ranking</div>
               <div style={{ fontSize: '16px', fontWeight: 'bold', color: 'var(--primary)' }}>#{university.ranking}</div>
             </div>
           )}
           {university.type && (
             <div style={{ padding: '14px', background: 'var(--surface-muted)', borderRadius: '10px' }}>
-              <div style={{ fontSize: '11px', color: 'var(--gray-500)' }}><LandmarkIcon className="icon-inline" size="1em" aria-hidden="true" /> Type</div>
+              <div style={{ fontSize: '13px', color: 'var(--gray-500)' }}><LandmarkIcon className="icon-inline" size="1em" aria-hidden="true" /> Type</div>
               <div style={{ fontSize: '16px', fontWeight: 'bold', color: 'var(--primary)' }}>{university.type}</div>
             </div>
           )}
@@ -161,7 +161,7 @@ const UniversityDetail = ({ university, onClose }) => {
                   color: 'var(--secondary)',
                   padding: '4px 14px',
                   borderRadius: '16px',
-                  fontSize: '13px',
+                  fontSize: '15px',
                 }}>
                   {program}
                 </span>
@@ -211,7 +211,7 @@ const UniversityDetail = ({ university, onClose }) => {
               border: saved ? '2px solid var(--primary)' : '1px solid var(--primary)',
               borderRadius: '8px',
               cursor: saving ? 'default' : 'pointer',
-              fontSize: '14px',
+              fontSize: '15px',
               flex: 1,
               transition: 'all 0.2s ease',
               opacity: saving ? 0.6 : 1,

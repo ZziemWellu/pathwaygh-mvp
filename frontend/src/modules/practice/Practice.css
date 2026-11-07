@@ -16,7 +16,7 @@
   background: transparent;
   color: var(--text-muted);
   font-weight: 700;
-  font-size: 14px;
+  font-size: 15px;
   cursor: pointer;
 }
 
@@ -67,7 +67,7 @@
 }
 
 .practice-quick__text span {
-  font-size: 13px;
+  font-size: 15px;
   color: var(--primary-bg);
 }
 
@@ -149,7 +149,7 @@
 }
 
 .practice-subject__text span {
-  font-size: 13px;
+  font-size: 15px;
   color: var(--text-muted);
 }
 
@@ -176,7 +176,7 @@
 }
 
 .practice-subject__status {
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 600;
   color: var(--text-muted);
   white-space: nowrap;

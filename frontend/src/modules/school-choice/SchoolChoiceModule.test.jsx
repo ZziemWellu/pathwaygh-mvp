@@ -100,7 +100,7 @@ describe('SchoolChoiceModule', () => {
   });
 
   it('explains when a student is not eligible', async () => {
-    api.get.mockRejectedValue({ response: { data: { detail: 'The school-choice helper is for JHS students in Ghana' } } });
+    api.get.mockRejectedValue({ response: { data: { detail: 'School Selection is for JHS students in Ghana' } } });
     render(<SchoolChoiceModule />);
     expect(await screen.findByRole('alert')).toHaveTextContent(/JHS students in Ghana/);
   });

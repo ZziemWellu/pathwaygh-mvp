@@ -71,7 +71,7 @@ const ImpactDashboard = () => {
         title="Impact Dashboard"
         actions={
           <>
-            {exportError && <span style={{ color: 'var(--danger)', fontSize: '13px' }}>{exportError}</span>}
+            {exportError && <span style={{ color: 'var(--danger)', fontSize: '15px' }}>{exportError}</span>}
             <Button size="sm" icon={Download} onClick={handleExport} disabled={exporting}>
               {exporting ? 'Exporting...' : 'Export CSV'}
             </Button>
@@ -98,8 +98,8 @@ const ImpactDashboard = () => {
           <ResponsiveContainer width="100%" height={260}>
             <LineChart data={trends.series}>
               <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="month" tick={{ fontSize: 12 }} />
-              <YAxis allowDecimals={false} tick={{ fontSize: 12 }} />
+              <XAxis dataKey="month" tick={{ fontSize: 14 }} />
+              <YAxis allowDecimals={false} tick={{ fontSize: 14 }} />
               <Tooltip />
               <Legend />
               <Line type="monotone" dataKey="enrollments" stroke="var(--primary)" name="Enrollments" />
@@ -112,8 +112,8 @@ const ImpactDashboard = () => {
           <ResponsiveContainer width="100%" height={260}>
             <LineChart data={trends.series}>
               <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="month" tick={{ fontSize: 12 }} />
-              <YAxis domain={[0, 100]} tick={{ fontSize: 12 }} />
+              <XAxis dataKey="month" tick={{ fontSize: 14 }} />
+              <YAxis domain={[0, 100]} tick={{ fontSize: 14 }} />
               <Tooltip />
               <Legend />
               <Line type="monotone" dataKey="average_quiz_score" stroke="var(--success)" name="Avg. Score (%)" />
@@ -190,8 +190,8 @@ const ImpactDashboard = () => {
 const StatCard = ({ value, label, note }) => (
   <div className="card" style={{ padding: '16px', textAlign: 'center' }}>
     <div style={{ fontSize: '24px', fontWeight: 'bold', color: 'var(--primary)' }}>{value}</div>
-    <div style={{ fontSize: '12px', color: 'var(--gray-500)' }}>{label}</div>
-    {note && <div style={{ fontSize: '10px', color: 'var(--gray-500)', marginTop: '2px' }}>{note}</div>}
+    <div style={{ fontSize: '14px', color: 'var(--gray-500)' }}>{label}</div>
+    {note && <div style={{ fontSize: '13px', color: 'var(--gray-500)', marginTop: '2px' }}>{note}</div>}
   </div>
 );
 
@@ -201,6 +201,6 @@ const EmptyState = ({ text }) => (
   </div>
 );
 
-const cellStyle = { padding: '10px 14px', fontSize: '13px' };
+const cellStyle = { padding: '10px 14px', fontSize: '15px' };
 
 export default ImpactDashboard;

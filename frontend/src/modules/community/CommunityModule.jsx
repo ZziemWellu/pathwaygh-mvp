@@ -28,8 +28,8 @@ const CommunityModule = () => {
             <div style={{ width: '48px', height: '48px', borderRadius: '12px', background: feature.tint, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', marginBottom: '8px' }}>
               <feature.icon size={24} color={feature.color} strokeWidth={1.75} aria-hidden="true" />
             </div>
-            <h4 style={{ color: feature.color, margin: '0 0 6px 0', fontSize: '14px' }}>{feature.title}</h4>
-            <p style={{ color: 'var(--text-muted)', fontSize: '12px', margin: 0 }}>{feature.description}</p>
+            <h4 style={{ color: feature.color, margin: '0 0 6px 0', fontSize: '15px' }}>{feature.title}</h4>
+            <p style={{ color: 'var(--text-muted)', fontSize: '14px', margin: 0 }}>{feature.description}</p>
           </div>
         ))}
       </div>

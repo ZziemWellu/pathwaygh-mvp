@@ -46,7 +46,7 @@ const CountrySelector = ({ onSelect }) => {
           {name}
         </button>
       ))}
-      <p style={{ color: 'var(--gray-500)', textAlign: 'center', fontSize: '13px', marginTop: '16px' }}>
+      <p style={{ color: 'var(--gray-500)', textAlign: 'center', fontSize: '15px', marginTop: '16px' }}>
         {t('moreCountriesComingSoon')}
       </p>
     </div>

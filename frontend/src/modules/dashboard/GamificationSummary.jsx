@@ -32,7 +32,7 @@ const GamificationSummary = ({ hideWhenEmpty = false }) => {
         borderRadius: '999px',
         color: 'white',
         cursor: 'pointer',
-        fontSize: '13px',
+        fontSize: '15px',
         marginTop: '12px',
       }}
     >
