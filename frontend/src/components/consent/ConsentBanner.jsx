@@ -13,7 +13,8 @@ const ConsentBanner = ({ user, onVerified }) => {
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
 
-  if (!user || !user.guardian_email || user.consent_verified) {
+  const guardianContact = user ? [user.guardian_phone_masked, user.guardian_email].filter(Boolean).join(' / ') : '';
+  if (!user || !guardianContact || user.consent_verified) {
     return null;
   }
 
@@ -60,7 +61,7 @@ const ConsentBanner = ({ user, onVerified }) => {
       }}
     >
       <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: '10px', justifyContent: 'space-between' }}>
-        <span>{t('consentBannerMessage').replace('{email}', user.guardian_email)}</span>
+        <span>{t('consentBannerMessage').replace('{email}', guardianContact)}</span>
         {!showForm && (
           <Button size="sm" onClick={() => setShowForm(true)}>
             {t('consentBannerEnterCode')}

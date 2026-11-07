@@ -1,0 +1,24 @@
+{
+  "year": 2026,
+  "total_choices": 8,
+  "max_category_a": 2,
+  "max_category_b": 3,
+  "max_boarding": 5,
+  "max_day": 3,
+  "categories": [
+    "A",
+    "B",
+    "C"
+  ],
+  "category_a_note": "In 2026, over 300,000 candidates chose Category A schools, which had 76,417 vacancies between them.",
+  "source_name": "Graphic Online summary of the 2026 SHS/TVET School Selection and CSSPS Placement Guide (released 3 August 2026)",
+  "source_url": "https://www.graphic.com.gh/news/general-news/bece-candidates-limited-to-two-category-a-school-choices-for-2026-shs-placement.html",
+  "disclaimer": "These are the 2026 rules. GES can change them each year, and your official guide and school register always come first. This helper checks your list against the rules. It cannot predict your placement.",
+  "tips": [
+    "Your aggregate matters, but placement also depends on your programme, boarding or day preference, and vacancies.",
+    "Rank your schools carefully. Your first choice should be the school you most want to attend.",
+    "Choose day schools within reasonable travelling distance of your home.",
+    "CSSPS placement is free. Never pay anyone who promises you a school."
+  ],
+  "tips_source": "https://www.myjoyonline.com/school-placement-is-absolutely-free-education-ministry/"
+}

@@ -20,6 +20,10 @@ logger = logging.getLogger(__name__)
 SMS_API_URL = "https://api.africastalking.com/version1/messaging"
 
 
+def is_configured() -> bool:
+    return bool(os.getenv("AFRICAS_TALKING_USERNAME") and os.getenv("AFRICAS_TALKING_API_KEY"))
+
+
 def send_sms(*, to: str, message: str) -> bool:
     username = os.getenv("AFRICAS_TALKING_USERNAME")
     api_key = os.getenv("AFRICAS_TALKING_API_KEY")

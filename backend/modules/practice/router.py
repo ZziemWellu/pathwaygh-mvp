@@ -24,6 +24,7 @@ from modules.practice.mastery import (
     load_questions,
     record_sub_skill_attempt,
     record_topic_attempt,
+    subject_is_for_level,
     topic_names_by_id,
 )
 
@@ -77,6 +78,7 @@ def get_all_questions(
     topic: Optional[str] = None,
     difficulty: Optional[str] = None,
     country: Optional[str] = None,
+    level: Optional[str] = None,
 ):
     data = load_questions()
     all_questions = []
@@ -84,6 +86,8 @@ def get_all_questions(
         if subject_id and subject["id"] != subject_id:
             continue
         if country and subject.get("country") != country:
+            continue
+        if not subject_is_for_level(subject, level):
             continue
         for topic_data in subject.get("topics", []):
             if topic and topic_data["id"] != topic:
@@ -126,6 +130,7 @@ def get_subjects(
     # An explicit ?country= still wins; anonymous callers still get all.
     if country is None and current_user is not None:
         country = current_user.country
+    level = current_user.level if current_user is not None else None
     data = load_questions()
     # Per-subject mastery (mean decayed mastery of the topics practised), so
     # Practice can show progress per subject. None until the student has
@@ -137,6 +142,8 @@ def get_subjects(
     subjects = []
     for s in data.get("subjects", []):
         if country and s.get("country") != country:
+            continue
+        if not subject_is_for_level(s, level):
             continue
         topics = []
         question_count = 0
@@ -174,7 +181,7 @@ def start_quiz(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
-    questions = get_all_questions(request.subject_id, request.topic, request.difficulty, current_user.country)
+    questions = get_all_questions(request.subject_id, request.topic, request.difficulty, current_user.country, current_user.level)
     if not questions:
         raise HTTPException(status_code=404, detail="No questions found for the selected criteria")
 
@@ -219,7 +226,7 @@ def start_quiz(
         "subject_ids": {i: q.get("subject_id") for i, q in enumerate(selected)},
         "sub_skills": {i: q.get("sub_skill") for i, q in enumerate(selected)},
         "questions": [
-            {"id": q["id"], "question": q["question"], "options": q.get("options", []), "difficulty": q.get("difficulty", "medium")}
+            {"id": q["id"], "question": q["question"], "options": q.get("options", []), "difficulty": q.get("difficulty", "medium"), "review_status": q.get("review_status")}
             for q in selected
         ],
     }

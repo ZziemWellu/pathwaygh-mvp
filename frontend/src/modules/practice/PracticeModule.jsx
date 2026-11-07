@@ -11,6 +11,12 @@ import { formatDate } from '../../utils/date';
 import PageHeader from '../../components/ui/PageHeader';
 import Button from '../../components/ui/Button';
 
+const EXAM_STYLE = {
+  primary: 'Practice questions',
+  jhs: 'BECE-style questions',
+  shs: 'WASSCE-style questions',
+};
+
 const PracticeModule = () => {
   const { notify } = useGamificationNotify();
   const [subjects, setSubjects] = useState([]);
@@ -279,6 +285,11 @@ const PracticeModule = () => {
               <span style={{ fontSize: '11px', padding: '2px 10px', borderRadius: '12px', background: 'var(--warning)', color: 'white' }}>{currentQ.difficulty || 'Medium'}</span>
             </div>
             <h3 style={{ margin: '0 0 16px 0', fontSize: '18px', color: 'var(--text)' }}>{currentQ.question}</h3>
+            {currentQ.review_status === 'pending_review' && (
+              <p style={{ margin: '-8px 0 16px 0', fontSize: '12px', color: 'var(--text-subtle)' }}>
+                A teacher hasn&apos;t checked this new question yet. If something looks wrong, ask your teacher.
+              </p>
+            )}
             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginBottom: '20px' }}>
               {currentQ.options?.map((option, i) => (
                 <button
@@ -317,7 +328,7 @@ const PracticeModule = () => {
 
   return (
     <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '20px' }}>
-      <PageHeader icon={PenLine} title="Practice" subtitle={`WASSCE-style questions · ${subjects.length} subjects`} />
+      <PageHeader icon={PenLine} title="Practice" subtitle={`${EXAM_STYLE[getUser()?.level] || 'WASSCE-style questions'} · ${subjects.length} subjects`} />
 
       <div role="tablist" aria-label="Practice views" className="practice-tabs">
         {[['subjects', 'Subjects'], ['history', 'History'], ['stats', 'Stats']].map(([id, label]) => (

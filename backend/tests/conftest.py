@@ -4,6 +4,9 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
+# Lets the SMS path log instead of needing a real provider (see sms_available).
+os.environ.setdefault("SMS_DEV_LOG", "1")
+
 import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
@@ -82,6 +85,7 @@ def register_user(
     full_name="Test Student",
     country="GH",
     guardian_email="guardian@test.com",
+    level="jhs",
 ):
     response = client.post(
         "/api/auth/register",
@@ -90,6 +94,7 @@ def register_user(
             "full_name": full_name,
             "password": password,
             "country": country,
+            "level": level,
             "consent_confirmed": True,
             "guardian_email": guardian_email,
         },

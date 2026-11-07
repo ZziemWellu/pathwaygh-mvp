@@ -76,7 +76,7 @@ def test_lesson_progress_persists(client, db_session, auth_headers):
 def test_course_list_reports_progress_duration_and_next_lesson(client, db_session, auth_headers):
     from models.course import Course, Lesson
 
-    course = Course(slug="prog-course", title="Progress Course", level="shs")
+    course = Course(slug="prog-course", title="Progress Course", level="jhs")
     db_session.add(course)
     db_session.flush()
     l1 = Lesson(course_id=course.id, slug="prog-1", title="One", lesson_type="video", order_index=0, duration_minutes=30, is_free_preview=True)

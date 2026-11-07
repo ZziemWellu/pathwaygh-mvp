@@ -1,6 +1,6 @@
 from datetime import datetime, timezone
 
-from sqlalchemy import JSON, Boolean, Column, DateTime, ForeignKey, Integer, String, Text
+from sqlalchemy import JSON, Boolean, Column, DateTime, ForeignKey, Index, Integer, String, Text, text
 from sqlalchemy.orm import relationship
 
 from core.database import Base
@@ -8,6 +8,9 @@ from core.database import Base
 
 class User(Base):
     __tablename__ = "users"
+    # Emails are stored lower-case; this stops "Ama@x.com" and "ama@x.com"
+    # ever being two accounts, whatever case an older row was saved in.
+    __table_args__ = (Index("uq_users_email_lower", text("lower(email)"), unique=True),)
 
     id = Column(Integer, primary_key=True)
     email = Column(String(255), unique=True, nullable=False, index=True)
@@ -23,6 +26,10 @@ class User(Base):
     is_admin = Column(Boolean, nullable=False, default=False)
     country = Column(String(2), nullable=False, default="GH")
     language = Column(String(3), nullable=False, default="en")
+    # primary, jhs or shs (core/levels.py). Decides which courses and question
+    # banks the student sees. Null only on accounts created before sign-up
+    # asked for it - those are prompted on Home.
+    level = Column(String(10), nullable=True, index=True)
     created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
 
     # Institutional linkage. school_id/is_school_admin are the real
@@ -56,9 +63,10 @@ class User(Base):
     consent_otp_attempts = Column(Integer, nullable=False, default=0)
     consent_otp_sent_at = Column(DateTime, nullable=True)
 
-    # Guardian WhatsApp digest. A delivery preference, not a consent gate -
-    # consent is already satisfied via the OTP-verified guardian_email
-    # above, so changing this never touches consent_given_at/version.
+    # Guardian's phone: where the consent code goes by SMS, and the WhatsApp
+    # digest's destination. If the guardian also has an email on file, the
+    # email stays the verified contact and changing this phone leaves consent
+    # alone; with no email, a new phone needs re-verifying.
     guardian_phone = Column(String(20), nullable=True)  # E.164, e.g. +233241234567
     guardian_whatsapp_opt_in = Column(Boolean, nullable=False, default=False)
     last_digest_sent_at = Column(DateTime, nullable=True)
@@ -70,6 +78,9 @@ class User(Base):
     # a parent can legitimately receive both digests independently.
     school_digest_whatsapp_opt_in = Column(Boolean, nullable=False, default=False)
     last_school_digest_sent_at = Column(DateTime, nullable=True)
+
+    # Draft of the student's CSSPS school choices (modules/school_choice).
+    school_choice_draft = Column(JSON, nullable=True)
 
     # Profile fields
     school = Column(String(255), nullable=True)

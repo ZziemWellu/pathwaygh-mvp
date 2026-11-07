@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import api, { extractErrorMessage } from '../../services/api';
 import { getCountry } from '../../constants/auth';
 import { useLanguage } from '../../contexts/LanguageContext';
@@ -12,12 +12,25 @@ const Register = ({ onSuccess, onShowPrivacy }) => {
     email: '',
     password: '',
     confirm_password: '',
+    level: '',
     consent_confirmed: false,
+    guardian_phone: '',
     guardian_email: ''
   });
+  // Whether a text can reach this country. null = not known yet (or the check
+  // failed), in which case both fields show and the server has the last word.
+  const [smsAvailable, setSmsAvailable] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
+
+  useEffect(() => {
+    const country = getCountry();
+    if (!country) return;
+    api.get('/api/auth/consent-channels', { params: { country } })
+      .then((response) => setSmsAvailable(response.data.sms))
+      .catch(() => setSmsAvailable(null));
+  }, []);
 
   const handleChange = (e) => {
     const { name, type, checked, value } = e.target;
@@ -47,12 +60,19 @@ const Register = ({ onSuccess, onShowPrivacy }) => {
       return;
     }
 
-    if (!formData.guardian_email.trim()) {
-      setError(t('guardianEmailRequired'));
+    if (!formData.level) {
+      setError(t('levelRequired'));
       return;
     }
 
-    if (formData.guardian_email.trim().toLowerCase() === formData.email.trim().toLowerCase()) {
+    const guardianPhone = smsAvailable === false ? '' : formData.guardian_phone.trim();
+    const guardianEmail = formData.guardian_email.trim();
+    if (!guardianPhone && !guardianEmail) {
+      setError(t(smsAvailable === false ? 'guardianEmailRequired' : 'guardianContactRequired'));
+      return;
+    }
+
+    if (guardianEmail.toLowerCase() === formData.email.trim().toLowerCase()) {
       setError(t('guardianEmailMustDiffer'));
       return;
     }
@@ -68,20 +88,18 @@ const Register = ({ onSuccess, onShowPrivacy }) => {
     setSuccess(false);
 
     try {
-      // The backend expects: email, full_name, password, country, consent_confirmed, guardian_email
       const payload = {
         email: formData.email,
-        full_name: formData.full_name,  // ← CORRECT field name!
+        full_name: formData.full_name,
         password: formData.password,
         country,
+        level: formData.level,
         consent_confirmed: formData.consent_confirmed,
-        guardian_email: formData.guardian_email.trim()
+        guardian_phone: guardianPhone || null,
+        guardian_email: guardianEmail || null
       };
 
-      console.log('Registering with:', payload);
-
       const response = await api.post('/api/auth/register', payload);
-      console.log('Response:', response.data);
 
       if (response.data?.success) {
         setSuccess(true);
@@ -223,14 +241,66 @@ const Register = ({ onSuccess, onShowPrivacy }) => {
         </div>
 
         <div style={{ marginBottom: '16px' }}>
-          <label htmlFor="guardian_email" style={{ display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>{t('guardianEmailLabel')}</label>
+          <label htmlFor="level" style={{ display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>{t('levelLabel')}</label>
+          <select
+            id="level"
+            name="level"
+            value={formData.level}
+            onChange={handleChange}
+            required
+            style={{
+              width: '100%',
+              padding: '10px',
+              border: '1px solid var(--border)',
+              borderRadius: '8px',
+              fontSize: '14px'
+            }}
+          >
+            <option value="">{t('levelPlaceholder')}</option>
+            <option value="primary">{t('levelPrimary')}</option>
+            <option value="jhs">{t('levelJhs')}</option>
+            <option value="shs">{t('levelShs')}</option>
+          </select>
+          <p style={{ margin: '4px 0 0', fontSize: '12px', color: 'var(--text-subtle)' }}>{t('levelHelp')}</p>
+        </div>
+
+        {smsAvailable !== false && (
+          <div style={{ marginBottom: '16px' }}>
+            <label htmlFor="guardian_phone" style={{ display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>{t('guardianPhoneLabel')}</label>
+            <input
+              id="guardian_phone"
+              type="tel"
+              name="guardian_phone"
+              autoComplete="off"
+              value={formData.guardian_phone}
+              onChange={handleChange}
+              style={{
+                width: '100%',
+                padding: '10px',
+                border: '1px solid var(--border)',
+                borderRadius: '8px',
+                fontSize: '14px'
+              }}
+              placeholder={t('guardianPhonePlaceholder')}
+            />
+            <p style={{ margin: '4px 0 0', fontSize: '12px', color: 'var(--text-subtle)' }}>{t('guardianPhoneHelp')}</p>
+          </div>
+        )}
+
+        <div style={{ marginBottom: '16px' }}>
+          <label htmlFor="guardian_email" style={{ display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>
+            {t(smsAvailable === false ? 'guardianEmailLabel' : 'guardianEmailOptionalLabel')}
+          </label>
+          {smsAvailable === false && (
+            <p style={{ margin: '0 0 4px', fontSize: '12px', color: 'var(--text-subtle)' }}>{t('guardianSmsUnavailable')}</p>
+          )}
           <input
             id="guardian_email"
             type="email"
             name="guardian_email"
             value={formData.guardian_email}
             onChange={handleChange}
-            required
+            required={smsAvailable === false}
             style={{
               width: '100%',
               padding: '10px',
@@ -252,7 +322,7 @@ const Register = ({ onSuccess, onShowPrivacy }) => {
               style={{ marginTop: '3px' }}
             />
             <span>
-              {t('consentStatementBeforeLink')}{' '}
+              {t(formData.level === 'primary' ? 'consentStatementPrimaryBeforeLink' : 'consentStatementBeforeLink')}{' '}
               <button
                 type="button"
                 onClick={onShowPrivacy}

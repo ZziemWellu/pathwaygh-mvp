@@ -39,8 +39,12 @@ def _questions_for(country: str, subject_id: Optional[str]) -> list:
             continue
         if subject_id and subject["id"] != subject_id:
             continue
+        # Subscribers have no school level, so level-specific banks stay out,
+        # and SMS has no room to label a question that's awaiting review.
+        if subject.get("sms") is False:
+            continue
         for topic in subject.get("topics", []):
-            candidates.extend(topic.get("questions", []))
+            candidates.extend(q for q in topic.get("questions", []) if q.get("review_status") != "pending_review")
     return candidates
 
 

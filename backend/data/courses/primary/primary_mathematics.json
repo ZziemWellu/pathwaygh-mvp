@@ -1,0 +1,38 @@
+{
+  "slug": "primary-mathematics-foundations",
+  "title": "Primary Mathematics: Foundations",
+  "description": "Place value, the four operations, fractions and measurement, for upper primary pupils.",
+  "level": "primary",
+  "country": "GH",
+  "lessons": [
+    {
+      "id": "primary-maths-place-value",
+      "title": "Place value",
+      "description": "What each digit in a number is worth.",
+      "is_free_preview": true,
+      "duration_minutes": 10,
+      "content": "# Place value\n\nEvery digit in a number has a value that depends on where it sits.\n\nIn the number **4,352**:\n\n| Thousands | Hundreds | Tens | Ones |\n|---|---|---|---|\n| 4 | 3 | 5 | 2 |\n\n- The 4 means 4 thousands, which is 4,000\n- The 3 means 3 hundreds, which is 300\n- The 5 means 5 tens, which is 50\n- The 2 means 2 ones, which is 2\n\nSo 4,352 = 4,000 + 300 + 50 + 2.\n\n**Try it:** What is the value of the 7 in 2,750? *(Answer: 700)*"
+    },
+    {
+      "id": "primary-maths-four-operations",
+      "title": "Adding, subtracting, multiplying and dividing",
+      "description": "The four operations, and how to check your answers.",
+      "duration_minutes": 15,
+      "content": "# The four operations\n\n**Adding** puts amounts together: 245 + 130 = 375\n\n**Subtracting** finds what is left: 375 - 130 = 245\n\n**Multiplying** is adding the same number many times: 6 x 4 = 6 + 6 + 6 + 6 = 24\n\n**Dividing** shares equally: 24 ÷ 4 = 6\n\n## Check your answer\n\nAdding and subtracting undo each other, and so do multiplying and dividing.\n\n- To check 375 - 130 = 245, add: 245 + 130 = 375\n- To check 24 ÷ 4 = 6, multiply: 6 x 4 = 24\n\n**Try it:** Ama shares 36 oranges equally among 4 friends. How many does each friend get? *(Answer: 36 ÷ 4 = 9)*"
+    },
+    {
+      "id": "primary-maths-fractions",
+      "title": "Fractions",
+      "description": "Parts of a whole, and a fraction of an amount.",
+      "duration_minutes": 15,
+      "content": "# Fractions\n\nA fraction is a part of a whole. In **3/4**:\n\n- The bottom number (4) says the whole is cut into 4 equal parts\n- The top number (3) says we have 3 of those parts\n\n## Adding fractions with the same bottom number\n\nAdd the top numbers and keep the bottom number: 1/5 + 2/5 = 3/5\n\n## A fraction of an amount\n\nDivide by the bottom number, then multiply by the top number.\n\n3/4 of 20: first 20 ÷ 4 = 5, then 5 x 3 = 15\n\n**Try it:** Kofi has GH₵ 30 and spends 2/3 of it. How much does he spend? *(Answer: 30 ÷ 3 = 10, then 10 x 2 = GH₵ 20)*"
+    },
+    {
+      "id": "primary-maths-measurement",
+      "title": "Measurement: length, perimeter and area",
+      "description": "Converting units, and measuring around and inside a shape.",
+      "duration_minutes": 15,
+      "content": "# Measurement\n\n## Units\n\n- 100 centimetres (cm) = 1 metre (m)\n- 1,000 metres = 1 kilometre (km)\n- 1,000 grams (g) = 1 kilogram (kg)\n- 60 minutes = 1 hour\n\n## Perimeter\n\nPerimeter is the distance **around** a shape. For a rectangle, add all four sides.\n\nA rectangle 5 m long and 3 m wide: 5 + 3 + 5 + 3 = 16 m\n\n## Area\n\nArea is the space **inside** a shape. For a rectangle, multiply length by width.\n\nThe same rectangle: 5 x 3 = 15 square metres\n\n**Try it:** A classroom floor is 8 m long and 6 m wide. What is its area? *(Answer: 8 x 6 = 48 square metres)*"
+    }
+  ]
+}
