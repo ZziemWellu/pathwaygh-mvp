@@ -35,6 +35,7 @@ from models.payment_transaction import PaymentTransaction
 from models.school import School
 from models.user import User
 from modules.licence.service import (
+    PRICES,
     PricingError,
     activate_from_transaction,
     licence_status,
@@ -42,7 +43,7 @@ from modules.licence.service import (
     quote_period,
     quote_top_up,
 )
-from modules.payment.providers import ProviderNotIntegrated, get_provider
+from modules.payment.providers import ProviderNotIntegrated, get_provider, paystack
 
 router = APIRouter(tags=["payment"])
 logger = logging.getLogger(__name__)
@@ -84,7 +85,10 @@ def get_quote(current_user: User = Depends(require_school_admin), db: Session = 
     options = []
     if status["can_buy"]:
         options = [public_quote(quote_period(db, school, kind)) for kind in ("term", "year")]
-    return {"success": True, "licence": status, "options": options}
+    currency = PRICES.get(school.country, {}).get("currency")
+    # A price can exist before the country's Paystack business is set up.
+    payments_open = bool(currency) and paystack.is_configured(currency)
+    return {"success": True, "licence": status, "options": options, "payments_open": payments_open}
 
 
 @router.post("/initialize")
@@ -102,6 +106,10 @@ def initialize_payment(
         raise HTTPException(
             status_code=400, detail=f"{request.provider} does not support {currency} - try a different provider."
         )
+    if "is_configured" in provider and not provider["is_configured"](currency):
+        raise HTTPException(status_code=503, detail="Online payment isn't open for your country yet. Please check back soon.")
+    if not current_user.email:
+        raise HTTPException(status_code=400, detail="Please add an email to your profile first. Paystack sends the receipt there.")
 
     reference = f"pay_{uuid.uuid4().hex[:12]}"
     frontend_url = primary_frontend_url()
@@ -163,7 +171,11 @@ def _confirm(db: Session, transaction: PaymentTransaction) -> None:
         return
 
     provider = get_provider(transaction.provider)
-    result = provider["verify"](reference=transaction.reference, external_reference=transaction.external_reference)
+    result = provider["verify"](
+        reference=transaction.reference,
+        external_reference=transaction.external_reference,
+        currency=transaction.currency,
+    )
 
     status = result["status"]
     if status == "success" and (
@@ -228,13 +240,14 @@ async def paystack_webhook(request: Request, db: Session = Depends(get_db)):
     The event body itself is only used to find the transaction; its
     outcome comes from re-verifying with Paystack's API, so a forged or
     replayed event can't grant anything."""
-    secret = os.getenv("PAYSTACK_SECRET_KEY")
-    if not secret:
+    secrets = paystack.all_secret_keys()
+    if not secrets:
         raise HTTPException(status_code=503, detail="Payments are not configured")
 
     raw = await request.body()
-    expected = hmac.new(secret.encode(), raw, hashlib.sha512).hexdigest()
-    if not hmac.compare_digest(expected, request.headers.get("x-paystack-signature", "")):
+    signature = request.headers.get("x-paystack-signature", "")
+    # Each country's business signs with its own key.
+    if not any(hmac.compare_digest(hmac.new(s.encode(), raw, hashlib.sha512).hexdigest(), signature) for s in secrets):
         raise HTTPException(status_code=401, detail="Invalid signature")
 
     try:

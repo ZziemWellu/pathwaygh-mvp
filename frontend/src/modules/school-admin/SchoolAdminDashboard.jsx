@@ -4,6 +4,8 @@ import api from '../../services/api';
 import { formatDate } from '../../utils/date';
 import PageHeader from '../../components/ui/PageHeader';
 import Button from '../../components/ui/Button';
+import StudentLogins from './StudentLogins';
+import StudentRowActions from './StudentRowActions';
 import LicenceCard from './LicenceCard';
 import './SchoolAdmin.css';
 
@@ -122,6 +124,7 @@ const SchoolAdminDashboard = () => {
       </div>
 
       <LicenceCard onLicenceChange={() => fetchDashboard({ quiet: true })} />
+      <StudentLogins consentConfirmed={!!school?.parent_consent_attested} onIssued={() => fetchDashboard({ quiet: true })} />
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: '16px', marginBottom: '24px' }}>
         <div className="card" style={{ padding: '16px', textAlign: 'center' }}>
@@ -162,6 +165,7 @@ const SchoolAdminDashboard = () => {
                 <th style={cellStyle}>Name</th>
                 <th style={cellStyle}>Email</th>
                 <th style={cellStyle}>Grade</th>
+                <th style={cellStyle}>Level and login</th>
                 {detailed && (
                   <>
                     <th style={cellStyle}>Courses</th>
@@ -183,8 +187,11 @@ const SchoolAdminDashboard = () => {
                       </span>
                     )}
                   </td>
-                  <td style={cellStyle}>{student.email}</td>
+                  <td style={cellStyle}>{student.email || student.username}</td>
                   <td style={cellStyle}>{student.grade || '-'}</td>
+                  <td style={cellStyle}>
+                    {!student.is_school_admin && <StudentRowActions key={student.level} student={student} onChanged={() => fetchDashboard({ quiet: true })} />}
+                  </td>
                   {detailed && (
                     <>
                       <td style={cellStyle}>{student.courses_enrolled}</td>

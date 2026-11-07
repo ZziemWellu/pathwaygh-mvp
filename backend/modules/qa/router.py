@@ -66,6 +66,13 @@ def _answer_out(a: PeerAnswer) -> dict:
     }
 
 
+def _require_old_enough_to_post(user: User) -> None:
+    # An open forum isn't a place for young children to post, whatever the
+    # consent status. The AI tutor is there for their questions.
+    if user.level == "primary":
+        raise HTTPException(status_code=403, detail="Posting in the community is for JHS and SHS students")
+
+
 @router.get("/")
 def qa_root():
     return {"module": "qa", "status": "active"}
@@ -88,6 +95,7 @@ def create_question(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
+    _require_old_enough_to_post(current_user)
     text = body.body.strip()
     if not text:
         raise HTTPException(status_code=400, detail="Question body is required")
@@ -146,6 +154,7 @@ def create_answer(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
+    _require_old_enough_to_post(current_user)
     question = db.query(PeerQuestion).filter(PeerQuestion.id == question_id, PeerQuestion.status == "visible").first()
     if not question:
         raise HTTPException(status_code=404, detail="Question not found")

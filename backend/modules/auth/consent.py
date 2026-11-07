@@ -12,6 +12,7 @@ modules/tutor/grounding.py.
 """
 
 import logging
+import os
 import secrets
 from datetime import datetime, timedelta, timezone
 
@@ -25,7 +26,7 @@ from modules.practice_sms.providers import ProviderNotIntegrated, get_provider_f
 
 logger = logging.getLogger(__name__)
 
-CURRENT_CONSENT_VERSION = "2026-11-v1"
+CURRENT_CONSENT_VERSION = "2026-11-v2"
 OTP_TTL_MINUTES = 15
 MAX_OTP_ATTEMPTS = 5
 RESEND_COOLDOWN_SECONDS = 60
@@ -43,25 +44,37 @@ def _now() -> datetime:
     return datetime.utcnow()
 
 
-def _send_consent_sms(user: User, code: str) -> bool:
-    # A paid message to a number typed into a public form: capped per number
-    # as well as per IP, generously enough for a parent with several children.
+def send_guardian_sms(user: User, message: str) -> bool:
+    """A paid message to a number that came from a public form. Capped per
+    number, generously enough for a parent with several children, and for the
+    whole platform: per-number and per-IP caps alone wouldn't stop someone
+    working through many numbers and running up the SMS bill."""
     hit_per_account(
         "5/day",
-        "consent-sms",
+        "guardian-sms",
         user.guardian_phone,
         detail="Too many codes have been sent to this phone number today - please try again tomorrow",
     )
+    hit_per_account(
+        f"{os.getenv('SMS_DAILY_CAP', '500')}/day",
+        "guardian-sms-platform",
+        "all",
+        detail="We can't send text messages right now - please try again tomorrow",
+    )
+    try:
+        return get_provider_for_country(user.country)["send"](to=user.guardian_phone, message=message)
+    except ProviderNotIntegrated:
+        return False
+
+
+def _send_consent_sms(user: User, code: str) -> bool:
     first_name = (user.full_name.split() or ["Your child"])[0][:20]
     message = (
         f"Learning Hotspot: {first_name} listed you as parent/guardian. "
         f"To give consent, share this code with them: {code}. Expires in {OTP_TTL_MINUTES} min. "
         f"Not expected? Ignore this."
     )
-    try:
-        return get_provider_for_country(user.country)["send"](to=user.guardian_phone, message=message)
-    except ProviderNotIntegrated:
-        return False
+    return send_guardian_sms(user, message)
 
 
 def issue_consent_otp(user: User) -> list:

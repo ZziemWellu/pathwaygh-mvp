@@ -16,15 +16,39 @@ SUPPORTED_CURRENCIES = {"GHS", "NGN"}
 _REQUEST_TIMEOUT_SECONDS = 15
 
 
-def _secret_key() -> str:
-    key = os.getenv("PAYSTACK_SECRET_KEY")
+# A Paystack business takes payments in the currency of the country it's
+# registered in, so each country has its own business and secret key. Ghana's
+# may also use the original variable name. Nigeria has no fallback: sending
+# naira to a Ghanaian business would only fail at checkout.
+_KEY_VARIABLES = {
+    "GHS": ("PAYSTACK_SECRET_KEY_GHS", "PAYSTACK_SECRET_KEY"),
+    "NGN": ("PAYSTACK_SECRET_KEY_NGN",),
+}
+
+
+def secret_key_for(currency: str):
+    for variable in _KEY_VARIABLES.get(currency, ()):
+        key = os.getenv(variable)
+        if key:
+            return key
+    return None
+
+
+def all_secret_keys() -> list:
+    """Every configured key. A webhook is signed with one of them."""
+    keys = {secret_key_for(currency) for currency in _KEY_VARIABLES}
+    return sorted(key for key in keys if key)
+
+
+def is_configured(currency: str) -> bool:
+    return secret_key_for(currency) is not None
+
+
+def _headers(currency: str) -> dict:
+    key = secret_key_for(currency)
     if not key:
-        raise RuntimeError("PAYSTACK_SECRET_KEY is not set")
-    return key
-
-
-def _headers() -> dict:
-    return {"Authorization": f"Bearer {_secret_key()}", "Content-Type": "application/json"}
+        raise RuntimeError(f"No Paystack key is set for {currency}")
+    return {"Authorization": f"Bearer {key}", "Content-Type": "application/json"}
 
 
 def initialize(*, reference, amount_minor_units, currency, email, callback_url, metadata):
@@ -33,7 +57,7 @@ def initialize(*, reference, amount_minor_units, currency, email, callback_url, 
 
     response = requests.post(
         f"{PAYSTACK_BASE_URL}/transaction/initialize",
-        headers=_headers(),
+        headers=_headers(currency),
         json={
             "reference": reference,
             "amount": amount_minor_units,
@@ -56,11 +80,11 @@ def initialize(*, reference, amount_minor_units, currency, email, callback_url, 
     }
 
 
-def verify(*, reference, external_reference):
+def verify(*, reference, external_reference, currency="GHS"):
     lookup_reference = external_reference or reference
     response = requests.get(
         f"{PAYSTACK_BASE_URL}/transaction/verify/{lookup_reference}",
-        headers=_headers(),
+        headers=_headers(currency),
         timeout=_REQUEST_TIMEOUT_SECONDS,
     )
     body = response.json()

@@ -27,7 +27,7 @@ def test_every_question_is_well_formed():
         assert q["correct"] in q["options"], q["id"]
         assert q["explanation"].strip(), q["id"]
         assert q["difficulty"] in ("easy", "medium", "hard"), q["id"]
-        assert q["review_status"] in ("computed", "pending_review"), q["id"]
+        assert q["review_status"] in ("computed", "pending_review", "teacher_reviewed"), q["id"]
         assert q["sub_skill"], q["id"]
 
 

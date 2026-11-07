@@ -80,7 +80,7 @@ const MobileTabBar = ({ user, onLogout }) => {
             <div className="mobile-sheet__header">
               <div>
                 <div className="mobile-sheet__name">{user?.full_name || user?.name || t('student')}</div>
-                {user?.email && <div className="mobile-sheet__email">{user.email}</div>}
+                {(user?.email || user?.username) && <div className="mobile-sheet__email">{user.email || user.username}</div>}
               </div>
               <button type="button" className="mobile-sheet__close" aria-label="Close menu" onClick={closeMore}>
                 <X size={20} aria-hidden="true" />

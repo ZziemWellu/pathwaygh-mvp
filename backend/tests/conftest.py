@@ -6,6 +6,7 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 
 # Lets the SMS path log instead of needing a real provider (see sms_available).
 os.environ.setdefault("SMS_DEV_LOG", "1")
+os.environ.setdefault("SERVE_DRAFT_QUESTIONS", "1")
 
 import pytest
 from fastapi.testclient import TestClient

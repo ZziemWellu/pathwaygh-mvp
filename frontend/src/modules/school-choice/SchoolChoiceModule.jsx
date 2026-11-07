@@ -128,6 +128,8 @@ const SchoolChoiceModule = () => {
           <li>You can only choose each school once.</li>
         </ul>
         <p className="school-choice__note">{rules.category_a_note}</p>
+        <p className="school-choice__note"><strong>{rules.year_note}</strong></p>
+        <p className="school-choice__note">{rules.not_covered}</p>
       </section>
 
       <div className="school-choice__meters" aria-live="polite">

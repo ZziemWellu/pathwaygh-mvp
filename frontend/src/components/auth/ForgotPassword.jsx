@@ -20,7 +20,7 @@ const ForgotPassword = ({ onBackToLogin }) => {
     setLoading(true);
     setError('');
     try {
-      await api.post('/api/auth/forgot-password', { email });
+      await api.post('/api/auth/forgot-password', { identifier: email.trim() });
       setInfo(t('forgotPasswordCodeSent'));
       setStep('reset');
     } catch (err) {
@@ -43,7 +43,7 @@ const ForgotPassword = ({ onBackToLogin }) => {
     setLoading(true);
     setError('');
     try {
-      await api.post('/api/auth/reset-password', { email, token, new_password: newPassword });
+      await api.post('/api/auth/reset-password', { identifier: email.trim(), token, new_password: newPassword });
       setStep('done');
     } catch (err) {
       if (!err.response) {
@@ -77,15 +77,16 @@ const ForgotPassword = ({ onBackToLogin }) => {
       {step === 'request' ? (
         <form onSubmit={handleRequestCode}>
           <div style={{ marginBottom: '16px' }}>
-            <label htmlFor="forgot-email" style={{ display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>{t('email')}</label>
+            <label htmlFor="forgot-email" style={{ display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>{t('emailOrUsername')}</label>
             <input
               id="forgot-email"
-              type="email"
+              type="text"
+              autoCapitalize="none"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
               style={{ width: '100%', padding: '10px', border: '1px solid var(--border)', borderRadius: '8px' }}
-              placeholder={t('emailPlaceholder')}
+              placeholder={t('emailOrUsername')}
             />
           </div>
           <Button type="submit" disabled={loading} style={{ width: '100%' }}>

@@ -50,6 +50,7 @@ PROVIDERS = {
         "initialize": paystack.initialize,
         "verify": paystack.verify,
         "supported_currencies": paystack.SUPPORTED_CURRENCIES,
+        "is_configured": paystack.is_configured,
     },
     # supported_currencies here is provisional (what these providers would
     # plausibly support once wired up, not independently verified the way

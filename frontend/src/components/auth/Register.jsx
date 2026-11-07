@@ -5,6 +5,12 @@ import { useLanguage } from '../../contexts/LanguageContext';
 import { CircleCheckIcon } from 'lucide-react';
 import Button from '../../components/ui/Button';
 
+const CLASSES = {
+  primary: ['Primary 1', 'Primary 2', 'Primary 3', 'Primary 4', 'Primary 5', 'Primary 6'],
+  jhs: ['JHS 1', 'JHS 2', 'JHS 3'],
+  shs: ['SHS 1', 'SHS 2', 'SHS 3'],
+};
+
 const Register = ({ onSuccess, onShowPrivacy }) => {
   const { t } = useLanguage();
   const [formData, setFormData] = useState({
@@ -13,6 +19,8 @@ const Register = ({ onSuccess, onShowPrivacy }) => {
     password: '',
     confirm_password: '',
     level: '',
+    grade: '',
+    username: '',
     consent_confirmed: false,
     guardian_phone: '',
     guardian_email: ''
@@ -20,6 +28,10 @@ const Register = ({ onSuccess, onShowPrivacy }) => {
   // Whether a text can reach this country. null = not known yet (or the check
   // failed), in which case both fields show and the server has the last word.
   const [smsAvailable, setSmsAvailable] = useState(null);
+  // Primary pupils start with a username, since most have no email. Anyone can
+  // switch between the two. null follows that default until they choose.
+  const [loginChoice, setLoginChoice] = useState(null);
+  const usesUsername = loginChoice ? loginChoice === 'username' : formData.level === 'primary';
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
@@ -36,6 +48,8 @@ const Register = ({ onSuccess, onShowPrivacy }) => {
     const { name, type, checked, value } = e.target;
     setFormData({
       ...formData,
+      // A class from another level can't stay selected.
+      ...(name === 'level' ? { grade: '' } : {}),
       [name]: type === 'checkbox' ? checked : value
     });
   };
@@ -65,6 +79,11 @@ const Register = ({ onSuccess, onShowPrivacy }) => {
       return;
     }
 
+    if (!formData.grade) {
+      setError(t('classRequired'));
+      return;
+    }
+
     const guardianPhone = smsAvailable === false ? '' : formData.guardian_phone.trim();
     const guardianEmail = formData.guardian_email.trim();
     if (!guardianPhone && !guardianEmail) {
@@ -72,7 +91,7 @@ const Register = ({ onSuccess, onShowPrivacy }) => {
       return;
     }
 
-    if (guardianEmail.toLowerCase() === formData.email.trim().toLowerCase()) {
+    if (!usesUsername && guardianEmail && guardianEmail.toLowerCase() === formData.email.trim().toLowerCase()) {
       setError(t('guardianEmailMustDiffer'));
       return;
     }
@@ -89,11 +108,13 @@ const Register = ({ onSuccess, onShowPrivacy }) => {
 
     try {
       const payload = {
-        email: formData.email,
+        email: usesUsername ? null : formData.email,
+        username: usesUsername ? formData.username.trim() : null,
         full_name: formData.full_name,
         password: formData.password,
         country,
         level: formData.level,
+        grade: formData.grade,
         consent_confirmed: formData.consent_confirmed,
         guardian_phone: guardianPhone || null,
         guardian_email: guardianEmail || null
@@ -180,6 +201,79 @@ const Register = ({ onSuccess, onShowPrivacy }) => {
         </div>
 
         <div style={{ marginBottom: '16px' }}>
+          <label htmlFor="level" style={{ display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>{t('levelLabel')}</label>
+          <select
+            id="level"
+            name="level"
+            value={formData.level}
+            onChange={handleChange}
+            required
+            style={{
+              width: '100%',
+              padding: '10px',
+              border: '1px solid var(--border)',
+              borderRadius: '8px',
+              fontSize: '14px'
+            }}
+          >
+            <option value="">{t('levelPlaceholder')}</option>
+            <option value="primary">{t('levelPrimary')}</option>
+            <option value="jhs">{t('levelJhs')}</option>
+            <option value="shs">{t('levelShs')}</option>
+          </select>
+          <p style={{ margin: '4px 0 0', fontSize: '12px', color: 'var(--text-subtle)' }}>{t('levelHelp')}</p>
+        </div>
+
+        {formData.level && (
+          <div style={{ marginBottom: '16px' }}>
+            <label htmlFor="grade" style={{ display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>{t('classLabel')}</label>
+            <select
+              id="grade"
+              name="grade"
+              value={formData.grade}
+              onChange={handleChange}
+              required
+              style={{
+                width: '100%',
+                padding: '10px',
+                border: '1px solid var(--border)',
+                borderRadius: '8px',
+                fontSize: '14px'
+              }}
+            >
+              <option value="">{t('classPlaceholder')}</option>
+              {CLASSES[formData.level].map((grade) => <option key={grade} value={grade}>{grade}</option>)}
+            </select>
+          </div>
+        )}
+
+        {usesUsername ? (
+          <div style={{ marginBottom: '16px' }}>
+            <label htmlFor="register-username" style={{ display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>{t('usernameLabel')}</label>
+            <input
+              id="register-username"
+              type="text"
+              name="username"
+              autoComplete="username"
+              autoCapitalize="none"
+              value={formData.username}
+              onChange={handleChange}
+              required
+              minLength="3"
+              maxLength="30"
+              style={{
+                width: '100%',
+                padding: '10px',
+                border: '1px solid var(--border)',
+                borderRadius: '8px',
+                fontSize: '14px'
+              }}
+              placeholder={t('usernamePlaceholder')}
+            />
+            <p style={{ margin: '4px 0 0', fontSize: '12px', color: 'var(--text-subtle)' }}>{t('usernameHelp')}</p>
+          </div>
+        ) : (
+        <div style={{ marginBottom: '16px' }}>
           <label htmlFor="register-email" style={{ display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>{t('email')}</label>
           <input
             id="register-email"
@@ -198,6 +292,16 @@ const Register = ({ onSuccess, onShowPrivacy }) => {
             placeholder={t('emailPlaceholder')}
           />
         </div>
+        )}
+        <p style={{ margin: '-8px 0 16px', fontSize: '13px' }}>
+          <button
+            type="button"
+            onClick={() => setLoginChoice(usesUsername ? 'email' : 'username')}
+            style={{ background: 'none', border: 'none', color: 'var(--primary)', textDecoration: 'underline', cursor: 'pointer', padding: 0, font: 'inherit' }}
+          >
+            {t(usesUsername ? 'useEmailInstead' : 'useUsernameInstead')}
+          </button>
+        </p>
 
         <div style={{ marginBottom: '16px' }}>
           <label htmlFor="register-password" style={{ display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>{t('password')}</label>
@@ -238,30 +342,6 @@ const Register = ({ onSuccess, onShowPrivacy }) => {
             }}
             placeholder={t('confirmPasswordPlaceholder')}
           />
-        </div>
-
-        <div style={{ marginBottom: '16px' }}>
-          <label htmlFor="level" style={{ display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>{t('levelLabel')}</label>
-          <select
-            id="level"
-            name="level"
-            value={formData.level}
-            onChange={handleChange}
-            required
-            style={{
-              width: '100%',
-              padding: '10px',
-              border: '1px solid var(--border)',
-              borderRadius: '8px',
-              fontSize: '14px'
-            }}
-          >
-            <option value="">{t('levelPlaceholder')}</option>
-            <option value="primary">{t('levelPrimary')}</option>
-            <option value="jhs">{t('levelJhs')}</option>
-            <option value="shs">{t('levelShs')}</option>
-          </select>
-          <p style={{ margin: '4px 0 0', fontSize: '12px', color: 'var(--text-subtle)' }}>{t('levelHelp')}</p>
         </div>
 
         {smsAvailable !== false && (

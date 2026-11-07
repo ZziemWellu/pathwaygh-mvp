@@ -39,7 +39,7 @@ def generate_question(
     if client is None:
         raise HTTPException(status_code=503, detail="AI question generation is not configured (missing GEMINI_API_KEY)")
 
-    question = generate_math_question(client, body.topic, body.difficulty)
+    question = generate_math_question(client, body.topic, body.difficulty, level=current_user.level)
     if question is None:
         raise HTTPException(
             status_code=502,

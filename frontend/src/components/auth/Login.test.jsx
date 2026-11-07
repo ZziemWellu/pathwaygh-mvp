@@ -31,14 +31,14 @@ describe('Login', () => {
     });
 
     renderLogin(onSuccess);
-    await user.type(screen.getByLabelText(/email/i), 'a@test.com');
+    await user.type(screen.getByLabelText(/email or username/i), 'a@test.com');
     await user.type(screen.getByLabelText(/password/i), 'secret123');
     await user.click(screen.getByRole('button', { name: /login/i }));
 
     await waitFor(() => {
       expect(onSuccess).toHaveBeenCalledWith({ id: 1, email: 'a@test.com' }, 'tok_123');
     });
-    expect(api.post).toHaveBeenCalledWith('/api/auth/login', { email: 'a@test.com', password: 'secret123' });
+    expect(api.post).toHaveBeenCalledWith('/api/auth/login', { identifier: 'a@test.com', password: 'secret123' });
   });
 
   it('shows the wrong-credentials error inline instead of crashing', async () => {
@@ -46,7 +46,7 @@ describe('Login', () => {
     api.post.mockRejectedValueOnce({ response: { status: 401, data: { detail: 'Invalid credentials' } } });
 
     renderLogin();
-    await user.type(screen.getByLabelText(/email/i), 'a@test.com');
+    await user.type(screen.getByLabelText(/email or username/i), 'a@test.com');
     await user.type(screen.getByLabelText(/password/i), 'wrongpass');
     await user.click(screen.getByRole('button', { name: /login/i }));
 
@@ -64,7 +64,7 @@ describe('Login', () => {
     });
 
     renderLogin();
-    await user.type(screen.getByLabelText(/email/i), 'a@test.com');
+    await user.type(screen.getByLabelText(/email or username/i), 'a@test.com');
     await user.type(screen.getByLabelText(/password/i), 'secret123');
     await user.click(screen.getByRole('button', { name: /login/i }));
 
@@ -76,7 +76,7 @@ describe('Login', () => {
     api.post.mockRejectedValueOnce({ code: 'ECONNABORTED', message: 'timeout' }); // no `response` property
 
     renderLogin();
-    await user.type(screen.getByLabelText(/email/i), 'a@test.com');
+    await user.type(screen.getByLabelText(/email or username/i), 'a@test.com');
     await user.type(screen.getByLabelText(/password/i), 'secret123');
     await user.click(screen.getByRole('button', { name: /login/i }));
 

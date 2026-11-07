@@ -3,6 +3,7 @@ from models.certificate import Certificate
 from models.course import Course, Exercise, Lesson
 from models.enrollment import Enrollment
 from models.exercise_result import ExerciseResult
+from models.level_change import LevelChange
 from models.flashcard import Flashcard
 from models.gamification import EarnedAchievement, GamificationProfile
 from models.payment_transaction import PaymentTransaction

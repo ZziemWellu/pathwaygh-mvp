@@ -1,3 +1,4 @@
+import ChangePassword from './components/auth/ChangePassword';
 import React, { useState, useEffect, lazy, Suspense } from 'react';
 import { BrowserRouter, Routes, Route, Navigate, Link, useParams } from 'react-router-dom';
 import './App.css';
@@ -233,6 +234,17 @@ const App = () => {
           </button>
         </footer>
       </div>
+    );
+  }
+
+  // A school-issued password has to be replaced before anything else.
+  if (user?.must_change_password) {
+    return (
+      <ChangePassword
+        user={user}
+        onChanged={(updatedUser, token) => handleLogin(updatedUser, token)}
+        onLogout={handleLogout}
+      />
     );
   }
 

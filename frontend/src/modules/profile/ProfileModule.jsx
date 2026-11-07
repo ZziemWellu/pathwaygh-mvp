@@ -564,7 +564,7 @@ const ProfileModule = () => {
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
               <div>
                 <p><strong style={{ color: 'var(--text-muted)' }}>Name:</strong> {profile?.full_name || user?.full_name || 'Not set'}</p>
-                <p><strong style={{ color: 'var(--text-muted)' }}>Email:</strong> {profile?.email || user?.email || 'Not set'}</p>
+                <p><strong style={{ color: 'var(--text-muted)' }}>{profile?.email || user?.email ? 'Email' : 'Username'}:</strong> {profile?.email || user?.email || profile?.username || user?.username || 'Not set'}</p>
                 <p><strong style={{ color: 'var(--text-muted)' }}>Role:</strong> {profile?.role || 'Student'}</p>
                 <p><strong style={{ color: 'var(--text-muted)' }}>School:</strong> {profile?.school || 'Not specified'}</p>
               </div>

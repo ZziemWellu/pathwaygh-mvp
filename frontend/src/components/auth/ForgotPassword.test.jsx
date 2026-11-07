@@ -27,10 +27,10 @@ describe('ForgotPassword', () => {
     api.post.mockResolvedValueOnce({ data: { success: true } });
 
     renderForgotPassword();
-    await user.type(screen.getByLabelText(/email/i), 'student@test.com');
+    await user.type(screen.getByLabelText(/email or username/i), 'student@test.com');
     await user.click(screen.getByRole('button', { name: /send reset code/i }));
 
-    expect(api.post).toHaveBeenCalledWith('/api/auth/forgot-password', { email: 'student@test.com' });
+    expect(api.post).toHaveBeenCalledWith('/api/auth/forgot-password', { identifier: 'student@test.com' });
     expect(await screen.findByLabelText(/reset code/i)).toBeInTheDocument();
   });
 
@@ -40,7 +40,7 @@ describe('ForgotPassword', () => {
     api.post.mockResolvedValueOnce({ data: { success: true } }); // reset-password
 
     renderForgotPassword();
-    await user.type(screen.getByLabelText(/email/i), 'student@test.com');
+    await user.type(screen.getByLabelText(/email or username/i), 'student@test.com');
     await user.click(screen.getByRole('button', { name: /send reset code/i }));
 
     await screen.findByLabelText(/reset code/i);
@@ -50,7 +50,7 @@ describe('ForgotPassword', () => {
     await user.click(screen.getByRole('button', { name: /reset password/i }));
 
     expect(api.post).toHaveBeenLastCalledWith('/api/auth/reset-password', {
-      email: 'student@test.com',
+      identifier: 'student@test.com',
       token: 'abc123token',
       new_password: 'newpassword123',
     });
@@ -63,7 +63,7 @@ describe('ForgotPassword', () => {
     api.post.mockRejectedValueOnce({ response: { status: 400, data: { detail: 'Incorrect or invalid reset code' } } });
 
     renderForgotPassword();
-    await user.type(screen.getByLabelText(/email/i), 'student@test.com');
+    await user.type(screen.getByLabelText(/email or username/i), 'student@test.com');
     await user.click(screen.getByRole('button', { name: /send reset code/i }));
 
     await screen.findByLabelText(/reset code/i);

@@ -1,6 +1,6 @@
 from datetime import datetime, timezone
 
-from sqlalchemy import JSON, Boolean, Column, DateTime, ForeignKey, Index, Integer, String, Text, text
+from sqlalchemy import JSON, Boolean, Column, DateTime, ForeignKey, Index, Integer, String, Text, false, text
 from sqlalchemy.orm import relationship
 
 from core.database import Base
@@ -10,10 +10,18 @@ class User(Base):
     __tablename__ = "users"
     # Emails are stored lower-case; this stops "Ama@x.com" and "ama@x.com"
     # ever being two accounts, whatever case an older row was saved in.
-    __table_args__ = (Index("uq_users_email_lower", text("lower(email)"), unique=True),)
+    __table_args__ = (
+        Index("uq_users_email_lower", text("lower(email)"), unique=True),
+        Index("uq_users_username_lower", text("lower(username)"), unique=True),
+    )
 
     id = Column(Integer, primary_key=True)
-    email = Column(String(255), unique=True, nullable=False, index=True)
+    # A young pupil may have no email: they sign in with a username, and codes
+    # go to their parent's phone or email (see modules/auth/password_reset.py).
+    email = Column(String(255), unique=True, nullable=True, index=True)
+    username = Column(String(30), nullable=True)
+    # A school-issued temporary password has to be replaced at first sign-in.
+    must_change_password = Column(Boolean, nullable=False, default=False, server_default=false())
     full_name = Column(String(255), nullable=False)
     password_hash = Column(String(255), nullable=False)
 

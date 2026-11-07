@@ -16,12 +16,12 @@ const PrivacyPolicy = ({ onBack }) => {
         Back
       </Button>
 
-      <PageHeader as="h1" icon={ShieldCheck} title="Privacy Policy" subtitle="Version 2026-11-v1 · Last updated November 2026" />
+      <PageHeader as="h1" icon={ShieldCheck} title="Privacy Policy" subtitle="Version 2026-11-v2 · Last updated November 2026" />
 
       <section style={sectionStyle}>
         <h2 style={headingStyle}>What we collect</h2>
         <p style={bodyStyle}>
-          When you create a Learning Hotspot account we collect your name, email address, password
+          When you create a Learning Hotspot account we collect your name, email address or username, password
           (stored securely, never in plain text), country, and school level (primary, JHS or SHS). As you use the platform, we also
           store optional profile details you choose to add (school, grade, bio, phone, location,
           interests, goals, subjects), your course enrollments, lesson completion, and quiz
@@ -46,7 +46,8 @@ const PrivacyPolicy = ({ onBack }) => {
         <p style={bodyStyle}>
           <strong>Signing up through your school:</strong> your school administrator can confirm
           that parental or guardian consent was already collected as part of your school's own
-          enrollment process, so you don't need to repeat that step yourself.
+          enrollment process, so you don't need to repeat that step yourself. Your school can also
+          create your login for you, with a username and a first password you then change.
         </p>
         <p style={bodyStyle}>
           To be clear about what this does and doesn't mean: we do not independently verify age
@@ -65,10 +66,12 @@ const PrivacyPolicy = ({ onBack }) => {
           own school. They cannot see students at any other school.
         </p>
         <p style={bodyStyle}>
-          <strong>Platform administrators</strong> can only see aggregate, anonymized statistics
+          <strong>Platform administrators</strong> normally only see aggregate, anonymized statistics
           across all schools — counts and averages like "how many students completed a course"
           or "average quiz score for this school" — never individual names, emails, or personal
-          details.
+          details. The one exception is correcting a student&apos;s school level: an administrator
+          can open one account by its exact email or username to do this, and each change is
+          recorded with the reason.
         </p>
         <p style={bodyStyle}>
           <strong>Services that help us run the platform:</strong> Africa's Talking delivers our
