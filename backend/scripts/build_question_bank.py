@@ -465,9 +465,9 @@ def s_gradient():
 def s_mean_freq():
     scores = sorted(RNG.sample(range(1, 11), 3))
     freqs = [R(1, 8) for _ in scores]
-    total, n = sum(s * f for s, f in zip(scores, freqs)), sum(freqs)
+    total, n = sum(s * f for s, f in zip(scores, freqs, strict=True)), sum(freqs)
     answer = Fraction(total, n)
-    table = ", ".join(f"score {s} (frequency {f})" for s, f in zip(scores, freqs))
+    table = ", ".join(f"score {s} (frequency {f})" for s, f in zip(scores, freqs, strict=True))
     return q(f"Find the mean of: {table}. Give your answer as a fraction or whole number.", answer, [Fraction(sum(scores), 3) if Fraction(sum(scores), 3) != answer else answer + 1, answer + 1, Fraction(total, n + 1)], f"Sum of score x frequency = {total}. Total frequency = {n}. Mean = {total}/{n} = {frac(answer)}.", "hard", frac)
 
 
