@@ -5,7 +5,7 @@ Password hashing and JWT issuing/verification.
 import os
 from datetime import datetime, timedelta, timezone
 
-from fastapi import Depends, HTTPException, status
+from fastapi import Depends, HTTPException, Request, status
 from fastapi.security import OAuth2PasswordBearer
 import jwt
 from passlib.context import CryptContext
@@ -85,8 +85,12 @@ def _user_for_token(token: str, db: Session):
     return user
 
 
+# All a school-issued temporary password can do is sign in and be replaced.
+TEMPORARY_PASSWORD_PATHS = {"/api/auth/me", "/api/auth/change-password"}
+
+
 def get_current_user(
-    token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)
+    request: Request, token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)
 ) -> User:
     if not token:
         raise HTTPException(
@@ -94,7 +98,10 @@ def get_current_user(
             detail="Not authenticated",
             headers={"WWW-Authenticate": "Bearer"},
         )
-    return _user_for_token(token, db)
+    user = _user_for_token(token, db)
+    if user.must_change_password and request.url.path not in TEMPORARY_PASSWORD_PATHS:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Please choose your own password first")
+    return user
 
 
 def get_current_user_optional(
@@ -104,9 +111,10 @@ def get_current_user_optional(
     if not token:
         return None
     try:
-        return _user_for_token(token, db)
+        user = _user_for_token(token, db)
     except HTTPException:
         return None
+    return None if user.must_change_password else user
 
 
 def require_admin(user: User = Depends(get_current_user)) -> User:

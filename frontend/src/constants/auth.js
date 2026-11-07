@@ -61,6 +61,13 @@ export const login = (userData, token, refreshToken) => {
 
 export const logout = () => {
   clearSession();
+  // Older app versions stored API responses here. A phone that hasn't picked up
+  // the new service worker yet shouldn't keep them for the next person.
+  if (typeof window !== 'undefined' && window.caches) {
+    window.caches.keys()
+      .then((names) => Promise.all(names.filter((name) => name.includes('dynamic')).map((name) => window.caches.delete(name))))
+      .catch(() => {});
+  }
   return true;
 };
 

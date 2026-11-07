@@ -76,7 +76,7 @@ const AdminCourseEditor = () => {
 
   return (
     <div style={{ maxWidth: '800px', margin: '0 auto', padding: '20px' }}>
-      <Link to="/admin" style={{ color: 'var(--primary)', fontSize: '15px' }}>← All courses</Link>
+      <Link to="/admin" style={{ color: 'var(--primary)', fontSize: '0.9375rem' }}>← All courses</Link>
 
       <div className="card" style={{ padding: '18px', margin: '16px 0', display: 'flex', flexDirection: 'column', gap: '10px' }}>
         <label htmlFor="course-title" style={labelStyle}>Title</label>
@@ -133,7 +133,7 @@ const AdminCourseEditor = () => {
         >
           <div style={{ flex: 1 }}>
             <div style={{ fontWeight: 'bold' }}>{lesson.title}</div>
-            <div style={{ fontSize: '14px', color: 'var(--gray-500)' }}>{lesson.lesson_type} · {lesson.exercise_count} exercises</div>
+            <div style={{ fontSize: '0.875rem', color: 'var(--gray-500)' }}>{lesson.lesson_type} · {lesson.exercise_count} exercises</div>
           </div>
           <button onClick={(e) => { e.stopPropagation(); handleDeleteLesson(lesson); }} style={{ background: 'none', border: 'none', color: 'var(--danger)', cursor: 'pointer', padding: '6px' }}>
             <Trash2 size={16} />
@@ -145,7 +145,7 @@ const AdminCourseEditor = () => {
   );
 };
 
-const inputStyle = { padding: '10px 12px', border: '1px solid var(--border)', borderRadius: '8px', fontSize: '15px', fontFamily: 'inherit' };
-const labelStyle = { fontSize: '14px', fontWeight: 'bold', color: 'var(--text-muted)' };
+const inputStyle = { padding: '10px 12px', border: '1px solid var(--border)', borderRadius: '8px', fontSize: '0.9375rem', fontFamily: 'inherit' };
+const labelStyle = { fontSize: '0.875rem', fontWeight: 'bold', color: 'var(--text-muted)' };
 
 export default AdminCourseEditor;

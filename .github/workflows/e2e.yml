@@ -1,0 +1,61 @@
+name: End-to-end tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  e2e:
+    name: e2e
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      # A throwaway database, with no real SMS, email, AI or payments.
+      DATABASE_URL: sqlite:///./e2e.db
+      SECRET_KEY: e2e-only-secret-key-with-enough-length-for-hs256
+      SMS_DEV_LOG: "1"
+      FRONTEND_URL: http://localhost:4173
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '22'
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Start the backend
+        working-directory: backend
+        run: |
+          pip install -q -r requirements.txt
+          python scripts/e2e_seed.py
+          nohup python -m uvicorn main:app --port 8765 > ../backend-e2e.log 2>&1 &
+          for i in $(seq 30); do curl -sf http://localhost:8765/livez && break; sleep 2; done
+
+      - name: Build and serve the frontend
+        working-directory: frontend
+        env:
+          VITE_API_URL: http://localhost:8765
+        run: |
+          npm ci
+          npm run build
+          nohup npx vite preview --port 4173 --strictPort > ../frontend-e2e.log 2>&1 &
+          for i in $(seq 30); do curl -sf http://localhost:4173 > /dev/null && break; sleep 1; done
+
+      - name: Run the browser checks
+        working-directory: frontend
+        run: |
+          npm install --no-save playwright@1.49.1
+          npx playwright install --with-deps chromium
+          node e2e/smoke.mjs
+
+      - name: Backend log on failure
+        if: failure()
+        run: tail -60 backend-e2e.log

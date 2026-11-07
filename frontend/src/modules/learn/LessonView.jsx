@@ -67,7 +67,7 @@ const LessonView = () => {
 
   return (
     <div style={{ maxWidth: '800px', margin: '0 auto', padding: '20px' }}>
-      <Link to={`/learn/${courseId}`} style={{ color: 'var(--primary)', fontSize: '15px' }}>{t('learnBackToCourse')}</Link>
+      <Link to={`/learn/${courseId}`} style={{ color: 'var(--primary)', fontSize: '0.9375rem' }}>{t('learnBackToCourse')}</Link>
 
       <h2 style={{ color: 'var(--primary)', margin: '12px 0 16px 0' }}>{lesson.title}</h2>
 

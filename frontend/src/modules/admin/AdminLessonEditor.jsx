@@ -56,7 +56,7 @@ const AdminLessonEditor = () => {
 
   return (
     <div style={{ maxWidth: '1000px', margin: '0 auto', padding: '20px' }}>
-      <Link to={`/admin/courses/${lesson.course_id}`} style={{ color: 'var(--primary)', fontSize: '15px' }}>← Back to course</Link>
+      <Link to={`/admin/courses/${lesson.course_id}`} style={{ color: 'var(--primary)', fontSize: '0.9375rem' }}>← Back to course</Link>
 
       <div className="card" style={{ padding: '18px', margin: '16px 0', display: 'flex', flexDirection: 'column', gap: '10px' }}>
         <label style={labelStyle}>Title</label>
@@ -79,7 +79,7 @@ const AdminLessonEditor = () => {
             <input type="number" value={lesson.duration_minutes || ''} onChange={(e) => setLesson({ ...lesson, duration_minutes: e.target.value ? Number(e.target.value) : null })} style={inputStyle} />
           </div>
           <div style={{ display: 'flex', alignItems: 'flex-end', paddingBottom: '10px' }}>
-            <label style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '15px' }}>
+            <label style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.9375rem' }}>
               <input type="checkbox" checked={lesson.is_free_preview} onChange={(e) => setLesson({ ...lesson, is_free_preview: e.target.checked })} />
               Free preview
             </label>
@@ -105,7 +105,7 @@ const AdminLessonEditor = () => {
               <textarea
                 value={lesson.content || ''}
                 onChange={(e) => setLesson({ ...lesson, content: e.target.value })}
-                style={{ ...inputStyle, minHeight: '300px', fontFamily: 'monospace', fontSize: '15px' }}
+                style={{ ...inputStyle, minHeight: '300px', fontFamily: 'monospace', fontSize: '0.9375rem' }}
                 placeholder="## Heading\n\nWrite lesson content in Markdown..."
               />
               <div style={{ border: '1px solid var(--border)', borderRadius: '8px', padding: '12px', overflowY: 'auto', maxHeight: '300px', background: 'var(--surface-muted)' }}>
@@ -127,7 +127,7 @@ const AdminLessonEditor = () => {
   );
 };
 
-const inputStyle = { padding: '10px 12px', border: '1px solid var(--border)', borderRadius: '8px', fontSize: '15px', fontFamily: 'inherit', width: '100%' };
-const labelStyle = { fontSize: '14px', fontWeight: 'bold', color: 'var(--text-muted)' };
+const inputStyle = { padding: '10px 12px', border: '1px solid var(--border)', borderRadius: '8px', fontSize: '0.9375rem', fontFamily: 'inherit', width: '100%' };
+const labelStyle = { fontSize: '0.875rem', fontWeight: 'bold', color: 'var(--text-muted)' };
 
 export default AdminLessonEditor;

@@ -182,6 +182,21 @@ def test_school_issues_logins_that_work_and_must_be_changed(client, school_admin
     assert client.get("/api/auth/me", headers=auth(changed.json()["token"])).status_code == 200
 
 
+def test_temporary_password_only_allows_changing_it(client, school_admin):
+    issued = issue(client, school_admin, {"full_name": "Ama Mensah", "grade": "JHS 1"}).json()["students"][0]
+    token = client.post("/api/auth/login", json={"identifier": issued["username"], "password": issued["temporary_password"]}).json()["token"]
+    headers = auth(token)
+
+    assert client.get("/api/auth/me", headers=headers).status_code == 200
+    for path in ("/api/profile/me", "/api/dashboard/summary", "/api/learn/enrolled"):
+        response = client.get(path, headers=headers)
+        assert response.status_code == 403, path
+        assert "own password" in response.json()["detail"]
+
+    changed = client.post("/api/auth/change-password", json={"current_password": issued["temporary_password"], "new_password": "mynewpass1"}, headers=headers)
+    assert client.get("/api/profile/me", headers=auth(changed.json()["token"])).status_code == 200
+
+
 def test_issued_usernames_never_collide_and_skip_the_surname(client, school_admin):
     response = issue(
         client,
@@ -287,7 +302,8 @@ def test_student_with_corrected_level_can_save_profile_again(client, school_admi
     student = db_session.query(User).filter(User.username == issued["username"]).first()
     client.patch(f"/api/school/students/{student.id}/level", json={"level": "jhs", "reason": "mistake"}, headers=school_admin)
     token = client.post("/api/auth/login", json={"identifier": issued["username"], "password": issued["temporary_password"]}).json()["token"]
-    assert client.put("/api/profile/me", json={"bio": "hello"}, headers=auth(token)).status_code == 200
+    changed = client.post("/api/auth/change-password", json={"current_password": issued["temporary_password"], "new_password": "mynewpass1"}, headers=auth(token))
+    assert client.put("/api/profile/me", json={"bio": "hello"}, headers=auth(changed.json()["token"])).status_code == 200
 
 
 def make_platform_admin(client, db_session):

@@ -198,7 +198,7 @@ const CareerMatchPage = () => {
         </div>
         <div style={{ width: '60px', height: '60px', border: '4px solid var(--surface-sunken)', borderTopColor: 'var(--primary)', borderRadius: '50%', animation: 'spin 0.8s linear infinite', margin: '0 auto 20px' }} />
         <p style={{ color: 'var(--gray-500)' }}>Analyzing your preferences...</p>
-        <p style={{ color: 'var(--gray-500)', fontSize: '15px' }}>Finding the best career matches for you</p>
+        <p style={{ color: 'var(--gray-500)', fontSize: '0.9375rem' }}>Finding the best career matches for you</p>
       </div>
     );
   }
@@ -235,17 +235,17 @@ const CareerMatchPage = () => {
                 onClick={() => navigate('/explore/careers')}
               >
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <span style={{ fontWeight: 'bold', fontSize: '16px', color: 'var(--primary)' }}>
+                  <span style={{ fontWeight: 'bold', fontSize: '1rem', color: 'var(--primary)' }}>
                     {i === 0 && <Trophy size="1em" color="var(--accent-strong)" aria-label="Top match" style={{ marginRight: '6px' }} />}{career.title}
                   </span>
-                  <span style={{ fontSize: '24px', fontWeight: 'bold', color: 'var(--primary)' }}>
+                  <span style={{ fontSize: '1.5rem', fontWeight: 'bold', color: 'var(--primary)' }}>
                     {career.match}%
                   </span>
                 </div>
                 <div style={{ height: '6px', background: 'var(--surface-sunken)', borderRadius: '3px', marginTop: '8px' }}>
                   <div style={{ width: `${career.match}%`, height: '100%', background: 'var(--primary)', borderRadius: '3px' }} />
                 </div>
-                <div style={{ fontSize: '14px', color: 'var(--gray-500)', marginTop: '8px' }}>
+                <div style={{ fontSize: '0.875rem', color: 'var(--gray-500)', marginTop: '8px' }}>
                   Recommended: {career.university}
                 </div>
               </div>
@@ -293,13 +293,13 @@ const CareerMatchPage = () => {
                   alignItems: 'center',
                   justifyContent: 'center',
                   fontWeight: 'bold',
-                  fontSize: '15px'
+                  fontSize: '0.9375rem'
                 }}>
                   {i + 1}
                 </span>
                 <div>
-                  <div style={{ fontWeight: 'bold', fontSize: '15px' }}>{path.title}</div>
-                  <div style={{ fontSize: '15px', color: 'var(--text-muted)' }}>{path.description}</div>
+                  <div style={{ fontWeight: 'bold', fontSize: '0.9375rem' }}>{path.title}</div>
+                  <div style={{ fontSize: '0.9375rem', color: 'var(--text-muted)' }}>{path.description}</div>
                 </div>
               </div>
             ))}
@@ -333,23 +333,23 @@ const CareerMatchPage = () => {
         <PageHeader
           icon={Target}
           title="Career Match"
-          actions={<span style={{ fontSize: '15px', color: 'var(--text-subtle)' }}>Question {step} of {questions.length}</span>}
+          actions={<span style={{ fontSize: '0.9375rem', color: 'var(--text-subtle)' }}>Question {step} of {questions.length}</span>}
         />
         <div style={{ height: '4px', background: 'var(--surface-sunken)', borderRadius: '2px' }}>
           <div style={{ width: `${getProgress()}%`, height: '100%', background: 'var(--primary)', borderRadius: '2px', transition: 'width 0.3s ease' }} />
         </div>
-        <div style={{ textAlign: 'right', fontSize: '14px', color: 'var(--gray-500)', marginTop: '4px' }}>
+        <div style={{ textAlign: 'right', fontSize: '0.875rem', color: 'var(--gray-500)', marginTop: '4px' }}>
           {getProgress()}% complete
         </div>
       </div>
 
       <div className="card" style={{ padding: '30px' }}>
-        <h3 style={{ margin: '0 0 8px 0', fontSize: '20px' }}>{currentQuestion.question}</h3>
+        <h3 style={{ margin: '0 0 8px 0', fontSize: '1.25rem' }}>{currentQuestion.question}</h3>
         {currentQuestion.description && (
-          <p style={{ color: 'var(--gray-500)', fontSize: '15px', marginBottom: '16px' }}>{currentQuestion.description}</p>
+          <p style={{ color: 'var(--gray-500)', fontSize: '0.9375rem', marginBottom: '16px' }}>{currentQuestion.description}</p>
         )}
         {isMulti && currentQuestion.maxSelect && (
-          <p style={{ color: 'var(--gray-500)', fontSize: '14px', marginBottom: '16px' }}>
+          <p style={{ color: 'var(--gray-500)', fontSize: '0.875rem', marginBottom: '16px' }}>
             Select up to {currentQuestion.maxSelect} options ({currentAnswer.length} selected)
           </p>
         )}
@@ -374,7 +374,7 @@ const CareerMatchPage = () => {
                   borderRadius: '8px',
                   cursor: 'pointer',
                   textAlign: 'left',
-                  fontSize: '15px',
+                  fontSize: '0.9375rem',
                   transition: 'all 0.2s ease',
                   fontWeight: isSelected ? 'bold' : 'normal',
                   color: isSelected ? 'var(--primary)' : 'var(--text)'

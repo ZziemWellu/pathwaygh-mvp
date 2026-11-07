@@ -41,9 +41,9 @@ const ExerciseSection = ({ lessonId, exercises, bestScore }) => {
   return (
     <div className="card" style={{ marginTop: '32px', padding: '24px' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '18px', flexWrap: 'wrap', gap: '8px' }}>
-        <h3 style={{ margin: 0, fontSize: '17px' }}>{t('learnPracticeExercises')}</h3>
+        <h3 style={{ margin: 0, fontSize: '1.0625rem' }}>{t('learnPracticeExercises')}</h3>
         {bestScore !== null && bestScore !== undefined && !result && (
-          <span style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontSize: '15px', color: 'var(--primary)', fontWeight: 'bold' }}>
+          <span style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontSize: '0.9375rem', color: 'var(--primary)', fontWeight: 'bold' }}>
             <Award size={15} /> {t('learnBestScore').replace('{pct}', bestScore)}
           </span>
         )}
@@ -60,8 +60,8 @@ const ExerciseSection = ({ lessonId, exercises, bestScore }) => {
             textAlign: 'center',
           }}
         >
-          <div style={{ fontSize: '26px', fontWeight: 'bold', color: result.score >= 70 ? 'var(--primary)' : 'var(--warning)' }}>{result.score}%</div>
-          <div style={{ fontSize: '15px', color: 'var(--text-muted)' }}>
+          <div style={{ fontSize: '1.625rem', fontWeight: 'bold', color: result.score >= 70 ? 'var(--primary)' : 'var(--warning)' }}>{result.score}%</div>
+          <div style={{ fontSize: '0.9375rem', color: 'var(--text-muted)' }}>
             {t('learnCorrectCount').replace('{correct}', result.correct_count).replace('{total}', result.total_questions)}
           </div>
         </div>
@@ -104,7 +104,7 @@ const ExerciseSection = ({ lessonId, exercises, bestScore }) => {
                       border: `2px solid ${border}`,
                       background: bg,
                       cursor: result ? 'default' : 'pointer',
-                      fontSize: '15px',
+                      fontSize: '0.9375rem',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'space-between',
@@ -118,7 +118,7 @@ const ExerciseSection = ({ lessonId, exercises, bestScore }) => {
               })}
             </div>
             {graded?.explanation && (
-              <div style={{ marginTop: '8px', fontSize: '15px', color: 'var(--text-muted)', background: 'var(--surface-muted)', padding: '10px 12px', borderRadius: '8px' }}>
+              <div style={{ marginTop: '8px', fontSize: '0.9375rem', color: 'var(--text-muted)', background: 'var(--surface-muted)', padding: '10px 12px', borderRadius: '8px' }}>
                 {graded.explanation}
               </div>
             )}
@@ -126,7 +126,7 @@ const ExerciseSection = ({ lessonId, exercises, bestScore }) => {
         );
       })}
 
-      {error && <p style={{ color: 'var(--danger)', fontSize: '15px' }}>{error}</p>}
+      {error && <p style={{ color: 'var(--danger)', fontSize: '0.9375rem' }}>{error}</p>}
 
       {result ? (
         <Button variant="secondary" onClick={handleRetry}>

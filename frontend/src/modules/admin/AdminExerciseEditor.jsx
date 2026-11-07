@@ -56,7 +56,7 @@ const ExerciseForm = ({ initial, onSave, onCancel }) => {
           )}
         </div>
       ))}
-      <button type="button" onClick={addOption} style={{ alignSelf: 'flex-start', display: 'inline-flex', alignItems: 'center', gap: '4px', background: 'none', border: 'none', color: 'var(--primary)', cursor: 'pointer', fontSize: '15px', padding: '4px 0' }}>
+      <button type="button" onClick={addOption} style={{ alignSelf: 'flex-start', display: 'inline-flex', alignItems: 'center', gap: '4px', background: 'none', border: 'none', color: 'var(--primary)', cursor: 'pointer', fontSize: '0.9375rem', padding: '4px 0' }}>
         <Plus size={14} /> Add option
       </button>
       <textarea placeholder="Explanation (shown after grading)" value={form.explanation || ''} onChange={(e) => setForm({ ...form, explanation: e.target.value })} style={{ ...inputStyle, minHeight: '50px' }} />
@@ -127,7 +127,7 @@ const AdminExerciseEditor = ({ lessonId, exercises, onChange }) => {
             </div>
             <div style={{ flex: 1 }} onClick={() => setEditingId(exercise.id)}>
               <div style={{ fontWeight: 600, cursor: 'pointer' }}>{i + 1}. {exercise.question}</div>
-              <div style={{ fontSize: '14px', color: 'var(--gray-500)' }}>Correct: {exercise.options[exercise.correct_index]}</div>
+              <div style={{ fontSize: '0.875rem', color: 'var(--gray-500)' }}>Correct: {exercise.options[exercise.correct_index]}</div>
             </div>
             <button onClick={() => handleDelete(exercise)} style={{ background: 'none', border: 'none', color: 'var(--danger)', cursor: 'pointer' }}><Trash2 size={16} /></button>
           </div>
@@ -137,7 +137,7 @@ const AdminExerciseEditor = ({ lessonId, exercises, onChange }) => {
   );
 };
 
-const inputStyle = { padding: '9px 11px', border: '1px solid var(--border)', borderRadius: '8px', fontSize: '15px', fontFamily: 'inherit' };
-const labelStyle = { fontSize: '14px', fontWeight: 'bold', color: 'var(--text-muted)' };
+const inputStyle = { padding: '9px 11px', border: '1px solid var(--border)', borderRadius: '8px', fontSize: '0.9375rem', fontFamily: 'inherit' };
+const labelStyle = { fontSize: '0.875rem', fontWeight: 'bold', color: 'var(--text-muted)' };
 
 export default AdminExerciseEditor;

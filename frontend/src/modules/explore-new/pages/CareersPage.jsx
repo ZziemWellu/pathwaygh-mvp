@@ -74,15 +74,15 @@ const CareersPage = ({ user }) => {
             }} style={{ padding: '20px' }}>
             <h3 style={{ color: 'var(--primary)', margin: '0 0 8px 0' }}>{career.title}</h3>
             {career.category && (
-              <span style={{ background: 'var(--primary-bg)', padding: '2px 10px', borderRadius: '12px', fontSize: '14px', display: 'inline-block' }}>
+              <span style={{ background: 'var(--primary-bg)', padding: '2px 10px', borderRadius: '12px', fontSize: '0.875rem', display: 'inline-block' }}>
                 {career.category}
               </span>
             )}
-            <p style={{ color: 'var(--text-muted)', fontSize: '15px', margin: '12px 0' }}>{career.description}</p>
+            <p style={{ color: 'var(--text-muted)', fontSize: '0.9375rem', margin: '12px 0' }}>{career.description}</p>
             {career.salary_range && (
-              <div style={{ fontSize: '15px', color: 'var(--text-muted)' }}><CoinsIcon className="icon-inline" size="1em" aria-hidden="true" /> {career.salary_range}</div>
+              <div style={{ fontSize: '0.9375rem', color: 'var(--text-muted)' }}><CoinsIcon className="icon-inline" size="1em" aria-hidden="true" /> {career.salary_range}</div>
             )}
-            <div style={{ fontSize: '14px', color: 'var(--gray-500)', marginTop: '12px' }}>Click for full details →</div>
+            <div style={{ fontSize: '0.875rem', color: 'var(--gray-500)', marginTop: '12px' }}>Click for full details →</div>
           </div>
         ))}
       </div>
@@ -124,14 +124,14 @@ const CareersPage = ({ user }) => {
           >
             <button
               aria-label="Close"
-              style={{ float: 'right', background: 'none', border: 'none', fontSize: '24px', cursor: 'pointer', color: 'var(--gray-500)' }}
+              style={{ float: 'right', background: 'none', border: 'none', fontSize: '1.5rem', cursor: 'pointer', color: 'var(--gray-500)' }}
               onClick={() => setSelectedCareer(null)}
             >
               ✕
             </button>
             <h2 id="career-modal-title" style={{ color: 'var(--primary)' }}>{selectedCareer.title}</h2>
             {selectedCareer.category && (
-              <span style={{ background: 'var(--primary-bg)', padding: '2px 10px', borderRadius: '12px', fontSize: '14px', display: 'inline-block' }}>
+              <span style={{ background: 'var(--primary-bg)', padding: '2px 10px', borderRadius: '12px', fontSize: '0.875rem', display: 'inline-block' }}>
                 {selectedCareer.category}
               </span>
             )}
@@ -144,7 +144,7 @@ const CareersPage = ({ user }) => {
                 <strong><BookOpenIcon className="icon-inline" size="1em" aria-hidden="true" /> Required Subjects:</strong>
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginTop: '4px' }}>
                   {selectedCareer.required_subjects.map((subject, i) => (
-                    <span key={i} style={{ background: 'var(--surface-sunken)', padding: '4px 10px', borderRadius: '12px', fontSize: '14px' }}>
+                    <span key={i} style={{ background: 'var(--surface-sunken)', padding: '4px 10px', borderRadius: '12px', fontSize: '0.875rem' }}>
                       {subject}
                     </span>
                   ))}

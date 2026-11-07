@@ -14,10 +14,10 @@ const CommunityModule = () => {
     <div style={{ maxWidth: '900px', margin: '0 auto', padding: '20px' }}>
       <PageHeader icon={Handshake} title="Community" subtitle="Connect, learn, and grow with the Learning Hotspot community." />
 
-      <h3 style={{ color: 'var(--primary)', fontSize: '16px', margin: '0 0 12px 0' }}><MessagesSquareIcon className="icon-inline" size="1em" aria-hidden="true" /> Discussion Forums</h3>
+      <h3 style={{ color: 'var(--primary)', fontSize: '1rem', margin: '0 0 12px 0' }}><MessagesSquareIcon className="icon-inline" size="1em" aria-hidden="true" /> Discussion Forums</h3>
       <PeerQA />
 
-      <h3 style={{ color: 'var(--primary)', fontSize: '16px', margin: '32px 0 12px 0' }}>Coming soon</h3>
+      <h3 style={{ color: 'var(--primary)', fontSize: '1rem', margin: '32px 0 12px 0' }}>Coming soon</h3>
       <div style={{
         display: 'grid',
         gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
@@ -28,8 +28,8 @@ const CommunityModule = () => {
             <div style={{ width: '48px', height: '48px', borderRadius: '12px', background: feature.tint, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', marginBottom: '8px' }}>
               <feature.icon size={24} color={feature.color} strokeWidth={1.75} aria-hidden="true" />
             </div>
-            <h4 style={{ color: feature.color, margin: '0 0 6px 0', fontSize: '15px' }}>{feature.title}</h4>
-            <p style={{ color: 'var(--text-muted)', fontSize: '14px', margin: 0 }}>{feature.description}</p>
+            <h4 style={{ color: feature.color, margin: '0 0 6px 0', fontSize: '0.9375rem' }}>{feature.title}</h4>
+            <p style={{ color: 'var(--text-muted)', fontSize: '0.875rem', margin: 0 }}>{feature.description}</p>
           </div>
         ))}
       </div>

@@ -73,23 +73,23 @@ const UniversitiesPage = ({ user }) => {
               }
             }} style={{ padding: '20px' }}>
             <h3 style={{ color: 'var(--primary)', margin: '0 0 8px 0' }}>{uni.name}</h3>
-            {uni.location && <div style={{ fontSize: '15px', color: 'var(--text-muted)' }}><MapPinIcon className="icon-inline" size="1em" aria-hidden="true" /> {uni.location}</div>}
-            {uni.cutoff && <div style={{ fontSize: '15px', color: 'var(--text-muted)' }}>Cutoff: {uni.cutoff}</div>}
+            {uni.location && <div style={{ fontSize: '0.9375rem', color: 'var(--text-muted)' }}><MapPinIcon className="icon-inline" size="1em" aria-hidden="true" /> {uni.location}</div>}
+            {uni.cutoff && <div style={{ fontSize: '0.9375rem', color: 'var(--text-muted)' }}>Cutoff: {uni.cutoff}</div>}
             {uni.programs && (
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px', marginTop: '8px' }}>
                 {uni.programs.slice(0, 3).map((program, i) => (
-                  <span key={i} style={{ background: 'var(--surface-sunken)', padding: '2px 8px', borderRadius: '4px', fontSize: '13px' }}>
+                  <span key={i} style={{ background: 'var(--surface-sunken)', padding: '2px 8px', borderRadius: '4px', fontSize: '0.8125rem' }}>
                     {program}
                   </span>
                 ))}
                 {uni.programs.length > 3 && (
-                  <span style={{ background: 'var(--surface-sunken)', padding: '2px 8px', borderRadius: '4px', fontSize: '13px' }}>
+                  <span style={{ background: 'var(--surface-sunken)', padding: '2px 8px', borderRadius: '4px', fontSize: '0.8125rem' }}>
                     +{uni.programs.length - 3} more
                   </span>
                 )}
               </div>
             )}
-            <div style={{ fontSize: '14px', color: 'var(--gray-500)', marginTop: '12px' }}>Click for full details →</div>
+            <div style={{ fontSize: '0.875rem', color: 'var(--gray-500)', marginTop: '12px' }}>Click for full details →</div>
           </div>
         ))}
       </div>
@@ -131,22 +131,22 @@ const UniversitiesPage = ({ user }) => {
           >
             <button
               aria-label="Close"
-              style={{ float: 'right', background: 'none', border: 'none', fontSize: '24px', cursor: 'pointer', color: 'var(--gray-500)' }}
+              style={{ float: 'right', background: 'none', border: 'none', fontSize: '1.5rem', cursor: 'pointer', color: 'var(--gray-500)' }}
               onClick={() => setSelectedUniversity(null)}
             >
               ✕
             </button>
             <h2 id="university-modal-title" style={{ color: 'var(--primary)' }}>{selectedUniversity.name}</h2>
-            {selectedUniversity.location && <div style={{ fontSize: '15px', color: 'var(--text-muted)' }}><MapPinIcon className="icon-inline" size="1em" aria-hidden="true" /> {selectedUniversity.location}</div>}
-            {selectedUniversity.cutoff && <div style={{ fontSize: '15px', color: 'var(--text-muted)' }}><ChartColumnIcon className="icon-inline" size="1em" aria-hidden="true" /> Cutoff: {selectedUniversity.cutoff}</div>}
-            {selectedUniversity.ranking && <div style={{ fontSize: '15px', color: 'var(--text-muted)' }}><TrophyIcon className="icon-inline" size="1em" aria-hidden="true" /> Ranking: {selectedUniversity.ranking}</div>}
+            {selectedUniversity.location && <div style={{ fontSize: '0.9375rem', color: 'var(--text-muted)' }}><MapPinIcon className="icon-inline" size="1em" aria-hidden="true" /> {selectedUniversity.location}</div>}
+            {selectedUniversity.cutoff && <div style={{ fontSize: '0.9375rem', color: 'var(--text-muted)' }}><ChartColumnIcon className="icon-inline" size="1em" aria-hidden="true" /> Cutoff: {selectedUniversity.cutoff}</div>}
+            {selectedUniversity.ranking && <div style={{ fontSize: '0.9375rem', color: 'var(--text-muted)' }}><TrophyIcon className="icon-inline" size="1em" aria-hidden="true" /> Ranking: {selectedUniversity.ranking}</div>}
             {selectedUniversity.about && <p style={{ color: 'var(--text-muted)', margin: '16px 0' }}>{selectedUniversity.about}</p>}
             {selectedUniversity.programs && (
               <div style={{ margin: '8px 0' }}>
                 <strong><BookOpenIcon className="icon-inline" size="1em" aria-hidden="true" /> Programs Offered:</strong>
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginTop: '4px' }}>
                   {selectedUniversity.programs.map((program, i) => (
-                    <span key={i} style={{ background: 'var(--surface-sunken)', padding: '4px 10px', borderRadius: '12px', fontSize: '14px' }}>
+                    <span key={i} style={{ background: 'var(--surface-sunken)', padding: '4px 10px', borderRadius: '12px', fontSize: '0.875rem' }}>
                       {program}
                     </span>
                   ))}

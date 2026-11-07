@@ -21,7 +21,7 @@
 .dash-greeting p {
   margin: 4px 0 0;
   color: var(--text-muted);
-  font-size: 15px;
+  font-size: 0.9375rem;
 }
 
 /* ---------- Next step (one clear action) ---------- */
@@ -47,7 +47,7 @@
 
 .dash-next-eyebrow {
   margin: 0;
-  font-size: 14px;
+  font-size: 0.875rem;
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -65,7 +65,7 @@
 
 .dash-next-meta {
   margin: 0;
-  font-size: 15px;
+  font-size: 0.9375rem;
   color: var(--primary-bg);
 }
 
@@ -81,7 +81,7 @@
   background: var(--accent);
   color: var(--gray-900);
   font-weight: 700;
-  font-size: 15px;
+  font-size: 0.9375rem;
   cursor: pointer;
 }
 
@@ -98,7 +98,7 @@
 
 .dash-next-note {
   margin: 14px 0 0;
-  font-size: 15px;
+  font-size: 0.9375rem;
   color: var(--primary-bg);
 }
 
@@ -110,7 +110,7 @@
   font-weight: 700;
   text-decoration: underline;
   cursor: pointer;
-  font-size: 15px;
+  font-size: 0.9375rem;
 }
 
 .dash-next-error {
@@ -119,7 +119,7 @@
   border-radius: 8px;
   background: var(--danger-bg);
   color: var(--danger);
-  font-size: 15px;
+  font-size: 0.9375rem;
 }
 
 .dash-grade-grid {
@@ -136,7 +136,7 @@
   background: rgba(255, 255, 255, 0.12);
   color: white;
   font-weight: 700;
-  font-size: 15px;
+  font-size: 0.9375rem;
   cursor: pointer;
 }
 
@@ -202,12 +202,12 @@
 }
 
 .dash-today-text strong {
-  font-size: 15px;
+  font-size: 0.9375rem;
   color: var(--text);
 }
 
 .dash-today-text span {
-  font-size: 15px;
+  font-size: 0.9375rem;
   color: var(--text-muted);
 }
 
@@ -225,13 +225,13 @@
 .dash-week h2 {
   margin: 0;
   font-family: var(--font-display);
-  font-size: 17px;
+  font-size: 1.0625rem;
   font-weight: 700;
 }
 
 .dash-week > p {
   margin: 6px 0 14px;
-  font-size: 15px;
+  font-size: 0.9375rem;
   color: var(--text-muted);
 }
 
@@ -243,7 +243,7 @@
   grid-template-columns: repeat(7, minmax(0, 1fr));
   gap: 6px;
   text-align: center;
-  font-size: 14px;
+  font-size: 0.875rem;
   font-weight: 700;
   color: var(--text-muted);
   max-width: 420px;
@@ -297,7 +297,7 @@
 
 .dash-section-title {
   font-family: var(--font-display);
-  font-size: 15px;
+  font-size: 0.9375rem;
   font-weight: 700;
   color: var(--gray-800);
   display: flex;
@@ -337,14 +337,14 @@
 
 .dash-ring-pct {
   font-family: var(--font-display);
-  font-size: 30px;
+  font-size: 1.875rem;
   font-weight: 800;
   color: var(--primary);
   line-height: 1;
 }
 
 .dash-ring-caption {
-  font-size: 13px;
+  font-size: 0.8125rem;
   color: var(--gray-500);
   margin-top: 4px;
 }
@@ -378,14 +378,14 @@
 
 .dash-stat-value {
   font-family: var(--font-display);
-  font-size: 19px;
+  font-size: 1.1875rem;
   font-weight: 700;
   color: var(--gray-900);
   line-height: 1.1;
 }
 
 .dash-stat-label {
-  font-size: 13px;
+  font-size: 0.8125rem;
   color: var(--gray-500);
 }
 
@@ -400,7 +400,7 @@
   border-radius: 12px;
   font-family: var(--font-display);
   font-weight: 600;
-  font-size: 15px;
+  font-size: 0.9375rem;
   cursor: pointer;
   transition: background 0.15s ease, transform 0.15s ease;
   white-space: nowrap;
@@ -441,7 +441,7 @@
 
 .dash-course-title {
   font-weight: 700;
-  font-size: 15px;
+  font-size: 0.9375rem;
   color: var(--gray-900);
 }
 
@@ -461,7 +461,7 @@
 }
 
 .dash-course-badge {
-  font-size: 13px;
+  font-size: 0.8125rem;
   font-weight: 700;
   padding: 3px 10px;
   border-radius: 999px;
@@ -511,8 +511,8 @@
   z-index: 1;
 }
 
-.dash-timeline-title { font-size: 15px; color: var(--gray-800); }
-.dash-timeline-time { font-size: 14px; color: var(--gray-500); margin-top: 2px; }
+.dash-timeline-title { font-size: 0.9375rem; color: var(--gray-800); }
+.dash-timeline-time { font-size: 0.875rem; color: var(--gray-500); margin-top: 2px; }
 
 /* ---------- Skeleton ---------- */
 .dash-skeleton {

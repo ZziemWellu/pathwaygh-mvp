@@ -42,21 +42,21 @@ const StudentRowActions = ({ student, onChanged }) => {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', minWidth: '150px' }}>
-      <select aria-label={`Level for ${student.full_name}`} value={level} onChange={(e) => setLevel(e.target.value)} style={{ padding: '4px', width: '100%', fontSize: '14px' }}>
+      <select aria-label={`Level for ${student.full_name}`} value={level} onChange={(e) => setLevel(e.target.value)} style={{ padding: '4px', width: '100%', fontSize: '0.875rem' }}>
         {!student.level && <option value="">Not set</option>}
         {LEVELS.map(([value, label]) => <option key={value} value={value}>{label}</option>)}
       </select>
       {changing && (
         <>
-          <input aria-label={`Reason for changing ${student.full_name}'s level`} value={reason} onChange={(e) => setReason(e.target.value)} placeholder="Reason for the change" maxLength={255} style={{ padding: '4px', fontSize: '14px' }} />
-          <button type="button" disabled={busy || reason.trim().length < 3} onClick={saveLevel} style={{ fontSize: '14px', padding: '4px', cursor: 'pointer' }}>Save level</button>
+          <input aria-label={`Reason for changing ${student.full_name}'s level`} value={reason} onChange={(e) => setReason(e.target.value)} placeholder="Reason for the change" maxLength={255} style={{ padding: '4px', fontSize: '0.875rem' }} />
+          <button type="button" disabled={busy || reason.trim().length < 3} onClick={saveLevel} style={{ fontSize: '0.875rem', padding: '4px', cursor: 'pointer' }}>Save level</button>
         </>
       )}
       {!student.email && (
-        <button type="button" disabled={busy} onClick={resetPassword} style={{ fontSize: '14px', padding: '4px', cursor: 'pointer' }}>Reset password</button>
+        <button type="button" disabled={busy} onClick={resetPassword} style={{ fontSize: '0.875rem', padding: '4px', cursor: 'pointer' }}>Reset password</button>
       )}
-      {temporary && <span style={{ fontSize: '14px' }}>New password: <code>{temporary}</code></span>}
-      {error && <span role="alert" style={{ fontSize: '14px', color: 'var(--danger)' }}>{error}</span>}
+      {temporary && <span style={{ fontSize: '0.875rem' }}>New password: <code>{temporary}</code></span>}
+      {error && <span role="alert" style={{ fontSize: '0.875rem', color: 'var(--danger)' }}>{error}</span>}
     </div>
   );
 };

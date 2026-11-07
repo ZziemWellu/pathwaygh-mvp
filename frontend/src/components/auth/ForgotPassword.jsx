@@ -72,7 +72,7 @@ const ForgotPassword = ({ onBackToLogin }) => {
     <div style={{ maxWidth: '400px', margin: '0 auto' }}>
       <h2 style={{ color: 'var(--primary)', textAlign: 'center' }}>{t('forgotPasswordTitle')}</h2>
       {error && <p style={{ color: 'red', textAlign: 'center' }}>{error}</p>}
-      {info && step === 'reset' && <p style={{ color: 'var(--primary)', textAlign: 'center', fontSize: '15px' }}>{info}</p>}
+      {info && step === 'reset' && <p style={{ color: 'var(--primary)', textAlign: 'center', fontSize: '0.9375rem' }}>{info}</p>}
 
       {step === 'request' ? (
         <form onSubmit={handleRequestCode}>

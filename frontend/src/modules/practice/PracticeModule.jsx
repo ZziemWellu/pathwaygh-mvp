@@ -228,23 +228,23 @@ const PracticeModule = () => {
           <h2 style={{ textAlign: 'center', color: 'var(--primary)' }}><ChartColumnIcon className="icon-inline" size="1em" aria-hidden="true" /> Quiz Results</h2>
           <div className="card" style={{ padding: '30px', textAlign: 'center' }}>
             <ScoreIcon size={64} color={scoreColor} strokeWidth={1.5} aria-hidden="true" />
-            <div style={{ fontSize: '48px', fontWeight: 'bold', color: scoreColor }}>{score}%</div>
-            <div style={{ fontSize: '18px', color: 'var(--text-muted)', margin: '8px 0 16px 0' }}>{message}</div>
+            <div style={{ fontSize: '3rem', fontWeight: 'bold', color: scoreColor }}>{score}%</div>
+            <div style={{ fontSize: '1.125rem', color: 'var(--text-muted)', margin: '8px 0 16px 0' }}>{message}</div>
             <div style={{ height: '12px', background: 'var(--surface-sunken)', borderRadius: '6px', overflow: 'hidden', margin: '16px 0' }}>
               <div style={{ width: `${score}%`, height: '100%', background: scoreColor, borderRadius: '6px', transition: 'width 1s ease' }} />
             </div>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '12px', margin: '16px 0' }}>
               <div style={{ padding: '12px', background: 'var(--surface-muted)', borderRadius: '8px' }}>
-                <span style={{ display: 'block', fontSize: '14px', color: 'var(--gray-500)' }}><CircleCheckIcon className="icon-inline" size="1em" aria-hidden="true" /> Correct</span>
-                <span style={{ display: 'block', fontSize: '20px', fontWeight: 'bold', color: 'var(--primary)' }}>{quizResults.correct || 0}/{totalQuestions}</span>
+                <span style={{ display: 'block', fontSize: '0.875rem', color: 'var(--gray-500)' }}><CircleCheckIcon className="icon-inline" size="1em" aria-hidden="true" /> Correct</span>
+                <span style={{ display: 'block', fontSize: '1.25rem', fontWeight: 'bold', color: 'var(--primary)' }}>{quizResults.correct || 0}/{totalQuestions}</span>
               </div>
               <div style={{ padding: '12px', background: 'var(--surface-muted)', borderRadius: '8px' }}>
-                <span style={{ display: 'block', fontSize: '14px', color: 'var(--gray-500)' }}><CircleXIcon className="icon-inline" size="1em" aria-hidden="true" /> Incorrect</span>
-                <span style={{ display: 'block', fontSize: '20px', fontWeight: 'bold', color: 'var(--danger)' }}>{quizResults.incorrect || 0}/{totalQuestions}</span>
+                <span style={{ display: 'block', fontSize: '0.875rem', color: 'var(--gray-500)' }}><CircleXIcon className="icon-inline" size="1em" aria-hidden="true" /> Incorrect</span>
+                <span style={{ display: 'block', fontSize: '1.25rem', fontWeight: 'bold', color: 'var(--danger)' }}>{quizResults.incorrect || 0}/{totalQuestions}</span>
               </div>
               <div style={{ padding: '12px', background: 'var(--surface-muted)', borderRadius: '8px' }}>
-                <span style={{ display: 'block', fontSize: '14px', color: 'var(--gray-500)' }}><TimerIcon className="icon-inline" size="1em" aria-hidden="true" /> Time</span>
-                <span style={{ display: 'block', fontSize: '20px', fontWeight: 'bold' }}>{formatTime(quizResults.time_spent || 0)}</span>
+                <span style={{ display: 'block', fontSize: '0.875rem', color: 'var(--gray-500)' }}><TimerIcon className="icon-inline" size="1em" aria-hidden="true" /> Time</span>
+                <span style={{ display: 'block', fontSize: '1.25rem', fontWeight: 'bold' }}>{formatTime(quizResults.time_spent || 0)}</span>
               </div>
             </div>
             <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', justifyContent: 'center' }}>
@@ -265,14 +265,14 @@ const PracticeModule = () => {
           actions={
             <>
               <span style={{ fontWeight: 'bold', color: 'var(--primary)' }}><TimerIcon className="icon-inline" size="1em" aria-hidden="true" /> {formatTime(timeSpent)}</span>
-              <span style={{ fontSize: '15px', color: 'var(--text-subtle)' }}>{answeredCount} of {totalQuestions} answered</span>
+              <span style={{ fontSize: '0.9375rem', color: 'var(--text-subtle)' }}>{answeredCount} of {totalQuestions} answered</span>
               <Button variant="secondary" size="sm" icon={X} onClick={resetQuiz}>Quit</Button>
             </>
           }
         />
 
         <div style={{ marginBottom: '20px' }}>
-          <span style={{ fontSize: '15px', color: 'var(--gray-500)' }}>Question {currentQuestion + 1} of {totalQuestions}</span>
+          <span style={{ fontSize: '0.9375rem', color: 'var(--gray-500)' }}>Question {currentQuestion + 1} of {totalQuestions}</span>
           <div style={{ height: '6px', background: 'var(--surface-sunken)', borderRadius: '3px', marginTop: '8px', overflow: 'hidden' }}>
             <div style={{ width: `${((currentQuestion + 1) / totalQuestions) * 100}%`, height: '100%', background: 'var(--primary)', borderRadius: '3px', transition: 'width 0.5s ease' }} />
           </div>
@@ -281,12 +281,12 @@ const PracticeModule = () => {
         {currentQ && (
           <div className="card" style={{ padding: '24px' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
-              <span style={{ fontSize: '14px', color: 'var(--gray-500)' }}>Question {currentQuestion + 1}</span>
-              <span style={{ fontSize: '13px', padding: '2px 10px', borderRadius: '12px', background: 'var(--warning)', color: 'white' }}>{currentQ.difficulty || 'Medium'}</span>
+              <span style={{ fontSize: '0.875rem', color: 'var(--gray-500)' }}>Question {currentQuestion + 1}</span>
+              <span style={{ fontSize: '0.8125rem', padding: '2px 10px', borderRadius: '12px', background: 'var(--warning)', color: 'white' }}>{currentQ.difficulty || 'Medium'}</span>
             </div>
-            <h3 style={{ margin: '0 0 16px 0', fontSize: '18px', color: 'var(--text)' }}>{currentQ.question}</h3>
+            <h3 style={{ margin: '0 0 16px 0', fontSize: '1.125rem', color: 'var(--text)' }}>{currentQ.question}</h3>
             {currentQ.review_status === 'pending_review' && (
-              <p style={{ margin: '-8px 0 16px 0', fontSize: '14px', color: 'var(--text-subtle)' }}>
+              <p style={{ margin: '-8px 0 16px 0', fontSize: '0.875rem', color: 'var(--text-subtle)' }}>
                 A teacher hasn&apos;t checked this new question yet. If something looks wrong, ask your teacher.
               </p>
             )}
@@ -303,7 +303,7 @@ const PracticeModule = () => {
                     cursor: 'pointer',
                     textAlign: 'left',
                     transition: 'all 0.2s ease',
-                    fontSize: '15px'
+                    fontSize: '0.9375rem'
                   }}
                 >
                   {String.fromCharCode(65 + i)}. {option}
@@ -328,7 +328,7 @@ const PracticeModule = () => {
 
   return (
     <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '20px' }}>
-      <PageHeader icon={PenLine} title="Practice" subtitle={`${EXAM_STYLE[getUser()?.level] || 'SSCE-Past questions'} · ${subjects.length} subjects`} />
+      <PageHeader icon={PenLine} title="Practice" subtitle={`${EXAM_STYLE[getUser()?.level] || 'Practice questions'} · ${subjects.length} subjects`} />
 
       <div role="tablist" aria-label="Practice views" className="practice-tabs">
         {[['subjects', 'Subjects'], ['history', 'History'], ['stats', 'Stats']].map(([id, label]) => (
@@ -414,13 +414,13 @@ const PracticeModule = () => {
 
               {statistics.topic_mastery && statistics.topic_mastery.length > 0 && (
                 <div style={{ marginTop: '20px' }}>
-                  <h3 style={{ color: 'var(--primary)', margin: '0 0 12px 0', fontSize: '15px' }}>Your topic mastery</h3>
+                  <h3 style={{ color: 'var(--primary)', margin: '0 0 12px 0', fontSize: '0.9375rem' }}>Your topic mastery</h3>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                     {statistics.topic_mastery.map((topic) => {
                       const pct = Math.round(topic.mastery_probability * 100);
                       return (
                         <div key={`${topic.subject_id}-${topic.topic_id}`}>
-                          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '15px', marginBottom: '4px' }}>
+                          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.9375rem', marginBottom: '4px' }}>
                             <span>{topic.topic_name}</span>
                             <span style={{ color: 'var(--text-subtle)' }}>{pct}%</span>
                           </div>
@@ -431,7 +431,7 @@ const PracticeModule = () => {
                       );
                     })}
                   </div>
-                  <p style={{ fontSize: '14px', color: 'var(--text-subtle)', marginTop: '10px' }}>
+                  <p style={{ fontSize: '0.875rem', color: 'var(--text-subtle)', marginTop: '10px' }}>
                     Practice quizzes automatically focus more on your weaker topics.
                   </p>
                 </div>
@@ -453,12 +453,12 @@ const PracticeModule = () => {
                   return (
                     <div key={i} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px 16px', background: 'var(--surface-muted)', borderRadius: '8px', border: '1px solid var(--border)', flexWrap: 'wrap', gap: '8px' }}>
                       <div>
-                        <div style={{ fontWeight: 'bold', fontSize: '15px' }}>{attempt.subject || 'Quick quiz'}</div>
-                        <div style={{ fontSize: '14px', color: 'var(--text-subtle)' }}>{formatDate(attempt.date, { fallback: 'Recently' })}</div>
+                        <div style={{ fontWeight: 'bold', fontSize: '0.9375rem' }}>{attempt.subject || 'Quick quiz'}</div>
+                        <div style={{ fontSize: '0.875rem', color: 'var(--text-subtle)' }}>{formatDate(attempt.date, { fallback: 'Recently' })}</div>
                       </div>
                       <div style={{ textAlign: 'right' }}>
-                        <div style={{ fontSize: '20px', fontWeight: 'bold', color: scoreColor }}>{attempt.score || 0}%</div>
-                        <div style={{ fontSize: '14px', color: 'var(--text-subtle)' }}>{attempt.correct || 0}/{attempt.total || 0} correct</div>
+                        <div style={{ fontSize: '1.25rem', fontWeight: 'bold', color: scoreColor }}>{attempt.score || 0}%</div>
+                        <div style={{ fontSize: '0.875rem', color: 'var(--text-subtle)' }}>{attempt.correct || 0}/{attempt.total || 0} correct</div>
                       </div>
                     </div>
                   );
@@ -476,7 +476,7 @@ export default PracticeModule;
 
 const StatBox = ({ value, label }) => (
   <div style={{ textAlign: 'center', padding: '12px', background: 'var(--surface-muted)', borderRadius: '8px' }}>
-    <span style={{ display: 'block', fontSize: '28px', fontWeight: 'bold', color: 'var(--primary)' }}>{value}</span>
-    <span style={{ display: 'block', fontSize: '14px', color: 'var(--text-subtle)' }}>{label}</span>
+    <span style={{ display: 'block', fontSize: '1.75rem', fontWeight: 'bold', color: 'var(--primary)' }}>{value}</span>
+    <span style={{ display: 'block', fontSize: '0.875rem', color: 'var(--text-subtle)' }}>{label}</span>
   </div>
 );

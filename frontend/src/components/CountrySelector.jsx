@@ -37,7 +37,7 @@ const CountrySelector = ({ onSelect }) => {
             background: 'white',
             border: '1px solid var(--border)',
             borderRadius: '8px',
-            fontSize: '16px',
+            fontSize: '1rem',
             cursor: 'pointer',
             textAlign: 'left',
           }}
@@ -46,7 +46,7 @@ const CountrySelector = ({ onSelect }) => {
           {name}
         </button>
       ))}
-      <p style={{ color: 'var(--gray-500)', textAlign: 'center', fontSize: '15px', marginTop: '16px' }}>
+      <p style={{ color: 'var(--gray-500)', textAlign: 'center', fontSize: '0.9375rem', marginTop: '16px' }}>
         {t('moreCountriesComingSoon')}
       </p>
     </div>

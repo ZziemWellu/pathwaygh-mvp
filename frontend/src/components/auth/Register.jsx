@@ -172,7 +172,7 @@ const Register = ({ onSuccess, onShowPrivacy }) => {
           padding: '12px', 
           borderRadius: '8px', 
           marginBottom: '16px',
-          fontSize: '15px',
+          fontSize: '0.9375rem',
           wordWrap: 'break-word'
         }}>
           {error}
@@ -194,7 +194,7 @@ const Register = ({ onSuccess, onShowPrivacy }) => {
               padding: '10px',
               border: '1px solid var(--border)',
               borderRadius: '8px',
-              fontSize: '15px'
+              fontSize: '0.9375rem'
             }}
             placeholder={t('fullNamePlaceholder')}
           />
@@ -213,7 +213,7 @@ const Register = ({ onSuccess, onShowPrivacy }) => {
               padding: '10px',
               border: '1px solid var(--border)',
               borderRadius: '8px',
-              fontSize: '15px'
+              fontSize: '0.9375rem'
             }}
           >
             <option value="">{t('levelPlaceholder')}</option>
@@ -221,7 +221,7 @@ const Register = ({ onSuccess, onShowPrivacy }) => {
             <option value="jhs">{t('levelJhs')}</option>
             <option value="shs">{t('levelShs')}</option>
           </select>
-          <p style={{ margin: '4px 0 0', fontSize: '14px', color: 'var(--text-subtle)' }}>{t('levelHelp')}</p>
+          <p style={{ margin: '4px 0 0', fontSize: '0.875rem', color: 'var(--text-subtle)' }}>{t('levelHelp')}</p>
         </div>
 
         {formData.level && (
@@ -238,7 +238,7 @@ const Register = ({ onSuccess, onShowPrivacy }) => {
                 padding: '10px',
                 border: '1px solid var(--border)',
                 borderRadius: '8px',
-                fontSize: '15px'
+                fontSize: '0.9375rem'
               }}
             >
               <option value="">{t('classPlaceholder')}</option>
@@ -266,11 +266,11 @@ const Register = ({ onSuccess, onShowPrivacy }) => {
                 padding: '10px',
                 border: '1px solid var(--border)',
                 borderRadius: '8px',
-                fontSize: '15px'
+                fontSize: '0.9375rem'
               }}
               placeholder={t('usernamePlaceholder')}
             />
-            <p style={{ margin: '4px 0 0', fontSize: '14px', color: 'var(--text-subtle)' }}>{t('usernameHelp')}</p>
+            <p style={{ margin: '4px 0 0', fontSize: '0.875rem', color: 'var(--text-subtle)' }}>{t('usernameHelp')}</p>
           </div>
         ) : (
         <div style={{ marginBottom: '16px' }}>
@@ -287,13 +287,13 @@ const Register = ({ onSuccess, onShowPrivacy }) => {
               padding: '10px',
               border: '1px solid var(--border)',
               borderRadius: '8px',
-              fontSize: '15px'
+              fontSize: '0.9375rem'
             }}
             placeholder={t('emailPlaceholder')}
           />
         </div>
         )}
-        <p style={{ margin: '-8px 0 16px', fontSize: '15px' }}>
+        <p style={{ margin: '-8px 0 16px', fontSize: '0.9375rem' }}>
           <button
             type="button"
             onClick={() => setLoginChoice(usesUsername ? 'email' : 'username')}
@@ -318,7 +318,7 @@ const Register = ({ onSuccess, onShowPrivacy }) => {
               padding: '10px',
               border: '1px solid var(--border)',
               borderRadius: '8px',
-              fontSize: '15px'
+              fontSize: '0.9375rem'
             }}
             placeholder={t('passwordPlaceholder')}
           />
@@ -338,7 +338,7 @@ const Register = ({ onSuccess, onShowPrivacy }) => {
               padding: '10px',
               border: '1px solid var(--border)',
               borderRadius: '8px',
-              fontSize: '15px'
+              fontSize: '0.9375rem'
             }}
             placeholder={t('confirmPasswordPlaceholder')}
           />
@@ -359,11 +359,11 @@ const Register = ({ onSuccess, onShowPrivacy }) => {
                 padding: '10px',
                 border: '1px solid var(--border)',
                 borderRadius: '8px',
-                fontSize: '15px'
+                fontSize: '0.9375rem'
               }}
               placeholder={t('guardianPhonePlaceholder')}
             />
-            <p style={{ margin: '4px 0 0', fontSize: '14px', color: 'var(--text-subtle)' }}>{t('guardianPhoneHelp')}</p>
+            <p style={{ margin: '4px 0 0', fontSize: '0.875rem', color: 'var(--text-subtle)' }}>{t('guardianPhoneHelp')}</p>
           </div>
         )}
 
@@ -372,7 +372,7 @@ const Register = ({ onSuccess, onShowPrivacy }) => {
             {t(smsAvailable === false ? 'guardianEmailLabel' : 'guardianEmailOptionalLabel')}
           </label>
           {smsAvailable === false && (
-            <p style={{ margin: '0 0 4px', fontSize: '14px', color: 'var(--text-subtle)' }}>{t('guardianSmsUnavailable')}</p>
+            <p style={{ margin: '0 0 4px', fontSize: '0.875rem', color: 'var(--text-subtle)' }}>{t('guardianSmsUnavailable')}</p>
           )}
           <input
             id="guardian_email"
@@ -386,14 +386,14 @@ const Register = ({ onSuccess, onShowPrivacy }) => {
               padding: '10px',
               border: '1px solid var(--border)',
               borderRadius: '8px',
-              fontSize: '15px'
+              fontSize: '0.9375rem'
             }}
             placeholder={t('guardianEmailPlaceholder')}
           />
         </div>
 
         <div style={{ marginBottom: '16px' }}>
-          <label style={{ display: 'flex', alignItems: 'flex-start', gap: '8px', fontSize: '15px', cursor: 'pointer' }}>
+          <label style={{ display: 'flex', alignItems: 'flex-start', gap: '8px', fontSize: '0.9375rem', cursor: 'pointer' }}>
             <input
               type="checkbox"
               name="consent_confirmed"

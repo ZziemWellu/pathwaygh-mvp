@@ -1,7 +1,14 @@
 // Learning Hotspot - Progressive Web App Service Worker
-const CACHE_NAME = 'pathway-ai-v3';
-const STATIC_CACHE = 'pathway-ai-static-v3';
-const DYNAMIC_CACHE = 'pathway-ai-dynamic-v3';
+// Changing these names clears older caches when this worker activates. v3 and
+// before stored signed-in API responses, so moving on from them matters.
+const CACHE_NAME = 'learning-hotspot-v4';
+const STATIC_CACHE = 'learning-hotspot-static-v4';
+const DYNAMIC_CACHE = 'learning-hotspot-dynamic-v4';
+
+// The only API responses kept for offline use: public information that's the
+// same for everyone. Anything else may hold a child's details, and phones are
+// often shared, and a cache lookup by address can't tell whose data it holds.
+const OFFLINE_READABLE_API = ['/api/explore/'];
 
 // Assets to cache on install
 const STATIC_ASSETS = [
@@ -96,6 +103,7 @@ self.addEventListener('fetch', event => {
 
 // Handle API requests
 async function handleAPIRequest(request) {
+  const storable = OFFLINE_READABLE_API.some((prefix) => new URL(request.url).pathname.startsWith(prefix));
   // Try network first for API
   try {
     const response = await fetch(request);
@@ -104,7 +112,7 @@ async function handleAPIRequest(request) {
     // errors (401 session expiry, 403 permission, 404, validation 400s)
     // aren't misreported as connectivity loss. Only cache successful
     // responses; only an actual fetch() failure below means offline.
-    if (response.status === 200) {
+    if (storable && response.status === 200) {
       const responseClone = response.clone();
       caches.open(DYNAMIC_CACHE).then(cache => {
         cache.put(request, responseClone);
@@ -113,7 +121,7 @@ async function handleAPIRequest(request) {
     return response;
   } catch (error) {
     // Return cached API response if available
-    const cached = await caches.match(request);
+    const cached = storable ? await caches.match(request) : null;
     if (cached) {
       return cached;
     }
