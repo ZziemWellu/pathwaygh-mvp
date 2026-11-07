@@ -48,7 +48,7 @@ Visit: http://localhost:5173
 
 - **Backend**: FastAPI + SQLAlchemy + Alembic + Postgres, JWT auth (`backend/`)
 - **Frontend**: React 19 + Vite + react-router-dom (`frontend/`)
-- Twenty-one feature modules live under `backend/modules/`. Thirteen are real, backed by the database (or, for `explore`, curated JSON content): `auth`, `learn`, `practice`, `profile`, `plan`, `explore`, `admin`, `certificates`, `dashboard`, `impact`, `parent`, `school`, `tutor`. The remaining eight are still early scaffolding that return hardcoded placeholder data: `activity`, `analytics`, `community`, `knowledge_graph`, `live`, `paths`, `payment`, `recommendations`.
+- Twenty-one feature modules live under `backend/modules/`. Thirteen are real, backed by the database (or, for `explore`, curated JSON content): `auth`, `learn`, `practice`, `profile`, `plan`, `explore`, `admin`, `dashboard`, `impact`, `parent`, `school`, `tutor`. The remaining eight are still early scaffolding that return hardcoded placeholder data: `activity`, `analytics`, `community`, `knowledge_graph`, `live`, `paths`, `payment`, `recommendations`.
 
 ## License
 MIT

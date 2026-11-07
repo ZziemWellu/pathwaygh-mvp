@@ -10,7 +10,7 @@ const sourceFiles = (dir) =>
   readdirSync(dir).flatMap((name) => {
     const path = join(dir, name);
     if (statSync(path).isDirectory()) return sourceFiles(path);
-    return ['.jsx', '.css'].includes(extname(name)) && !name.includes('.test.') ? [path] : [];
+    return ['.jsx', '.js', '.css'].includes(extname(name)) && !name.includes('.test.') ? [path] : [];
   });
 
 const remOf = (text) => parseFloat(text);
@@ -36,11 +36,26 @@ describe('text sizes', () => {
   });
 });
 
+describe('certificates', () => {
+  it('are not mentioned anywhere in the app', () => {
+    const mentions = sourceFiles(resolve(process.cwd(), 'src')).concat(
+      [resolve(process.cwd(), 'public/manifest.json'), resolve(process.cwd(), 'index.html')],
+    ).filter((file) => /certif/i.test(readFileSync(file, 'utf8')));
+    expect(mentions).toEqual([]);
+  });
+});
+
 describe('menu', () => {
   it('keeps the agreed order, with Profile reached from the name instead', () => {
     expect(ids({ level: 'shs', country: 'GH' })).toEqual([
       'home', 'plan', 'learn', 'practice', 'flashcards', 'progress', 'explore', 'community',
     ]);
+  });
+
+  it('puts Home, Plan, Learn and Practice on the phone bar, with the rest under More', () => {
+    const items = getNavItems({ level: 'shs', country: 'GH' }, t);
+    expect(items.filter((item) => item.primary).map((item) => item.id)).toEqual(['home', 'plan', 'learn', 'practice']);
+    expect(items.filter((item) => !item.primary).map((item) => item.id)).toEqual(['flashcards', 'progress', 'explore', 'community']);
   });
 
   it('hides Community from primary pupils', () => {

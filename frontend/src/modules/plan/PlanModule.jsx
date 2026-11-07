@@ -2,7 +2,9 @@ import React, { useState, useEffect } from 'react';
 import api from '../../services/api';
 import { CalendarDaysIcon, ChartColumnIcon, ClipboardList, ClipboardListIcon, Plus, TargetIcon, TriangleAlertIcon } from 'lucide-react';
 import PageHeader from '../../components/ui/PageHeader';
-import Button from '../../components/ui/Button';
+import Button from '../../components/ui/Button';
+import { getUser } from '../../constants/auth';
+import { seniorExamName } from '../../utils/examNames';
 
 // Goals are stored in more than one shape - seeded plans use
 // "exam_preparation", the create form saves "exam preparation", and the
@@ -277,7 +279,7 @@ const PlanModule = () => {
                     name="name"
                     value={formData.name}
                     onChange={handleChange}
-                    placeholder="e.g., WASSCE Preparation Plan"
+                    placeholder={`e.g., ${seniorExamName(getUser()?.country)} Preparation Plan`}
                     style={{
                       width: '100%',
                       padding: '10px',

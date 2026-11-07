@@ -14,12 +14,12 @@ export const canUseSchoolSelection = (user) =>
 // `primary` items are the phone tab bar's direct tabs; the rest live under "More".
 export const getNavItems = (user, t) => [
   { id: 'home', icon: Home, label: t('navHome'), path: '/', primary: true },
-  { id: 'plan', icon: ListChecks, label: t('navPlan'), path: '/plan' },
+  { id: 'plan', icon: ListChecks, label: t('navPlan'), path: '/plan', primary: true },
   { id: 'learn', icon: BookOpen, label: t('navLearn'), path: '/learn', primary: true },
   { id: 'practice', icon: PencilLine, label: t('navPractice'), path: '/practice', primary: true },
   { id: 'flashcards', icon: Layers, label: t('navFlashcards'), path: '/flashcards' },
   { id: 'progress', icon: Trophy, label: t('navProgress'), path: '/progress' },
-  { id: 'explore', icon: Search, label: t('navExplore'), path: '/explore', primary: true },
+  { id: 'explore', icon: Search, label: t('navExplore'), path: '/explore' },
   ...(user?.level === 'primary' ? [] : [{ id: 'community', icon: Users, label: t('navCommunity'), path: '/community' }]),
   ...(user?.is_admin ? [{ id: 'admin', icon: Shield, label: t('navAdmin'), path: '/admin' }] : []),
   ...(user?.is_admin ? [{ id: 'impact', icon: BarChart3, label: t('navImpact'), path: '/impact' }] : []),

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import api, { extractData } from '../../services/api';
 import { getUser } from '../../constants/auth';
+import { practiceLabel } from '../../utils/examNames';
 import { useGamificationNotify } from '../../contexts/GamificationNotifyContext';
 import { BookOpen, ChartColumnIcon, CircleCheckIcon, CircleXIcon, Dumbbell, FileText, HouseIcon, PenLine, RotateCcwIcon, Star, ThumbsUp, TimerIcon, TriangleAlertIcon, X, Zap } from 'lucide-react';
 import AIBonusQuestion from './AIBonusQuestion';
@@ -10,12 +11,6 @@ import { SubjectIcon } from '../../components/ui/icons';
 import { formatDate } from '../../utils/date';
 import PageHeader from '../../components/ui/PageHeader';
 import Button from '../../components/ui/Button';
-
-const EXAM_STYLE = {
-  primary: 'Practice questions',
-  jhs: 'BECE-Past questions',
-  shs: 'SSCE-Past questions',
-};
 
 const PracticeModule = () => {
   const { notify } = useGamificationNotify();
@@ -328,7 +323,7 @@ const PracticeModule = () => {
 
   return (
     <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '20px' }}>
-      <PageHeader icon={PenLine} title="Practice" subtitle={`${EXAM_STYLE[getUser()?.level] || 'Practice questions'} · ${subjects.length} subjects`} />
+      <PageHeader icon={PenLine} title="Practice" subtitle={`${practiceLabel(getUser()?.level, getUser()?.country)} · ${subjects.length} subjects`} />
 
       <div role="tablist" aria-label="Practice views" className="practice-tabs">
         {[['subjects', 'Subjects'], ['history', 'History'], ['stats', 'Stats']].map(([id, label]) => (

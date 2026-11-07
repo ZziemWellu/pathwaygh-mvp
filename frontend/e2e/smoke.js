@@ -104,6 +104,11 @@ try {
   check('the larger text setting scales hard-to-reach text', larger >= normal * 1.2, `${normal}px to ${larger}px`);
   await page.evaluate(() => document.documentElement.setAttribute('data-text-scale', 'normal'));
 
+  // --- Practice labels
+  await page.goto(`${BASE}/practice`);
+  await page.getByText(/BECE practice questions/).waitFor();
+  check('JHS practice says BECE practice questions', true);
+
   // --- Phone
   const mobile = await phone.newPage();
   mobile.on('pageerror', (e) => errors.push(String(e)));
@@ -115,6 +120,19 @@ try {
   await phoneProfile.click();
   await mobile.waitForURL('**/profile');
   check('tapping the name on a phone opens Profile', true);
+
+  await mobile.goto(`${BASE}/practice`);
+  await mobile.getByText(/WASSCE practice questions/).waitFor();
+  check('SHS practice in Ghana says WASSCE practice questions', true);
+  const tabs = (await mobile.locator('.mobile-tabbar button').allInnerTexts()).map((text) => text.trim());
+  check('phone bar is Home, Plan, Learn, Practice, More', tabs.join() === 'Home,Plan,Learn,Practice,More', tabs.join());
+
+  const nigeria = await phone.newPage();
+  await signIn(nigeria, await register(phone.request, { email: `n${RUN}@test.com`, full_name: 'Tunde Ade', country: 'NG', level: 'shs', grade: 'SHS 1' }));
+  await nigeria.goto(`${BASE}/practice`);
+  await nigeria.getByText(/SSCE practice questions/).waitFor();
+  check('SHS practice in Nigeria says SSCE practice questions', !(await nigeria.locator('body').innerText()).includes('WASSCE practice'));
+  await nigeria.close();
 
   for (const scale of ['normal', 'larger']) {
     for (const route of ['/', '/learn', '/practice', '/plan', '/explore', '/flashcards', '/progress', '/community', '/profile']) {

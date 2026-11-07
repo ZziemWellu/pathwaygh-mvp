@@ -25,7 +25,7 @@ const STEPS = [
   },
   {
     title: 'Learn and practise every day',
-    body: "Watch short video lessons, take WASSCE-past questions quizzes and ask the AI tutor when you're stuck.",
+    body: "Watch short video lessons, take WASSCE practice quizzes and ask the AI tutor when you're stuck.",
   },
   {
     title: 'Plan what comes next',
@@ -68,7 +68,7 @@ const Landing = ({ onGetStarted, onSignIn, onShowPrivacy }) => (
             Find your path.<br />Pass your exams.<br /><span>Plan your future.</span>
           </h1>
           <p className="landing__lede">
-            Video courses, WASSCE-style practice with an AI tutor that checks its own maths, and career guidance
+            Video courses, WASSCE practice with an AI tutor that checks its own maths, and career guidance
             matched to your subjects - in English, Twi and Nigerian Pidgin.
           </p>
           <div className="landing__ctas">
