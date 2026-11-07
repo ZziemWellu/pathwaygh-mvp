@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import api from '../../services/api';
 import { getUser, setUser } from '../../constants/auth';
+import { seniorExamName } from '../../utils/examNames';
 import LanguageSwitcher from '../../components/LanguageSwitcher';
 import { useAccessibility } from '../../contexts/AccessibilityContext';
 import { formatDate } from '../../utils/date';
@@ -482,7 +483,7 @@ const ProfileModule = () => {
                 </div>
                 <div>
                   <label style={{ display: 'block', fontSize: '0.9375rem', color: 'var(--gray-500)', marginBottom: '4px' }}>Learning Goals (comma separated)</label>
-                  <input name="goals" value={formData.goals?.join(', ') || ''} onChange={(e) => handleArrayChange(e, 'goals')} placeholder="Pass WASSCE, Study Engineering, ..." style={{ width: '100%', padding: '10px', border: '1px solid var(--border)', borderRadius: '8px' }} />
+                  <input name="goals" value={formData.goals?.join(', ') || ''} onChange={(e) => handleArrayChange(e, 'goals')} placeholder={`Pass ${seniorExamName(user?.country)}, Study Engineering, ...`} style={{ width: '100%', padding: '10px', border: '1px solid var(--border)', borderRadius: '8px' }} />
                 </div>
               </div>
               <div style={{ display: 'flex', gap: '12px', justifyContent: 'flex-end' }}>

@@ -107,7 +107,6 @@ class User(Base):
     lesson_progress = relationship("LessonProgress", back_populates="user", cascade="all, delete-orphan")
     quiz_attempts = relationship("QuizAttempt", back_populates="user", cascade="all, delete-orphan")
     plans = relationship("Plan", back_populates="user", cascade="all, delete-orphan")
-    certificates = relationship("Certificate", back_populates="user", cascade="all, delete-orphan")
     skill_masteries = relationship("SkillMastery", back_populates="user", cascade="all, delete-orphan")
     sub_skill_masteries = relationship("SubSkillMastery", back_populates="user", cascade="all, delete-orphan")
     gamification_profile = relationship("GamificationProfile", back_populates="user", uselist=False, cascade="all, delete-orphan")

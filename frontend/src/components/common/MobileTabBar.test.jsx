@@ -25,7 +25,7 @@ describe('MobileTabBar', () => {
   it('shows the four core tabs plus More', () => {
     renderAt('/');
     const labels = within(tabBar()).getAllByRole('button').map((b) => b.textContent);
-    expect(labels).toEqual(['Home', 'Learn', 'Practice', 'Explore', 'More']);
+    expect(labels).toEqual(['Home', 'Plan', 'Learn', 'Practice', 'More']);
   });
 
   it('marks the tab for the current URL as the current page, including nested routes', () => {
@@ -35,7 +35,7 @@ describe('MobileTabBar', () => {
   });
 
   it('highlights More when the current page lives in the More sheet', () => {
-    renderAt('/plan');
+    renderAt('/flashcards');
     expect(within(tabBar()).getByRole('button', { name: 'More' }).className).toContain('is-active');
   });
 
@@ -49,7 +49,7 @@ describe('MobileTabBar', () => {
     renderAt('/');
     await userEvent.click(within(tabBar()).getByRole('button', { name: 'More' }));
     const sheet = screen.getByRole('dialog', { name: 'More' });
-    for (const label of ['Plan', 'Flashcards', 'Progress', 'Community']) {
+    for (const label of ['Flashcards', 'Progress', 'Explore', 'Community']) {
       expect(within(sheet).getByRole('button', { name: label })).toBeInTheDocument();
     }
     // Profile is reached from the name, not from the list.

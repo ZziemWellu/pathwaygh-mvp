@@ -14,7 +14,6 @@ from sqlalchemy.orm import Session
 from core.accounts import correct_level, find_user
 from core.database import get_db
 from core.security import require_admin
-from models.certificate import Certificate
 from models.course import Course, Exercise, Lesson
 from models.user import User
 
@@ -128,8 +127,6 @@ def delete_course(course_id: int, db: Session = Depends(get_db), admin: User = D
     course = db.query(Course).filter(Course.id == course_id).first()
     if not course:
         raise HTTPException(status_code=404, detail="Course not found")
-    if db.query(Certificate).filter(Certificate.course_id == course.id).first():
-        raise HTTPException(status_code=409, detail="Cannot delete a course with issued certificates")
     db.delete(course)
     db.commit()
     return {"success": True}

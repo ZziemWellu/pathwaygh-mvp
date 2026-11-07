@@ -101,7 +101,7 @@
     {
       "name": "Accountant",
       "field": "Business",
-      "description": "Manages financial records and audits. ICAG certification available.",
+      "description": "Manages financial records and audits. ICAG professional qualification available.",
       "salary_range": "GH₵ 3,000 - 15,000",
       "duration_years": 4,
       "typical_aggregate": 16,
@@ -110,7 +110,7 @@
       "demand": "Stable",
       "growth_rate": "7% annually",
       "licensing_body": "ICAG (Institute of Chartered Accountants Ghana)",
-      "career_path": ["SHS Business", "WASSCE", "BSc Accounting", "ICAG Certification"]
+      "career_path": ["SHS Business", "WASSCE", "BSc Accounting", "ICAG Professional Qualification"]
     },
     {
       "name": "Architect",

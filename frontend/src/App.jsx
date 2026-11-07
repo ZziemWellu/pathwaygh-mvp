@@ -40,7 +40,6 @@ const CourseGrid = lazy(() => import('./modules/learn/CourseGrid'));
 const CourseDetail = lazy(() => import('./modules/learn/CourseDetail'));
 const LessonView = lazy(() => import('./modules/learn/LessonView'));
 // OLD Explore (keep for now)
-const ExploreModule = lazy(() => import('./modules/explore/ExploreModule'));
 // NEW Explore pages
 const ExploreLanding = lazy(() => import('./modules/explore-new/landing/ExploreLanding'));
 const CareersPage = lazy(() => import('./modules/explore-new/pages/CareersPage'));
@@ -282,7 +281,6 @@ const App = () => {
             <Route path="/explore/career-match" element={WASSCE_COUNTRIES.includes(user?.country) ? <CareerMatchPage /> : <Navigate to="/" />} />
             
             {/* OLD Explore (keep as fallback) */}
-            <Route path="/explore-old" element={<ExploreModule />} />
             
             <Route path="/practice" element={<PracticeModule />} />
             <Route path="/flashcards" element={<FlashcardsModule />} />
