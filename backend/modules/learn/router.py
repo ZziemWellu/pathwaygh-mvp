@@ -7,9 +7,11 @@ from typing import Dict, Optional
 
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel
+from sqlalchemy import or_
 from sqlalchemy.orm import Session
 
 from core.database import get_db
+from core.levels import STUDENT_LEVELS
 from core.security import get_current_user, get_current_user_optional
 from models.course import Course, Exercise, Lesson
 from models.enrollment import Enrollment
@@ -85,6 +87,28 @@ def _enrolled_course_ids(db: Session, user: Optional[User]) -> set:
     return {r[0] for r in rows}
 
 
+def _sees_every_course(user: Optional[User]) -> bool:
+    # Anonymous visitors browse the public catalogue; staff manage all of it.
+    return user is None or user.is_admin or user.is_school_admin
+
+
+def _require_course_access(db: Session, user: Optional[User], course: Course) -> None:
+    """A student only opens courses for their own level and country. Courses
+    they already enrolled in stay open, so moving up from JHS to SHS doesn't
+    lock away finished work or certificates. Skills courses have no school
+    level and are open to any level; an older account with no level yet isn't
+    narrowed by level until it chooses one."""
+    if _sees_every_course(user):
+        return
+    wrong_country = course.country != user.country
+    wrong_level = bool(user.level) and course.level in STUDENT_LEVELS and course.level != user.level
+    if not (wrong_country or wrong_level):
+        return
+    if course.id in _enrolled_course_ids(db, user):
+        return
+    raise HTTPException(status_code=403, detail="This course isn't for your level or country")
+
+
 @router.get("/")
 def learn_root(db: Session = Depends(get_db)):
     courses = db.query(Course).all()
@@ -106,10 +130,16 @@ def get_courses(
     current_user: Optional[User] = Depends(get_current_user_optional),
 ):
     query = db.query(Course)
-    if level:
-        query = query.filter(Course.level == level)
-    if country:
-        query = query.filter(Course.country == country)
+    if _sees_every_course(current_user):
+        if level:
+            query = query.filter(Course.level == level)
+        if country:
+            query = query.filter(Course.country == country)
+    else:
+        # Server-side, so query parameters can't widen what a student sees.
+        query = query.filter(Course.country == current_user.country)
+        if current_user.level:
+            query = query.filter(or_(Course.level == current_user.level, Course.level.notin_(STUDENT_LEVELS)))
     if search:
         like = f"%{search.lower()}%"
         query = query.filter(Course.title.ilike(like))
@@ -136,6 +166,7 @@ def get_course(
     course = db.query(Course).filter(Course.slug == course_slug).first()
     if not course:
         raise HTTPException(status_code=404, detail="Course not found")
+    _require_course_access(db, current_user, course)
 
     watched_ids = _watched_lesson_ids(db, current_user)
     enrolled_ids = _enrolled_course_ids(db, current_user)
@@ -150,6 +181,7 @@ def enroll_in_course(course_slug: str, db: Session = Depends(get_db), current_us
     course = db.query(Course).filter(Course.slug == course_slug).first()
     if not course:
         raise HTTPException(status_code=404, detail="Course not found")
+    _require_course_access(db, current_user, course)
 
     existing = db.query(Enrollment).filter(Enrollment.user_id == current_user.id, Enrollment.course_id == course.id).first()
     if not existing:
@@ -168,6 +200,7 @@ def get_lesson(
     lesson = db.query(Lesson).filter(Lesson.slug == lesson_slug).first()
     if not lesson:
         raise HTTPException(status_code=404, detail="Lesson not found")
+    _require_course_access(db, current_user, lesson.course)
     watched_ids = _watched_lesson_ids(db, current_user)
     out = _lesson_out(lesson, watched_ids)
 

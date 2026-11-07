@@ -9,6 +9,18 @@ import { Award, BookOpen, BookOpenIcon, BookOpenTextIcon, Bookmark, BookmarkIcon
 import PageHeader from '../../components/ui/PageHeader';
 import Button from '../../components/ui/Button';
 
+// A student's level only moves up, so earlier classes aren't offered.
+const GRADES_BY_LEVEL = {
+  primary: ['Primary 1', 'Primary 2', 'Primary 3', 'Primary 4', 'Primary 5', 'Primary 6'],
+  jhs: ['JHS 1', 'JHS 2', 'JHS 3'],
+  shs: ['SHS 1', 'SHS 2', 'SHS 3'],
+};
+const gradesFrom = (level) => {
+  const levels = Object.keys(GRADES_BY_LEVEL);
+  const from = Math.max(levels.indexOf(level), 0);
+  return [...levels.slice(from).flatMap((l) => GRADES_BY_LEVEL[l]), 'University'];
+};
+
 const ProfileModule = () => {
   const { dyslexiaFont, setDyslexiaFont, textScale, setTextScale, textScales } = useAccessibility();
   const [user, setUserState] = useState(getUser());
@@ -185,14 +197,14 @@ const ProfileModule = () => {
     try {
       const response = await api.put('/api/profile/me', formData);
       setProfile(response.data.profile);
-      const updatedUser = { ...user, ...formData };
+      const updatedUser = { ...user, ...formData, level: response.data.profile.level };
       setUser(updatedUser);
       setUserState(updatedUser);
       setEditing(false);
       showNotification('Profile updated successfully!');
     } catch (err) {
       console.error('Save error:', err);
-      showNotification('Failed to save profile.', 'error');
+      showNotification(err.response?.data?.detail || 'Failed to save profile.', 'error');
     } finally {
       setSaving(false);
     }
@@ -454,13 +466,7 @@ const ProfileModule = () => {
                   <label style={{ display: 'block', fontSize: '13px', color: 'var(--gray-500)', marginBottom: '4px' }}>Grade/Level</label>
                   <select name="grade" value={formData.grade || ''} onChange={handleChange} style={{ width: '100%', padding: '10px', border: '1px solid var(--border)', borderRadius: '8px' }}>
                     <option value="">Select Grade</option>
-                    <option value="JHS 1">JHS 1</option>
-                    <option value="JHS 2">JHS 2</option>
-                    <option value="JHS 3">JHS 3</option>
-                    <option value="SHS 1">SHS 1</option>
-                    <option value="SHS 2">SHS 2</option>
-                    <option value="SHS 3">SHS 3</option>
-                    <option value="University">University</option>
+                    {gradesFrom(profile?.level).map((grade) => <option key={grade} value={grade}>{grade}</option>)}
                   </select>
                 </div>
                 <div>

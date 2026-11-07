@@ -10,6 +10,7 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
 from core.database import get_db
+from core.levels import STUDENT_LEVELS, level_from_grade
 from core.security import get_current_user
 from models.course import Course, Lesson
 from models.enrollment import Enrollment
@@ -148,19 +149,6 @@ def _lesson_step(course: Course, lessons: list, lesson: Lesson) -> dict:
     }
 
 
-def level_from_grade(grade: Optional[str]) -> Optional[str]:
-    """'JHS 2' -> 'jhs', 'SHS 1' -> 'shs', 'University' -> 'university'.
-    Grade is the profile's free-text field (the Profile form offers exactly
-    these values), so match on the prefix rather than the exact string."""
-    if not grade:
-        return None
-    g = grade.strip().lower()
-    for level in ("jhs", "shs"):
-        if g.startswith(level):
-            return level
-    return "university" if g.startswith("univ") else None
-
-
 def _next_step(db: Session, user: User, continue_learning: Optional[dict], watched_ids: set) -> dict:
     """The single most useful thing for this student to do next, so Home can
     lead with one clear action instead of a page of zero counters:
@@ -168,11 +156,12 @@ def _next_step(db: Session, user: User, continue_learning: Optional[dict], watch
     ask their level > (nothing course-shaped left) practise."""
     if continue_learning:
         return {"kind": "continue", **continue_learning}
-    level = level_from_grade(user.grade)
+    from_grade = level_from_grade(user.grade)
+    level = "university" if from_grade == "university" else (user.level or from_grade)
     if level is None:
         return {"kind": "choose_level"}
-    if level in ("jhs", "shs"):
-        courses = db.query(Course).filter(Course.level == level).all()
+    if level in STUDENT_LEVELS:
+        courses = db.query(Course).filter(Course.level == level, Course.country == user.country).all()
         # The student's own country first, then alphabetical for stability.
         courses.sort(key=lambda c: (c.country != user.country, c.title))
         for course in courses:

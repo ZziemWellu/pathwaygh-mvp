@@ -6,14 +6,16 @@ import io
 import re
 import uuid
 from pathlib import Path
-from typing import List, Optional
+from typing import List, Literal, Optional
 
 from fastapi import APIRouter, Depends, File, HTTPException, UploadFile
 from PIL import Image, UnidentifiedImageError
-from pydantic import BaseModel, EmailStr, field_validator
+from pydantic import BaseModel, EmailStr
 from sqlalchemy.orm import Session
 
 from core.database import get_db
+from core.levels import STUDENT_LEVELS, can_move_to_level, level_from_grade
+from core.phone import normalize_phone
 from core.security import get_current_user
 from models.user import User
 from modules.auth.consent import issue_consent_otp
@@ -39,14 +41,8 @@ class ProfileUpdateRequest(BaseModel):
     guardian_email: Optional[EmailStr] = None
     guardian_phone: Optional[str] = None
     guardian_whatsapp_opt_in: Optional[bool] = None
+    level: Optional[Literal["primary", "jhs", "shs"]] = None
     school_digest_whatsapp_opt_in: Optional[bool] = None
-
-    @field_validator("guardian_phone")
-    @classmethod
-    def _validate_e164(cls, value):
-        if value is not None and not E164_PATTERN.match(value):
-            raise ValueError("guardian_phone must be in E.164 format, e.g. +233241234567")
-        return value
 
 
 class SavedItemRequest(BaseModel):
@@ -60,6 +56,8 @@ def _profile_out(user: User) -> dict:
         "email": user.email,
         "school": user.school,
         "grade": user.grade,
+        "level": user.level,
+        "country": user.country,
         "bio": user.bio,
         "phone": user.phone,
         "location": user.location,
@@ -78,6 +76,23 @@ def _profile_out(user: User) -> dict:
     }
 
 
+def _apply_level_change(user: User, request: ProfileUpdateRequest) -> None:
+    """Level follows the student up through school and can't go back down.
+    The Grade dropdown is the usual way it changes ('SHS 1' means shs)."""
+    new_level = request.level
+    if new_level is None and request.grade:
+        from_grade = level_from_grade(request.grade)
+        new_level = from_grade if from_grade in STUDENT_LEVELS else None
+    if new_level is None or new_level == user.level:
+        return
+    if not can_move_to_level(user.level, new_level):
+        raise HTTPException(
+            status_code=400,
+            detail="You can move up a level but not back down. If this was a mistake, please contact support.",
+        )
+    user.level = new_level
+
+
 @router.get("/")
 def profile_root():
     return {"module": "profile", "status": "active"}
@@ -94,7 +109,9 @@ def update_my_profile(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
-    for field in ("full_name", "school", "grade", "bio", "phone", "location", "interests", "goals", "subjects", "language", "guardian_phone", "guardian_whatsapp_opt_in", "school_digest_whatsapp_opt_in"):
+    _apply_level_change(current_user, request)
+
+    for field in ("full_name", "school", "grade", "bio", "phone", "location", "interests", "goals", "subjects", "language", "guardian_whatsapp_opt_in", "school_digest_whatsapp_opt_in"):
         value = getattr(request, field)
         if value is not None:
             setattr(current_user, field, value)
@@ -106,15 +123,35 @@ def update_my_profile(
     if current_user.school_digest_whatsapp_opt_in and not (current_user.phone and E164_PATTERN.match(current_user.phone)):
         raise HTTPException(status_code=400, detail="phone must be in E.164 format to enable the school WhatsApp digest, e.g. +233241234567")
 
-    if request.guardian_email is not None and request.guardian_email != current_user.guardian_email:
-        if request.guardian_email == current_user.email:
+    reverify_consent = False
+    new_guardian_email = request.guardian_email.strip().lower() if request.guardian_email else None
+    if new_guardian_email is not None and new_guardian_email != (current_user.guardian_email or "").lower():
+        if new_guardian_email == current_user.email.lower():
             raise HTTPException(status_code=400, detail="Guardian email must be different from your own email")
         # Changing the guardian contact always requires re-verifying it -
         # otherwise a previously-verified status would silently carry over
         # to a brand-new, never-confirmed address.
-        current_user.guardian_email = request.guardian_email
+        current_user.guardian_email = new_guardian_email
         current_user.consent_given_at = None
         current_user.consent_version = None
+        reverify_consent = True
+
+    if request.guardian_phone is not None:
+        try:
+            new_phone = normalize_phone(request.guardian_phone, current_user.country)
+        except ValueError as e:
+            raise HTTPException(status_code=400, detail=str(e)) from e
+        if new_phone != current_user.guardian_phone:
+            current_user.guardian_phone = new_phone
+            # The phone is the only guardian contact, so a new number is an
+            # unconfirmed one. With an email on file that stays the verified
+            # contact, and this is only where the WhatsApp digest goes.
+            if not current_user.guardian_email:
+                current_user.consent_given_at = None
+                current_user.consent_version = None
+                reverify_consent = True
+
+    if reverify_consent:
         issue_consent_otp(current_user)
 
     db.commit()

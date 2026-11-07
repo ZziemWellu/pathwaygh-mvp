@@ -65,6 +65,7 @@ def import_course(db, course_json: dict, level_dir_name: str):
                     duration_minutes=lesson_json.get("duration_minutes"),
                     video_url=video_url,
                     video_provider=provider,
+                    content=lesson_json.get("content"),
                 )
             )
             order_index += 1
@@ -85,6 +86,7 @@ def import_course(db, course_json: dict, level_dir_name: str):
                 duration_minutes=lesson_json.get("duration_minutes"),
                 video_url=video_url,
                 video_provider=provider,
+                content=lesson_json.get("content"),
             )
         )
         order_index += 1

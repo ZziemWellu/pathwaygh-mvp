@@ -6,14 +6,14 @@ import {
   ListChecks, PencilLine, PlayCircle, Sparkles, Target,
 } from 'lucide-react';
 import api from '../../services/api';
-import { getUser } from '../../constants/auth';
+import { getUser, setUser as setCachedUser } from '../../constants/auth';
 import { OPEN_TUTOR_EVENT } from '../../components/ai/AIChat';
 import GamificationSummary from './GamificationSummary';
 import WordOfTheDayCard from './WordOfTheDayCard';
 import './DashboardModule.css';
 import { formatDate } from '../../utils/date';
 
-const GRADES = ['JHS 1', 'JHS 2', 'JHS 3', 'SHS 1', 'SHS 2', 'SHS 3', 'University'];
+const GRADES = ['Primary 1', 'Primary 2', 'Primary 3', 'Primary 4', 'Primary 5', 'Primary 6', 'JHS 1', 'JHS 2', 'JHS 3', 'SHS 1', 'SHS 2', 'SHS 3', 'University'];
 const WEEKDAY = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
 const COUNTRY_NAMES = { GH: 'Ghana', NG: 'Nigeria', SL: 'Sierra Leone', LR: 'Liberia', GM: 'The Gambia' };
 
@@ -54,6 +54,9 @@ const DashboardModule = () => {
     setGradeError(null);
     try {
       await api.put('/api/profile/me', { grade });
+      // The cached user decides what the nav offers. A failed refresh here
+      // only delays that until the next sign-in, so it isn't worth an error.
+      api.get('/api/auth/me').then((me) => setCachedUser(me.data.user)).catch(() => {});
       const response = await api.get('/api/dashboard/summary');
       setSummary(response.data);
     } catch (err) {

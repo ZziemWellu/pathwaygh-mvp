@@ -8,7 +8,13 @@ import Button from '../../components/ui/Button';
 import './Learn.css';
 
 // [id, label]: undefined label = t('learnAllCourses'), null = t('learnMyCourses').
-const FILTERS = [['all', undefined], ['jhs', 'JHS'], ['shs', 'SHS'], ['mine', null]];
+// A student's list is already narrowed to their level by the server, so level
+// chips only show for staff and for older accounts with no level yet.
+const LEVEL_FILTERS = [['primary', 'Primary'], ['jhs', 'JHS'], ['shs', 'SHS']];
+const filtersFor = (user) => {
+  const showLevels = !user?.level || user?.is_admin || user?.is_school_admin;
+  return [['all', undefined], ...(showLevels ? LEVEL_FILTERS : []), ['mine', null]];
+};
 
 // Cover art per subject, from the course title (courses carry no subject field).
 const coverTheme = (title = '') => {
@@ -28,7 +34,7 @@ const CourseGrid = ({ user }) => {
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  // 'all' | 'jhs' | 'shs' | 'mine'; levels filter client-side, 'mine' uses /enrolled.
+  // 'all' | a level | 'mine'; levels filter client-side, 'mine' uses /enrolled.
   const [filter, setFilter] = useState('all');
   const showEnrolledOnly = filter === 'mine';
   const navigate = useNavigate();
@@ -53,7 +59,7 @@ const CourseGrid = ({ user }) => {
     }
   };
 
-  const visible = filter === 'jhs' || filter === 'shs' ? courses.filter((c) => c.level === filter) : courses;
+  const visible = filter === 'all' || filter === 'mine' ? courses : courses.filter((c) => c.level === filter);
 
   if (loading) {
     return (
@@ -85,7 +91,7 @@ const CourseGrid = ({ user }) => {
       />
 
       <div role="group" aria-label="Filter courses" className="learn-filters">
-        {FILTERS.map(([id, label]) => (
+        {filtersFor(user).map(([id, label]) => (
           <button
             key={id}
             type="button"

@@ -9,6 +9,8 @@ them here as honest ProviderNotIntegrated stubs, rather than omitting
 them, keeps the gap visible in code instead of silently unhandled.
 """
 
+import os
+
 from modules.practice_sms.providers import africas_talking
 
 
@@ -30,6 +32,19 @@ PROVIDERS_BY_COUNTRY = {
     "SL": {"send": lambda **kw: _unavailable_send("Sierra Leone", **kw)},
     "LR": {"send": lambda **kw: _unavailable_send("Liberia", **kw)},
 }
+
+
+SMS_COUNTRIES = {"GH", "NG", "GM"}
+
+
+def sms_available(country: str) -> bool:
+    """Whether a text can really reach this country right now. Unconfigured,
+    send_sms only logs the message and reports success, which must not pass
+    for delivery where a person is waiting on the code. SMS_DEV_LOG=1 allows
+    that log-only mode on a developer's machine and in tests."""
+    if country not in SMS_COUNTRIES:
+        return False
+    return africas_talking.is_configured() or os.getenv("SMS_DEV_LOG") == "1"
 
 
 def get_provider_for_country(country: str) -> dict:

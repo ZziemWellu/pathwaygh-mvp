@@ -52,7 +52,12 @@ def _set_grade(client, headers, grade):
     assert response.status_code == 200, response.text
 
 
-def test_next_step_asks_for_level_when_grade_unknown(client, auth_headers):
+def test_next_step_asks_for_level_when_grade_unknown(client, db_session, auth_headers):
+    from models.user import User
+
+    # An account from before sign-up asked for a level.
+    db_session.query(User).update({User.level: None})
+    db_session.commit()
     headers, _ = auth_headers
     data = client.get("/api/dashboard/summary", headers=headers).json()
     assert data["next_step"] == {"kind": "choose_level"}
@@ -97,7 +102,8 @@ def test_level_from_grade():
     assert level_from_grade("University") == "university"
     assert level_from_grade("") is None
     assert level_from_grade(None) is None
-    assert level_from_grade("Primary 6") is None
+    assert level_from_grade("Primary 6") == "primary"
+    assert level_from_grade("Nursery") is None
 
 
 # --- week: Monday-Sunday activity reconstructed from the streak ----------

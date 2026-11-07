@@ -34,6 +34,19 @@ def get_gemini_client():
     return _client
 
 
+# The country prompts describe the curriculum. This pitches the explanation to
+# the student's age: a primary pupil needs very different words from an SHS 3.
+LEVEL_INSTRUCTION = {
+    "primary": (
+        "\n\nThis student is a primary school pupil, a young child. Use very simple words and short "
+        "sentences, explain one idea at a time, use everyday examples like food, money and games, and be "
+        "warm and encouraging. Don't refer to BECE or WASSCE. If the child mentions being hurt, unsafe or "
+        "very upset, kindly tell them to talk to a parent, teacher or another adult they trust."
+    ),
+    "jhs": "\n\nThis student is in Junior High School. Pitch explanations at JHS level, with the BECE in mind.",
+    "shs": "\n\nThis student is in Senior High School. Pitch explanations at SHS level, with the WASSCE in mind.",
+}
+
 SYSTEM_PROMPT_BY_COUNTRY = {
     "GH": (
         "You are the AI Tutor for Learning Hotspot, an education platform for Ghanaian JHS and SHS students. "
@@ -178,6 +191,7 @@ def chat(
     system_instruction = (
         SYSTEM_PROMPT_BY_COUNTRY.get(current_user.country, SYSTEM_PROMPT_BY_COUNTRY["GH"])
         + LANGUAGE_INSTRUCTION.get(current_user.language, "")
+        + LEVEL_INSTRUCTION.get(current_user.level, "")
         + SOCRATIC_INSTRUCTION
     )
     if grounding:

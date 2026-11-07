@@ -42,6 +42,7 @@ def test_register_with_consent_false_rejected(client):
             "full_name": "A",
             "password": "secret123",
             "country": "GH",
+            "level": "jhs",
             "consent_confirmed": False,
             "guardian_email": "g@test.com",
         },
@@ -58,10 +59,11 @@ def test_register_without_guardian_email_rejected(client):
             "full_name": "A",
             "password": "secret123",
             "country": "GH",
+            "level": "jhs",
             "consent_confirmed": True,
         },
     )
-    assert response.status_code == 422
+    assert response.status_code == 400
 
 
 def test_register_with_guardian_email_matching_own_email_rejected(client):
@@ -72,6 +74,7 @@ def test_register_with_guardian_email_matching_own_email_rejected(client):
             "full_name": "A",
             "password": "secret123",
             "country": "GH",
+            "level": "jhs",
             "consent_confirmed": True,
             "guardian_email": "same_email@test.com",
         },
@@ -102,7 +105,7 @@ def test_verify_consent_with_correct_code_succeeds(client, caplog):
 
     profile = client.get("/api/profile/me", headers=headers).json()
     assert profile["consent_given_at"] is not None
-    assert profile["consent_version"] == "2026-09-v1"
+    assert profile["consent_version"] == "2026-11-v1"
 
 
 def test_verify_consent_with_wrong_code_increments_attempts_and_fails(client, caplog):

@@ -27,6 +27,10 @@ logger = logging.getLogger(__name__)
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 QUESTIONS_FILE = PROJECT_ROOT / "data" / "practice" / "questions.json"
+# Built by scripts/build_question_bank.py. A subject whose id is already in
+# questions.json adds to it (topic by topic); a new id is a new subject.
+BANK_FILES = (PROJECT_ROOT / "data" / "practice" / "bank_gh.json",)
+_bank_cache: dict = {}
 
 DEFAULT_PRIOR = 0.3
 P_TRANSIT = 0.1
@@ -73,6 +77,30 @@ def effective_mastery(mastery: SkillMastery, now: Optional[datetime] = None) -> 
     return decay_mastery(mastery.mastery_probability, mastery.last_updated, now)
 
 
+def _merge_bank(data: dict, bank: dict) -> None:
+    by_id = {s["id"]: s for s in data["subjects"]}
+    for subject in bank.get("subjects", []):
+        existing = by_id.get(subject["id"])
+        if existing is None:
+            data["subjects"].append(subject)
+            continue
+        if subject.get("levels"):
+            existing["levels"] = subject["levels"]
+        topics = {t["id"]: t for t in existing["topics"]}
+        for topic in subject["topics"]:
+            if topic["id"] in topics:
+                topics[topic["id"]]["questions"].extend(topic["questions"])
+            else:
+                existing["topics"].append(topic)
+
+
+def subject_is_for_level(subject: dict, level: Optional[str]) -> bool:
+    """Banks with no "levels" of their own predate the primary/JHS/SHS split
+    and cover JHS and SHS. No level (an older account, or an anonymous
+    visitor) sees everything in their country."""
+    return level is None or level in subject.get("levels", ("jhs", "shs"))
+
+
 def load_questions() -> dict:
     """Loads the practice question bank, falling back to a tiny built-in
     sample if the data file is missing or unreadable - shared by the
@@ -80,10 +108,20 @@ def load_questions() -> dict:
     display names for weak-topic reporting)."""
     try:
         if QUESTIONS_FILE.exists():
+            # The bank is large and read on every practice request, so it's
+            # parsed once and again only if a file on disk changes.
+            paths = [QUESTIONS_FILE, *(p for p in BANK_FILES if p.exists())]
+            cache_key = tuple((str(p), p.stat().st_mtime) for p in paths)
+            if _bank_cache.get("key") == cache_key:
+                return _bank_cache["data"]
             with open(QUESTIONS_FILE, "r", encoding="utf-8") as f:
                 data = json.load(f)
-                if data.get("subjects"):
-                    return data
+            if data.get("subjects"):
+                for path in paths[1:]:
+                    with open(path, "r", encoding="utf-8") as f:
+                        _merge_bank(data, json.load(f))
+                _bank_cache.update(key=cache_key, data=data)
+                return data
     except Exception as e:
         logger.error(f"Error loading questions: {e}")
 

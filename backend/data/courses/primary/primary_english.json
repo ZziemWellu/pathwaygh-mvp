@@ -1,0 +1,38 @@
+{
+  "slug": "primary-english-foundations",
+  "title": "Primary English: Foundations",
+  "description": "Nouns, verbs, tenses and full sentences, for upper primary pupils.",
+  "level": "primary",
+  "country": "GH",
+  "lessons": [
+    {
+      "id": "primary-english-nouns",
+      "title": "Nouns",
+      "description": "Words that name people, places and things.",
+      "is_free_preview": true,
+      "duration_minutes": 10,
+      "content": "# Nouns\n\nA **noun** names a person, a place or a thing.\n\n- Person: teacher, Ama, farmer\n- Place: Kumasi, school, market\n- Thing: book, goat, ball\n\n## Common and proper nouns\n\n**Proper nouns** are the names of particular people or places, and they start with a capital letter: *Ama*, *Accra*, *Lake Volta*.\n\n**Common nouns** are general words: *girl*, *city*, *lake*.\n\n**Try it:** Find the two nouns in this sentence: *The boy kicked the ball.* *(Answer: boy, ball)*"
+    },
+    {
+      "id": "primary-english-verbs",
+      "title": "Verbs",
+      "description": "Words that show actions.",
+      "duration_minutes": 10,
+      "content": "# Verbs\n\nA **verb** tells us what someone or something does.\n\n- Kofi **runs** to school.\n- The hen **laid** an egg.\n- We **sing** in assembly.\n\nSome verbs tell us how someone or something is: *is*, *am*, *are*, *was*, *were*.\n\n- Ama **is** tall.\n- They **were** happy.\n\n**Try it:** Find the verb: *My mother cooks banku.* *(Answer: cooks)*"
+    },
+    {
+      "id": "primary-english-tenses",
+      "title": "Past, present and future",
+      "description": "Using verbs to show when something happens.",
+      "duration_minutes": 15,
+      "content": "# Tenses\n\nThe tense of a verb tells us **when** something happens.\n\n| Past | Present | Future |\n|---|---|---|\n| I walked | I walk | I will walk |\n| She played | She plays | She will play |\n\n## Verbs that change in the past\n\nSome verbs don't add *-ed* in the past. Learn these:\n\n- go becomes **went**\n- eat becomes **ate**\n- see becomes **saw**\n- run becomes **ran**\n\n**Try it:** Change to the past: *I go to the market.* *(Answer: I went to the market.)*"
+    },
+    {
+      "id": "primary-english-sentences",
+      "title": "Writing good sentences",
+      "description": "Capital letters, full stops and complete ideas.",
+      "duration_minutes": 15,
+      "content": "# Writing good sentences\n\nA sentence is a complete idea. It tells us **who** and **what happens**.\n\n*The children played football.*\n\n- Who? The children\n- What happened? They played football\n\n## Three rules\n\n1. Start with a capital letter.\n2. End with a full stop, a question mark or an exclamation mark.\n3. Make sure it is a complete idea. *Went to school* is not a sentence, because it doesn't say who went.\n\n**Try it:** Correct this: *ama went to kumasi* *(Answer: Ama went to Kumasi.)*"
+    }
+  ]
+}

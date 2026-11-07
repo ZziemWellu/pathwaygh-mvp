@@ -38,10 +38,16 @@ def test_guardian_phone_defaults_to_false_opt_in(client, auth_headers):
     assert fetched.json()["guardian_whatsapp_opt_in"] is False
 
 
-def test_guardian_phone_rejects_non_e164(client, auth_headers):
+def test_guardian_phone_accepts_a_local_number(client, auth_headers):
     headers, _ = auth_headers
-    response = client.put("/api/profile/me", json={"guardian_phone": "0241234567"}, headers=headers)
-    assert response.status_code == 422
+    response = client.put("/api/profile/me", json={"guardian_phone": "024 123 4567"}, headers=headers)
+    assert response.json()["profile"]["guardian_phone"] == "+233241234567"
+
+
+def test_guardian_phone_rejects_a_number_from_another_country(client, auth_headers):
+    headers, _ = auth_headers
+    response = client.put("/api/profile/me", json={"guardian_phone": "+14155552671"}, headers=headers)
+    assert response.status_code == 400
 
 
 def test_guardian_phone_change_does_not_touch_email_consent(client, auth_headers):

@@ -1,7 +1,7 @@
 def test_register_returns_token(client):
     response = client.post(
         "/api/auth/register",
-        json={"email": "new@test.com", "full_name": "New Student", "password": "secret123", "country": "GH", "consent_confirmed": True, "guardian_email": "g@test.com"},
+        json={"email": "new@test.com", "full_name": "New Student", "password": "secret123", "country": "GH", "level": "jhs", "consent_confirmed": True, "guardian_email": "g@test.com"},
     )
     assert response.status_code == 200
     data = response.json()
@@ -13,19 +13,19 @@ def test_register_returns_token(client):
 
 
 def test_duplicate_email_rejected(client):
-    client.post("/api/auth/register", json={"email": "dup@test.com", "full_name": "A", "password": "secret123", "country": "GH", "consent_confirmed": True, "guardian_email": "g@test.com"})
-    response = client.post("/api/auth/register", json={"email": "dup@test.com", "full_name": "B", "password": "other123", "country": "GH", "consent_confirmed": True, "guardian_email": "g@test.com"})
+    client.post("/api/auth/register", json={"email": "dup@test.com", "full_name": "A", "password": "secret123", "country": "GH", "level": "jhs", "consent_confirmed": True, "guardian_email": "g@test.com"})
+    response = client.post("/api/auth/register", json={"email": "dup@test.com", "full_name": "B", "password": "other123", "country": "GH", "level": "jhs", "consent_confirmed": True, "guardian_email": "g@test.com"})
     assert response.status_code == 400
 
 
 def test_login_wrong_password_rejected(client):
-    client.post("/api/auth/register", json={"email": "user@test.com", "full_name": "A", "password": "secret123", "country": "GH", "consent_confirmed": True, "guardian_email": "g@test.com"})
+    client.post("/api/auth/register", json={"email": "user@test.com", "full_name": "A", "password": "secret123", "country": "GH", "level": "jhs", "consent_confirmed": True, "guardian_email": "g@test.com"})
     response = client.post("/api/auth/login", json={"email": "user@test.com", "password": "wrongpass"})
     assert response.status_code == 401
 
 
 def test_login_success(client):
-    client.post("/api/auth/register", json={"email": "user2@test.com", "full_name": "A", "password": "secret123", "country": "GH", "consent_confirmed": True, "guardian_email": "g@test.com"})
+    client.post("/api/auth/register", json={"email": "user2@test.com", "full_name": "A", "password": "secret123", "country": "GH", "level": "jhs", "consent_confirmed": True, "guardian_email": "g@test.com"})
     response = client.post("/api/auth/login", json={"email": "user2@test.com", "password": "secret123"})
     assert response.status_code == 200
     assert response.json()["token"]
@@ -46,7 +46,7 @@ def test_me_returns_authenticated_user(client, auth_headers):
 def test_login_is_rate_limited_per_account(client):
     client.post(
         "/api/auth/register",
-        json={"email": "ratelimit@test.com", "full_name": "A", "password": "secret123", "country": "GH", "consent_confirmed": True, "guardian_email": "g@test.com"},
+        json={"email": "ratelimit@test.com", "full_name": "A", "password": "secret123", "country": "GH", "level": "jhs", "consent_confirmed": True, "guardian_email": "g@test.com"},
     )
 
     # Per-account limit is 10/minute - the 11th rapid attempt against the
@@ -68,6 +68,7 @@ def test_register_is_rate_limited_per_ip(client):
                 "full_name": "A",
                 "password": "secret123",
                 "country": "GH",
+                "level": "jhs",
                 "consent_confirmed": True,
                 "guardian_email": "g@test.com",
             },
@@ -89,7 +90,7 @@ def test_a_classroom_logging_in_from_one_ip_is_not_locked_out(client):
     for email in emails:
         client.post(
             "/api/auth/register",
-            json={"email": email, "full_name": "S", "password": "secret123", "country": "GH", "consent_confirmed": True, "guardian_email": "g" + email},
+            json={"email": email, "full_name": "S", "password": "secret123", "country": "GH", "level": "jhs", "consent_confirmed": True, "guardian_email": "g" + email},
         )
     statuses = [client.post("/api/auth/login", json={"email": e, "password": "secret123"}).status_code for e in emails]
     assert statuses == [200] * 12
@@ -98,6 +99,6 @@ def test_a_classroom_logging_in_from_one_ip_is_not_locked_out(client):
 def test_register_rejects_a_password_shorter_than_8_characters(client):
     response = client.post(
         "/api/auth/register",
-        json={"email": "shortpw@test.com", "full_name": "A", "password": "abc1234", "country": "GH", "consent_confirmed": True, "guardian_email": "g@test.com"},
+        json={"email": "shortpw@test.com", "full_name": "A", "password": "abc1234", "country": "GH", "level": "jhs", "consent_confirmed": True, "guardian_email": "g@test.com"},
     )
     assert response.status_code == 422

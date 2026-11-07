@@ -162,6 +162,7 @@ modules = [
     ("parent", "modules.parent.router", "/api/parent"),
     ("school", "modules.school.router", "/api/school"),
     ("payment", "modules.payment.router", "/api/payment"),
+    ("school_choice", "modules.school_choice.router", "/api/school-choice"),
     ("practice_sms", "modules.practice_sms.router", "/api/practice-sms"),
     ("gamification", "modules.gamification.router", "/api/gamification"),
     ("vocabulary", "modules.vocabulary.router", "/api/vocabulary"),

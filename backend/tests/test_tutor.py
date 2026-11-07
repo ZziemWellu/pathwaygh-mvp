@@ -173,3 +173,12 @@ def test_chat_without_a_subject_id_does_not_touch_mastery_data(client, monkeypat
 
     system_instruction = fake_client.models.calls[0]["config"]["system_instruction"]
     assert "weaker mastery" not in system_instruction
+
+
+def test_level_instruction_pitches_primary_answers_to_a_young_child():
+    from modules.tutor.router import LEVEL_INSTRUCTION
+
+    assert "young child" in LEVEL_INSTRUCTION["primary"]
+    assert "trust" in LEVEL_INSTRUCTION["primary"]
+    assert "WASSCE" in LEVEL_INSTRUCTION["shs"]
+    assert "BECE" in LEVEL_INSTRUCTION["jhs"]

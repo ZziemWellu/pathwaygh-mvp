@@ -21,7 +21,7 @@ const COUNTRIES = [
 const STEPS = [
   {
     title: 'Choose your country and level',
-    body: "Courses, practice questions and universities follow your country's syllabus - JHS or SHS.",
+    body: "Courses, practice questions and universities follow your country's syllabus - primary, JHS or SHS.",
   },
   {
     title: 'Learn and practise every day',
@@ -34,7 +34,7 @@ const STEPS = [
 ];
 
 const FEATURES = [
-  { icon: PlayCircle, tint: 'primary', title: 'Video courses', body: 'Short lessons for JHS and SHS subjects, with progress tracking and a verifiable certificate when you finish.' },
+  { icon: PlayCircle, tint: 'primary', title: 'Video courses', body: 'Short lessons for primary, JHS and SHS subjects, with progress tracking and a verifiable certificate when you finish.' },
   { icon: Bot, tint: 'accent', title: 'Practice with an AI tutor', body: 'Exam-style quizzes, and a tutor that gives hints before answers and double-checks its maths with a calculator.' },
   { icon: GraduationCap, tint: 'violet', title: 'Career Match & universities', body: 'Careers matched to your interests, WASSCE subject requirements, university programmes and scholarships.' },
   { icon: Layers, tint: 'info', title: 'Flashcards & Word of the Day', body: "Spaced-repetition flashcards bring back what you're about to forget; a new word every day builds vocabulary." },
@@ -63,7 +63,7 @@ const Landing = ({ onGetStarted, onSignIn, onShowPrivacy }) => (
     <main>
       <section className="landing__hero">
         <div className="landing__hero-copy">
-          <p className="landing__eyebrow">For JHS &amp; SHS students across West Africa</p>
+          <p className="landing__eyebrow">For primary, JHS &amp; SHS students across West Africa</p>
           <h1 className="landing__title">
             Find your path.<br />Pass your exams.<br /><span>Plan your future.</span>
           </h1>
