@@ -54,6 +54,7 @@ def _profile_out(user: User) -> dict:
         "id": user.id,
         "full_name": user.full_name,
         "email": user.email,
+        "username": user.username,
         "school": user.school,
         "grade": user.grade,
         "level": user.level,
@@ -88,7 +89,7 @@ def _apply_level_change(user: User, request: ProfileUpdateRequest) -> None:
     if not can_move_to_level(user.level, new_level):
         raise HTTPException(
             status_code=400,
-            detail="You can move up a level but not back down. If this was a mistake, please contact support.",
+            detail="You can move up a level but not back down. If this was a mistake, ask your school admin or contact support to correct it.",
         )
     user.level = new_level
 
@@ -126,7 +127,7 @@ def update_my_profile(
     reverify_consent = False
     new_guardian_email = request.guardian_email.strip().lower() if request.guardian_email else None
     if new_guardian_email is not None and new_guardian_email != (current_user.guardian_email or "").lower():
-        if new_guardian_email == current_user.email.lower():
+        if current_user.email and new_guardian_email == current_user.email.lower():
             raise HTTPException(status_code=400, detail="Guardian email must be different from your own email")
         # Changing the guardian contact always requires re-verifying it -
         # otherwise a previously-verified status would silently carry over
@@ -142,6 +143,9 @@ def update_my_profile(
         except ValueError as e:
             raise HTTPException(status_code=400, detail=str(e)) from e
         if new_phone != current_user.guardian_phone:
+            own_phone = (current_user.phone or "").replace(" ", "")
+            if own_phone and own_phone == new_phone:
+                raise HTTPException(status_code=400, detail="Your parent or guardian's phone must be different from your own")
             current_user.guardian_phone = new_phone
             # The phone is the only guardian contact, so a new number is an
             # unconfirmed one. With an email on file that stays the verified

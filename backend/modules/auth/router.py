@@ -2,15 +2,17 @@
 Authentication Module Router
 """
 
+import logging
 from typing import Literal, Optional
 
 from fastapi import APIRouter, Depends, HTTPException, Request
 from pydantic import BaseModel, EmailStr, Field, field_validator
-from sqlalchemy import func
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
+from core.accounts import find_user, normalize_username, username_taken
 from core.database import get_db
+from core.levels import level_from_grade
 from core.phone import mask_phone, normalize_phone
 from core.rate_limit import hit_per_account, limiter, user_or_ip
 from core.security import create_access_token, get_current_user, hash_password, verify_password
@@ -20,28 +22,43 @@ from modules.auth.password_reset import issue_password_reset_token, reset_passwo
 from modules.practice_sms.providers import sms_available
 
 router = APIRouter(tags=["auth"])
+logger = logging.getLogger(__name__)
 
 
 class RegisterRequest(BaseModel):
-    email: EmailStr
+    # One of these two is required - see register().
+    email: Optional[EmailStr] = None
+    username: Optional[str] = None
     full_name: str = Field(min_length=1, max_length=255)
     password: str = Field(min_length=8, max_length=128)
     country: Literal["GH", "NG", "SL", "LR", "GM"]
     level: Literal["primary", "jhs", "shs"]
+    grade: Optional[str] = Field(default=None, max_length=50)
     consent_confirmed: bool
     # At least one is required - see register().
     guardian_email: Optional[EmailStr] = None
     guardian_phone: Optional[str] = None
 
-    @field_validator("guardian_email", "guardian_phone", mode="before")
+    @field_validator("email", "username", "grade", "guardian_email", "guardian_phone", mode="before")
     @classmethod
     def _blank_is_none(cls, value):
         return (value.strip() or None) if isinstance(value, str) else value
 
 
 class LoginRequest(BaseModel):
-    email: EmailStr
+    # An email or a username. "email" is kept for app versions already out there.
+    identifier: Optional[str] = None
+    email: Optional[str] = None
     password: str
+
+    @property
+    def account(self) -> str:
+        return (self.identifier or self.email or "").strip()
+
+
+class ChangePasswordRequest(BaseModel):
+    current_password: str
+    new_password: str = Field(min_length=8, max_length=128)
 
 
 class ConsentOtpRequest(BaseModel):
@@ -49,23 +66,31 @@ class ConsentOtpRequest(BaseModel):
 
 
 class ForgotPasswordRequest(BaseModel):
-    email: EmailStr
+    identifier: Optional[str] = None
+    email: Optional[str] = None
+
+    @property
+    def account(self) -> str:
+        return (self.identifier or self.email or "").strip()
 
 
 class ResetPasswordRequest(BaseModel):
-    email: EmailStr
+    identifier: Optional[str] = None
+    email: Optional[str] = None
     token: str
     new_password: str = Field(min_length=8, max_length=128)
 
-
-def _find_user_by_email(db: Session, email: str) -> Optional[User]:
-    return db.query(User).filter(func.lower(User.email) == email.strip().lower()).first()
+    @property
+    def account(self) -> str:
+        return (self.identifier or self.email or "").strip()
 
 
 def _user_out(user: User) -> dict:
     return {
         "id": user.id,
         "email": user.email,
+        "username": user.username,
+        "must_change_password": bool(user.must_change_password),
         "full_name": user.full_name,
         "is_admin": user.is_admin,
         "is_school_admin": user.is_school_admin,
@@ -96,9 +121,19 @@ def consent_channels(country: Literal["GH", "NG", "SL", "LR", "GM"]):
 def register(request: Request, body: RegisterRequest, db: Session = Depends(get_db)):
     if not body.consent_confirmed:
         raise HTTPException(status_code=400, detail="You must confirm the age/consent statement to register")
-    email = body.email.strip().lower()
+    email = body.email.strip().lower() if body.email else None
     guardian_email = body.guardian_email.strip().lower() if body.guardian_email else None
-    if guardian_email == email:
+    if not email and not body.username:
+        raise HTTPException(status_code=400, detail="Please give an email or choose a username")
+    username = None
+    if body.username:
+        try:
+            username = normalize_username(body.username)
+        except ValueError as e:
+            raise HTTPException(status_code=400, detail=str(e)) from e
+    if body.grade and level_from_grade(body.grade) != body.level:
+        raise HTTPException(status_code=400, detail="Your class doesn't match the level you chose")
+    if email and guardian_email == email:
         raise HTTPException(status_code=400, detail="Guardian email must be different from your own email")
     if not guardian_email and not body.guardian_phone:
         raise HTTPException(status_code=400, detail="Please give your parent or guardian's phone number or email")
@@ -122,11 +157,15 @@ def register(request: Request, body: RegisterRequest, db: Session = Depends(get_
         "This email already has an account. An email can only be used once, "
         "for one country and one level. Please sign in, or use a different email."
     )
-    if _find_user_by_email(db, email):
+    if email and find_user(db, email):
         raise HTTPException(status_code=400, detail=duplicate_detail)
+    if username and username_taken(db, username):
+        raise HTTPException(status_code=400, detail="That username is taken - please try another")
 
     user = User(
         email=email,
+        username=username,
+        grade=body.grade,
         full_name=body.full_name,
         password_hash=hash_password(body.password),
         country=body.country,
@@ -151,8 +190,8 @@ def register(request: Request, body: RegisterRequest, db: Session = Depends(get_
 @router.post("/login")
 @limiter.limit("60/minute")
 def login(request: Request, body: LoginRequest, db: Session = Depends(get_db)):
-    hit_per_account("10/minute", "login", body.email)
-    user = _find_user_by_email(db, body.email)
+    hit_per_account("10/minute", "login", body.account)
+    user = find_user(db, body.account)
     if not user or not verify_password(body.password, user.password_hash):
         raise HTTPException(status_code=401, detail="Invalid credentials")
 
@@ -198,27 +237,56 @@ def resend_consent(
     return {"success": True}
 
 
+@router.post("/change-password")
+@limiter.limit("10/hour", key_func=user_or_ip)
+def change_password(
+    request: Request,
+    body: ChangePasswordRequest,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    if not verify_password(body.current_password, current_user.password_hash):
+        raise HTTPException(status_code=400, detail="Your current password isn't right")
+    if body.new_password == body.current_password:
+        raise HTTPException(status_code=400, detail="Please choose a different password from the one you have now")
+    current_user.password_hash = hash_password(body.new_password)
+    current_user.must_change_password = False
+    # Signs out every other session, then hands this one a new token.
+    current_user.token_version = (current_user.token_version or 0) + 1
+    db.commit()
+    db.refresh(current_user)
+    return {"success": True, "token": create_access_token(current_user.id, current_user.token_version), "user": _user_out(current_user)}
+
+
 @router.post("/forgot-password")
 @limiter.limit("20/hour")
 def forgot_password(request: Request, body: ForgotPasswordRequest, db: Session = Depends(get_db)):
-    hit_per_account("5/hour", "forgot-password", body.email)
-    user = _find_user_by_email(db, body.email)
+    hit_per_account("5/hour", "forgot-password", body.account)
+    user = find_user(db, body.account)
     # Always return the same generic response whether or not the email
     # exists - a different response would let anyone enumerate which
     # emails are registered.
     if user:
-        issue_password_reset_token(user)
+        try:
+            issue_password_reset_token(user)
+        except HTTPException:
+            # An SMS cap was hit. Saying so would reveal the account exists.
+            logger.warning("Password reset code not sent: SMS limit reached")
         db.commit()
-    return {"success": True, "message": "If that email is registered, a reset code has been sent to it."}
+    return {
+        "success": True,
+        "message": "If that account exists, a reset code has been sent to its email, or to the parent or guardian.",
+    }
 
 
 @router.post("/reset-password")
 @limiter.limit("30/hour")
 def reset_password_endpoint(request: Request, body: ResetPasswordRequest, db: Session = Depends(get_db)):
-    hit_per_account("10/hour", "reset-password", body.email)
-    user = _find_user_by_email(db, body.email)
+    hit_per_account("10/hour", "reset-password", body.account)
+    user = find_user(db, body.account)
     if not user:
         raise HTTPException(status_code=400, detail="Incorrect or invalid reset code")
     reset_password(user, body.token, body.new_password)
+    user.must_change_password = False
     db.commit()
     return {"success": True, "message": "Password has been reset - you can now log in."}

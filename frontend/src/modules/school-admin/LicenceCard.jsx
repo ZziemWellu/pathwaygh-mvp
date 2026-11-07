@@ -157,7 +157,10 @@ const LicenceCard = ({ onLicenceChange }) => {
         <>
           <div className="licence-card__status"><StatusLine licence={licence} /></div>
 
-          {licence.can_buy && term && year && !licence.renewal_queued && (
+          {licence.can_buy && quote?.payments_open === false && (
+            <p>Online payment for your country opens soon. Your school keeps its current plan until then.</p>
+          )}
+          {licence.can_buy && quote?.payments_open !== false && term && year && !licence.renewal_queued && (
             <>
               <div className="licence-card__options">
                 <div className="licence-option">
@@ -193,7 +196,7 @@ const LicenceCard = ({ onLicenceChange }) => {
             </>
           )}
 
-          {licence.plan === 'paid' && licence.can_buy && (
+          {licence.plan === 'paid' && licence.can_buy && quote?.payments_open !== false && (
             <div className="licence-card__topup">
               <label htmlFor="extra-seats">Need more seats?</label>
               <input

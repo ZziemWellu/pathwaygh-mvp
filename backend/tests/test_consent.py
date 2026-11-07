@@ -105,7 +105,7 @@ def test_verify_consent_with_correct_code_succeeds(client, caplog):
 
     profile = client.get("/api/profile/me", headers=headers).json()
     assert profile["consent_given_at"] is not None
-    assert profile["consent_version"] == "2026-11-v1"
+    assert profile["consent_version"] == "2026-11-v2"
 
 
 def test_verify_consent_with_wrong_code_increments_attempts_and_fails(client, caplog):

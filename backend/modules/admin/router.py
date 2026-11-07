@@ -4,18 +4,21 @@ exercises. Every route requires require_admin (a real is_admin flag on
 the User row, set manually in the database - no self-service signup).
 """
 
-from typing import List, Optional
+import logging
+from typing import List, Literal, Optional
 
 from fastapi import APIRouter, Depends, HTTPException
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from sqlalchemy.orm import Session
 
+from core.accounts import correct_level, find_user
 from core.database import get_db
 from core.security import require_admin
 from models.certificate import Certificate
 from models.course import Course, Exercise, Lesson
 from models.user import User
 
+logger = logging.getLogger(__name__)
 router = APIRouter(tags=["admin"])
 
 
@@ -273,3 +276,47 @@ def reorder_exercises(lesson_id: int, payload: ReorderRequest, db: Session = Dep
         exercises_by_id[exercise_id].order_index = index
     db.commit()
     return [_exercise_out(exercises_by_id[eid]) for eid in payload.exercise_ids]
+
+
+# --- Student level corrections ---------------------------------------------
+# For a student with no school admin to ask. Finds one account by its exact
+# email or username, with no browsing or searching, and every change is logged
+# in level_changes.
+
+class AdminCorrectLevelRequest(BaseModel):
+    identifier: str = Field(min_length=3, max_length=255)
+    level: Literal["primary", "jhs", "shs"]
+    reason: str = Field(min_length=3, max_length=255)
+
+
+def _student_summary(student: User) -> dict:
+    return {
+        "id": student.id,
+        "full_name": student.full_name,
+        "country": student.country,
+        "level": student.level,
+        "grade": student.grade,
+    }
+
+
+@router.get("/students/lookup")
+def lookup_student(identifier: str, admin: User = Depends(require_admin), db: Session = Depends(get_db)):
+    student = find_user(db, identifier)
+    if not student:
+        raise HTTPException(status_code=404, detail="No account has exactly that email or username")
+    logger.info("Admin %s looked up student %s", admin.id, student.id)
+    return {"success": True, "student": _student_summary(student)}
+
+
+@router.post("/students/level")
+def admin_correct_level(
+    request: AdminCorrectLevelRequest,
+    admin: User = Depends(require_admin),
+    db: Session = Depends(get_db),
+):
+    student = find_user(db, request.identifier)
+    if not student:
+        raise HTTPException(status_code=404, detail="No account has exactly that email or username")
+    correct_level(db, student, request.level, admin, request.reason)
+    db.commit()
+    return {"success": True, "student": _student_summary(student)}

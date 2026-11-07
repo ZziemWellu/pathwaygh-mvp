@@ -12,6 +12,7 @@ from pydantic import BaseModel
 from sqlalchemy.orm import Session
 
 from core.database import get_db
+from core.levels import primary_class
 from core.security import get_current_user, get_current_user_optional
 from models.active_quiz import ActiveQuiz
 from models.quiz_attempt import QuizAttempt
@@ -22,6 +23,7 @@ from modules.practice.mastery import (
     allocate_adaptive_slots,
     effective_mastery,
     load_questions,
+    question_is_for_class,
     record_sub_skill_attempt,
     record_topic_attempt,
     subject_is_for_level,
@@ -79,6 +81,7 @@ def get_all_questions(
     difficulty: Optional[str] = None,
     country: Optional[str] = None,
     level: Optional[str] = None,
+    class_number: Optional[int] = None,
 ):
     data = load_questions()
     all_questions = []
@@ -94,6 +97,8 @@ def get_all_questions(
                 continue
             for q in topic_data.get("questions", []):
                 if difficulty and q.get("difficulty") != difficulty:
+                    continue
+                if not question_is_for_class(q, class_number):
                     continue
                 q["subject_id"] = subject["id"]
                 q["subject_name"] = subject["name"]
@@ -131,6 +136,7 @@ def get_subjects(
     if country is None and current_user is not None:
         country = current_user.country
     level = current_user.level if current_user is not None else None
+    class_number = primary_class(current_user.grade) if current_user is not None else None
     data = load_questions()
     # Per-subject mastery (mean decayed mastery of the topics practised), so
     # Practice can show progress per subject. None until the student has
@@ -148,9 +154,13 @@ def get_subjects(
         topics = []
         question_count = 0
         for t in s.get("topics", []):
-            q_count = len(t.get("questions", []))
+            q_count = sum(1 for q in t.get("questions", []) if question_is_for_class(q, class_number))
+            if not q_count:
+                continue
             question_count += q_count
             topics.append({"id": t["id"], "name": t["name"], "question_count": q_count})
+        if not question_count:
+            continue
         practised = mastery_by_subject.get(s["id"], [])
         subjects.append(
             {
@@ -171,7 +181,19 @@ def get_subject(subject_id: str):
     data = load_questions()
     for s in data.get("subjects", []):
         if s["id"] == subject_id:
-            return {"success": True, "subject": s}
+            # This route is public, so it never includes answers or explanations.
+            topics = [
+                {
+                    "id": t["id"],
+                    "name": t["name"],
+                    "questions": [
+                        {"id": q["id"], "question": q["question"], "options": q.get("options", []), "difficulty": q.get("difficulty")}
+                        for q in t.get("questions", [])
+                    ],
+                }
+                for t in s.get("topics", [])
+            ]
+            return {"success": True, "subject": {**{k: v for k, v in s.items() if k != "topics"}, "topics": topics}}
     raise HTTPException(status_code=404, detail=f"Subject '{subject_id}' not found")
 
 
@@ -181,7 +203,7 @@ def start_quiz(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
-    questions = get_all_questions(request.subject_id, request.topic, request.difficulty, current_user.country, current_user.level)
+    questions = get_all_questions(request.subject_id, request.topic, request.difficulty, current_user.country, current_user.level, primary_class(current_user.grade))
     if not questions:
         raise HTTPException(status_code=404, detail="No questions found for the selected criteria")
 

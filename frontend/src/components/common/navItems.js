@@ -21,7 +21,7 @@ export const getNavItems = (user, t) => [
   { id: 'plan', icon: ListChecks, label: t('navPlan'), path: '/plan' },
   { id: 'progress', icon: Trophy, label: t('navProgress'), path: '/progress' },
   { id: 'profile', icon: User, label: t('navProfile'), path: '/profile' },
-  { id: 'community', icon: Users, label: t('navCommunity'), path: '/community' },
+  ...(user?.level === 'primary' ? [] : [{ id: 'community', icon: Users, label: t('navCommunity'), path: '/community' }]),
   ...(user?.is_admin ? [{ id: 'admin', icon: Shield, label: t('navAdmin'), path: '/admin' }] : []),
   ...(user?.is_admin ? [{ id: 'impact', icon: BarChart3, label: t('navImpact'), path: '/impact' }] : []),
   ...(user?.is_school_admin ? [{ id: 'school-admin', icon: Building2, label: t('navSchoolAdmin'), path: '/school-admin' }] : []),

@@ -15,7 +15,7 @@ const Login = ({ onSuccess }) => {
     setLoading(true);
     setError('');
     try {
-      const response = await api.post('/api/auth/login', { email, password });
+      const response = await api.post('/api/auth/login', { identifier: email.trim(), password });
       if (response.data?.success) {
         onSuccess(response.data.user, response.data.token);
       } else {
@@ -38,15 +38,17 @@ const Login = ({ onSuccess }) => {
       {error && <p style={{ color: 'red', textAlign: 'center' }}>{error}</p>}
       <form onSubmit={handleSubmit}>
         <div style={{ marginBottom: '16px' }}>
-          <label htmlFor="login-email" style={{ display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>{t('email')}</label>
+          <label htmlFor="login-email" style={{ display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>{t('emailOrUsername')}</label>
           <input
             id="login-email"
-            type="email"
+            type="text"
+            autoComplete="username"
+            autoCapitalize="none"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
             style={{ width: '100%', padding: '10px', border: '1px solid var(--border)', borderRadius: '8px' }}
-            placeholder={t('emailPlaceholder')}
+            placeholder={t('emailOrUsername')}
           />
         </div>
         <div style={{ marginBottom: '16px' }}>

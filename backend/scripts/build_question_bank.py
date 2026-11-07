@@ -26,6 +26,7 @@ import question_bank_written as written  # noqa: E402
 DATA_DIR = Path(__file__).resolve().parents[1] / "data" / "practice"
 BANK_FILE = DATA_DIR / "bank_gh.json"
 REVIEW_CSV = DATA_DIR / "bank_gh_for_teacher_review.csv"
+DECISIONS_FILE = DATA_DIR / "bank_gh_teacher_decisions.json"
 
 NAMES = ["Ama", "Kofi", "Akosua", "Kwame", "Esi", "Yaw", "Abena", "Kojo", "Adjoa", "Fuseini", "Selorm", "Naa"]
 ITEMS = ["oranges", "mangoes", "exercise books", "pencils", "eggs", "tubers of yam"]
@@ -97,6 +98,31 @@ C = RNG.choice
 
 
 # ---------------------------------------------------------------- Primary
+
+def p_add_20():
+    a, b = R(1, 10), R(1, 9)
+    return q(f"What is {a} + {b}?", a + b, [a + b + 1, a + b - 1 if a + b > 1 else a + b + 2, a + b + 2], f"Count on {b} from {a}: {a} + {b} = {a + b}.", "easy")
+
+
+def p_sub_20():
+    a, b = R(5, 20), R(1, 4)
+    return q(f"What is {a} - {b}?", a - b, [a - b + 1, a - b - 1, a + b], f"Count back {b} from {a}: {a} - {b} = {a - b}.", "easy")
+
+
+def p_add_100():
+    a, b = R(11, 60), R(11, 39)
+    return q(f"What is {a} + {b}?", a + b, [a + b + 10, a + b - 10, a + b + 1], f"Add the tens, then the ones: {a} + {b} = {a + b}.", "easy")
+
+
+def p_sub_100():
+    a, b = R(30, 99), R(11, 29)
+    return q(f"What is {a} - {b}?", a - b, [a - b + 10, a - b - 10, a - b + 1], f"{a} - {b} = {a - b}. Check: {a - b} + {b} = {a}.", "easy")
+
+
+def p_tables():
+    a, b = C([2, 5, 10]), R(1, 10)
+    return q(f"What is {a} x {b}?", a * b, [a * b + a, a * b + 1, a + b + 1 if a + b == a * b else a + b], f"Count in {a}s, {b} times: {a} x {b} = {a * b}.", "easy")
+
 
 def p_add():
     a, b = R(100, 8999), R(100, 999)
@@ -246,6 +272,8 @@ def j_bodmas():
 
 def j_percent_change():
     price, pct = C([40, 50, 80, 100, 120, 150, 200, 250, 400, 500]), C([10, 20, 25, 50])
+    if price * pct % 100:
+        return j_percent_change()
     up = R(0, 1) == 1
     change = price * pct // 100
     answer = price + change if up else price - change
@@ -416,6 +444,8 @@ def s_compound():
 
 def s_profit():
     cost, pct = C([50, 100, 200, 250, 400, 500, 800, 1000]), C([10, 20, 25, 40, 50])
+    if cost * pct % 100:
+        return s_profit()
     profit = cost * pct // 100
     return q(f"A trader buys goods for GH₵ {cost} and sells them for GH₵ {cost + profit}. What is the percentage profit?", pct, [profit, pct + 5, 100 - pct], f"Profit = {profit}. Percentage profit = {profit} ÷ {cost} x 100 = {pct}%.", "medium", lambda v: f"{v}%")
 
@@ -480,9 +510,22 @@ def s_prob_two():
 
 # ----------------------------------------------------------------- Assembly
 
+# The first primary class each template suits, roughly following Ghana's
+# standards-based curriculum. A teacher should check these along with the rest.
+MIN_CLASS = {
+    "p_add_20": 1, "p_sub_20": 1, "p_add_100": 2, "p_sub_100": 2, "p_tables": 2,
+    "p_add": 4, "p_sub": 4, "p_mul": 3, "p_mul2": 4, "p_div": 3, "p_place": 4, "p_round": 4,
+    "p_frac_add": 4, "p_frac_of": 5, "p_decimal_add": 5, "p_percent": 6,
+    "p_perimeter": 4, "p_area": 5, "p_convert": 4, "p_change": 3, "p_share": 4, "p_rows": 3,
+}
+# Written primary questions assume a child who can read on their own.
+WRITTEN_PRIMARY_MIN_CLASS = 3
+
 # The skill each template practises, for sub-skill mastery. JHS names match the
 # ones already used in questions.json.
 SUB_SKILLS = {
+    "p_add_20": "addition", "p_sub_20": "subtraction", "p_add_100": "addition", "p_sub_100": "subtraction",
+    "p_tables": "multiplication",
     "p_add": "addition", "p_sub": "subtraction", "p_mul": "multiplication", "p_mul2": "multiplication",
     "p_div": "division", "p_place": "place_value", "p_round": "rounding", "p_frac_add": "adding_fractions",
     "p_frac_of": "fraction_of_an_amount", "p_decimal_add": "decimals", "p_percent": "percentages",
@@ -512,6 +555,8 @@ def finish(generators, prefix, per_template):
             if item["question"] not in seen:
                 seen.add(item["question"])
                 item["sub_skill"] = SUB_SKILLS[generator.__name__]
+                if generator.__name__ in MIN_CLASS:
+                    item["min_class"] = MIN_CLASS[generator.__name__]
                 questions.append(item)
     for index, item in enumerate(questions, 1):
         item["id"] = f"{prefix}_{index:03d}"
@@ -519,24 +564,34 @@ def finish(generators, prefix, per_template):
     return questions
 
 
-def written_topics(source, prefix):
+def teacher_decisions():
+    return json.loads(DECISIONS_FILE.read_text(encoding="utf-8")) if DECISIONS_FILE.exists() else {}
+
+
+def written_topics(source, prefix, min_class=None):
+    decisions = teacher_decisions()
     topics = []
     for (topic_id, topic_name), rows in source.items():
         questions = []
         for index, (question, correct, wrongs, explanation, difficulty) in enumerate(rows, 1):
             options = [correct, *wrongs]
             RNG.shuffle(options)
+            question_id = f"{prefix}_{topic_id}_{index:03d}"
+            decision = decisions.get(question_id)
+            if decision == "rejected":
+                continue
             questions.append(
                 {
-                    "id": f"{prefix}_{topic_id}_{index:03d}",
+                    "id": question_id,
                     "question": question,
                     "options": options,
                     "correct": correct,
                     "explanation": explanation,
                     "difficulty": difficulty,
-                    "review_status": "pending_review",
+                    "review_status": "teacher_reviewed" if decision == "approved" else "pending_review",
                     # Written topics are narrow enough to be their own skill.
                     "sub_skill": topic_name.lower().replace(" and ", "_and_").replace(" ", "_"),
+                    **({"min_class": min_class} if min_class else {}),
                 }
             )
         topics.append({"id": topic_id, "name": topic_name, "questions": questions})
@@ -554,13 +609,13 @@ def build():
     return {
         "subjects": [
             subject("mathematics_primary", "Primary Mathematics", "\U0001F4D0", ["primary"], [
-                {"id": "p_number", "name": "Number and Operations", "questions": finish([p_add, p_sub, p_mul, p_mul2, p_div, p_place, p_round], "pm_num", 25)},
+                {"id": "p_number", "name": "Number and Operations", "questions": finish([p_add_20, p_sub_20, p_add_100, p_sub_100, p_tables, p_add, p_sub, p_mul, p_mul2, p_div, p_place, p_round], "pm_num", 25)},
                 {"id": "p_fractions", "name": "Fractions, Decimals and Percentages", "questions": finish([p_frac_add, p_frac_of, p_decimal_add, p_percent], "pm_frac", 25)},
                 {"id": "p_measure", "name": "Measurement", "questions": finish([p_perimeter, p_area, p_convert], "pm_meas", 30)},
                 {"id": "p_word", "name": "Word Problems", "questions": finish([p_change, p_share, p_rows], "pm_word", 25)},
             ]),
-            subject("english_primary", "Primary English", "\U0001F4DD", ["primary"], written_topics(written.PRIMARY_ENGLISH, "pe")),
-            subject("science_primary", "Primary Science", "\U0001F52C", ["primary"], written_topics(written.PRIMARY_SCIENCE, "ps")),
+            subject("english_primary", "Primary English", "\U0001F4DD", ["primary"], written_topics(written.PRIMARY_ENGLISH, "pe", WRITTEN_PRIMARY_MIN_CLASS)),
+            subject("science_primary", "Primary Science", "\U0001F52C", ["primary"], written_topics(written.PRIMARY_SCIENCE, "ps", WRITTEN_PRIMARY_MIN_CLASS)),
             # These three add to the existing JHS banks in questions.json.
             subject("mathematics", "Mathematics", "\U0001F4D0", ["jhs"], [
                 {"id": "algebra", "name": "Algebra", "questions": finish([j_linear, j_linear_sub, j_substitute, j_like_terms, j_expand], "jm_alg", 25)},

@@ -14,6 +14,7 @@ every question has the same number of options.
 import json
 import logging
 import math
+import os
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Dict, Optional
@@ -77,9 +78,29 @@ def effective_mastery(mastery: SkillMastery, now: Optional[datetime] = None) -> 
     return decay_mastery(mastery.mastery_probability, mastery.last_updated, now)
 
 
+def serve_draft_questions() -> bool:
+    """Questions no teacher has checked stay away from students unless this is
+    deliberately switched on, because a wrong answer teaches something wrong.
+    See scripts/apply_teacher_review.py for how they get approved."""
+    return os.getenv("SERVE_DRAFT_QUESTIONS") == "1"
+
+
+def _without_drafts(subject: dict) -> dict:
+    topics = []
+    for topic in subject["topics"]:
+        kept = [q for q in topic["questions"] if q.get("review_status") != "pending_review"]
+        if kept:
+            topics.append({**topic, "questions": kept})
+    return {**subject, "topics": topics}
+
+
 def _merge_bank(data: dict, bank: dict) -> None:
     by_id = {s["id"]: s for s in data["subjects"]}
     for subject in bank.get("subjects", []):
+        if not serve_draft_questions():
+            subject = _without_drafts(subject)
+            if not subject["topics"]:
+                continue
         existing = by_id.get(subject["id"])
         if existing is None:
             data["subjects"].append(subject)
@@ -101,6 +122,12 @@ def subject_is_for_level(subject: dict, level: Optional[str]) -> bool:
     return level is None or level in subject.get("levels", ("jhs", "shs"))
 
 
+def question_is_for_class(question: dict, class_number: Optional[int]) -> bool:
+    """Primary spans ages six to twelve, so a question can name the first class
+    it suits. With no class known, nothing is held back."""
+    return class_number is None or question.get("min_class", 1) <= class_number
+
+
 def load_questions() -> dict:
     """Loads the practice question bank, falling back to a tiny built-in
     sample if the data file is missing or unreadable - shared by the
@@ -111,7 +138,7 @@ def load_questions() -> dict:
             # The bank is large and read on every practice request, so it's
             # parsed once and again only if a file on disk changes.
             paths = [QUESTIONS_FILE, *(p for p in BANK_FILES if p.exists())]
-            cache_key = tuple((str(p), p.stat().st_mtime) for p in paths)
+            cache_key = (serve_draft_questions(), *((str(p), p.stat().st_mtime) for p in paths))
             if _bank_cache.get("key") == cache_key:
                 return _bank_cache["data"]
             with open(QUESTIONS_FILE, "r", encoding="utf-8") as f:

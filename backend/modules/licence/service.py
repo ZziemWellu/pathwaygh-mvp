@@ -42,8 +42,10 @@ VOLUME_THRESHOLD = 500
 TERM_ROLLOVER_DAYS = 30
 YEAR_ROLLOVER_DAYS = 60
 
-# Minor units (pesewas). Only Ghana has a decided price; other countries
-# get the trial and free plan but can't buy until one is set.
+# Minor units (pesewas, kobo). Countries not listed get the trial and free plan
+# but can't buy until a price is set. Nigeria follows the N800-N1,200 per student
+# per term that Nigerian school software lists (Nov 2026), with the same year and
+# volume discounts as Ghana.
 PRICES = {
     "GH": {
         "currency": "GHS",
@@ -51,6 +53,13 @@ PRICES = {
         "year": 8000,
         "term_volume": 2500,
         "year_volume": 7000,
+    },
+    "NG": {
+        "currency": "NGN",
+        "term": 100000,
+        "year": 270000,
+        "term_volume": 85000,
+        "year_volume": 230000,
     },
 }
 

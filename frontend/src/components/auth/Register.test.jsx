@@ -23,6 +23,7 @@ const fillValidForm = async (user) => {
   await user.type(screen.getByLabelText(/^password$/i), 'password123');
   await user.type(screen.getByLabelText(/confirm password/i), 'password123');
   await user.selectOptions(screen.getByLabelText(/school level/i), 'jhs');
+  await user.selectOptions(screen.getByLabelText(/your class/i), 'JHS 1');
   await user.type(screen.getByLabelText(/guardian email/i), 'guardian@test.com');
   await user.click(screen.getByRole('checkbox'));
 };
@@ -44,6 +45,7 @@ describe('Register', () => {
     await user.type(screen.getByLabelText(/^password$/i), 'password123');
     await user.type(screen.getByLabelText(/confirm password/i), 'different456');
     await user.selectOptions(screen.getByLabelText(/school level/i), 'jhs');
+    await user.selectOptions(screen.getByLabelText(/your class/i), 'JHS 1');
     await user.type(screen.getByLabelText(/guardian email/i), 'guardian@test.com');
     await user.click(screen.getByRole('checkbox'));
     await user.click(screen.getByRole('button', { name: /register/i }));
@@ -61,6 +63,7 @@ describe('Register', () => {
     await user.type(screen.getByLabelText(/^password$/i), 'password123');
     await user.type(screen.getByLabelText(/confirm password/i), 'password123');
     await user.selectOptions(screen.getByLabelText(/school level/i), 'jhs');
+    await user.selectOptions(screen.getByLabelText(/your class/i), 'JHS 1');
     await user.type(screen.getByLabelText(/guardian email/i), 'same@test.com');
     await user.click(screen.getByRole('checkbox'));
     await user.click(screen.getByRole('button', { name: /register/i }));
@@ -130,10 +133,11 @@ describe('Register', () => {
     api.post.mockResolvedValueOnce({ data: { success: true } });
     renderRegister();
     await user.type(screen.getByLabelText(/full name/i), 'Test Student');
-    await user.type(screen.getByLabelText(/^email$/i), 'student@test.com');
     await user.type(screen.getByLabelText(/^password$/i), 'password123');
     await user.type(screen.getByLabelText(/confirm password/i), 'password123');
     await user.selectOptions(screen.getByLabelText(/school level/i), 'primary');
+    await user.selectOptions(screen.getByLabelText(/your class/i), 'Primary 4');
+    await user.type(screen.getByLabelText(/choose a username/i), 'ama.m');
     await user.type(screen.getByLabelText(/guardian phone/i), '024 123 4567');
     await user.click(screen.getByRole('checkbox'));
     await user.click(screen.getByRole('button', { name: /register/i }));
@@ -141,6 +145,9 @@ describe('Register', () => {
     await waitFor(() => expect(api.post).toHaveBeenCalled());
     expect(api.post.mock.calls[0][1]).toMatchObject({
       level: 'primary',
+      grade: 'Primary 4',
+      email: null,
+      username: 'ama.m',
       guardian_phone: '024 123 4567',
       guardian_email: null,
     });
@@ -154,6 +161,7 @@ describe('Register', () => {
     await user.type(screen.getByLabelText(/^password$/i), 'password123');
     await user.type(screen.getByLabelText(/confirm password/i), 'password123');
     await user.selectOptions(screen.getByLabelText(/school level/i), 'jhs');
+    await user.selectOptions(screen.getByLabelText(/your class/i), 'JHS 1');
     await user.click(screen.getByRole('checkbox'));
     await user.click(screen.getByRole('button', { name: /register/i }));
 
@@ -188,5 +196,23 @@ describe('Register', () => {
     await user.selectOptions(screen.getByLabelText(/school level/i), 'primary');
     expect(screen.queryByText(/at least 13/i)).not.toBeInTheDocument();
     expect(screen.getByText(/parent or guardian is helping me/i)).toBeInTheDocument();
+  });
+
+  it('asks JHS students for an email but lets them switch to a username', async () => {
+    const user = userEvent.setup();
+    renderRegister();
+    await user.selectOptions(screen.getByLabelText(/school level/i), 'jhs');
+    expect(screen.getByLabelText(/^email$/i)).toBeInTheDocument();
+    await user.click(screen.getByRole('button', { name: /don't have an email/i }));
+    expect(screen.getByLabelText(/choose a username/i)).toBeInTheDocument();
+    expect(screen.queryByLabelText(/^email$/i)).not.toBeInTheDocument();
+  });
+
+  it('only offers the classes of the chosen level', async () => {
+    const user = userEvent.setup();
+    renderRegister();
+    await user.selectOptions(screen.getByLabelText(/school level/i), 'shs');
+    const options = [...screen.getByLabelText(/your class/i).options].map((o) => o.value);
+    expect(options).toEqual(['', 'SHS 1', 'SHS 2', 'SHS 3']);
   });
 });

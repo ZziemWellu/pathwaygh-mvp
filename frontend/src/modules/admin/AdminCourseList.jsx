@@ -4,6 +4,7 @@ import { ChevronRight, Plus, Shield, Trash2 } from 'lucide-react';
 import api from '../../services/api';
 import PageHeader from '../../components/ui/PageHeader';
 import Button from '../../components/ui/Button';
+import AdminStudentLevel from './AdminStudentLevel';
 
 const emptyForm = { slug: '', title: '', description: '', level: 'jhs', country: 'GH' };
 
@@ -67,6 +68,7 @@ const AdminCourseList = () => {
         title="Manage Courses"
         actions={<Button icon={Plus} aria-expanded={showForm} onClick={() => setShowForm((s) => !s)}>New Course</Button>}
       />
+      <AdminStudentLevel />
 
       {showForm && (
         <form className="card" onSubmit={handleCreate} style={{ padding: '18px', marginBottom: '20px', display: 'flex', flexDirection: 'column', gap: '10px' }}>

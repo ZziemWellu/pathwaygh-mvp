@@ -43,11 +43,20 @@ class GeneratedMathQuestion(BaseModel):
     verification_expression: str
 
 
-def _build_prompt(topic: Optional[str], difficulty: str) -> str:
+def _build_prompt(topic: Optional[str], difficulty: str, level: Optional[str] = None) -> str:
     topic_line = f" on the topic of {topic}" if topic else ""
+    if level == "primary":
+        opening = (
+            f"Generate one multiple-choice Mathematics practice question{topic_line} for a primary school "
+            "pupil, in very simple words, with one calculation step and small whole numbers"
+        )
+    else:
+        opening = (
+            f"Generate one WASSCE/BECE-style multiple-choice Mathematics practice question{topic_line}, "
+            f"{DIFFICULTY_GUIDANCE.get(difficulty, DIFFICULTY_GUIDANCE['medium'])}"
+        )
     return (
-        f"Generate one WASSCE/BECE-style multiple-choice Mathematics practice question{topic_line}, "
-        f"{DIFFICULTY_GUIDANCE.get(difficulty, DIFFICULTY_GUIDANCE['medium'])}.\n\n"
+        f"{opening}.\n\n"
         "Requirements:\n"
         "- Exactly 4 answer options, plausible distractors, only one correct.\n"
         "- 'correct' must be a plain number (e.g. '42' or '3.5') with no units, symbols, or extra words - "
@@ -74,12 +83,12 @@ def _verify(candidate: GeneratedMathQuestion) -> bool:
 
 
 def generate_math_question(
-    gemini_client, topic: Optional[str], difficulty: Literal["easy", "medium", "hard"]
+    gemini_client, topic: Optional[str], difficulty: Literal["easy", "medium", "hard"], level: Optional[str] = None
 ) -> Optional[dict]:
     """Returns a verified question dict, or None if no verified question
     could be produced within the retry budget - the caller should treat
     None as "generation unavailable right now", not retry indefinitely."""
-    prompt = _build_prompt(topic, difficulty)
+    prompt = _build_prompt(topic, difficulty, level)
 
     for attempt in range(MAX_GENERATION_ATTEMPTS):
         try:
