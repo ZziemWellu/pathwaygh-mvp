@@ -4,10 +4,10 @@
 export const BUSINESS = {
   // The person or registered business that contracts with schools. For a
   // Paystack Starter business, this is the owner's own name.
-  operator: 'TODO: legal name of the operator',
+  operator: 'Ziem Wellu',
   tradingName: 'Learning Hotspot',
-  email: 'TODO: support email address',
-  phone: 'TODO: support phone number',
-  location: 'TODO: town or city, Ghana',
+  email: 'pzwellu@st.ug.edu.gh',
+  phone: '024 471 4242',
+  location: 'Accra, Ghana',
   website: 'https://www.learninghotspot.africa',
 };
