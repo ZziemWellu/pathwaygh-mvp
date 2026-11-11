@@ -54,6 +54,7 @@ const Landing = ({ onGetStarted, onRegisterSchool, onSignIn, onShowPrivacy }) =>
         <a href="#how">How it works</a>
         <a href="#features">Features</a>
         <a href="#schools">For schools</a>
+        <a href="/about">About us</a>
         <LanguageSwitcher />
         <button type="button" className="btn btn-secondary btn-sm" onClick={onSignIn}>Sign in</button>
         <button type="button" className="btn btn-primary btn-sm" onClick={onGetStarted}>Get started</button>
@@ -170,6 +171,7 @@ const Landing = ({ onGetStarted, onRegisterSchool, onSignIn, onShowPrivacy }) =>
     <footer className="landing__footer">
       <span>© 2026 Learning Hotspot · Powered by Zziem Technologies</span>
       <nav aria-label="Policies" className="landing__policies">
+        <a className="btn btn-ghost btn-sm" href="/about">About Us</a>
         <a className="btn btn-ghost btn-sm" href="/terms">Terms</a>
         <a className="btn btn-ghost btn-sm" href="/refunds">Refunds</a>
         <a className="btn btn-ghost btn-sm" href="/contact">Contact</a>
