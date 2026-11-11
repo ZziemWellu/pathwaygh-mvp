@@ -110,7 +110,16 @@ const DashboardModule = () => {
 
       {/* One clear next action, decided server-side (dashboard/router.py _next_step). */}
       <section className="dash-next" aria-label="Your next step">
-        {step?.kind === 'choose_level' ? (
+        {step?.kind === 'school_admin' ? (
+          <>
+            <p className="dash-next-eyebrow">Your school</p>
+            <h2>Set up your school</h2>
+            <p className="dash-next-meta">Share your join code with students, create logins for pupils without email, and follow their progress.</p>
+            <button type="button" className="dash-next-cta" onClick={() => navigate('/school-admin')}>
+              Open school dashboard <ArrowRight size={18} aria-hidden="true" />
+            </button>
+          </>
+        ) : step?.kind === 'choose_level' ? (
           <>
             <p className="dash-next-eyebrow">Let&apos;s personalise Learning Hotspot</p>
             <h2>Which class are you in?</h2>
