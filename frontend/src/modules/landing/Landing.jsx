@@ -44,7 +44,7 @@ const FEATURES = [
 
 // What a signed-out visitor (or a hackathon judge) sees first: what
 // Learning Hotspot is and who it's for, before being asked for anything.
-const Landing = ({ onGetStarted, onSignIn, onShowPrivacy }) => (
+const Landing = ({ onGetStarted, onRegisterSchool, onSignIn, onShowPrivacy }) => (
   <div className="landing">
     <header className="landing__bar">
       <span className="landing__brand">
@@ -75,7 +75,7 @@ const Landing = ({ onGetStarted, onSignIn, onShowPrivacy }) => (
             <button type="button" className="btn btn-primary btn-lg" onClick={onGetStarted}>
               Start learning <ArrowRight size={18} aria-hidden="true" />
             </button>
-            <a className="btn btn-secondary btn-lg" href="#schools">I&apos;m a school</a>
+            <button type="button" className="btn btn-secondary btn-lg" onClick={onRegisterSchool}>I&apos;m a school</button>
           </div>
           <p className="landing__label">Built for five curricula</p>
           <ul className="landing__countries">
@@ -160,7 +160,7 @@ const Landing = ({ onGetStarted, onSignIn, onShowPrivacy }) => (
               results, and parents get progress updates.
             </p>
           </div>
-          <button type="button" className="btn btn-primary btn-lg" onClick={onGetStarted}>
+          <button type="button" className="btn btn-primary btn-lg" onClick={onRegisterSchool}>
             Create a school account
           </button>
         </div>

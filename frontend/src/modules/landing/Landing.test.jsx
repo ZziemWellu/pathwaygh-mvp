@@ -5,7 +5,7 @@ import Landing from './Landing';
 import { LanguageProvider } from '../../contexts/LanguageContext';
 
 const renderLanding = (props = {}) => {
-  const handlers = { onGetStarted: vi.fn(), onSignIn: vi.fn(), onShowPrivacy: vi.fn(), ...props };
+  const handlers = { onGetStarted: vi.fn(), onRegisterSchool: vi.fn(), onSignIn: vi.fn(), onShowPrivacy: vi.fn(), ...props };
   render(<LanguageProvider><Landing {...handlers} /></LanguageProvider>);
   return handlers;
 };
@@ -19,12 +19,21 @@ describe('Landing', () => {
     }
   });
 
-  it('starts registration from every "get started" button', async () => {
-    const { onGetStarted } = renderLanding();
-    await userEvent.click(screen.getByRole('button', { name: 'Get started' }));
-    await userEvent.click(screen.getByRole('button', { name: /start learning/i }));
+  it('starts student sign-up from every "get started" button', async () => {
+    const { onGetStarted, onRegisterSchool } = renderLanding();
+    for (const button of screen.getAllByRole('button', { name: /get started|start learning/i })) {
+      await userEvent.click(button);
+    }
+    expect(onGetStarted).toHaveBeenCalled();
+    expect(onRegisterSchool).not.toHaveBeenCalled();
+  });
+
+  it('starts school sign-up from both school buttons', async () => {
+    const { onGetStarted, onRegisterSchool } = renderLanding();
+    await userEvent.click(screen.getByRole('button', { name: /i'm a school/i }));
     await userEvent.click(screen.getByRole('button', { name: /create a school account/i }));
-    expect(onGetStarted).toHaveBeenCalledTimes(3);
+    expect(onRegisterSchool).toHaveBeenCalledTimes(2);
+    expect(onGetStarted).not.toHaveBeenCalled();
   });
 
   it('goes to sign-in and privacy', async () => {

@@ -156,6 +156,9 @@ def _next_step(db: Session, user: User, continue_learning: Optional[dict], watch
     ask their level > (nothing course-shaped left) practise."""
     if continue_learning:
         return {"kind": "continue", **continue_learning}
+    # Staff who run a school have no class to choose; their next step is the school.
+    if user.is_school_admin and not user.level:
+        return {"kind": "school_admin"}
     from_grade = level_from_grade(user.grade)
     level = "university" if from_grade == "university" else (user.level or from_grade)
     if level is None:

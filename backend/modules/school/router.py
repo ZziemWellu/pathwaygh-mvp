@@ -14,18 +14,19 @@ import secrets
 from datetime import datetime, timezone
 from typing import List, Literal, Optional
 
-from fastapi import APIRouter, Depends, Header, HTTPException
+from fastapi import APIRouter, Depends, Header, HTTPException, Request
 from fastapi.responses import Response
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, EmailStr, Field
 from sqlalchemy.orm import Session
 
 from core.csv_safe import csv_safe
-from core.accounts import correct_level, issue_username, temporary_password
+from core.accounts import correct_level, find_user, issue_username, temporary_password
 from core.database import get_db
 from core.levels import STUDENT_LEVELS, level_from_grade
 from core.phone import normalize_phone
 from core.secrets_compare import secrets_match
-from core.security import get_current_user, hash_password, require_school_admin
+from core.rate_limit import limiter
+from core.security import create_access_token, get_current_user, hash_password, require_school_admin
 from core.whatsapp import send_whatsapp_message
 from models.school import School
 from models.user import User
@@ -44,6 +45,17 @@ JOIN_CODE_LENGTH = 6
 class CreateSchoolRequest(BaseModel):
     name: str
     country: str | None = None
+
+
+class RegisterSchoolRequest(BaseModel):
+    school_name: str = Field(min_length=2, max_length=255)
+    full_name: str = Field(min_length=1, max_length=255)
+    role: Literal["headteacher", "assistant_headteacher", "teacher", "ict_coordinator", "administrator", "other"]
+    email: EmailStr
+    phone: str = Field(min_length=7, max_length=30)
+    password: str = Field(min_length=8, max_length=128)
+    country: Literal["GH", "NG", "SL", "LR", "GM"]
+    authorised: bool
 
 
 class JoinSchoolRequest(BaseModel):
@@ -84,6 +96,57 @@ def get_my_school(current_user: User = Depends(get_current_user), db: Session = 
         return {"success": True, "school": None, "is_school_admin": False}
     school = db.query(School).filter(School.id == current_user.school_id).first()
     return {"success": True, "school": _school_out(school) if school else None, "is_school_admin": current_user.is_school_admin}
+
+
+@router.post("/register")
+@limiter.limit("20/hour")
+def register_school(request: Request, body: RegisterSchoolRequest, db: Session = Depends(get_db)):
+    """Sign-up for the adult who runs a school's account: creates the school,
+    makes this person its admin and starts the free first term, in one step.
+    An adult needs no parent consent and has no school level, so neither is
+    asked for."""
+    from modules.auth.router import _user_out
+
+    if not body.authorised:
+        raise HTTPException(status_code=400, detail="Please confirm you're authorised to register this school")
+    if not body.school_name.strip() or not body.full_name.strip():
+        raise HTTPException(status_code=400, detail="Please give the school's name and your name")
+    email = body.email.strip().lower()
+    if find_user(db, email):
+        raise HTTPException(
+            status_code=400,
+            detail="This email already has an account. Sign in and create your school from Profile, or use another email.",
+        )
+    try:
+        phone = normalize_phone(body.phone, body.country)
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e)) from e
+
+    admin = User(
+        email=email,
+        full_name=body.full_name.strip(),
+        password_hash=hash_password(body.password),
+        country=body.country,
+        phone=phone,
+        school=body.school_name.strip(),
+        bio=f"School role: {body.role.replace('_', ' ')}",
+        is_school_admin=True,
+    )
+    db.add(admin)
+    db.flush()
+    school = School(
+        name=body.school_name.strip(),
+        country=body.country,
+        join_code=_generate_join_code(db),
+        created_by_id=admin.id,
+    )
+    db.add(school)
+    db.flush()
+    grant_trial(db, school)
+    admin.school_id = school.id
+    db.commit()
+    db.refresh(admin)
+    return {"success": True, "token": create_access_token(admin.id, admin.token_version or 0), "user": _user_out(admin)}
 
 
 @router.post("/create")

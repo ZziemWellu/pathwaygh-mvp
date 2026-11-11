@@ -12,6 +12,7 @@ import GambiaFlag from './components/common/GambiaFlag';
 import { ArrowLeft, LogOut, User } from 'lucide-react';
 import Login from './components/auth/Login';
 import Register from './components/auth/Register';
+import SchoolRegister from './components/auth/SchoolRegister';
 import ForgotPassword from './components/auth/ForgotPassword';
 import CountrySelector from './components/CountrySelector';
 import LanguageSwitcher from './components/LanguageSwitcher';
@@ -95,6 +96,8 @@ const App = () => {
   // First-time visitors (no country chosen on this device yet) see the
   // landing page; a returning device goes straight to sign-in as before.
   const [showLanding, setShowLanding] = useState(() => !getCountry());
+  // Students and school staff sign up with different forms.
+  const [registerAs, setRegisterAs] = useState('student');
 
   useEffect(() => {
     const userData = getUser();
@@ -111,7 +114,8 @@ const App = () => {
     setCountryState(code);
   };
 
-  const startRegistration = () => {
+  const startRegistration = (as = 'student') => {
+    setRegisterAs(as);
     setShowLanding(false);
     setShowForgotPassword(false);
     setShowLogin(false);
@@ -161,7 +165,7 @@ const App = () => {
     }
 
     if (showLanding) {
-      return <Landing onGetStarted={startRegistration} onSignIn={startSignIn} onShowPrivacy={() => setShowPrivacy(true)} />;
+      return <Landing onGetStarted={() => startRegistration('student')} onRegisterSchool={() => startRegistration('school')} onSignIn={startSignIn} onShowPrivacy={() => setShowPrivacy(true)} />;
     }
 
     // Registering needs a country (it scopes courses and questions); signing
@@ -202,8 +206,24 @@ const App = () => {
             <ForgotPassword onBackToLogin={() => setShowForgotPassword(false)} />
           ) : showLogin ? (
             <Login onSuccess={handleLogin} />
+          ) : registerAs === 'school' ? (
+            <SchoolRegister
+              onShowPrivacy={() => setShowPrivacy(true)}
+              onSuccess={(newUser, token) => {
+                // Open straight on the school dashboard once signed in.
+                window.history.replaceState({}, '', '/school-admin');
+                handleLogin(newUser, token);
+              }}
+            />
           ) : (
             <Register onSuccess={() => setShowLogin(true)} onShowPrivacy={() => setShowPrivacy(true)} />
+          )}
+          {!showLogin && !showForgotPassword && (
+            <p style={{ textAlign: 'center', marginTop: '16px' }}>
+              <button onClick={() => setRegisterAs(registerAs === 'school' ? 'student' : 'school')} style={{ background: 'none', border: 'none', color: 'var(--primary)', cursor: 'pointer', textDecoration: 'underline' }}>
+                {registerAs === 'school' ? "I'm a student - create a student account" : 'Registering a school? Create a school account'}
+              </button>
+            </p>
           )}
           {!showForgotPassword && (
             <p style={{ textAlign: 'center', marginTop: '16px' }}>
