@@ -2,6 +2,7 @@ import React from 'react';
 import { ArrowLeft, ShieldCheck } from 'lucide-react';
 import PageHeader from '../../components/ui/PageHeader';
 import Button from '../../components/ui/Button';
+import { BUSINESS } from '../../constants/business';
 
 const sectionStyle = { marginBottom: '24px' };
 const headingStyle = { color: 'var(--primary)', fontSize: '1.0625rem', marginBottom: '8px' };
@@ -102,7 +103,7 @@ const PrivacyPolicy = ({ onBack }) => {
         <p style={bodyStyle}>
           If you'd like to access, correct, or delete your data, or if you have any questions
           about this policy, contact us at{' '}
-          <a href="mailto:privacy@pathwaygh.com" style={{ color: 'var(--primary)' }}>privacy@pathwaygh.com</a>.
+          <a href={`mailto:${BUSINESS.email}`} style={{ color: 'var(--primary)' }}>{BUSINESS.email}</a>.
         </p>
       </section>
     </div>
