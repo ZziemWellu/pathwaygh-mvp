@@ -23,6 +23,7 @@ import PrivacyPolicy from './modules/legal/PrivacyPolicy';
 import TermsOfService from './modules/legal/TermsOfService';
 import RefundPolicy from './modules/legal/RefundPolicy';
 import ContactPage from './modules/legal/ContactPage';
+import AboutPage from './modules/about/AboutPage';
 
 // Pages anyone can open by address, signed in or not - Paystack's reviewers,
 // parents and schools need them before they have an account.
@@ -30,6 +31,7 @@ const PUBLIC_PAGES = {
   '/terms': TermsOfService,
   '/refunds': RefundPolicy,
   '/contact': ContactPage,
+  '/about': AboutPage,
   '/privacy': PrivacyPolicy,
 };
 
@@ -38,6 +40,7 @@ const footerLink = { color: 'var(--gray-500)', fontSize: '0.875rem', textDecorat
 // Plain links: signed out, a full page load is what shows these pages.
 const PolicyLinks = ({ onPrivacy }) => (
   <nav aria-label="Policies" style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '4px' }}>
+    <a href="/about" style={footerLink}>About Us</a>
     <a href="/terms" style={footerLink}>Terms</a>
     <a href="/refunds" style={footerLink}>Refunds</a>
     <a href="/contact" style={footerLink}>Contact</a>
@@ -347,6 +350,7 @@ const App = () => {
             <Route path="/terms" element={<TermsOfService />} />
             <Route path="/refunds" element={<RefundPolicy />} />
             <Route path="/contact" element={<ContactPage />} />
+            <Route path="/about" element={<AboutPage />} />
 
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>
@@ -363,6 +367,7 @@ const App = () => {
           <p>{t('copyright')}</p>
           <p style={{ fontSize: '0.875rem', margin: '4px 0 8px 0' }}>{t('poweredBy')}</p>
           <nav aria-label="Policies" style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '4px' }}>
+            <Link to="/about" style={footerLink}>About Us</Link>
             <Link to="/terms" style={footerLink}>Terms</Link>
             <Link to="/refunds" style={footerLink}>Refunds</Link>
             <Link to="/contact" style={footerLink}>Contact</Link>
