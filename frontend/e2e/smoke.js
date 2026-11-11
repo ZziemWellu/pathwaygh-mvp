@@ -56,7 +56,7 @@ try {
   check('landing page never mentions certificates', !/certificate/i.test(await landing.locator('body').innerText()));
 
   // --- Policy pages open for anyone, signed out, straight from their address
-  for (const [path, heading] of [['/terms', 'Terms of Service'], ['/refunds', 'Refund Policy'], ['/contact', 'Contact us'], ['/privacy', 'Privacy Policy']]) {
+  for (const [path, heading] of [['/terms', 'Terms of Service'], ['/refunds', 'Refund Policy'], ['/contact', 'Contact us'], ['/privacy', 'Privacy Policy'], ['/about', 'About Us']]) {
     await landing.goto(`${BASE}${path}`);
     const shown = await landing.getByRole('heading', { level: 1, name: heading }).isVisible().catch(() => false)
       || await landing.getByRole('heading', { level: 1, name: heading }).waitFor({ timeout: 8000 }).then(() => true, () => false);
