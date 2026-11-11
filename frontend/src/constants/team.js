@@ -3,8 +3,13 @@
 // files in public/team/ and set photo: '/team/name.jpg'.
 export const TEAM = [
   {
-    name: 'Ziem Wellu',
+    name: 'Mr. Wahab',
     role: 'Founder',
-    bio: 'Started Learning Hotspot to give every student in West Africa good practice, guidance and a clear path to their future, whatever their school can afford.',
+    bio: 'Founded Learning Hotspot to give students across West Africa good practice, guidance and a clear path to their future, whatever their school can afford.',
+  },
+  {
+    name: 'Mr. Rauf',
+    role: 'Co-founder',
+    bio: 'Co-founded Learning Hotspot and helps shape how it grows and works with schools, teachers and families.',
   },
 ];
