@@ -24,6 +24,7 @@ import math
 from datetime import datetime, timedelta, timezone
 from typing import Optional
 
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
 from models.school import School
@@ -283,10 +284,14 @@ def public_quote(quote: dict) -> dict:
 
 # --- Activation -------------------------------------------------------------
 
+def _licence_for_transaction(db: Session, transaction) -> Optional[SchoolLicence]:
+    return db.query(SchoolLicence).filter(SchoolLicence.transaction_id == transaction.id).first()
+
+
 def activate_from_transaction(db: Session, transaction) -> Optional[SchoolLicence]:
     """Grant the licence a successful payment bought. Idempotent: verify and
     the webhook can both fire for the same payment. Commits."""
-    existing = db.query(SchoolLicence).filter(SchoolLicence.transaction_id == transaction.id).first()
+    existing = _licence_for_transaction(db, transaction)
     if existing:
         return existing
 
@@ -321,6 +326,13 @@ def activate_from_transaction(db: Session, transaction) -> Optional[SchoolLicenc
         transaction_id=transaction.id,
     )
     db.add(licence)
-    db.commit()
+    try:
+        db.commit()
+    except IntegrityError:
+        # The other confirmation (browser return or webhook) saved this
+        # payment's licence a moment earlier. That's success, not an error:
+        # the unique transaction_id is what stops a second licence.
+        db.rollback()
+        return db.query(SchoolLicence).filter(SchoolLicence.transaction_id == transaction.id).first()
     db.refresh(licence)
     return licence
