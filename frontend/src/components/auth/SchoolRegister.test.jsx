@@ -14,7 +14,7 @@ const fill = async (user, overrides = {}) => {
   await user.type(screen.getByLabelText('School name'), 'Accra Academy');
   await user.type(screen.getByLabelText('Your full name'), 'Ama Mensah');
   await user.selectOptions(screen.getByLabelText('Your role at the school'), 'headteacher');
-  await user.type(screen.getByLabelText('Work email'), 'head@school.test');
+  await user.type(screen.getByLabelText('Work email'), 'head@schooltest.com');
   await user.type(screen.getByLabelText('Phone number'), '024 123 4567');
   await user.type(screen.getByLabelText('Password'), values.password);
   await user.type(screen.getByLabelText('Confirm password'), values.confirm);
@@ -50,7 +50,7 @@ describe('SchoolRegister', () => {
       school_name: 'Accra Academy',
       full_name: 'Ama Mensah',
       role: 'headteacher',
-      email: 'head@school.test',
+      email: 'head@schooltest.com',
       phone: '024 123 4567',
       password: 'password123',
       country: 'GH',
