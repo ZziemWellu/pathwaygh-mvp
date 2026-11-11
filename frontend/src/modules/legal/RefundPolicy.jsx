@@ -3,7 +3,7 @@ import { ReceiptText } from 'lucide-react';
 import { BUSINESS } from '../../constants/business';
 import LegalPage, { P, Section } from './LegalPage';
 
-// The 14-day window is a proposal for the owner to confirm. Other numbers here
+// The 14-day window was confirmed by the owner (Nov 2026). Other numbers here
 // must stay in step with backend/modules/licence/service.py.
 const RefundPolicy = ({ onBack }) => (
   <LegalPage icon={ReceiptText} title="Refund Policy" subtitle="Last updated November 2026" onBack={onBack}>
