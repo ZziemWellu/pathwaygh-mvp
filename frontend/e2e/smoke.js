@@ -71,15 +71,17 @@ try {
   const school = await desktop.newPage();
   school.on('pageerror', (e) => errors.push(String(e)));
   await school.goto(BASE);
-  await school.evaluate(() => { localStorage.clear(); localStorage.setItem('pathwaygh_country', 'GH'); });
+  // No saved country, so the landing page shows, as for a new visitor.
+  await school.evaluate(() => localStorage.clear());
   await school.goto(BASE);
   await school.getByRole('button', { name: "I'm a school" }).click();
+  await school.getByRole('button', { name: /Ghana/ }).click();
   await school.getByRole('heading', { name: 'Create a school account' }).waitFor();
   check('the school form asks no class or parent questions', !(await school.getByLabel(/class|guardian/i).count()));
   await school.getByLabel('School name').fill(`Demo Academy ${RUN}`);
   await school.getByLabel('Your full name').fill('Kwame Head');
   await school.getByLabel('Your role at the school').selectOption('headteacher');
-  await school.getByLabel('Work email').fill(`head${RUN}@school.test`);
+  await school.getByLabel('Work email').fill(`head${RUN}@schooltest.com`);
   await school.getByLabel('Phone number').fill('024 123 4567');
   await school.getByLabel('Password', { exact: true }).fill('password123');
   await school.getByLabel('Confirm password').fill('password123');
