@@ -55,6 +55,18 @@ try {
   await landing.getByRole('button', { name: /get started/i }).first().waitFor();
   check('landing page never mentions certificates', !/certificate/i.test(await landing.locator('body').innerText()));
 
+  // --- Policy pages open for anyone, signed out, straight from their address
+  for (const [path, heading] of [['/terms', 'Terms of Service'], ['/refunds', 'Refund Policy'], ['/contact', 'Contact us'], ['/privacy', 'Privacy Policy']]) {
+    await landing.goto(`${BASE}${path}`);
+    const shown = await landing.getByRole('heading', { level: 1, name: heading }).isVisible().catch(() => false)
+      || await landing.getByRole('heading', { level: 1, name: heading }).waitFor({ timeout: 8000 }).then(() => true, () => false);
+    check(`${path} opens signed out`, shown);
+  }
+  await landing.goto(BASE);
+  await landing.getByRole('link', { name: 'Refunds' }).click();
+  await landing.getByRole('heading', { level: 1, name: 'Refund Policy' }).waitFor();
+  check('the landing page links to the Refund Policy', true);
+
   // --- Desktop menu and Profile
   const page = await desktop.newPage();
   page.on('pageerror', (e) => errors.push(String(e)));

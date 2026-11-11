@@ -169,7 +169,12 @@ const Landing = ({ onGetStarted, onSignIn, onShowPrivacy }) => (
 
     <footer className="landing__footer">
       <span>© 2026 Learning Hotspot · Powered by Zziem Technologies</span>
-      <button type="button" className="btn btn-ghost btn-sm" onClick={onShowPrivacy}>Privacy Policy</button>
+      <nav aria-label="Policies" className="landing__policies">
+        <a className="btn btn-ghost btn-sm" href="/terms">Terms</a>
+        <a className="btn btn-ghost btn-sm" href="/refunds">Refunds</a>
+        <a className="btn btn-ghost btn-sm" href="/contact">Contact</a>
+        <button type="button" className="btn btn-ghost btn-sm" onClick={onShowPrivacy}>Privacy Policy</button>
+      </nav>
     </footer>
   </div>
 );

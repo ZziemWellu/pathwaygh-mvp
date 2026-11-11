@@ -462,3 +462,9 @@
     padding: 24px;
   }
 }
+
+.landing__policies {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
