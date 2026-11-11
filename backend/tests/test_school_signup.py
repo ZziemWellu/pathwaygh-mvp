@@ -10,7 +10,7 @@ def school_signup(client, **overrides):
         "school_name": "Accra Academy",
         "full_name": "Ama Mensah",
         "role": "headteacher",
-        "email": "head@school.test",
+        "email": "head@schooltest.com",
         "phone": "024 123 4567",
         "password": "password123",
         "country": "GH",
@@ -59,7 +59,7 @@ def test_must_confirm_authorisation(client):
     assert school_signup(client, authorised=False).status_code == 400
 
 
-@pytest.mark.parametrize("overrides", [{"email": "HEAD@school.test"}, {"email": "head@school.test", "school_name": "Other"}])
+@pytest.mark.parametrize("overrides", [{"email": "HEAD@schooltest.com"}, {"email": "head@schooltest.com", "school_name": "Other"}])
 def test_an_email_already_in_use_is_refused(client, overrides):
     school_signup(client)
     response = school_signup(client, **overrides)
