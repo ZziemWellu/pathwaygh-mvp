@@ -5,7 +5,7 @@
 // id here instead, so the backend's emoji field is never rendered.
 import {
   Award, BookOpen, BookOpenText, Brain, CalendarDays, Calculator, CirclePlay, Flame,
-  FlaskConical, GraduationCap, Languages, Layers, ListChecks, Rocket, Star, Trophy,
+  FlaskConical, Globe, GraduationCap, Languages, Layers, ListChecks, Rocket, Star, Trophy,
 } from 'lucide-react';
 
 export const ACHIEVEMENT_ICONS = {
@@ -25,7 +25,9 @@ export const ACHIEVEMENT_ICONS = {
 export const achievementIcon = (id) => ACHIEVEMENT_ICONS[id] || Award;
 
 // Subject ids carry a country suffix (mathematics_ng, science_gm...).
-const SUBJECT_ICONS = { mathematics: Calculator, english: Languages, science: FlaskConical };
+const SUBJECT_ICONS = {
+  mathematics: Calculator, core: Calculator, english: Languages, science: FlaskConical, integrated: FlaskConical, social: Globe,
+};
 
 export const subjectIcon = (id = '') => SUBJECT_ICONS[id.split('_')[0]] || BookOpen;
 

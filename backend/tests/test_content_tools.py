@@ -392,17 +392,23 @@ def test_students_report_problems_and_reviewers_resolve_them(client, db_session,
 
 # ------------------------------------------------------------ Coverage and syllabus
 
+def _coverage_topics(client, headers):
+    report = client.get("/api/content/coverage", headers=headers).json()
+    return report, {t["id"]: t for level in report["levels"] for s in level["subjects"] for st in s["strands"] for t in st["topics"]}
+
+
 def test_coverage_counts_live_and_draft_items_per_topic(client, db_session, admin):
+    _, before = _coverage_topics(client, admin)
     _upload(client, admin, "/api/content/import/questions", "q.csv", QUESTIONS_CSV)
     _course(db_session, "jhs3-course")
     db_session.query(Lesson).filter(Lesson.slug == "jhs3-course-1").update({Lesson.syllabus_topic: "jhs3.maths.number.ratio-proportion"})
     db_session.commit()
-    report = client.get("/api/content/coverage", headers=admin).json()
+    report, topics = _coverage_topics(client, admin)
     assert [level["id"] for level in report["levels"]] == ["jhs3", "shs3"]
-    topics = {t["id"]: t for level in report["levels"] for s in level["subjects"] for st in s["strands"] for t in st["topics"]}
-    letters = topics["jhs3.english.writing.letter-writing"]
-    assert letters["questions"] == {"live": 0, "draft": 1}
-    assert "no approved questions" in letters["gaps"] and "no lesson" in letters["gaps"]
+    letters, letters_before = topics["jhs3.english.writing.letter-writing"], before["jhs3.english.writing.letter-writing"]
+    assert letters["questions"]["draft"] == letters_before["questions"]["draft"] + 1
+    assert letters["questions"]["live"] == letters_before["questions"]["live"] == 0
+    assert "no approved questions" in letters["gaps"]
     ratio = topics["jhs3.maths.number.ratio-proportion"]
     assert ratio["lessons"] == {"live": 1, "draft": 0} and ratio["questions"]["live"] >= 10
     assert "no lesson" not in ratio["gaps"]

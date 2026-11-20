@@ -7,6 +7,7 @@ rounded: 'GH₵ 50 reduced by 25%' was marked GH₵ 38."""
 import json
 import math
 import re
+from collections import Counter
 from fractions import Fraction
 from pathlib import Path
 
@@ -76,6 +77,49 @@ def nums(text):
     return [int(v) for v in text.split(", ")]
 
 
+def mode_of(m, answer):
+    counts = Counter(nums(m[1]))
+    top = max(counts.values())
+    modes = [v for v, c in counts.items() if c == top]
+    return len(modes) == 1 and same_number(modes[0], answer)
+
+
+def inequality(m, answer):
+    a, b, sign, c = int(m[1]), int(m[2]), m[3], int(m[4])
+    return (c - b) % a == 0 and answer == f"x {sign} {(c - b) // a}"
+
+
+def distance(m, answer):
+    dx, dy = int(m[3]) - int(m[1]), int(m[4]) - int(m[2])
+    root = math.isqrt(dx * dx + dy * dy)
+    return root * root == dx * dx + dy * dy and same_number(root, answer)
+
+
+def midpoint(m, answer):
+    x1, y1, x2, y2 = (int(v) for v in m.groups())
+    return (x1 + x2) % 2 == 0 and (y1 + y2) % 2 == 0 and answer == f"({(x1 + x2) // 2}, {(y1 + y2) // 2})"
+
+
+def magnitude(m, answer):
+    a, b = int(m[1]), int(m[2])
+    root = math.isqrt(a * a + b * b)
+    return root * root == a * a + b * b and same_number(root, answer)
+
+
+def simplest_sum(m, answer):
+    total = Fraction(int(m[1]), int(m[2])) + Fraction(int(m[3]), int(m[4]))
+    return same_fraction(total, answer) and answer == str(total)
+
+
+def modular(op):
+    def check(m, answer):
+        a, b, mod = int(m[1]), int(m[2]), int(m[3])
+        value = (a + b) % mod if op == "+" else (a * b) % mod
+        return answer == str(value)
+
+    return check
+
+
 # (pattern, check(match, stored answer) -> bool)
 SOLVERS = [
     (r"^What is ([\d,]+) \+ ([\d,]+)\?$", lambda m, a: same_number(n(m[1]) + n(m[2]), a)),
@@ -137,6 +181,30 @@ SOLVERS = [
     (r"^Find the gradient of the line through \((-?\d+), (-?\d+)\) and \((-?\d+), (-?\d+)\)\.$", lambda m, a: same_fraction(Fraction(int(m[4]) - int(m[2]), int(m[3]) - int(m[1])), a)),
     (r"^Find the mean of: score.*$", freq_mean),
     (r"^A bag holds (\d+) red and (\d+) blue balls\. Two are picked", lambda m, a: same_fraction(Fraction(int(m[1]), int(m[1]) + int(m[2])) * Fraction(int(m[1]) - 1, int(m[1]) + int(m[2]) - 1), a)),
+    # JHS 3 and SHS 3 additions
+    (r"^What is (\d+)/(\d+) \+ (\d+)/(\d+)\? Give the answer in its simplest form\.$", simplest_sum),
+    (r"^Find (\d+)% of GH₵ (\d+)\.$", lambda m, a: same_number(Fraction(int(m[1]) * int(m[2]), 100), a)),
+    (r"is marked GH₵ (\d+)\. The shop gives a discount of (\d+)%\. How much does the customer pay\?$", lambda m, a: same_number(Fraction(int(m[1]) * (100 - int(m[2])), 100), a)),
+    (r"buys an? .+ for GH₵ (\d+) and sells it at a (profit|loss) of (\d+)%\. What is the selling price\?$", lambda m, a: same_number(Fraction(int(m[1]) * (100 + (1 if m[2] == "profit" else -1) * int(m[3])), 100), a)),
+    (r"saves GH₵ ([\d,]+) in a bank at (\d+)% simple interest per annum\. How much interest does .+ earn in (\d+) years\?$", lambda m, a: same_number(Fraction(n(m[1]) * int(m[2]) * int(m[3]), 100), a)),
+    (r"^Find the area of a triangle with base (\d+) cm and height (\d+) cm\.$", lambda m, a: same_number(Fraction(int(m[1]) * int(m[2]), 2), a)),
+    (r"^Find the area of a trapezium whose parallel sides are (\d+) cm and (\d+) cm long and whose height is (\d+) cm\.$", lambda m, a: same_number(Fraction((int(m[1]) + int(m[2])) * int(m[3]), 2), a)),
+    (r"^Solve the inequality: (\d+)x \+ (\d+) ([<>]) (-?\d+)$", inequality),
+    (r"^Find the mode of (\d[\d, ]*)\.$", mode_of),
+    (r"^Find the length of an arc of a circle of radius (\d+) cm that subtends an angle of (\d+)° at the centre\.", lambda m, a: same_number(Fraction(int(m[2]), 360) * 2 * Fraction(22, 7) * int(m[1]), a)),
+    (r"^Find the area of a sector of a circle of radius (\d+) cm whose angle at the centre is (\d+)°\.", lambda m, a: same_number(Fraction(int(m[2]), 360) * Fraction(22, 7) * int(m[1]) ** 2, a)),
+    (r"^Find the volume of a cylinder of radius (\d+) cm and height (\d+) cm\.", lambda m, a: same_number(Fraction(22, 7) * int(m[1]) ** 2 * int(m[2]), a)),
+    (r"an arc subtends an angle of (\d+)° at O\. What angle does the same arc subtend at a point on the remaining part of the circumference\?$", lambda m, a: int(m[1]) < 180 and same_number(Fraction(int(m[1]), 2), a)),
+    (r"^Find the sum of the interior angles of a polygon with (\d+) sides\.$", lambda m, a: same_number((int(m[1]) - 2) * 180, a)),
+    (r"^Find the size of each interior angle of a regular polygon with (\d+) sides\.$", lambda m, a: same_number(Fraction((int(m[1]) - 2) * 180, int(m[1])), a)),
+    (r"^Find the distance between the points \((-?\d+), (-?\d+)\) and \((-?\d+), (-?\d+)\)\.$", distance),
+    (r"^Find the midpoint of the line joining \((-?\d+), (-?\d+)\) and \((-?\d+), (-?\d+)\)\.$", midpoint),
+    (r"^Evaluate (\d+) \+ (\d+) \(mod (\d+)\)\.$", modular("+")),
+    (r"^Evaluate (\d+) x (\d+) \(mod (\d+)\)\.$", modular("x")),
+    (r"^y varies directly as x, and y = (\d+) when x = (\d+)\. Find y when x = (\d+)\.$", lambda m, a: same_fraction(Fraction(int(m[1]), int(m[2])) * int(m[3]), a)),
+    (r"^y varies inversely as x, and y = (\d+) when x = (\d+)\. Find y when x = (\d+)\.$", lambda m, a: same_fraction(Fraction(int(m[1]) * int(m[2]), int(m[3])), a)),
+    (r"^Find the magnitude of the vector whose components are (-?\d+) and (-?\d+)\.$", magnitude),
+    (r"^The point P\((-?\d+), (-?\d+)\) is translated by the vector \((-?\d+), (-?\d+)\)\. Find the coordinates of its image\.$", lambda m, a: a == f"({int(m[1]) + int(m[3])}, {int(m[2]) + int(m[4])})"),
 ]
 
 

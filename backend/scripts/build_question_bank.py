@@ -21,6 +21,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
 
+import question_bank_exam_years as exam_years  # noqa: E402
 import question_bank_written as written  # noqa: E402
 
 DATA_DIR = Path(__file__).resolve().parents[1] / "data" / "practice"
@@ -508,6 +509,184 @@ def s_prob_two():
     return q(f"A bag holds {red} red and {blue} blue balls. Two are picked without replacement. What is the probability that both are red?", answer, [Fraction(red, t) ** 2, Fraction(red, t), Fraction(blue, t) * Fraction(blue - 1, t - 1) if red != blue else Fraction(1, t)], f"{red}/{t} x {red - 1}/{t - 1} = {frac(answer)}.", "hard", frac)
 
 
+# ------------------------------------------- JHS 3 and SHS 3 additions
+# Generated after everything above, so adding them changed none of the
+# earlier questions (the random numbers come from one shared generator).
+
+def j_fraction_add():
+    b, d = C([2, 3, 4, 5, 6, 8, 10, 12]), C([2, 3, 4, 5, 6, 8, 10, 12])
+    if b == d:
+        return j_fraction_add()
+    a, c = R(1, b - 1), R(1, d - 1)
+    answer = Fraction(a, b) + Fraction(c, d)
+    if answer >= 1 or math.gcd(a, b) != 1 or math.gcd(c, d) != 1:
+        return j_fraction_add()
+    common = b * d // math.gcd(b, d)
+    top = a * common // b + c * common // d
+    return q(f"What is {a}/{b} + {c}/{d}? Give the answer in its simplest form.", answer, [Fraction(a + c, b + d), Fraction(a * c, b * d), answer + Fraction(1, common)], f"Use the common denominator {common}: {a}/{b} = {a * common // b}/{common} and {c}/{d} = {c * common // d}/{common}. Add the tops: {top}/{common}, which in its simplest form is {frac(answer)}.", "medium", frac)
+
+
+def j_percent_of():
+    pct, amount = C([5, 10, 12, 15, 20, 25, 30, 40, 75]), 20 * R(2, 40)
+    if amount * pct % 100:
+        return j_percent_of()
+    answer = amount * pct // 100
+    return q(f"Find {pct}% of GH₵ {amount}.", answer, [amount - answer, answer + pct, amount * pct // 10 if amount * pct % 10 == 0 else answer * 2], f"{pct}% of {amount} = {amount} x {pct} ÷ 100 = GH₵ {answer}.", "easy", lambda v: f"GH₵ {v:,}")
+
+
+def j_discount():
+    price, pct = 20 * R(2, 25), C([5, 10, 15, 20, 25, 30, 40, 50])
+    if price * pct % 100:
+        return j_discount()
+    off = price * pct // 100
+    item = C(["shirt", "pair of sandals", "school bag", "radio", "dictionary"])
+    return q(f"A {item} is marked GH₵ {price}. The shop gives a discount of {pct}%. How much does the customer pay?", price - off, [off, price + off, price - pct], f"Discount = {pct}% of {price} = {off}. The customer pays {price} - {off} = GH₵ {price - off}.", "medium", lambda v: f"GH₵ {v}")
+
+
+def j_profit_sell():
+    cost, pct = 20 * R(2, 30), C([10, 15, 20, 25, 30, 40, 50])
+    if cost * pct % 100:
+        return j_profit_sell()
+    change = cost * pct // 100
+    item = C(["radio", "bag of rice", "bicycle", "sewing machine", "crate of eggs"])
+    if R(0, 1):
+        return q(f"A trader buys a {item} for GH₵ {cost} and sells it at a profit of {pct}%. What is the selling price?", cost + change, [change, cost - change, cost + pct], f"Profit = {pct}% of {cost} = {change}. Selling price = {cost} + {change} = GH₵ {cost + change}.", "medium", lambda v: f"GH₵ {v}")
+    return q(f"A trader buys a {item} for GH₵ {cost} and sells it at a loss of {pct}%. What is the selling price?", cost - change, [change, cost + change, cost - pct], f"Loss = {pct}% of {cost} = {change}. Selling price = {cost} - {change} = GH₵ {cost - change}.", "medium", lambda v: f"GH₵ {v}")
+
+
+def j_savings_interest():
+    name = C(NAMES)
+    p, r, t = C([500, 800, 1000, 1200, 1500, 2000, 2500, 3000]), C([5, 8, 10, 12, 15]), R(2, 5)
+    interest = p * r * t // 100
+    if p * r * t % 100:
+        return j_savings_interest()
+    return q(f"{name} saves GH₵ {p:,} in a bank at {r}% simple interest per annum. How much interest does {name} earn in {t} years?", interest, [p + interest, p * r // 100, interest + p * r // 100], f"Interest = P x R x T ÷ 100 = {p:,} x {r} x {t} ÷ 100 = GH₵ {interest:,}.", "medium", lambda v: f"GH₵ {v:,}")
+
+
+def j_triangle_area():
+    b, h = R(2, 30), R(2, 30)
+    if b * h % 2:
+        return j_triangle_area()
+    return q(f"Find the area of a triangle with base {b} cm and height {h} cm.", b * h // 2, [b * h, b + h, b * h // 2 + b], f"Area = 1/2 x base x height = 1/2 x {b} x {h} = {b * h // 2} square cm.", "easy", lambda v: f"{v} square cm")
+
+
+def j_trapezium_area():
+    a, b, h = R(2, 20), R(2, 20), R(2, 15)
+    if a == b or (a + b) * h % 2:
+        return j_trapezium_area()
+    answer = (a + b) * h // 2
+    return q(f"Find the area of a trapezium whose parallel sides are {a} cm and {b} cm long and whose height is {h} cm.", answer, [(a + b) * h, a * b * h // 2 if a * b * h % 2 == 0 else a * b, a + b + h], f"Area = 1/2 x (sum of the parallel sides) x height = 1/2 x ({a} + {b}) x {h} = {answer} square cm.", "medium", lambda v: f"{v} square cm")
+
+
+def j_inequality():
+    k, a, b = R(-5, 15), R(2, 9), R(1, 20)
+    c = a * k + b
+    sign = C(["<", ">"])
+    other = ">" if sign == "<" else "<"
+    return q(f"Solve the inequality: {a}x + {b} {sign} {c}", f"x {sign} {k}", [f"x {other} {k}", f"x {sign} {c - b}", f"x {sign} {k + 1}"], f"Subtract {b} from both sides: {a}x {sign} {c - b}. Divide both sides by {a} (a positive number, so the sign stays): x {sign} {k}.", "medium", lambda v: v)
+
+
+def j_mode():
+    mode = R(2, 20)
+    others = RNG.sample([v for v in range(1, 25) if v != mode], 4)
+    data = [mode] * 3 + others
+    RNG.shuffle(data)
+    ordered = sorted(data)
+    median = ordered[3]
+    return q(f"Find the mode of {', '.join(map(str, data))}.", mode, [median if median != mode else max(data), max(data) if max(data) != mode else min(data), 3], f"The mode is the value that appears most often. {mode} appears 3 times, more than any other value.", "easy")
+
+
+def s_arc():
+    r, angle = C([7, 14, 21, 28, 35]), C([30, 45, 60, 72, 90, 120, 135, 150, 180, 240, 270])
+    arc = Fraction(angle, 360) * 2 * Fraction(22, 7) * r
+    area = Fraction(angle, 360) * Fraction(22, 7) * r * r
+    if (arc * 10).denominator != 1:
+        return s_arc()
+    return q(f"Find the length of an arc of a circle of radius {r} cm that subtends an angle of {angle}° at the centre. (Take π = 22/7)", float(arc), [float(area), float(2 * Fraction(22, 7) * r), float(arc * 2)], f"Arc length = θ/360 x 2πr = {angle}/360 x 2 x 22/7 x {r} = {float(arc):g} cm.", "medium", lambda v: f"{v:g} cm")
+
+
+def s_sector():
+    r, angle = C([7, 14, 21, 28]), C([30, 45, 60, 72, 90, 120, 135, 150, 180, 240, 270])
+    area = Fraction(angle, 360) * Fraction(22, 7) * r * r
+    arc = Fraction(angle, 360) * 2 * Fraction(22, 7) * r
+    if (area * 10).denominator != 1:
+        return s_sector()
+    return q(f"Find the area of a sector of a circle of radius {r} cm whose angle at the centre is {angle}°. (Take π = 22/7)", float(area), [float(arc), float(Fraction(22, 7) * r * r), float(area * 2)], f"Area of a sector = θ/360 x πr² = {angle}/360 x 22/7 x {r} x {r} = {float(area):g} square cm.", "medium", lambda v: f"{v:g} square cm")
+
+
+def s_cylinder():
+    r, h = C([7, 14, 21]), R(2, 20)
+    volume = Fraction(22, 7) * r * r * h
+    curved = 2 * Fraction(22, 7) * r * h
+    return q(f"Find the volume of a cylinder of radius {r} cm and height {h} cm. (Take π = 22/7)", int(volume), [int(curved), int(Fraction(22, 7) * r * r), int(volume) * 2], f"Volume = πr²h = 22/7 x {r} x {r} x {h} = {int(volume):,} cubic cm.", "medium", lambda v: f"{v:,} cubic cm")
+
+
+def s_centre_angle():
+    centre = 2 * R(20, 85)
+    return q(f"In a circle with centre O, an arc subtends an angle of {centre}° at O. What angle does the same arc subtend at a point on the remaining part of the circumference?", centre // 2, [centre, 180 - centre // 2, 360 - centre], f"The angle at the centre is twice the angle at the circumference, so the angle at the circumference is {centre} ÷ 2 = {centre // 2}°.", "medium", lambda v: f"{v}°")
+
+
+def s_polygon():
+    if R(0, 1):
+        n = R(5, 12)
+        return q(f"Find the sum of the interior angles of a polygon with {n} sides.", (n - 2) * 180, [n * 180, (n - 1) * 180, 360], f"Sum of interior angles = (n - 2) x 180° = ({n} - 2) x 180° = {(n - 2) * 180:,}°.", "medium", lambda v: f"{v:,}°")
+    n = C([5, 6, 8, 9, 10, 12, 15, 18, 20])
+    return q(f"Find the size of each interior angle of a regular polygon with {n} sides.", 180 - 360 // n, [360 // n, (n - 2) * 180, 180 - 180 // n if 180 % n == 0 and 180 // n != 360 // n else 180 - 360 // n + 10], f"Each exterior angle = 360° ÷ {n} = {360 // n}°. Each interior angle = 180° - {360 // n}° = {180 - 360 // n}°.", "medium", lambda v: f"{v:,}°")
+
+
+def s_distance():
+    (a, b, c), k = C([(3, 4, 5), (5, 12, 13), (8, 15, 17), (6, 8, 10)]), R(1, 2)
+    a, b, c = a * k, b * k, c * k
+    x1, y1 = R(-6, 6), R(-6, 6)
+    x2, y2 = x1 + C([a, -a]), y1 + C([b, -b])
+    return q(f"Find the distance between the points ({x1}, {y1}) and ({x2}, {y2}).", c, [a + b, c * c, c + 1], f"Distance = √(({x2} - ({x1}))² + ({y2} - ({y1}))²) = √({a * a} + {b * b}) = √{c * c} = {c} units.", "medium", lambda v: f"{v} units")
+
+
+def s_midpoint():
+    x1, y1 = R(-8, 8), R(-8, 8)
+    x2, y2 = x1 + 2 * R(-5, 5), y1 + 2 * R(-5, 5)
+    if (x1, y1) == (x2, y2):
+        return s_midpoint()
+    mx, my = (x1 + x2) // 2, (y1 + y2) // 2
+    return q(f"Find the midpoint of the line joining ({x1}, {y1}) and ({x2}, {y2}).", f"({mx}, {my})", [f"({x1 + x2}, {y1 + y2})", f"({x2 - x1}, {y2 - y1})", f"({my}, {mx})"], f"Midpoint = ((x₁ + x₂)/2, (y₁ + y₂)/2) = (({x1} + {x2})/2, ({y1} + {y2})/2) = ({mx}, {my}).", "medium", lambda v: v)
+
+
+def s_modular():
+    m = C([4, 5, 6, 7, 9])
+    a, b = R(10, 40), R(5, 30)
+    if R(0, 1):
+        answer = (a + b) % m
+        return q(f"Evaluate {a} + {b} (mod {m}).", answer, [a + b, (answer + 1) % m, (a * b) % m], f"{a} + {b} = {a + b}. Dividing {a + b} by {m} leaves a remainder of {answer}, so the answer is {answer} (mod {m}).", "medium")
+    answer = (a * b) % m
+    return q(f"Evaluate {a} x {b} (mod {m}).", answer, [(a + b) % m, (answer + 1) % m, a * b], f"{a} x {b} = {a * b}. Dividing {a * b} by {m} leaves a remainder of {answer}, so the answer is {answer} (mod {m}).", "medium")
+
+
+def s_variation():
+    if R(0, 1):
+        k, a, c = R(2, 9), R(2, 12), R(2, 15)
+        if a == c:
+            return s_variation()
+        b = k * a
+        return q(f"y varies directly as x, and y = {b} when x = {a}. Find y when x = {c}.", k * c, [k, b + c - a, Fraction(b * a, c) if (b * a) % c == 0 and b * a // c != k * c else k * c + k], f"y = kx. From {b} = k x {a}, k = {k}. When x = {c}, y = {k} x {c} = {k * c}.", "medium", frac)
+    a, b = R(2, 12), R(2, 12)
+    k = a * b
+    choices = [d for d in range(2, k + 1) if k % d == 0 and d != a]
+    c = C(choices)
+    return q(f"y varies inversely as x, and y = {b} when x = {a}. Find y when x = {c}.", k // c, [b * c // a if b * c % a == 0 else b * c, k, k * c], f"y = k/x. From {b} = k/{a}, k = {k}. When x = {c}, y = {k}/{c} = {k // c}.", "medium", frac)
+
+
+def s_vector():
+    if R(0, 1):
+        (a, b, c), k = C([(3, 4, 5), (5, 12, 13), (8, 15, 17), (6, 8, 10)]), R(1, 2)
+        a, b = a * k * C([1, -1]), b * k * C([1, -1])
+        c *= k
+        return q(f"Find the magnitude of the vector whose components are {a} and {b}.", c, [abs(a) + abs(b), c * c, c + 1], f"Magnitude = √({a}² + {b}²) = √({a * a} + {b * b}) = √{c * c} = {c}.", "medium")
+    x, y, a, b = R(-6, 6), R(-6, 6), R(-5, 5), R(-5, 5)
+    if a == 0 or b == 0 or a == b:
+        return s_vector()
+    return q(f"The point P({x}, {y}) is translated by the vector ({a}, {b}). Find the coordinates of its image.", f"({x + a}, {y + b})", [f"({x - a}, {y - b})", f"({x + b}, {y + a})", f"({a}, {b})"], f"Add the vector to the point: ({x} + ({a}), {y} + ({b})) = ({x + a}, {y + b}).", "medium", lambda v: v)
+
+
 # ----------------------------------------------------------------- Assembly
 
 # The first primary class each template suits, roughly following Ghana's
@@ -543,6 +722,13 @@ SUB_SKILLS = {
     "s_profit": "profit_and_loss", "s_bases": "number_bases", "s_ap": "sequences", "s_gp": "sequences",
     "s_trig": "trigonometry", "s_gradient": "coordinate_geometry", "s_sets": "sets", "s_mean_freq": "averages",
     "s_prob_two": "probability",
+    "j_fraction_add": "fractions", "j_percent_of": "percentages", "j_discount": "money", "j_profit_sell": "profit_and_loss",
+    "j_savings_interest": "interest", "j_triangle_area": "area", "j_trapezium_area": "area",
+    "j_inequality": "linear_inequalities", "j_mode": "averages",
+    "s_arc": "sectors_and_arcs", "s_sector": "sectors_and_arcs", "s_cylinder": "volume",
+    "s_centre_angle": "circle_theorems", "s_polygon": "polygons", "s_distance": "coordinate_geometry",
+    "s_midpoint": "coordinate_geometry", "s_modular": "modular_arithmetic", "s_variation": "variation",
+    "s_vector": "vectors",
 }
 
 
@@ -568,6 +754,15 @@ SYLLABUS = {
     "s_ap": S + "number.sequences", "s_gp": S + "number.sequences", "s_sets": S + "number.sets",
     "s_trig": S + "trigonometry.trig-ratios", "s_gradient": S + "coordinate-geometry.gradient-distance",
     "s_mean_freq": S + "statistics.statistics", "s_prob_two": S + "statistics.probability",
+    "j_fraction_add": J + "number.fractions-percentages", "j_percent_of": J + "number.fractions-percentages",
+    "j_discount": J + "number.financial-arithmetic", "j_profit_sell": J + "number.financial-arithmetic",
+    "j_savings_interest": J + "number.financial-arithmetic",
+    "j_triangle_area": J + "geometry-measurement.area-perimeter", "j_trapezium_area": J + "geometry-measurement.area-perimeter",
+    "j_inequality": J + "algebra.linear-inequalities", "j_mode": J + "data.averages",
+    "s_arc": S + "mensuration.sectors-arcs", "s_sector": S + "mensuration.sectors-arcs", "s_cylinder": S + "mensuration.solids",
+    "s_centre_angle": S + "geometry.circle-theorems", "s_polygon": S + "geometry.polygons",
+    "s_distance": S + "coordinate-geometry.gradient-distance", "s_midpoint": S + "coordinate-geometry.gradient-distance",
+    "s_modular": S + "number.modular-arithmetic", "s_variation": S + "algebra.variation", "s_vector": S + "vectors.vectors",
 }
 
 # Written topics that match one syllabus topic as a whole. Broader ones (a mix
@@ -639,7 +834,59 @@ def subject(subject_id, name, icon, levels, topics, sms=False):
     return entry
 
 
+def extend(topic, generators, per_template):
+    """More calculated questions for a topic that already exists. Their ids
+    continue after the topic's last one, so no existing id changes."""
+    prefix, last = topic["questions"][-1]["id"].rsplit("_", 1)
+    seen = {q["question"] for q in topic["questions"]}
+    added = [item for item in finish(generators, prefix, per_template) if item["question"] not in seen]
+    for index, item in enumerate(added, int(last) + 1):
+        item["id"] = f"{prefix}_{index:03d}"
+    topic["questions"].extend(added)
+
+
+def drafted_topics(source, prefix):
+    """Written drafts keyed (topic id, topic name, syllabus topic id)."""
+    for topic_id, _, syllabus_id in source:
+        WRITTEN_SYLLABUS[(prefix, topic_id)] = syllabus_id
+    return written_topics({(topic_id, name): rows for (topic_id, name, _), rows in source.items()}, prefix)
+
+
+def add_exam_years(bank):
+    """JHS 3 and SHS 3 (BECE and WASSCE years) drafts and templates, built
+    after the rest so none of the earlier questions change."""
+    subjects = {s["id"]: s for s in bank["subjects"]}
+    topics = {t["id"]: t for s in bank["subjects"] for t in s["topics"]}
+
+    jhs_maths = subjects["mathematics"]["topics"]
+    extend(topics["j_number"], [j_fraction_add], 15)
+    jhs_maths.append({"id": "j_money", "name": "Money and Business Maths", "questions": finish([j_discount, j_profit_sell, j_savings_interest, j_percent_of], "jm_mon", 12)})
+    extend(topics["geometry"], [j_triangle_area, j_trapezium_area], 12)
+    extend(topics["algebra"], [j_inequality], 15)
+    extend(topics["j_statistics"], [j_mode], 12)
+
+    shs_maths = subjects["core_mathematics_shs"]["topics"]
+    shs_maths.append({"id": "s_mensuration", "name": "Mensuration", "questions": finish([s_arc, s_sector, s_cylinder], "sm_men", 12)})
+    shs_maths.append({"id": "s_plane_geometry", "name": "Plane Geometry", "questions": finish([s_centre_angle, s_polygon], "sm_pla", 12)})
+    shs_maths.append({"id": "s_vectors", "name": "Vectors and Transformation", "questions": finish([s_vector], "sm_vec", 15)})
+    extend(topics["s_geometry"], [s_distance, s_midpoint], 12)
+    extend(topics["s_number"], [s_modular], 15)
+    extend(topics["s_algebra"], [s_variation], 15)
+
+    subjects["english"]["topics"].extend(drafted_topics(exam_years.JHS3_ENGLISH, "je3"))
+    subjects["science"]["topics"].extend(drafted_topics(exam_years.JHS3_SCIENCE, "js3"))
+    bank["subjects"].append(subject("social_studies", "Social Studies", "\U0001F30D", ["jhs"], drafted_topics(exam_years.JHS3_SOCIAL, "jss")))
+    subjects["english_shs"]["topics"].extend(drafted_topics(exam_years.SHS3_ENGLISH, "se3"))
+    subjects["integrated_science_shs"]["topics"].extend(drafted_topics(exam_years.SHS3_SCIENCE, "si3"))
+    bank["subjects"].append(subject("social_studies_shs", "SHS Social Studies", "\U0001F30D", ["shs"], drafted_topics(exam_years.SHS3_SOCIAL, "sss")))
+    return bank
+
+
 def build():
+    return add_exam_years(build_base())
+
+
+def build_base():
     return {
         "subjects": [
             subject("mathematics_primary", "Primary Mathematics", "\U0001F4D0", ["primary"], [
@@ -677,7 +924,7 @@ def main():
     BANK_FILE.write_text(json.dumps(bank, ensure_ascii=False, indent=1) + "\n", encoding="utf-8", newline="\n")
     # utf-8-sig so Excel shows GH₵ and ° properly.
     with open(REVIEW_CSV, "w", encoding="utf-8-sig", newline="") as f:
-        writer = csv.writer(f)
+        writer = csv.writer(f, lineterminator="\n")
         writer.writerow(["id", "subject", "topic", "question", "correct answer", "wrong answer 1", "wrong answer 2", "wrong answer 3", "explanation", "teacher approved? (yes/no)", "teacher's correction"])
         for s in bank["subjects"]:
             for t in s["topics"]:
