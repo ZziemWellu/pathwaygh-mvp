@@ -6,6 +6,18 @@ import { formatDate } from '../../../utils/date';
 import { CalendarDaysIcon, CircleCheckIcon, ClipboardListIcon, Coins, CoinsIcon, GraduationCapIcon, LandmarkIcon, LinkIcon, RocketIcon, TriangleAlertIcon } from 'lucide-react';
 import PageHeader from '../../../components/ui/PageHeader';
 import Button from '../../../components/ui/Button';
+import SourceList from '../components/SourceList';
+
+// The API works the status out from the dates (see backend/modules/explore/router.py).
+const STATUS_LABELS = {
+  open: 'Open',
+  upcoming: 'Opens soon',
+  closed: 'Closed',
+  rolling: 'Any time',
+  check: 'Check dates',
+};
+const LEVEL_LABELS = { secondary: 'Secondary', undergraduate: 'Undergraduate', postgraduate: 'Postgraduate', tvet: 'TVET' };
+const statusLabel = (status) => STATUS_LABELS[status] || status || '';
 
 const ScholarshipsPage = () => {
   const [scholarships, setScholarships] = useState([]);
@@ -123,11 +135,22 @@ const ScholarshipsPage = () => {
   };
 
   const getStatusColor = (status) => {
-    return status === 'open' ? 'var(--success)' : 'var(--danger)';
+    switch (status) {
+      case 'open':
+      case 'rolling':
+        return 'var(--success)';
+      case 'upcoming':
+        return 'var(--primary)';
+      case 'closed':
+        return 'var(--danger)';
+      default:
+        return 'var(--gray-500)';
+    }
   };
 
   const formatDeadline = (dateStr) => {
     if (!dateStr) return 'N/A';
+    if (dateStr === 'rolling') return 'Rolling - apply any time';
     const date = new Date(dateStr);
     // Some deadlines are a note rather than a fixed date (e.g. "Announced
     // annually - check the official portal") when a real one isn't known -
@@ -225,8 +248,7 @@ const ScholarshipsPage = () => {
           }}
         >
           <option value="all">All Status</option>
-          <option value="open">Open</option>
-          <option value="closed">Closed</option>
+          {Object.entries(STATUS_LABELS).map(([value, label]) => <option key={value} value={value}>{label}</option>)}
         </select>
       </div>
 
@@ -252,16 +274,18 @@ const ScholarshipsPage = () => {
                   fontSize: '0.8125rem',
                   fontWeight: 'bold',
                   background: getStatusColor(sch.status),
-                  color: 'white'
+                  color: 'white',
+                  whiteSpace: 'nowrap',
+                  marginLeft: '8px'
                 }}>
-                  {sch.status.toUpperCase()}
+                  {statusLabel(sch.status).toUpperCase()}
                 </span>
               </div>
               <div style={{ fontSize: '0.9375rem', color: 'var(--text-muted)', marginBottom: '4px' }}>
                 <LandmarkIcon className="icon-inline" size="1em" aria-hidden="true" /> {sch.sponsor}
               </div>
               <div style={{ fontSize: '0.9375rem', color: 'var(--text-muted)', marginBottom: '4px' }}>
-                <CoinsIcon className="icon-inline" size="1em" aria-hidden="true" /> {sch.amount || 'Full tuition'}
+                <GraduationCapIcon className="icon-inline" size="1em" aria-hidden="true" /> {sch.amount || (sch.level || []).map((l) => LEVEL_LABELS[l] || l).join(', ') || 'See details'}
               </div>
               <div style={{ fontSize: '0.9375rem', color: 'var(--text-muted)', marginBottom: '4px' }}>
                 <CalendarDaysIcon className="icon-inline" size="1em" aria-hidden="true" /> Deadline: {formatDeadline(sch.deadline)}
@@ -338,13 +362,13 @@ const ScholarshipsPage = () => {
               display: 'inline-block',
               marginBottom: '12px'
             }}>
-              {selectedScholarship.status.toUpperCase()}
+              {statusLabel(selectedScholarship.status).toUpperCase()}
             </span>
             <div style={{ fontSize: '0.9375rem', color: 'var(--text-muted)', marginBottom: '8px' }}>
               <LandmarkIcon className="icon-inline" size="1em" aria-hidden="true" /> <strong>Sponsor:</strong> {selectedScholarship.sponsor}
             </div>
             <div style={{ fontSize: '0.9375rem', color: 'var(--text-muted)', marginBottom: '8px' }}>
-              <CoinsIcon className="icon-inline" size="1em" aria-hidden="true" /> <strong>Coverage:</strong> {selectedScholarship.coverage || selectedScholarship.amount || 'Full tuition'}
+              <CoinsIcon className="icon-inline" size="1em" aria-hidden="true" /> <strong>Coverage:</strong> {selectedScholarship.coverage || selectedScholarship.amount || 'See the official website'}
             </div>
             <div style={{ fontSize: '0.9375rem', color: 'var(--text-muted)', marginBottom: '8px' }}>
               <CalendarDaysIcon className="icon-inline" size="1em" aria-hidden="true" /> <strong>Deadline:</strong> {formatDeadline(selectedScholarship.deadline)}
@@ -352,6 +376,12 @@ const ScholarshipsPage = () => {
             <div style={{ fontSize: '0.9375rem', color: 'var(--text-muted)', marginBottom: '8px' }}>
               <LandmarkIcon className="icon-inline" size="1em" aria-hidden="true" /> <strong>Type:</strong> {selectedScholarship.type.toUpperCase()}
             </div>
+            {selectedScholarship.level?.length > 0 && (
+              <div style={{ fontSize: '0.9375rem', color: 'var(--text-muted)', marginBottom: '8px' }}>
+                <GraduationCapIcon className="icon-inline" size="1em" aria-hidden="true" /> <strong>Level:</strong>{' '}
+                {selectedScholarship.level.map((l) => LEVEL_LABELS[l] || l).join(', ')}
+              </div>
+            )}
             {selectedScholarship.eligibility && (
               <div style={{ margin: '12px 0' }}>
                 <strong><CircleCheckIcon className="icon-inline" size="1em" aria-hidden="true" /> Eligibility:</strong>
@@ -372,6 +402,10 @@ const ScholarshipsPage = () => {
                 </a>
               </div>
             )}
+            <p style={{ fontSize: '0.875rem', color: 'var(--text-muted)' }}>
+              Apply only through the official website. Never pay an agent or anyone who promises to "guarantee" a scholarship.
+            </p>
+            <SourceList sources={selectedScholarship.source} lastChecked={selectedScholarship.last_checked} />
             <div style={{ display: 'flex', gap: '12px', marginTop: '20px', flexWrap: 'wrap' }}>
               <Button onClick={() => window.open(selectedScholarship.website, '_blank')} style={{ flex: 1 }}>
                 <RocketIcon className="icon-inline" size="1em" aria-hidden="true" /> Apply Now

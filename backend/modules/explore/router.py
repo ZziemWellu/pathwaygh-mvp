@@ -2,8 +2,9 @@
 Explore Module Router
 """
 
+from datetime import date
 from fastapi import APIRouter, HTTPException
-from typing import Optional  # ← THIS WAS MISSING!
+from typing import Optional
 import json
 from pathlib import Path
 
@@ -18,10 +19,44 @@ SCHOLARSHIPS_FILE = PROJECT_ROOT / "data" / "explore" / "scholarships.json"
 # Load Functions
 # ============================================================
 
+def _available_in(item, country):
+    """An item is shown in a country if it lists it in `countries`, or (older
+    single-country records) if its `country` matches."""
+    countries = item.get("countries")
+    if countries:
+        return country in countries
+    return item.get("country") == country
+
+
 def _filter_by_country(items, country):
     if country is None:
         return items
-    return [item for item in items if item.get("country") == country]
+    return [item for item in items if _available_in(item, country)]
+
+
+def _parse_date(value):
+    try:
+        return date.fromisoformat(value)
+    except (TypeError, ValueError):
+        return None
+
+
+def scholarship_status(scholarship, today=None):
+    """Work the status out from the dates so it never goes stale.
+
+    open / upcoming / closed when the deadline is a date; "rolling" when the
+    deadline is "rolling"; otherwise "check" (the dates are announced yearly).
+    """
+    today = today or date.today()
+    deadline = _parse_date(scholarship.get("deadline"))
+    if deadline is None:
+        return "rolling" if scholarship.get("deadline") == "rolling" else "check"
+    if today > deadline:
+        return "closed"
+    opens = _parse_date(scholarship.get("opens"))
+    if opens and today < opens:
+        return "upcoming"
+    return "open"
 
 def load_careers(country: Optional[str] = None):
     try:
@@ -48,7 +83,10 @@ def load_scholarships(country: Optional[str] = None):
         if SCHOLARSHIPS_FILE.exists():
             with open(SCHOLARSHIPS_FILE, 'r', encoding='utf-8') as f:
                 data = json.load(f)
-                return _filter_by_country(data.get("scholarships", []), country)
+                scholarships = [
+                    {**s, "status": scholarship_status(s)} for s in data.get("scholarships", [])
+                ]
+                return _filter_by_country(scholarships, country)
     except Exception as e:
         print(f"Error loading scholarships: {e}")
     return []
@@ -126,6 +164,7 @@ def get_scholarships(
             if search_lower in s.get("title", "").lower()
             or search_lower in s.get("sponsor", "").lower()
             or search_lower in s.get("description", "").lower()
+            or search_lower in s.get("eligibility", "").lower()
         ]
     
     return {"success": True, "scholarships": scholarships, "total": len(scholarships)}
