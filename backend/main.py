@@ -179,6 +179,7 @@ modules = [
     ("recommendations", "modules.recommendations.router", "/api/recommendations"),
     ("knowledge_graph", "modules.knowledge_graph.router", "/api/knowledge_graph"),
     ("admin", "modules.admin.router", "/api/admin"),
+    ("content", "modules.content.router", "/api/content"),
 ]
 
 loaded = []

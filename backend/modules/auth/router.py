@@ -93,6 +93,7 @@ def _user_out(user: User) -> dict:
         "must_change_password": bool(user.must_change_password),
         "full_name": user.full_name,
         "is_admin": user.is_admin,
+        "is_contributor": bool(user.is_contributor),
         "is_school_admin": user.is_school_admin,
         "school_id": user.school_id,
         "country": user.country,

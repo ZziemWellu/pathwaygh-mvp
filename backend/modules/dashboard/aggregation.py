@@ -6,6 +6,7 @@ passed in, then groups/aggregates in Python (matching this codebase's existing
 "fetch rows, aggregate in Python" convention rather than SQL GROUP BY).
 """
 
+from core.drafts import course_is_shown, visible_lessons
 from sqlalchemy.orm import Session
 
 from models.course import Course
@@ -82,8 +83,10 @@ def overview_for_users(db: Session, user_ids: list) -> dict:
             course = courses.get(e.course_id)
             if not course:
                 continue
-            lessons_total += len(course.lessons)
-            lessons_completed += sum(1 for lesson in course.lessons if lesson.id in watched_ids)
+            # What the student can see: drafts don't count unless served.
+            lessons = visible_lessons(course) if course_is_shown(course) else []
+            lessons_total += len(lessons)
+            lessons_completed += sum(1 for lesson in lessons if lesson.id in watched_ids)
 
         attempts = quiz_attempts_by_user.get(user_id, [])
         average_quiz_score = round(sum(a.score for a in attempts) / len(attempts)) if attempts else 0

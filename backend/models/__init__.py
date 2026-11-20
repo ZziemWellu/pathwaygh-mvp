@@ -1,4 +1,5 @@
 from models.active_quiz import ActiveQuiz
+from models.content import ContentQuestion, ContentReport, ContentReview
 from models.course import Course, Exercise, Lesson
 from models.enrollment import Enrollment
 from models.exercise_result import ExerciseResult
@@ -44,4 +45,7 @@ __all__ = [
     "PeerQuestion",
     "PeerAnswer",
     "PeerContentReport",
+    "ContentQuestion",
+    "ContentReview",
+    "ContentReport",
 ]

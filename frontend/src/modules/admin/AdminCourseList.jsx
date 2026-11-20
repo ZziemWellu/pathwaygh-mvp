@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ChevronRight, Plus, Shield, Trash2 } from 'lucide-react';
+import { ChevronRight, ClipboardCheck, Plus, Shield, Trash2 } from 'lucide-react';
 import api from '../../services/api';
 import PageHeader from '../../components/ui/PageHeader';
 import Button from '../../components/ui/Button';
@@ -66,7 +66,12 @@ const AdminCourseList = () => {
       <PageHeader
         icon={Shield}
         title="Manage Courses"
-        actions={<Button icon={Plus} aria-expanded={showForm} onClick={() => setShowForm((s) => !s)}>New Course</Button>}
+        actions={
+          <>
+            <Button variant="secondary" icon={ClipboardCheck} onClick={() => navigate('/content')}>Content tools</Button>
+            <Button icon={Plus} aria-expanded={showForm} onClick={() => setShowForm((s) => !s)}>New Course</Button>
+          </>
+        }
       />
       <AdminStudentLevel />
 

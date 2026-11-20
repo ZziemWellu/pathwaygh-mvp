@@ -119,6 +119,7 @@ const CourseDetail = () => {
                 <div style={{ fontSize: '0.875rem', color: 'var(--gray-500)' }}>
                   {lesson.duration_minutes ? t('learnMinutes').replace('{count}', lesson.duration_minutes) : ''}
                   {lesson.is_free_preview && ` ${t('learnFreePreview')}`}
+                  {lesson.is_draft && ' · Draft: not yet checked by a teacher'}
                 </div>
               </div>
               {locked && <Lock size={18} color="var(--text-subtle)" aria-label="Locked" />}

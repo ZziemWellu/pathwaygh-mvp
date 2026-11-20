@@ -32,6 +32,10 @@ class User(Base):
     password_reset_expires_at = Column(DateTime, nullable=True)
     avatar_filename = Column(String(255), nullable=True)
     is_admin = Column(Boolean, nullable=False, default=False)
+    # A teacher who may draft and review lessons and practice questions in
+    # the app (modules/content). Set by an admin; nothing they write goes
+    # live until someone approves it.
+    is_contributor = Column(Boolean, nullable=False, default=False, server_default=false())
     country = Column(String(2), nullable=False, default="GH")
     language = Column(String(3), nullable=False, default="en")
     # primary, jhs or shs (core/levels.py). Decides which courses and question

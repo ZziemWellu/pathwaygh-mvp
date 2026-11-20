@@ -10,6 +10,7 @@ import './Practice.css';
 import { SubjectIcon } from '../../components/ui/icons';
 import { formatDate } from '../../utils/date';
 import PageHeader from '../../components/ui/PageHeader';
+import ReportProblem from '../../components/common/ReportProblem';
 import Button from '../../components/ui/Button';
 
 const PracticeModule = () => {
@@ -315,6 +316,7 @@ const PracticeModule = () => {
                 <Button onClick={() => setCurrentQuestion(prev => Math.min(totalQuestions - 1, prev + 1))}>Next →</Button>
               )}
             </div>
+            {currentQ.id && <ReportProblem key={currentQ.id} itemType="question" itemId={currentQ.id} />}
           </div>
         )}
       </div>

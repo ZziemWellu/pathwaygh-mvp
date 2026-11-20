@@ -82,8 +82,9 @@ def get_all_questions(
     country: Optional[str] = None,
     level: Optional[str] = None,
     class_number: Optional[int] = None,
+    db: Optional[Session] = None,
 ):
-    data = load_questions()
+    data = load_questions(db)
     all_questions = []
     for subject in data.get("subjects", []):
         if subject_id and subject["id"] != subject_id:
@@ -110,8 +111,8 @@ def get_all_questions(
 
 
 @router.get("/")
-def practice_root():
-    data = load_questions()
+def practice_root(db: Session = Depends(get_db)):
+    data = load_questions(db)
     subjects = data.get("subjects", [])
     return {
         "module": "practice",
@@ -137,7 +138,7 @@ def get_subjects(
         country = current_user.country
     level = current_user.level if current_user is not None else None
     class_number = primary_class(current_user.grade) if current_user is not None else None
-    data = load_questions()
+    data = load_questions(db)
     # Per-subject mastery (mean decayed mastery of the topics practised), so
     # Practice can show progress per subject. None until the student has
     # answered something in that subject.
@@ -177,8 +178,8 @@ def get_subjects(
 
 
 @router.get("/subject/{subject_id}")
-def get_subject(subject_id: str):
-    data = load_questions()
+def get_subject(subject_id: str, db: Session = Depends(get_db)):
+    data = load_questions(db)
     for s in data.get("subjects", []):
         if s["id"] == subject_id:
             # This route is public, so it never includes answers or explanations.
@@ -203,7 +204,7 @@ def start_quiz(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
-    questions = get_all_questions(request.subject_id, request.topic, request.difficulty, current_user.country, current_user.level, primary_class(current_user.grade))
+    questions = get_all_questions(request.subject_id, request.topic, request.difficulty, current_user.country, current_user.level, primary_class(current_user.grade), db)
     if not questions:
         raise HTTPException(status_code=404, detail="No questions found for the selected criteria")
 
@@ -357,7 +358,7 @@ def _topic_mastery_for(db: Session, user_id: int) -> list:
     # mastery rather than a stale high-water mark - see mastery.py's
     # decay_mastery/effective_mastery.
     rows = db.query(SkillMastery).filter(SkillMastery.user_id == user_id).all()
-    topic_names = topic_names_by_id()
+    topic_names = topic_names_by_id(db)
     entries = [
         {
             "subject_id": m.subject_id,

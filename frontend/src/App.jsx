@@ -84,6 +84,7 @@ const CommunityModule = lazy(() => import('./modules/community/CommunityModule')
 const AdminCourseList = lazy(() => import('./modules/admin/AdminCourseList'));
 const AdminCourseEditor = lazy(() => import('./modules/admin/AdminCourseEditor'));
 const AdminLessonEditor = lazy(() => import('./modules/admin/AdminLessonEditor'));
+const ContentTools = lazy(() => import('./modules/content/ContentTools'));
 const SchoolAdminDashboard = lazy(() => import('./modules/school-admin/SchoolAdminDashboard'));
 const ImpactDashboard = lazy(() => import('./modules/impact/ImpactDashboard'));
 
@@ -303,6 +304,9 @@ const App = () => {
                 {t('admin')}
               </span>
             )}
+            {(user?.is_admin || user?.is_contributor) && (
+              <Link to="/content" style={{ color: 'var(--primary)', fontSize: '0.9375rem', textDecoration: 'underline' }}>Content tools</Link>
+            )}
             <LanguageSwitcher />
             <Button variant="secondary" size="sm" onClick={handleLogout}><LogOut size={14} aria-hidden="true" /> {t('logout')}</Button>
           </div>
@@ -344,6 +348,7 @@ const App = () => {
             <Route path="/admin" element={user?.is_admin ? <AdminCourseList /> : <Navigate to="/" />} />
             <Route path="/admin/courses/:courseId" element={user?.is_admin ? <AdminCourseEditor /> : <Navigate to="/" />} />
             <Route path="/admin/lessons/:lessonId" element={user?.is_admin ? <AdminLessonEditor /> : <Navigate to="/" />} />
+            <Route path="/content" element={user?.is_admin || user?.is_contributor ? <ContentTools user={user} /> : <Navigate to="/" />} />
             <Route path="/school-admin" element={user?.is_school_admin ? <SchoolAdminDashboard /> : <Navigate to="/" />} />
             <Route path="/impact" element={user?.is_admin ? <ImpactDashboard /> : <Navigate to="/" />} />
             <Route path="/privacy" element={<PrivacyPolicy />} />

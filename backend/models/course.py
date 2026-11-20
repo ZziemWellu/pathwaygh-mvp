@@ -13,6 +13,8 @@ class Course(Base):
     description = Column(Text, nullable=True)
     level = Column(String(50), nullable=False)  # jhs, shs, skills, tvet
     country = Column(String(2), nullable=False, default="GH")
+    # See core/drafts.py. Courses made before drafts existed are "published".
+    review_status = Column(String(20), nullable=False, default="published", server_default="published")
 
     lessons = relationship(
         "Lesson", back_populates="course", cascade="all, delete-orphan", order_by="Lesson.order_index"
@@ -40,6 +42,14 @@ class Lesson(Base):
 
     # Text-lesson body (markdown), null for video-only lessons
     content = Column(Text, nullable=True)
+
+    # See core/drafts.py. Lessons made before drafts existed are "published".
+    review_status = Column(String(20), nullable=False, default="published", server_default="published")
+    # A topic id from data/syllabus/gh.json, for the coverage report.
+    syllabus_topic = Column(String(120), nullable=True, index=True)
+    # Where reused material came from (CC BY, CC BY-SA, CC0 or public domain
+    # only), shown under the lesson. Null for original writing.
+    attribution = Column(Text, nullable=True)
 
     course = relationship("Course", back_populates="lessons")
     progress_entries = relationship("LessonProgress", back_populates="lesson", cascade="all, delete-orphan")
