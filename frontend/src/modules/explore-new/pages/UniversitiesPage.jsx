@@ -1,15 +1,21 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import api from '../../../services/api';
 import { useModalA11y } from '../../../hooks/useModalA11y';
-import { BookOpenIcon, ChartColumnIcon, Landmark, MapPinIcon, TriangleAlertIcon, TrophyIcon } from 'lucide-react';
+import { BadgeCheckIcon, BookOpenIcon, ChartColumnIcon, GlobeIcon, Landmark, MapPinIcon, TriangleAlertIcon, TrophyIcon } from 'lucide-react';
 import PageHeader from '../../../components/ui/PageHeader';
 import Button from '../../../components/ui/Button';
+import SourceList, { controlStyle } from '../components/SourceList';
+import { formatDate } from '../../../utils/date';
+
+const longDate = (value) => (value ? formatDate(new Date(value), { long: true }) : null);
 
 const UniversitiesPage = ({ user }) => {
   const [universities, setUniversities] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedUniversity, setSelectedUniversity] = useState(null);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [typeFilter, setTypeFilter] = useState('all');
   const modalRef = useRef(null);
   const closeModal = useCallback(() => setSelectedUniversity(null), []);
   useModalA11y({ isOpen: !!selectedUniversity, onClose: closeModal, containerRef: modalRef });
@@ -37,6 +43,20 @@ const UniversitiesPage = ({ user }) => {
     }
   };
 
+  const types = useMemo(
+    () => [...new Set(universities.map((u) => u.type).filter(Boolean))].sort(),
+    [universities],
+  );
+
+  const visibleUniversities = useMemo(() => {
+    const term = searchTerm.trim().toLowerCase();
+    return universities.filter((u) => {
+      if (typeFilter !== 'all' && u.type !== typeFilter) return false;
+      if (!term) return true;
+      return [u.name, u.location].some((text) => text?.toLowerCase().includes(term));
+    });
+  }, [universities, searchTerm, typeFilter]);
+
   if (loading) {
     return (
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '300px' }}>
@@ -62,10 +82,36 @@ const UniversitiesPage = ({ user }) => {
 
   return (
     <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '20px' }}>
-      <PageHeader icon={Landmark} title="Universities" actions={<span style={{ color: 'var(--text-subtle)' }}>{universities.length} universities available</span>} />
+      <PageHeader icon={Landmark} title="Universities" actions={<span style={{ color: 'var(--text-subtle)' }}>{visibleUniversities.length} institutions</span>} />
+
+      {user?.country === 'GH' || !user?.country ? (
+        <p style={{ color: 'var(--text-muted)', marginTop: 0 }}>
+          Ghanaian institutions listed here have active accreditation on the Ghana Tertiary Education Commission (GTEC) list.
+          Always confirm on <a href="https://gtec.edu.gh/status-check/" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--primary)' }}>GTEC's status check</a> before you apply or pay fees.
+        </p>
+      ) : null}
+
+      <div style={{ display: 'flex', gap: '12px', marginBottom: '24px', flexWrap: 'wrap' }}>
+        <input
+          type="text"
+          aria-label="Search institutions"
+          placeholder="Search by name or town..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          style={{ ...controlStyle, flex: 1, minWidth: '200px' }}
+        />
+        <select aria-label="Filter by institution type" value={typeFilter} onChange={(e) => setTypeFilter(e.target.value)} style={controlStyle}>
+          <option value="all">All types</option>
+          {types.map((t) => <option key={t} value={t}>{t}</option>)}
+        </select>
+      </div>
+
+      {visibleUniversities.length === 0 && (
+        <p style={{ textAlign: 'center', padding: '40px', color: 'var(--gray-500)' }}>No institutions match your search.</p>
+      )}
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '20px' }}>
-        {universities.map((uni) => (
+        {visibleUniversities.map((uni) => (
           <div className="card card--interactive" key={uni.id} onClick={() => setSelectedUniversity(uni)} role="button" tabIndex={0} onKeyDown={(e) => {
               if (e.key === 'Enter' || e.key === ' ') {
                 e.preventDefault();
@@ -74,6 +120,7 @@ const UniversitiesPage = ({ user }) => {
             }} style={{ padding: '20px' }}>
             <h3 style={{ color: 'var(--primary)', margin: '0 0 8px 0' }}>{uni.name}</h3>
             {uni.location && <div style={{ fontSize: '0.9375rem', color: 'var(--text-muted)' }}><MapPinIcon className="icon-inline" size="1em" aria-hidden="true" /> {uni.location}</div>}
+            {uni.type && <div style={{ fontSize: '0.875rem', color: 'var(--text-muted)', marginTop: '4px' }}>{uni.type}</div>}
             {uni.cutoff && <div style={{ fontSize: '0.9375rem', color: 'var(--text-muted)' }}>Cutoff: {uni.cutoff}</div>}
             {uni.programs && (
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px', marginTop: '8px' }}>
@@ -140,7 +187,39 @@ const UniversitiesPage = ({ user }) => {
             {selectedUniversity.location && <div style={{ fontSize: '0.9375rem', color: 'var(--text-muted)' }}><MapPinIcon className="icon-inline" size="1em" aria-hidden="true" /> {selectedUniversity.location}</div>}
             {selectedUniversity.cutoff && <div style={{ fontSize: '0.9375rem', color: 'var(--text-muted)' }}><ChartColumnIcon className="icon-inline" size="1em" aria-hidden="true" /> Cutoff: {selectedUniversity.cutoff}</div>}
             {selectedUniversity.ranking && <div style={{ fontSize: '0.9375rem', color: 'var(--text-muted)' }}><TrophyIcon className="icon-inline" size="1em" aria-hidden="true" /> Ranking: {selectedUniversity.ranking}</div>}
-            {selectedUniversity.about && <p style={{ color: 'var(--text-muted)', margin: '16px 0' }}>{selectedUniversity.about}</p>}
+            {selectedUniversity.type && <div style={{ fontSize: '0.9375rem', color: 'var(--text-muted)' }}>{selectedUniversity.type}</div>}
+            {(selectedUniversity.description || selectedUniversity.about) && (
+              <p style={{ color: 'var(--text-muted)', margin: '16px 0' }}>{selectedUniversity.description || selectedUniversity.about}</p>
+            )}
+            {selectedUniversity.accreditation && (
+              <div style={{ margin: '8px 0', fontSize: '0.9375rem' }}>
+                <BadgeCheckIcon className="icon-inline" size="1em" aria-hidden="true" />{' '}
+                <strong>Accreditation:</strong> {selectedUniversity.accreditation.status} on the{' '}
+                <a href={selectedUniversity.accreditation.list_url} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--primary)' }}>GTEC list</a>
+                {selectedUniversity.accreditation.end && <> (until {longDate(selectedUniversity.accreditation.end)})</>}
+                {selectedUniversity.accreditation.list_checked && <>, checked {longDate(selectedUniversity.accreditation.list_checked)}</>}
+              </div>
+            )}
+            {selectedUniversity.website && (
+              <div style={{ margin: '8px 0', fontSize: '0.9375rem' }}>
+                <GlobeIcon className="icon-inline" size="1em" aria-hidden="true" />{' '}
+                <a href={selectedUniversity.website} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--primary)' }}>{selectedUniversity.website}</a>
+              </div>
+            )}
+            {selectedUniversity.admissions_url && (
+              <div style={{ margin: '8px 0', fontSize: '0.9375rem' }}>
+                <a href={selectedUniversity.admissions_url} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--primary)' }}>Official admissions portal</a>
+              </div>
+            )}
+            {selectedUniversity.requirements?.length > 0 && (
+              <div style={{ margin: '8px 0' }}>
+                <strong>General requirements</strong>
+                <ul style={{ margin: '4px 0 0', paddingLeft: '18px', color: 'var(--text-muted)' }}>
+                  {selectedUniversity.requirements.map((r) => <li key={r}>{r}</li>)}
+                </ul>
+              </div>
+            )}
+            {selectedUniversity.admission_info && <p style={{ color: 'var(--text-muted)', fontSize: '0.9375rem' }}>{selectedUniversity.admission_info}</p>}
             {selectedUniversity.programs && (
               <div style={{ margin: '8px 0' }}>
                 <strong><BookOpenIcon className="icon-inline" size="1em" aria-hidden="true" /> Programs Offered:</strong>
@@ -153,6 +232,7 @@ const UniversitiesPage = ({ user }) => {
                 </div>
               </div>
             )}
+            <SourceList sources={selectedUniversity.source} lastChecked={selectedUniversity.last_checked} />
             <Button onClick={() => setSelectedUniversity(null)} style={{ marginTop: '20px', width: '100%' }}>
               Close
             </Button>

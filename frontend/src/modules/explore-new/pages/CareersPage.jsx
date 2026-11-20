@@ -1,15 +1,26 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import api from '../../../services/api';
 import { useModalA11y } from '../../../hooks/useModalA11y';
-import { BookOpenIcon, Briefcase, CoinsIcon, TriangleAlertIcon } from 'lucide-react';
+import { BookOpenIcon, Briefcase, CoinsIcon, GraduationCapIcon, LandmarkIcon, RouteIcon, TriangleAlertIcon } from 'lucide-react';
 import PageHeader from '../../../components/ui/PageHeader';
 import Button from '../../../components/ui/Button';
+import SourceList, { chipStyle, controlStyle } from '../components/SourceList';
+
+const ROUTE_LABELS = {
+  university: 'University',
+  tvet: 'TVET',
+  university_or_tvet: 'University or TVET',
+  college: 'Specialist college',
+  service_entry: 'Service recruitment',
+};
 
 const CareersPage = ({ user }) => {
   const [careers, setCareers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedCareer, setSelectedCareer] = useState(null);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [category, setCategory] = useState('all');
   const modalRef = useRef(null);
   const closeModal = useCallback(() => setSelectedCareer(null), []);
   useModalA11y({ isOpen: !!selectedCareer, onClose: closeModal, containerRef: modalRef });
@@ -37,6 +48,20 @@ const CareersPage = ({ user }) => {
     }
   };
 
+  const categories = useMemo(
+    () => [...new Set(careers.map((c) => c.category).filter(Boolean))].sort(),
+    [careers],
+  );
+
+  const visibleCareers = useMemo(() => {
+    const term = searchTerm.trim().toLowerCase();
+    return careers.filter((c) => {
+      if (category !== 'all' && c.category !== category) return false;
+      if (!term) return true;
+      return [c.title, c.description, ...(c.required_subjects || [])].some((text) => text?.toLowerCase().includes(term));
+    });
+  }, [careers, searchTerm, category]);
+
   if (loading) {
     return (
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '300px' }}>
@@ -62,10 +87,29 @@ const CareersPage = ({ user }) => {
 
   return (
     <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '20px' }}>
-      <PageHeader icon={Briefcase} title="Careers" actions={<span style={{ color: 'var(--text-subtle)' }}>{careers.length} careers available</span>} />
+      <PageHeader icon={Briefcase} title="Careers" actions={<span style={{ color: 'var(--text-subtle)' }}>{visibleCareers.length} careers available</span>} />
+
+      <div style={{ display: 'flex', gap: '12px', marginBottom: '24px', flexWrap: 'wrap' }}>
+        <input
+          type="text"
+          aria-label="Search careers"
+          placeholder="Search careers or subjects..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          style={{ ...controlStyle, flex: 1, minWidth: '200px' }}
+        />
+        <select aria-label="Filter by sector" value={category} onChange={(e) => setCategory(e.target.value)} style={controlStyle}>
+          <option value="all">All sectors</option>
+          {categories.map((c) => <option key={c} value={c}>{c}</option>)}
+        </select>
+      </div>
+
+      {visibleCareers.length === 0 && (
+        <p style={{ textAlign: 'center', padding: '40px', color: 'var(--gray-500)' }}>No careers match your search.</p>
+      )}
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '20px' }}>
-        {careers.map((career) => (
+        {visibleCareers.map((career) => (
           <div className="card card--interactive" key={career.id} onClick={() => setSelectedCareer(career)} role="button" tabIndex={0} onKeyDown={(e) => {
               if (e.key === 'Enter' || e.key === ' ') {
                 e.preventDefault();
@@ -139,18 +183,55 @@ const CareersPage = ({ user }) => {
             {selectedCareer.salary_range && (
               <div style={{ margin: '8px 0' }}><strong><CoinsIcon className="icon-inline" size="1em" aria-hidden="true" /> Salary Range:</strong> {selectedCareer.salary_range}</div>
             )}
-            {selectedCareer.required_subjects && (
-              <div style={{ margin: '8px 0' }}>
-                <strong><BookOpenIcon className="icon-inline" size="1em" aria-hidden="true" /> Required Subjects:</strong>
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginTop: '4px' }}>
-                  {selectedCareer.required_subjects.map((subject, i) => (
-                    <span key={i} style={{ background: 'var(--surface-sunken)', padding: '4px 10px', borderRadius: '12px', fontSize: '0.875rem' }}>
-                      {subject}
-                    </span>
-                  ))}
-                </div>
+            {selectedCareer.education_path && (
+              <div style={{ margin: '12px 0' }}>
+                <strong><RouteIcon className="icon-inline" size="1em" aria-hidden="true" /> How to get there</strong>
+                <ul style={{ margin: '4px 0 0', paddingLeft: '18px', color: 'var(--text-muted)' }}>
+                  <li><strong>SHS programme:</strong> {selectedCareer.education_path.shs_programmes.join(', ')}</li>
+                  <li><strong>After SHS:</strong> {selectedCareer.education_path.after_shs}</li>
+                  {ROUTE_LABELS[selectedCareer.education_path.route] && (
+                    <li><strong>Route:</strong> {ROUTE_LABELS[selectedCareer.education_path.route]}</li>
+                  )}
+                </ul>
               </div>
             )}
+            {selectedCareer.required_subjects && (
+              <div style={{ margin: '8px 0' }}>
+                <strong><BookOpenIcon className="icon-inline" size="1em" aria-hidden="true" /> WASSCE subjects that matter:</strong>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginTop: '4px' }}>
+                  {selectedCareer.required_subjects.map((subject, i) => (
+                    <span key={i} style={chipStyle}>{subject}</span>
+                  ))}
+                </div>
+                {selectedCareer.wassce_subjects?.core && (
+                  <p style={{ fontSize: '0.875rem', color: 'var(--text-muted)', margin: '6px 0 0' }}>
+                    Plus good passes in the core subjects: {selectedCareer.wassce_subjects.core.join(', ')}.
+                  </p>
+                )}
+              </div>
+            )}
+            {(selectedCareer.ghana_institutions?.length > 0 || selectedCareer.other_training) && (
+              <div style={{ margin: '12px 0' }}>
+                <strong><GraduationCapIcon className="icon-inline" size="1em" aria-hidden="true" /> Where to train in Ghana (examples)</strong>
+                {selectedCareer.ghana_institutions?.length > 0 && (
+                  <ul style={{ margin: '4px 0 0', paddingLeft: '18px', color: 'var(--text-muted)' }}>
+                    {selectedCareer.ghana_institutions.map((name) => <li key={name}>{name}</li>)}
+                  </ul>
+                )}
+                {selectedCareer.other_training && (
+                  <p style={{ color: 'var(--text-muted)', margin: '4px 0 0' }}>{selectedCareer.other_training}</p>
+                )}
+              </div>
+            )}
+            {selectedCareer.professional_body && (
+              <div style={{ margin: '8px 0' }}>
+                <strong><LandmarkIcon className="icon-inline" size="1em" aria-hidden="true" /> Regulator in Ghana:</strong>{' '}
+                <a href={selectedCareer.professional_body.url} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--primary)' }}>
+                  {selectedCareer.professional_body.name}
+                </a>
+              </div>
+            )}
+            <SourceList sources={selectedCareer.source} lastChecked={selectedCareer.last_checked} />
             <Button onClick={() => setSelectedCareer(null)} style={{ marginTop: '20px', width: '100%' }}>
               Close
             </Button>

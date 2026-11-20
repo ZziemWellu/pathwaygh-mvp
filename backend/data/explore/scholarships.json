@@ -1,256 +1,579 @@
 {
   "scholarships": [
     {
-      "id": "gov_001",
-      "title": "Ghana Government Scholarship",
-      "sponsor": "Government of Ghana",
+      "id": "gh_gsa_local_tertiary",
+      "title": "Ghana Scholarships Authority - Local Tertiary Scholarship",
+      "sponsor": "Government of Ghana (Ghana Scholarships Authority)",
       "type": "government",
-      "status": "open",
-      "eligibility": "Ghanaian citizens with WASSCE aggregate 8 or better",
-      "coverage": "Full tuition, accommodation, and stipend",
-      "deadline": "2026-12-31",
-      "amount": "GHS 15,000",
-      "description": "Full scholarship for undergraduate studies in Ghanaian public universities",
-      "website": "https://www.scholarships.gov.gh",
-      "country": "GH"
+      "level": [
+        "undergraduate"
+      ],
+      "countries": [
+        "GH"
+      ],
+      "eligibility": "Ghanaian citizens resident in Ghana who have been admitted to, and registered at, a public university in Ghana for a STEM-related course or Law.",
+      "coverage": "Support towards studies at a Ghanaian public university. The amount is not stated in the 2026/2027 notice - confirm with the Authority.",
+      "description": "Apply online, sit an aptitude test during the application period, then attend a selection interview at a selected district assembly (MMDA). The 2026/2027 window ran from 10 April to 15 May 2026; the next window is expected around the same time of year.",
+      "deadline": "2026-05-15",
+      "website": "https://scholarships.gov.gh/opportunities/local-tertiary-scholarship-applications-for-20262027-academic-year",
+      "apply_url": "https://apply.scholarships.gov.gh",
+      "source": [
+        {
+          "name": "Ghana Scholarships Authority notice, 10 April 2026",
+          "url": "https://scholarships.gov.gh/opportunities/local-tertiary-scholarship-applications-for-20262027-academic-year"
+        }
+      ],
+      "verification": "official_page",
+      "country": "GH",
+      "status": "closed",
+      "last_checked": "2026-11-20"
     },
     {
-      "id": "gov_002",
-      "title": "President's STEM Scholarship",
-      "sponsor": "Ministry of Education",
+      "id": "gh_getfund_local",
+      "title": "GETFund Local Scholarship (2026/2027)",
+      "sponsor": "Ghana Education Trust Fund (GETFund)",
       "type": "government",
+      "level": [
+        "undergraduate",
+        "postgraduate"
+      ],
+      "countries": [
+        "GH"
+      ],
+      "eligibility": "Ghanaians admitted to an accredited tertiary institution in Ghana (diploma, HND, bachelor's, master's or PhD). You need your admission letter and Ghana Card to apply.",
+      "coverage": "Tuition support for study in Ghana - confirm the exact terms on the official portal.",
+      "description": "Applications are made only on GETFund's scholarship portal. News reports give the 2026/2027 window as 5 October to 27 November 2026.",
+      "opens": "2026-10-05",
+      "deadline": "2026-11-27",
+      "website": "https://scholarships.getfund.gov.gh/",
+      "source": [
+        {
+          "name": "GETFund scholarship portal (official)",
+          "url": "https://scholarships.getfund.gov.gh/"
+        },
+        {
+          "name": "Yen.com.gh report on the 2026/27 window",
+          "url": "https://yen.com.gh/ghana/315772-getfund-scholarship-202627-how-apply-november-27-deadline/"
+        }
+      ],
+      "verification": "official_portal_exists_dates_from_news",
+      "country": "GH",
       "status": "open",
-      "eligibility": "STEM-focused students with WASSCE Aggregate 10 or better",
-      "coverage": "Full tuition and research support",
-      "deadline": "2026-11-15",
-      "amount": "GHS 20,000",
-      "description": "Supporting students pursuing Science, Technology, Engineering, and Mathematics",
-      "website": "https://www.moe.gov.gh/stem-scholarship",
-      "country": "GH"
+      "last_checked": "2026-11-20"
     },
     {
-      "id": "private_001",
+      "id": "gh_mtn_bright",
+      "title": "MTN Bright Scholarship",
+      "sponsor": "MTN Ghana Foundation",
+      "type": "private",
+      "level": [
+        "undergraduate",
+        "tvet"
+      ],
+      "countries": [
+        "GH"
+      ],
+      "eligibility": "Ghanaian continuing students on a first degree, or on vocational and technical skills training, at a public tertiary institution in Ghana, with outstanding academic results, good conduct and no disciplinary action. Teachers furthering their education at public universities can also apply.",
+      "coverage": "Tuition, accommodation and essential learning resources. In 2026, 500 awards: 300 for STEM, vocational and technical students and 200 for teachers.",
+      "description": "Online application only, and free at every stage. The 2026 round opened on 22 April and closed on 31 May 2026.",
+      "deadline": "2026-05-31",
+      "website": "https://mtn.com.gh/newsabout/mtn-ghana-foundation-opens-application-for-2026-bright-scholarship/",
+      "apply_url": "https://scholarship.mtn.com.gh",
+      "source": [
+        {
+          "name": "MTN Ghana press release, 22 April 2026",
+          "url": "https://mtn.com.gh/newsabout/mtn-ghana-foundation-opens-application-for-2026-bright-scholarship/"
+        }
+      ],
+      "verification": "official_page",
+      "country": "GH",
+      "status": "closed",
+      "last_checked": "2026-11-20"
+    },
+    {
+      "id": "gh_ashesi_scholarships",
+      "title": "Ashesi University scholarships (including Mastercard Foundation Scholars Program)",
+      "sponsor": "Ashesi University and partners",
+      "type": "private",
+      "level": [
+        "undergraduate"
+      ],
+      "countries": [
+        "GH",
+        "NG",
+        "SL",
+        "LR",
+        "GM"
+      ],
+      "eligibility": "Students admitted to Ashesi who apply for financial aid. Awards are based on demonstrated financial need and the strength of the admission application.",
+      "coverage": "From part of tuition up to the full cost of study, including housing, meals, learning materials and basic living expenses for some awards.",
+      "description": "Admission and scholarship decisions are made separately. Ashesi is one of the first nine universities in the Mastercard Foundation Scholars Program.",
+      "deadline": "rolling",
+      "website": "https://www.ashesi.edu.gh/admissions/scholarships/",
+      "source": [
+        {
+          "name": "Ashesi University - Scholarships",
+          "url": "https://www.ashesi.edu.gh/admissions/scholarships/"
+        }
+      ],
+      "verification": "official_page",
+      "country": "GH",
+      "status": "rolling",
+      "last_checked": "2026-11-20"
+    },
+    {
+      "id": "gh_ug_financial_aid",
+      "title": "University of Ghana Students Financial Aid (UG Sponsorship and others)",
+      "sponsor": "University of Ghana Students Financial Aid Office",
+      "type": "private",
+      "level": [
+        "undergraduate"
+      ],
+      "countries": [
+        "GH"
+      ],
+      "eligibility": "Bright but needy Ghanaian full-time, regular students of the University of Ghana.",
+      "coverage": "Full or partial scholarships, fee arrangements and work-study support.",
+      "description": "Calls are posted on the Financial Aid Office website. Applications for continuing students begin each November. The 2026/2027 UG Sponsorship call opened on 30 June 2026.",
+      "deadline": "rolling",
+      "website": "https://www.ug.edu.gh/financialaid/",
+      "source": [
+        {
+          "name": "University of Ghana Students Financial Aid Office",
+          "url": "https://www.ug.edu.gh/financialaid/"
+        }
+      ],
+      "verification": "official_page",
+      "country": "GH",
+      "status": "rolling",
+      "last_checked": "2026-11-20"
+    },
+    {
+      "id": "wa_pwasi",
+      "title": "Presidential West African Scholarship Initiative (PWASI)",
+      "sponsor": "Government of Ghana (Ghana Scholarships Authority)",
+      "type": "government",
+      "level": [
+        "undergraduate",
+        "postgraduate"
+      ],
+      "countries": [
+        "NG",
+        "SL",
+        "LR",
+        "GM"
+      ],
+      "eligibility": "Citizens of ECOWAS member states other than Ghana who meet the admission requirements of a participating public university in Ghana and show academic excellence and leadership potential. Candidates are nominated by their own country's nominating agency.",
+      "coverage": "Full-time, on-campus study at a public tertiary institution in Ghana: up to 4 years for undergraduate, 2 for master's and 4 for PhD.",
+      "description": "Priority fields include engineering, computing, health, agriculture, economics and business, governance and law, and environment. First apply for a programme at a participating Ghanaian public university, then submit documents on the GSA portal. Nominating agencies had to send endorsements by August 2026.",
+      "deadline": "2026-08-31",
+      "website": "https://scholarships.gov.gh/opportunities/presidential-west-african-scholarship-initiative-pwasi-2026",
+      "source": [
+        {
+          "name": "Ghana Scholarships Authority - PWASI 2026 call, 3 June 2026",
+          "url": "https://scholarships.gov.gh/opportunities/presidential-west-african-scholarship-initiative-pwasi-2026"
+        }
+      ],
+      "verification": "official_page",
+      "country": "NG",
+      "status": "closed",
+      "last_checked": "2026-11-20"
+    },
+    {
+      "id": "gh_algeria_bilateral",
+      "title": "Joint Algeria/Ghana Government Scholarship",
+      "sponsor": "Governments of Algeria and Ghana (via Ghana Scholarships Authority)",
+      "type": "international",
+      "level": [
+        "undergraduate",
+        "tvet",
+        "postgraduate"
+      ],
+      "countries": [
+        "GH"
+      ],
+      "eligibility": "Ghanaian citizens resident in Ghana who completed SHS with current WASSCE results (2025 for the 2026/27 round), an aggregate of 13 or better, aged 23 or under, with a passport and birth record.",
+      "coverage": "Undergraduate study in science, technology, medicine, pharmacy, agriculture, architecture and related fields; two-year vocational and technical training; religious studies. Includes one year of French language training.",
+      "description": "Register on the GSA website under 'Algerian Government Scholarship', then submit the printed form with your WASSCE result slips and transcript. The 2026/27 deadline was 21 September 2026.",
+      "deadline": "2026-09-21",
+      "website": "https://scholarships.gov.gh/opportunities/the-joint-algeriaghana-government-scholarship-awards-for-the-20262027-academic-year-tenable-in-algeria",
+      "source": [
+        {
+          "name": "Ghana Scholarships Authority notice, 5 September 2026",
+          "url": "https://scholarships.gov.gh/opportunities/the-joint-algeriaghana-government-scholarship-awards-for-the-20262027-academic-year-tenable-in-algeria"
+        }
+      ],
+      "verification": "official_page",
+      "country": "GH",
+      "status": "closed",
+      "last_checked": "2026-11-20"
+    },
+    {
+      "id": "gh_hungary_stipendium",
+      "title": "Stipendium Hungaricum (Government of Hungary)",
+      "sponsor": "Government of Hungary (Ghana nominations via Ghana Scholarships Authority)",
+      "type": "international",
+      "level": [
+        "undergraduate",
+        "postgraduate"
+      ],
+      "countries": [
+        "GH"
+      ],
+      "eligibility": "Ghanaian citizens resident in Ghana. Undergraduate: recent WASSCE with an aggregate between 6 and 15, aged 23 or under. Master's/PhD: a relevant degree with Second Class Upper or better, two years' experience after graduating, national service completed, and aged 35 or under (master's) or 45 or under (PhD).",
+      "coverage": "Study in Hungary at undergraduate, master's or doctoral level in the programmes listed on the Stipendium Hungaricum site.",
+      "description": "Apply online at stipendiumhungaricum.hu and also send a written application to the Ghana Scholarships Authority. The 2026/27 round closed on 16 January 2026; the 2027/28 call had not been published when this was checked.",
+      "deadline": "2026-01-16",
+      "website": "https://scholarships.gov.gh/opportunities/offer-of-scholarships-by-the-government-of-hungary-under-the-educational-exchange-programme-tenable-in-hungary",
+      "apply_url": "https://stipendiumhungaricum.hu/apply/",
+      "source": [
+        {
+          "name": "Ghana Scholarships Authority notice, 24 October 2025",
+          "url": "https://scholarships.gov.gh/opportunities/offer-of-scholarships-by-the-government-of-hungary-under-the-educational-exchange-programme-tenable-in-hungary"
+        },
+        {
+          "name": "Stipendium Hungaricum (official)",
+          "url": "https://stipendiumhungaricum.hu/"
+        }
+      ],
+      "verification": "official_page",
+      "country": "GH",
+      "status": "closed",
+      "last_checked": "2026-11-20"
+    },
+    {
+      "id": "gh_mauritius_africa",
+      "title": "Mauritius-Africa Scholarship Scheme",
+      "sponsor": "Government of Mauritius (via Ghana Scholarships Authority)",
+      "type": "international",
+      "level": [
+        "undergraduate",
+        "postgraduate"
+      ],
+      "countries": [
+        "GH"
+      ],
+      "eligibility": "Ghanaian citizens resident in Ghana who have applied to a public higher education institution in Mauritius. Undergraduate applicants must be at least 18 and under 26 on 1 January of the award year; MPhil/PhD applicants under 40.",
+      "coverage": "Full-time, on-campus diploma, degree, master's, MPhil or PhD study at a public institution in Mauritius. Financial components follow the scheme's terms.",
+      "description": "First apply for admission in Mauritius, then submit your offer or acknowledgement through the Ghana Scholarships Authority. The 2026/27 call was published on 12 February 2026.",
+      "deadline": "Announced yearly - check the official notice",
+      "website": "https://scholarships.gov.gh/opportunities/the-mauritius-africa-scholarship-scheme-20262027-academic-year",
+      "source": [
+        {
+          "name": "Ghana Scholarships Authority notice, 12 February 2026",
+          "url": "https://scholarships.gov.gh/opportunities/the-mauritius-africa-scholarship-scheme-20262027-academic-year"
+        }
+      ],
+      "verification": "official_page",
+      "country": "GH",
+      "status": "check",
+      "last_checked": "2026-11-20"
+    },
+    {
+      "id": "gh_china_csc",
+      "title": "Chinese Government Scholarship (master's and PhD)",
+      "sponsor": "Government of China (via Ghana Scholarships Authority)",
+      "type": "international",
+      "level": [
+        "postgraduate"
+      ],
+      "countries": [
+        "GH"
+      ],
+      "eligibility": "Ghanaian citizens resident in Ghana. Master's: a first degree with Second Class Upper or better, aged 35 or under. PhD: Second Class Upper plus a relevant master's, aged 40 or under. Must be medically fit; women are encouraged to apply.",
+      "coverage": "Master's or doctoral study at a Chinese Government Scholarship university.",
+      "description": "Apply online through campuschina.org (Type A, agency number 2881), then send the hard copies to the Ghana Scholarships Authority. The 2026/27 round closed in December 2025.",
+      "deadline": "2025-12-18",
+      "website": "https://scholarships.gov.gh/opportunities/chinese-government-scholarship-awards-to-ghanaian-students-for-20262027-academic-year",
+      "apply_url": "https://www.campuschina.org",
+      "source": [
+        {
+          "name": "Ghana Scholarships Authority notice, 5 November 2025",
+          "url": "https://scholarships.gov.gh/opportunities/chinese-government-scholarship-awards-to-ghanaian-students-for-20262027-academic-year"
+        }
+      ],
+      "verification": "official_page",
+      "country": "GH",
+      "status": "closed",
+      "last_checked": "2026-11-20"
+    },
+    {
+      "id": "gh_spain_learn_africa",
+      "title": "Learn Africa Programme for African Women (Spain)",
+      "sponsor": "Government of Spain / Mujeres por Africa (via Ghana Scholarships Authority)",
+      "type": "international",
+      "level": [
+        "postgraduate"
+      ],
+      "countries": [
+        "GH"
+      ],
+      "eligibility": "Ghanaian women holding at least a university diploma or degree who meet the requirements of the chosen course.",
+      "coverage": "Postgraduate study at Spanish academic institutions - see the programme site for benefits.",
+      "description": "The 2026/27 window ran from 1 to 19 April 2026. Applications go through the programme's own website.",
+      "deadline": "2026-04-19",
+      "website": "https://scholarships.gov.gh/opportunities/2027-learn-africa-program-for-african-women",
+      "source": [
+        {
+          "name": "Ghana Scholarships Authority notice, 1 April 2026",
+          "url": "https://scholarships.gov.gh/opportunities/2027-learn-africa-program-for-african-women"
+        }
+      ],
+      "verification": "official_page",
+      "country": "GH",
+      "status": "closed",
+      "last_checked": "2026-11-20"
+    },
+    {
+      "id": "intl_commonwealth_masters",
+      "title": "Commonwealth Master's Scholarships (UK)",
+      "sponsor": "Commonwealth Scholarship Commission in the UK (FCDO)",
+      "type": "international",
+      "level": [
+        "postgraduate"
+      ],
+      "countries": [
+        "GH",
+        "NG",
+        "SL",
+        "GM"
+      ],
+      "eligibility": "Citizens and permanent residents of eligible low and middle income Commonwealth countries, including Ghana, Nigeria, Sierra Leone and The Gambia, who could not otherwise afford to study in the UK. You must also apply for admission to your UK courses.",
+      "coverage": "Full-time taught master's study at a UK university.",
+      "description": "Applications go through the CSC's own system (CSC Central), and the CSC does not charge to apply. The 2027/28 round closed at 16:00 BST on 20 October 2026.",
+      "deadline": "2026-10-20",
+      "website": "https://cscuk.fcdo.gov.uk/scholarships/commonwealth-masters-scholarships/",
+      "source": [
+        {
+          "name": "CSC - Commonwealth Master's Scholarships",
+          "url": "https://cscuk.fcdo.gov.uk/scholarships/commonwealth-masters-scholarships/"
+        }
+      ],
+      "verification": "official_page",
+      "country": "GH",
+      "status": "closed",
+      "last_checked": "2026-11-20"
+    },
+    {
+      "id": "intl_chevening",
+      "title": "Chevening Scholarships (UK)",
+      "sponsor": "UK Government (Foreign, Commonwealth and Development Office)",
+      "type": "international",
+      "level": [
+        "postgraduate"
+      ],
+      "countries": [
+        "GH",
+        "NG"
+      ],
+      "eligibility": "Citizens of Chevening-eligible countries (Ghana has its own Chevening page) applying for a one-year master's at a UK university. Check the country page for current criteria.",
+      "coverage": "One-year master's study in the UK.",
+      "description": "Applications for 2027/28 opened in August 2026 and closed on 6 October 2026 (11:00 UTC). Shortlisting runs from February 2027, with interviews in March and April.",
+      "deadline": "2026-10-06",
+      "website": "https://www.chevening.org/scholarship/ghana/",
+      "source": [
+        {
+          "name": "Chevening - Ghana country page",
+          "url": "https://www.chevening.org/scholarship/ghana/"
+        },
+        {
+          "name": "Chevening - application timeline",
+          "url": "https://www.chevening.org/scholarships/application-timeline/"
+        }
+      ],
+      "verification": "official_page_via_search",
+      "country": "GH",
+      "status": "closed",
+      "last_checked": "2026-11-20"
+    },
+    {
+      "id": "intl_daad_doctoral",
+      "title": "DAAD Research Grants - Doctoral Programmes in Germany",
+      "sponsor": "DAAD (German Academic Exchange Service), funded by the German Federal Foreign Office",
+      "type": "international",
+      "level": [
+        "postgraduate"
+      ],
+      "countries": [
+        "GH",
+        "NG",
+        "SL",
+        "LR",
+        "GM"
+      ],
+      "eligibility": "Graduates applying from eligible countries (the DAAD list includes Ghana, Nigeria, Sierra Leone, Liberia and The Gambia) who want to complete a doctorate in Germany. As a rule, your most recent degree should be no more than six years old at the deadline.",
+      "coverage": "A scholarship to complete a doctoral degree in Germany.",
+      "description": "Deadlines are updated each year in the second quarter and are usually in the same period as the year before. The portal opens only during the application period.",
+      "deadline": "Announced yearly - check the DAAD database",
+      "website": "https://www2.daad.de/deutschland/stipendium/datenbank/en/21148-scholarship-database/?detail=57135739",
+      "source": [
+        {
+          "name": "DAAD scholarship database - Doctoral Programmes in Germany",
+          "url": "https://www2.daad.de/deutschland/stipendium/datenbank/en/21148-scholarship-database/?detail=57135739"
+        }
+      ],
+      "verification": "official_page",
+      "country": "GH",
+      "status": "check",
+      "last_checked": "2026-11-20"
+    },
+    {
+      "id": "intl_mext_undergraduate",
+      "title": "Japanese Government (MEXT) Scholarship - Undergraduate, Embassy Recommendation",
+      "sponsor": "Government of Japan (MEXT), through Japanese embassies",
+      "type": "international",
+      "level": [
+        "undergraduate"
+      ],
+      "countries": [
+        "GH",
+        "NG"
+      ],
+      "eligibility": "Recent secondary school graduates who meet the age and academic rules in the year's application guidelines and apply through the Japanese embassy in their own country.",
+      "coverage": "Undergraduate study at a Japanese university.",
+      "description": "Recruitment runs from April to May of the year before arrival, and embassies do the first screening between May and August. Do not send documents directly to MEXT. Ask the Embassy of Japan in your country for its dates.",
+      "deadline": "Announced yearly by the Japanese embassy (usually April-May)",
+      "website": "https://www.studyinjapan.go.jp/en/smap-stopj-applications-undergraduate.html",
+      "source": [
+        {
+          "name": "Study in Japan (official) - MEXT undergraduate, embassy recommendation",
+          "url": "https://www.studyinjapan.go.jp/en/smap-stopj-applications-undergraduate.html"
+        }
+      ],
+      "verification": "official_page",
+      "country": "GH",
+      "status": "check",
+      "last_checked": "2026-11-20"
+    },
+    {
+      "id": "intl_turkiye_burslari",
+      "title": "Turkiye Scholarships (Turkiye Burslari)",
+      "sponsor": "Government of Turkiye (YTB)",
+      "type": "international",
+      "level": [
+        "undergraduate",
+        "postgraduate"
+      ],
+      "countries": [
+        "GH",
+        "NG",
+        "SL",
+        "LR",
+        "GM"
+      ],
+      "eligibility": "International students with strong academic results. The programme is competitive and merit-based.",
+      "coverage": "Financial support plus university placement in Turkiye - see the official site for the full package.",
+      "description": "Apply online, free of charge, through the official application system. Check the 'Application Calendar' on the site for the current round.",
+      "deadline": "Announced yearly - check the Application Calendar",
+      "website": "https://www.turkiyeburslari.gov.tr/",
+      "source": [
+        {
+          "name": "Turkiye Burslari (official)",
+          "url": "https://www.turkiyeburslari.gov.tr/"
+        }
+      ],
+      "verification": "official_page",
+      "country": "GH",
+      "status": "check",
+      "last_checked": "2026-11-20"
+    },
+    {
+      "id": "intl_erasmus_mundus",
+      "title": "Erasmus Mundus Joint Masters scholarships (EU)",
+      "sponsor": "European Union (Erasmus+)",
+      "type": "international",
+      "level": [
+        "postgraduate"
+      ],
+      "countries": [
+        "GH",
+        "NG",
+        "SL",
+        "LR",
+        "GM"
+      ],
+      "eligibility": "Students from any country with a bachelor's degree (or a recognised equivalent) who apply to an Erasmus Mundus Joint Master's programme.",
+      "coverage": "Full scholarships for the best-ranked applicants, covering participation costs with a contribution to living costs.",
+      "description": "Apply directly to the programme running your chosen master's. Each programme sets its own deadline.",
+      "deadline": "Varies by programme",
+      "website": "https://erasmus-plus.ec.europa.eu/opportunities/individuals/students/erasmus-mundus-joint-masters",
+      "source": [
+        {
+          "name": "Erasmus+ - Erasmus Mundus Joint Masters",
+          "url": "https://erasmus-plus.ec.europa.eu/opportunities/individuals/students/erasmus-mundus-joint-masters"
+        }
+      ],
+      "verification": "official_page",
+      "country": "GH",
+      "status": "check",
+      "last_checked": "2026-11-20"
+    },
+    {
+      "id": "intl_mastercard_scholars",
       "title": "Mastercard Foundation Scholars Program",
       "sponsor": "Mastercard Foundation",
       "type": "private",
-      "status": "open",
-      "eligibility": "Academically talented students with leadership potential",
-      "coverage": "Full tuition, mentorship, and leadership development",
+      "level": [
+        "undergraduate",
+        "postgraduate"
+      ],
+      "countries": [
+        "GH",
+        "NG",
+        "SL",
+        "LR",
+        "GM"
+      ],
+      "eligibility": "Young Africans, especially from under-served backgrounds, who apply to one of the programme's partner universities. Admission to a partner does not guarantee a scholarship.",
+      "coverage": "Scholarship support through partner universities - each partner sets its own package.",
+      "description": "There is no central application: apply through a partner university (in Ghana, for example, Ashesi University). Each partner sets its own deadline. If a partner charges an application fee, it is refunded to candidates who are selected.",
+      "deadline": "Set by each partner university",
+      "website": "https://mastercardfdn.org/en/what-we-do/our-programs/mastercard-foundation-scholars-program/",
+      "source": [
+        {
+          "name": "Mastercard Foundation - Scholars Program",
+          "url": "https://mastercardfdn.org/en/what-we-do/our-programs/mastercard-foundation-scholars-program/"
+        }
+      ],
+      "verification": "official_page",
+      "country": "GH",
+      "status": "check",
+      "last_checked": "2026-11-20"
+    },
+    {
+      "id": "intl_ala_diploma",
+      "title": "African Leadership Academy - Diploma Programme (need-based aid)",
+      "sponsor": "African Leadership Academy",
+      "type": "private",
+      "level": [
+        "secondary"
+      ],
+      "countries": [
+        "GH",
+        "NG",
+        "SL",
+        "LR",
+        "GM"
+      ],
+      "eligibility": "Young Africans born on or after 1 September 2007 (for the 2027-2028 school year) applying to ALA's two-year pre-university diploma programme in South Africa.",
+      "coverage": "Need-based financial aid. ALA reports that most of its students receive financial help.",
+      "description": "Apply online. For the Class of 2027 the Early Decision deadline was 15 October 2026 and the Regular Decision deadline is 15 January 2027.",
       "deadline": "2027-01-15",
-      "amount": "Full tuition + living expenses",
-      "description": "Empowering the next generation of African leaders",
-      "website": "https://www.mastercardfoundation.org/scholars",
-      "country": "GH"
-    },
-    {
-      "id": "private_002",
-      "title": "Kofi Annan Excellence Scholarship",
-      "sponsor": "Kofi Annan Foundation",
-      "type": "private",
+      "website": "https://ala2.submittable.com/submit/360300/2027-diploma-program-eng",
+      "source": [
+        {
+          "name": "ALA application portal - 2027 Diploma Program",
+          "url": "https://ala2.submittable.com/submit/360300/2027-diploma-program-eng"
+        },
+        {
+          "name": "African Leadership Academy (official)",
+          "url": "https://www.africanleadershipacademy.org/"
+        }
+      ],
+      "verification": "official_page",
+      "country": "GH",
       "status": "open",
-      "eligibility": "Students committed to peace and sustainable development",
-      "coverage": "Full tuition and research funding",
-      "deadline": "2026-10-30",
-      "amount": "GHS 25,000",
-      "description": "Honoring Kofi Annan's legacy of excellence and service",
-      "website": "https://www.kofiannanfoundation.org/scholarship",
-      "country": "GH"
-    },
-    {
-      "id": "international_001",
-      "title": "Chevening Scholarships - Ghana",
-      "sponsor": "UK Government",
-      "type": "international",
-      "status": "open",
-      "eligibility": "Graduates with leadership potential and minimum GPA of 3.5",
-      "coverage": "Full tuition, living expenses, and travel to UK",
-      "deadline": "2026-09-01",
-      "amount": "Full tuition + £18,000 living expenses",
-      "description": "UK government's international awards program for future leaders",
-      "website": "https://www.chevening.org",
-      "country": "GH"
-    },
-    {
-      "id": "international_002",
-      "title": "DAAD Ghana Scholarship",
-      "sponsor": "DAAD (German Academic Exchange Service)",
-      "type": "international",
-      "status": "open",
-      "eligibility": "Students with strong academic record and research potential",
-      "coverage": "Full tuition, living expenses, and travel to Germany",
-      "deadline": "2026-11-01",
-      "amount": "Full tuition + €1,200/month living allowance",
-      "description": "Supporting academic and research collaboration with Germany",
-      "website": "https://www.daad.ghana.org",
-      "country": "GH"
-    },
-    {
-      "id": "ng_gov_001",
-      "title": "Federal Government Scholarship (Federal Scholarship Board)",
-      "sponsor": "Federal Ministry of Education, Nigeria",
-      "type": "government",
-      "status": "open",
-      "eligibility": "Nigerian citizens enrolled full-time at a Federal or State university with a minimum CGPA of 3.0/5.0 (undergraduate track); the Bilateral Education Agreement (BEA) track additionally requires 7 WAEC/NECO distinctions for study abroad",
-      "coverage": "Tuition support and stipend; the BEA track funds study at partner universities abroad for top performers",
-      "deadline": "Announced annually - check the official portal for the current cycle",
-      "amount": "Varies by track",
-      "description": "Nigeria's national undergraduate and postgraduate scholarship scheme, administered by the Federal Scholarship Board",
-      "website": "https://scholarship.education.gov.ng",
-      "country": "NG"
-    },
-    {
-      "id": "ng_gov_002",
-      "title": "PTDF Undergraduate Scholarship Scheme",
-      "sponsor": "Petroleum Technology Development Fund (PTDF)",
-      "type": "government",
-      "status": "open",
-      "eligibility": "Nigerian undergraduates in their 2nd year (200 level) at a Nigerian public university, studying a PTDF-sponsored course (mainly sciences, engineering, and geosciences)",
-      "coverage": "Tuition, upkeep allowance, and book allowance for the remainder of the degree",
-      "deadline": "Announced annually - check the official PTDF scholarship portal",
-      "amount": "Varies by institution",
-      "description": "Supports Nigerian students pursuing science, engineering, and technology degrees relevant to the oil and gas sector",
-      "website": "https://scholarship.ptdf.gov.ng",
-      "country": "NG"
-    },
-    {
-      "id": "ng_private_001",
-      "title": "NNPC/TotalEnergies National Merit Scholarship",
-      "sponsor": "NNPC Limited and TotalEnergies Nigeria",
-      "type": "private",
-      "status": "open",
-      "eligibility": "First (100L) or second-year (200L) full-time undergraduates at an NUC-accredited Nigerian university, any course of study",
-      "coverage": "Annual scholarship grant renewed until completion of the undergraduate programme",
-      "deadline": "Announced annually - check the official application portal",
-      "amount": "Up to ₦200,000 per year",
-      "description": "Merit-based scholarship supporting Nigerian undergraduates across all fields of study",
-      "website": "https://corporate.totalenergies.ng",
-      "country": "NG"
-    },
-    {
-      "id": "ng_private_002",
-      "title": "MTN Foundation Scholarship",
-      "sponsor": "MTN Foundation",
-      "type": "private",
-      "status": "closed",
-      "eligibility": "Undergraduates in Nigerian public universities, polytechnics, and colleges of education - categories include Science & Technology (300 level), Medicine (400 level), and Blind Students",
-      "coverage": "Tuition, textbooks, and living expense support",
-      "deadline": "2026-05-31",
-      "amount": "₦300,000 per year",
-      "description": "Annual scholarship supporting high-performing Nigerian students in public tertiary institutions; the 2026 cycle has closed - a new cycle is expected in 2027",
-      "website": "https://www.mtn.ng/scholarships",
-      "country": "NG"
-    },
-    {
-      "id": "ng_international_001",
-      "title": "Chevening Scholarships - Nigeria",
-      "sponsor": "UK Government",
-      "type": "international",
-      "status": "open",
-      "eligibility": "Nigerian graduates with at least 2,800 hours (~2 years) of work experience, applying for a one-year UK master's degree",
-      "coverage": "Full tuition, living expenses, and travel to the UK",
-      "deadline": "2026-10-06",
-      "amount": "Full tuition + living expenses",
-      "description": "UK government's international awards programme for future leaders, open to Nigerian applicants",
-      "website": "https://www.chevening.org/scholarship/nigeria",
-      "country": "NG"
-    },
-    {
-      "id": "ng_international_002",
-      "title": "Mastercard Foundation Scholars Program - Pan-Atlantic University",
-      "sponsor": "Mastercard Foundation",
-      "type": "international",
-      "status": "open",
-      "eligibility": "Academically talented Nigerian (African Union citizen) students admitted to Pan-Atlantic University, Nigeria's Mastercard Foundation partner institution",
-      "coverage": "Full tuition, accommodation, and leadership development support",
-      "deadline": "Set by Pan-Atlantic University's own admissions cycle - apply for admission first",
-      "amount": "Full tuition + living expenses",
-      "description": "Empowering the next generation of African leaders; Pan-Atlantic University is the first and only Nigerian partner institution",
-      "website": "https://mastercardfdn.org/en/what-we-do/our-programs/mastercard-foundation-scholars-program",
-      "country": "NG"
-    },
-    {
-      "id": "sl_gov_001",
-      "title": "Grant-in-Aid Scholarship",
-      "sponsor": "Ministry of Technical and Higher Education (MTHE), Sierra Leone",
-      "type": "government",
-      "status": "open",
-      "eligibility": "Financially disadvantaged, academically deserving Sierra Leonean students; also lists international scholarship opportunities",
-      "coverage": "Tuition support (Grant-in-Aid) and tuition fee subsidies for eligible tertiary students",
-      "deadline": "Announced annually - check the official MTHE portal for the current cycle",
-      "amount": "Varies by institution",
-      "description": "Government of Sierra Leone tuition support scheme for tertiary students, administered by the Ministry of Technical and Higher Education",
-      "website": "https://www.mthe.gov.sl",
-      "country": "SL"
-    },
-    {
-      "id": "sl_international_001",
-      "title": "Chevening Scholarships - Sierra Leone",
-      "sponsor": "UK Government",
-      "type": "international",
-      "status": "open",
-      "eligibility": "Sierra Leonean graduates with leadership potential and relevant work experience, applying for a one-year UK master's degree",
-      "coverage": "Full tuition, living expenses, and travel to the UK",
-      "deadline": "Announced annually - check the official Chevening portal for the current cycle",
-      "amount": "Full tuition + living expenses",
-      "description": "UK government's international awards programme for future leaders, open to Sierra Leonean applicants",
-      "website": "https://www.chevening.org",
-      "country": "SL"
-    },
-    {
-      "id": "lr_gov_001",
-      "title": "Presidential Scholarship Program",
-      "sponsor": "Ministry of State for Presidential Affairs, Government of Liberia",
-      "type": "government",
-      "status": "open",
-      "eligibility": "Merit-based; open to students in Liberian public high schools, TVET institutions, and universities, with expanding county-level slots",
-      "coverage": "Tuition costs; a Financial Aid track covers up to 60% tuition for students facing financial hardship",
-      "deadline": "Announced annually - check the official Executive Mansion portal for the current cycle",
-      "amount": "Government-funded via annual budgetary appropriation",
-      "description": "Merit-based national scholarship launched in December 2024, expanding access to higher education across Liberia's counties",
-      "website": "https://www.emansion.gov.lr/opportunities/opportunities/scholarships",
-      "country": "LR"
-    },
-    {
-      "id": "lr_private_001",
-      "title": "Gbowee Peace Foundation Africa (GPFA) Scholarship",
-      "sponsor": "Gbowee Peace Foundation Africa",
-      "type": "private",
-      "status": "open",
-      "eligibility": "Students who have passed the WAEC/WASSCE, selected through the foundation's application process",
-      "coverage": "Tuition and living expenses for undergraduate study",
-      "deadline": "Announced annually - check the foundation's website for the current cycle",
-      "amount": "Up to £30,000",
-      "description": "Named for Nobel laureate Leymah Gbowee, supports Liberian and other African students pursuing undergraduate education",
-      "website": "https://ladder.8b.africa/scholarships/detail/gbowee-peace-foundation-africa-scholarship-for-african-students-liberia/",
-      "country": "LR"
-    },
-    {
-      "id": "gm_gov_001",
-      "title": "Skills, Innovation and Entrepreneurship (SIE) Fund - TVET Scholarships",
-      "sponsor": "Ministry of Higher Education, Research, Science and Technology (MoHERST) and the World Bank",
-      "type": "government",
-      "status": "open",
-      "eligibility": "Gambian students, with a focus on youth and women, enrolling at accredited public or private TVET institutions",
-      "coverage": "Tuition support for Technical and Vocational Education and Training (TVET) programmes",
-      "deadline": "Announced annually - check the official MoHERST portal for the current cycle",
-      "amount": "Varies by institution",
-      "description": "Government-backed scholarship fund under the World Bank-supported Resilience, Inclusive Skills and Employment (RISE) Project, addressing youth and women's unemployment",
-      "website": "https://gambia.gov.gm/ministry-of-higher-education-research-science-and-technology/",
-      "country": "GM"
-    },
-    {
-      "id": "gm_international_001",
-      "title": "Chevening Scholarships - The Gambia",
-      "sponsor": "UK Government",
-      "type": "international",
-      "status": "open",
-      "eligibility": "Gambian graduates with leadership potential and relevant work experience, applying for a one-year UK master's degree",
-      "coverage": "Full tuition, living expenses, and travel to the UK",
-      "deadline": "Announced annually - check the official Chevening portal for the current cycle",
-      "amount": "Full tuition + living expenses",
-      "description": "UK government's international awards programme for future leaders, open to Gambian applicants",
-      "website": "https://www.chevening.org",
-      "country": "GM"
+      "last_checked": "2026-11-20"
     }
   ]
 }
