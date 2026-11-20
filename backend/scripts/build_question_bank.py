@@ -546,6 +546,37 @@ SUB_SKILLS = {
 }
 
 
+# The syllabus topic (data/syllabus/gh.json) each JHS and SHS template
+# practises, for the coverage report. Primary has no syllabus map yet.
+J, S = "jhs3.maths.", "shs3.maths."
+SYLLABUS = {
+    "j_lcm": J + "number.factors-multiples", "j_hcf": J + "number.factors-multiples",
+    "j_integers": J + "number.integers-operations", "j_bodmas": J + "number.integers-operations",
+    "j_percent_change": J + "number.fractions-percentages", "j_ratio": J + "number.ratio-proportion",
+    "j_standard_form": J + "number.number-numeration",
+    "j_linear": J + "algebra.linear-equations", "j_linear_sub": J + "algebra.linear-equations",
+    "j_substitute": J + "algebra.expressions", "j_like_terms": J + "algebra.expressions", "j_expand": J + "algebra.expressions",
+    "j_triangle": J + "geometry-measurement.angles", "j_straight": J + "geometry-measurement.angles",
+    "j_circle": J + "geometry-measurement.circles", "j_pythagoras": J + "geometry-measurement.pythagoras",
+    "j_volume": J + "geometry-measurement.volume-surface-area",
+    "j_mean": J + "data.averages", "j_median": J + "data.averages", "j_range": J + "data.averages",
+    "j_probability": J + "data.probability",
+    "s_quadratic": S + "algebra.quadratic-equations", "s_simultaneous": S + "algebra.simultaneous-equations",
+    "s_indices": S + "number.indices-logarithms", "s_logs": S + "number.indices-logarithms", "s_surds": S + "number.surds",
+    "s_simple_interest": S + "number.commercial-arithmetic", "s_compound": S + "number.commercial-arithmetic",
+    "s_profit": S + "number.commercial-arithmetic", "s_bases": S + "number.number-bases",
+    "s_ap": S + "number.sequences", "s_gp": S + "number.sequences", "s_sets": S + "number.sets",
+    "s_trig": S + "trigonometry.trig-ratios", "s_gradient": S + "coordinate-geometry.gradient-distance",
+    "s_mean_freq": S + "statistics.statistics", "s_prob_two": S + "statistics.probability",
+}
+
+# Written topics that match one syllabus topic as a whole. Broader ones (a mix
+# of grammar points, say) stay untagged until each question is tagged.
+WRITTEN_SYLLABUS = {
+    ("je", "vocabulary_jhs"): "jhs3.english.reading.vocabulary",
+}
+
+
 def finish(generators, prefix, per_template):
     """Questions from a topic's templates, with ids, in a stable order."""
     questions = []
@@ -555,6 +586,8 @@ def finish(generators, prefix, per_template):
             if item["question"] not in seen:
                 seen.add(item["question"])
                 item["sub_skill"] = SUB_SKILLS[generator.__name__]
+                if generator.__name__ in SYLLABUS:
+                    item["syllabus"] = SYLLABUS[generator.__name__]
                 if generator.__name__ in MIN_CLASS:
                     item["min_class"] = MIN_CLASS[generator.__name__]
                 questions.append(item)
@@ -592,6 +625,7 @@ def written_topics(source, prefix, min_class=None):
                     # Written topics are narrow enough to be their own skill.
                     "sub_skill": topic_name.lower().replace(" and ", "_and_").replace(" ", "_"),
                     **({"min_class": min_class} if min_class else {}),
+                    **({"syllabus": WRITTEN_SYLLABUS[(prefix, topic_id)]} if (prefix, topic_id) in WRITTEN_SYLLABUS else {}),
                 }
             )
         topics.append({"id": topic_id, "name": topic_name, "questions": questions})

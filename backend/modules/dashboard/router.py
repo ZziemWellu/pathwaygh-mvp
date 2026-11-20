@@ -3,6 +3,7 @@ Dashboard Module Router - real aggregation over enrollments, lesson
 progress, and quiz history. No fabricated numbers.
 """
 
+from core.drafts import course_is_shown, visible_lessons
 from datetime import timedelta
 from typing import Optional
 
@@ -44,9 +45,9 @@ def get_dashboard_summary(current_user: User = Depends(get_current_user), db: Se
     continue_learning = None
     for enrollment in enrollments:
         course = db.query(Course).filter(Course.id == enrollment.course_id).first()
-        if not course:
+        if not course or not course_is_shown(course, current_user):
             continue
-        lessons = sorted(course.lessons, key=lambda l: l.order_index)
+        lessons = visible_lessons(course, current_user)
         watched_count = sum(1 for l in lessons if l.id in watched_lesson_ids)
         progress_pct = round((watched_count / len(lessons)) * 100) if lessons else 0
         current_courses.append(
@@ -86,7 +87,7 @@ def get_dashboard_summary(current_user: User = Depends(get_current_user), db: Se
     # below the threshold even though it was last recorded above it, so
     # this must fetch every row and decide in Python rather than filter
     # in SQL on the stale stored column.
-    topic_names = topic_names_by_id()
+    topic_names = topic_names_by_id(db)
     all_masteries = db.query(SkillMastery).filter(SkillMastery.user_id == current_user.id).all()
     weak_masteries = sorted(
         (m for m in all_masteries if effective_mastery(m) < 0.5),
@@ -168,7 +169,9 @@ def _next_step(db: Session, user: User, continue_learning: Optional[dict], watch
         # The student's own country first, then alphabetical for stability.
         courses.sort(key=lambda c: (c.country != user.country, c.title))
         for course in courses:
-            lessons = sorted(course.lessons, key=lambda l: l.order_index)
+            if not course_is_shown(course, user):
+                continue
+            lessons = visible_lessons(course, user)
             lesson = next((l for l in lessons if l.id not in watched_ids), None)
             if lesson:
                 return {"kind": "start", "level": level, **_lesson_step(course, lessons, lesson)}

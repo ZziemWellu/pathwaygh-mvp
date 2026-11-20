@@ -14,13 +14,13 @@ every question has the same number of options.
 import json
 import logging
 import math
-import os
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Dict, Optional
 
 from sqlalchemy.orm import Session
 
+from core.drafts import APPROVED, DRAFT, REJECTED, serve_drafts
 from models.skill_mastery import SkillMastery
 from models.sub_skill_mastery import SubSkillMastery
 
@@ -32,6 +32,8 @@ QUESTIONS_FILE = PROJECT_ROOT / "data" / "practice" / "questions.json"
 # questions.json adds to it (topic by topic); a new id is a new subject.
 BANK_FILES = (PROJECT_ROOT / "data" / "practice" / "bank_gh.json",)
 _bank_cache: dict = {}
+# Assembled banks, keyed by the files, the database content and who asks.
+_assembled_cache: dict = {}
 
 DEFAULT_PRIOR = 0.3
 P_TRANSIT = 0.1
@@ -81,26 +83,16 @@ def effective_mastery(mastery: SkillMastery, now: Optional[datetime] = None) -> 
 def serve_draft_questions() -> bool:
     """Questions no teacher has checked stay away from students unless this is
     deliberately switched on, because a wrong answer teaches something wrong.
-    See scripts/apply_teacher_review.py for how they get approved."""
-    return os.getenv("SERVE_DRAFT_QUESTIONS") == "1"
-
-
-def _without_drafts(subject: dict) -> dict:
-    topics = []
-    for topic in subject["topics"]:
-        kept = [q for q in topic["questions"] if q.get("review_status") != "pending_review"]
-        if kept:
-            topics.append({**topic, "questions": kept})
-    return {**subject, "topics": topics}
+    The same switch covers draft lessons and courses: see core/drafts.py."""
+    return serve_drafts()
 
 
 def _merge_bank(data: dict, bank: dict) -> None:
+    """Adds a bank file's subjects to `data`, every review status included.
+    Drafts are filtered out later, in _assemble, after any decisions made in
+    the app have been applied."""
     by_id = {s["id"]: s for s in data["subjects"]}
     for subject in bank.get("subjects", []):
-        if not serve_draft_questions():
-            subject = _without_drafts(subject)
-            if not subject["topics"]:
-                continue
         existing = by_id.get(subject["id"])
         if existing is None:
             data["subjects"].append(subject)
@@ -128,27 +120,157 @@ def question_is_for_class(question: dict, class_number: Optional[int]) -> bool:
     return class_number is None or question.get("min_class", 1) <= class_number
 
 
-def load_questions() -> dict:
-    """Loads the practice question bank, falling back to a tiny built-in
-    sample if the data file is missing or unreadable - shared by the
-    practice router (question selection) and the dashboard router (topic
-    display names for weak-topic reporting)."""
+def _file_bank() -> Optional[dict]:
+    """Every question in the JSON files, whatever its review status. Parsed
+    once, and again only if a file on disk changes."""
+    if not QUESTIONS_FILE.exists():
+        return None
+    paths = [QUESTIONS_FILE, *(p for p in BANK_FILES if p.exists())]
+    cache_key = tuple((str(p), p.stat().st_mtime) for p in paths)
+    if _bank_cache.get("key") == cache_key:
+        return _bank_cache["data"]
+    with open(QUESTIONS_FILE, "r", encoding="utf-8") as f:
+        data = json.load(f)
+    if not data.get("subjects"):
+        return None
+    for path in paths[1:]:
+        with open(path, "r", encoding="utf-8") as f:
+            _merge_bank(data, json.load(f))
+    _bank_cache.clear()
+    _bank_cache.update(key=cache_key, data=data)
+    return data
+
+
+def _db_version(db: Session) -> tuple:
+    """Changes whenever a database question or an in-app review decision
+    does, so the assembled bank is only rebuilt when something changed."""
+    from sqlalchemy import func
+
+    from models.content import ContentQuestion, ContentReview
+
+    questions = db.query(func.count(ContentQuestion.id), func.max(ContentQuestion.updated_at)).one()
+    reviews = (
+        db.query(func.count(ContentReview.id), func.max(ContentReview.id), func.max(ContentReview.created_at))
+        .filter(ContentReview.item_type == "question")
+        .one()
+    )
+    return (tuple(questions), tuple(reviews))
+
+
+def question_decisions(db: Session) -> Dict[str, str]:
+    """The latest in-app approve/reject for each question, by question id."""
+    from models.content import ContentReview
+
+    rows = (
+        db.query(ContentReview.item_id, ContentReview.action)
+        .filter(ContentReview.item_type == "question", ContentReview.action.in_(("approved", "rejected")))
+        .order_by(ContentReview.id)
+        .all()
+    )
+    return {item_id: action for item_id, action in rows}
+
+
+def db_question_out(row) -> dict:
+    out = {
+        "id": row.question_id,
+        "question": row.question,
+        "options": list(row.options),
+        "correct": row.correct,
+        "explanation": row.explanation,
+        "difficulty": row.difficulty,
+        "review_status": row.review_status,
+        "sub_skill": row.sub_skill,
+        "source": "database",
+    }
+    if row.syllabus_topic:
+        out["syllabus"] = row.syllabus_topic
+    if row.attribution:
+        out["attribution"] = row.attribution
+    return out
+
+
+def _assemble(raw: dict, decisions: Dict[str, str], db_rows: list, keep) -> dict:
+    extra: Dict[str, dict] = {}
+    for row in db_rows:
+        topic = extra.setdefault(row.subject_id, {}).setdefault(row.topic_id, {"name": row.topic_name, "questions": []})
+        topic["questions"].append(db_question_out(row))
+
+    def decided(q):
+        decision = decisions.get(q["id"])
+        if decision == "rejected":
+            return {**q, "review_status": REJECTED}
+        if decision == "approved" and q.get("review_status") == DRAFT:
+            return {**q, "review_status": APPROVED}
+        return q
+
+    subjects = []
+    for subject in raw["subjects"]:
+        more = extra.get(subject["id"], {})
+        topics = []
+        for topic in subject["topics"]:
+            added = more.get(topic["id"], {}).get("questions", [])
+            questions = [q for q in (*map(decided, topic["questions"]), *added) if keep(q)]
+            if questions:
+                topics.append({**topic, "questions": questions})
+        known = {t["id"] for t in subject["topics"]}
+        for topic_id, topic in more.items():
+            questions = [q for q in topic["questions"] if keep(q)]
+            if topic_id not in known and questions:
+                topics.append({"id": topic_id, "name": topic["name"], "questions": questions})
+        if topics:
+            subjects.append({**subject, "topics": topics})
+    return {**raw, "subjects": subjects}
+
+
+def _for_students(include_drafts: bool):
+    def keep(q):
+        status = q.get("review_status")
+        return status != REJECTED and (include_drafts or status != DRAFT)
+
+    return keep
+
+
+def load_questions(db: Optional[Session] = None, include_drafts: Optional[bool] = None, review: bool = False) -> dict:
+    """The practice question bank: the JSON files, plus (given a database
+    session) questions imported or written in the app and the approve/reject
+    decisions reviewers made there. Falls back to a tiny built-in sample if
+    the data file is missing or unreadable.
+
+    Students get live questions only, and drafts too when
+    SERVE_DRAFT_QUESTIONS=1. review=True returns everything, rejected
+    questions included, for the content tools.
+
+    Shared by the practice router (question selection), the dashboard (topic
+    names for weak-topic reporting), the tutor and practice SMS."""
+    if include_drafts is None:
+        include_drafts = serve_draft_questions()
     try:
-        if QUESTIONS_FILE.exists():
-            # The bank is large and read on every practice request, so it's
-            # parsed once and again only if a file on disk changes.
-            paths = [QUESTIONS_FILE, *(p for p in BANK_FILES if p.exists())]
-            cache_key = (serve_draft_questions(), *((str(p), p.stat().st_mtime) for p in paths))
-            if _bank_cache.get("key") == cache_key:
-                return _bank_cache["data"]
-            with open(QUESTIONS_FILE, "r", encoding="utf-8") as f:
-                data = json.load(f)
-            if data.get("subjects"):
-                for path in paths[1:]:
-                    with open(path, "r", encoding="utf-8") as f:
-                        _merge_bank(data, json.load(f))
-                _bank_cache.update(key=cache_key, data=data)
-                return data
+        raw = _file_bank()
+        if raw is not None:
+            version, decisions, db_rows = None, {}, []
+            if db is not None:
+                try:
+                    from models.content import ContentQuestion
+
+                    version = _db_version(db)
+                except Exception as e:
+                    # The content tables are missing or unreachable: the
+                    # JSON bank alone is still a full practice bank.
+                    logger.error(f"Error loading database questions: {e}")
+                    db.rollback()
+                    db = None
+            cache_key = (_bank_cache["key"], version, include_drafts, review)
+            cached = _assembled_cache.get(cache_key)
+            if cached is not None:
+                return cached
+            if db is not None:
+                decisions = question_decisions(db)
+                db_rows = db.query(ContentQuestion).order_by(ContentQuestion.id).all()
+            data = _assemble(raw, decisions, db_rows, (lambda q: True) if review else _for_students(include_drafts))
+            if len(_assembled_cache) > 16:
+                _assembled_cache.clear()
+            _assembled_cache[cache_key] = data
+            return data
     except Exception as e:
         logger.error(f"Error loading questions: {e}")
 
@@ -175,8 +297,8 @@ def load_questions() -> dict:
     }
 
 
-def topic_names_by_id() -> Dict[str, str]:
-    data = load_questions()
+def topic_names_by_id(db: Optional[Session] = None) -> Dict[str, str]:
+    data = load_questions(db, review=True)
     names: Dict[str, str] = {}
     for subject in data.get("subjects", []):
         for topic in subject.get("topics", []):
@@ -194,7 +316,7 @@ def weak_topics_for_subject(db: Session, user_id: int, subject_id: str, threshol
     reuses the exact mastery data the practice-quiz adaptive engine
     already computes - no new model, no new ML."""
     rows = db.query(SkillMastery).filter(SkillMastery.user_id == user_id, SkillMastery.subject_id == subject_id).all()
-    names = topic_names_by_id()
+    names = topic_names_by_id(db)
     weak = [(names.get(m.topic_id, m.topic_id), effective_mastery(m)) for m in rows]
     weak = [(name, mastery) for name, mastery in weak if mastery < threshold]
     weak.sort(key=lambda item: item[1])
@@ -222,7 +344,7 @@ def weak_skills_for_subject(db: Session, user_id: int, subject_id: str, threshol
     if not rows:
         return weak_topics_for_subject(db, user_id, subject_id, threshold)
 
-    names = topic_names_by_id()
+    names = topic_names_by_id(db)
     weak = [
         (f"{names.get(m.topic_id, m.topic_id)}: {_humanize_sub_skill(m.sub_skill)}", effective_mastery(m)) for m in rows
     ]

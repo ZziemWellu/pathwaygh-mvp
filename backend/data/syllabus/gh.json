@@ -1,0 +1,959 @@
+{
+ "country": "GH",
+ "note": "Machine-readable map of what JHS 3 and SHS 3 students in Ghana study, for tagging lessons and practice questions and for the coverage report. Not yet checked against the official documents: the NaCCA, GES and WAEC sites could not be reached when it was written, so every part is marked provisional and every source has checked: false. A teacher or the owner should compare it with the documents, correct names, then set provisional to false and checked to true where it matches.",
+ "priority": "1 = examined most often (filled first), 2 = regularly examined, 3 = less often",
+ "sources": {
+  "nacca_ccp": {
+   "publisher": "NaCCA (National Council for Curriculum and Assessment)",
+   "document": "Common Core Programme curriculum for B7-B10, one document per learning area",
+   "url": "https://nacca.gov.gh/",
+   "checked": false
+  },
+  "nacca_shs": {
+   "publisher": "NaCCA",
+   "document": "Senior High School curriculum (from 2024), core subjects",
+   "url": "https://nacca.gov.gh/",
+   "checked": false
+  },
+  "waec_bece": {
+   "publisher": "WAEC Ghana",
+   "document": "BECE subjects and teaching syllabus references",
+   "url": "https://www.waecgh.org/",
+   "checked": false
+  },
+  "waec_wassce": {
+   "publisher": "WAEC",
+   "document": "WASSCE (school candidates) syllabus for the core subjects",
+   "url": "https://www.waecgh.org/",
+   "checked": false
+  },
+  "ges": {
+   "publisher": "Ghana Education Service",
+   "document": "Curriculum and assessment guidance",
+   "url": "https://ges.gov.gh/",
+   "checked": false
+  }
+ },
+ "levels": [
+  {
+   "id": "jhs3",
+   "name": "JHS 3",
+   "level": "jhs",
+   "exam": "BECE",
+   "curriculum": "Common Core Programme (B7-B10)",
+   "subjects": [
+    {
+     "id": "jhs3.maths",
+     "name": "Mathematics",
+     "practice_subject": "mathematics",
+     "sources": [
+      "nacca_ccp",
+      "waec_bece"
+     ],
+     "provisional": true,
+     "strands": [
+      {
+       "id": "jhs3.maths.number",
+       "name": "Number",
+       "provisional": true,
+       "topics": [
+        {
+         "id": "jhs3.maths.number.number-numeration",
+         "name": "Whole numbers, place value and standard form",
+         "priority": 2,
+         "provisional": true
+        },
+        {
+         "id": "jhs3.maths.number.factors-multiples",
+         "name": "Factors, multiples, HCF and LCM",
+         "priority": 2,
+         "provisional": true
+        },
+        {
+         "id": "jhs3.maths.number.integers-operations",
+         "name": "Integers and the order of operations",
+         "priority": 2,
+         "provisional": true
+        },
+        {
+         "id": "jhs3.maths.number.fractions-percentages",
+         "name": "Fractions, decimals and percentages",
+         "priority": 1,
+         "provisional": true
+        },
+        {
+         "id": "jhs3.maths.number.ratio-proportion",
+         "name": "Ratio, proportion and rates",
+         "priority": 1,
+         "provisional": true
+        },
+        {
+         "id": "jhs3.maths.number.financial-arithmetic",
+         "name": "Money: simple interest, profit, loss and discount",
+         "priority": 1,
+         "provisional": true
+        }
+       ]
+      },
+      {
+       "id": "jhs3.maths.algebra",
+       "name": "Algebra",
+       "provisional": true,
+       "topics": [
+        {
+         "id": "jhs3.maths.algebra.expressions",
+         "name": "Algebraic expressions: substitution, simplifying and expanding",
+         "priority": 1,
+         "provisional": true
+        },
+        {
+         "id": "jhs3.maths.algebra.linear-equations",
+         "name": "Linear equations",
+         "priority": 1,
+         "provisional": true
+        },
+        {
+         "id": "jhs3.maths.algebra.linear-inequalities",
+         "name": "Linear inequalities",
+         "priority": 2,
+         "provisional": true
+        }
+       ]
+      },
+      {
+       "id": "jhs3.maths.geometry-measurement",
+       "name": "Geometry and Measurement",
+       "provisional": true,
+       "topics": [
+        {
+         "id": "jhs3.maths.geometry-measurement.angles",
+         "name": "Angles, triangles and straight lines",
+         "priority": 1,
+         "provisional": true
+        },
+        {
+         "id": "jhs3.maths.geometry-measurement.pythagoras",
+         "name": "Pythagoras' theorem",
+         "priority": 2,
+         "provisional": true
+        },
+        {
+         "id": "jhs3.maths.geometry-measurement.area-perimeter",
+         "name": "Perimeter and area of plane shapes",
+         "priority": 1,
+         "provisional": true
+        },
+        {
+         "id": "jhs3.maths.geometry-measurement.circles",
+         "name": "Circles: circumference and area",
+         "priority": 1,
+         "provisional": true
+        },
+        {
+         "id": "jhs3.maths.geometry-measurement.volume-surface-area",
+         "name": "Volume and surface area of solids",
+         "priority": 2,
+         "provisional": true
+        }
+       ]
+      },
+      {
+       "id": "jhs3.maths.data",
+       "name": "Handling Data",
+       "provisional": true,
+       "topics": [
+        {
+         "id": "jhs3.maths.data.averages",
+         "name": "Mean, median, mode and range",
+         "priority": 1,
+         "provisional": true
+        },
+        {
+         "id": "jhs3.maths.data.probability",
+         "name": "Probability",
+         "priority": 2,
+         "provisional": true
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "jhs3.english",
+     "name": "English Language",
+     "practice_subject": "english",
+     "sources": [
+      "nacca_ccp",
+      "waec_bece"
+     ],
+     "provisional": true,
+     "strands": [
+      {
+       "id": "jhs3.english.oral-language",
+       "name": "Oral Language",
+       "provisional": true,
+       "topics": [
+        {
+         "id": "jhs3.english.oral-language.speech-sounds",
+         "name": "Speech sounds and stress",
+         "priority": 3,
+         "provisional": true
+        }
+       ]
+      },
+      {
+       "id": "jhs3.english.reading",
+       "name": "Reading",
+       "provisional": true,
+       "topics": [
+        {
+         "id": "jhs3.english.reading.comprehension",
+         "name": "Reading comprehension",
+         "priority": 1,
+         "provisional": true
+        },
+        {
+         "id": "jhs3.english.reading.vocabulary",
+         "name": "Vocabulary: synonyms, antonyms and words in context",
+         "priority": 1,
+         "provisional": true
+        }
+       ]
+      },
+      {
+       "id": "jhs3.english.grammar",
+       "name": "Grammar",
+       "provisional": true,
+       "topics": [
+        {
+         "id": "jhs3.english.grammar.tense-concord",
+         "name": "Tenses and subject-verb agreement",
+         "priority": 1,
+         "provisional": true
+        },
+        {
+         "id": "jhs3.english.grammar.parts-of-speech",
+         "name": "Parts of speech",
+         "priority": 2,
+         "provisional": true
+        },
+        {
+         "id": "jhs3.english.grammar.prepositions-phrasal",
+         "name": "Prepositions and phrasal verbs",
+         "priority": 2,
+         "provisional": true
+        }
+       ]
+      },
+      {
+       "id": "jhs3.english.writing",
+       "name": "Writing",
+       "provisional": true,
+       "topics": [
+        {
+         "id": "jhs3.english.writing.letter-writing",
+         "name": "Letter writing",
+         "priority": 1,
+         "provisional": true
+        },
+        {
+         "id": "jhs3.english.writing.punctuation-spelling",
+         "name": "Punctuation and spelling",
+         "priority": 2,
+         "provisional": true
+        }
+       ]
+      },
+      {
+       "id": "jhs3.english.literature",
+       "name": "Literature",
+       "provisional": true,
+       "topics": [
+        {
+         "id": "jhs3.english.literature.figures-of-speech",
+         "name": "Figures of speech",
+         "priority": 1,
+         "provisional": true
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "jhs3.science",
+     "name": "Science",
+     "practice_subject": "science",
+     "sources": [
+      "nacca_ccp",
+      "waec_bece"
+     ],
+     "provisional": true,
+     "strands": [
+      {
+       "id": "jhs3.science.diversity-of-matter",
+       "name": "Diversity of Matter",
+       "provisional": true,
+       "topics": [
+        {
+         "id": "jhs3.science.diversity-of-matter.matter-mixtures",
+         "name": "Elements, compounds, mixtures and separation",
+         "priority": 1,
+         "provisional": true
+        },
+        {
+         "id": "jhs3.science.diversity-of-matter.acids-bases",
+         "name": "Acids, bases and salts",
+         "priority": 1,
+         "provisional": true
+        }
+       ]
+      },
+      {
+       "id": "jhs3.science.cycles",
+       "name": "Cycles",
+       "provisional": true,
+       "topics": [
+        {
+         "id": "jhs3.science.cycles.life-cycles-crops",
+         "name": "Life cycles and crop production",
+         "priority": 2,
+         "provisional": true
+        }
+       ]
+      },
+      {
+       "id": "jhs3.science.systems",
+       "name": "Systems",
+       "provisional": true,
+       "topics": [
+        {
+         "id": "jhs3.science.systems.human-body-systems",
+         "name": "Human body systems",
+         "priority": 1,
+         "provisional": true
+        },
+        {
+         "id": "jhs3.science.systems.ecosystems",
+         "name": "Ecosystems and food chains",
+         "priority": 2,
+         "provisional": true
+        }
+       ]
+      },
+      {
+       "id": "jhs3.science.forces-energy",
+       "name": "Forces and Energy",
+       "provisional": true,
+       "topics": [
+        {
+         "id": "jhs3.science.forces-energy.electricity",
+         "name": "Electricity and circuits",
+         "priority": 1,
+         "provisional": true
+        },
+        {
+         "id": "jhs3.science.forces-energy.energy-forms",
+         "name": "Forms of energy and energy changes",
+         "priority": 2,
+         "provisional": true
+        },
+        {
+         "id": "jhs3.science.forces-energy.forces-motion",
+         "name": "Forces, motion and pressure",
+         "priority": 2,
+         "provisional": true
+        }
+       ]
+      },
+      {
+       "id": "jhs3.science.humans-environment",
+       "name": "Humans and the Environment",
+       "provisional": true,
+       "topics": [
+        {
+         "id": "jhs3.science.humans-environment.health-disease",
+         "name": "Health, nutrition and disease",
+         "priority": 1,
+         "provisional": true
+        },
+        {
+         "id": "jhs3.science.humans-environment.pollution-waste",
+         "name": "Pollution and waste management",
+         "priority": 2,
+         "provisional": true
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "jhs3.social",
+     "name": "Social Studies",
+     "practice_subject": "social_studies",
+     "sources": [
+      "nacca_ccp",
+      "waec_bece"
+     ],
+     "provisional": true,
+     "strands": [
+      {
+       "id": "jhs3.social.environment",
+       "name": "Environment",
+       "provisional": true,
+       "topics": [
+        {
+         "id": "jhs3.social.environment.physical-environment",
+         "name": "Our physical environment: relief, climate and vegetation",
+         "priority": 1,
+         "provisional": true
+        },
+        {
+         "id": "jhs3.social.environment.environmental-problems",
+         "name": "Environmental problems and their solutions",
+         "priority": 2,
+         "provisional": true
+        }
+       ]
+      },
+      {
+       "id": "jhs3.social.governance",
+       "name": "Governance, Politics and Stability",
+       "provisional": true,
+       "topics": [
+        {
+         "id": "jhs3.social.governance.constitution-democracy",
+         "name": "The constitution, democracy and the arms of government",
+         "priority": 1,
+         "provisional": true
+        },
+        {
+         "id": "jhs3.social.governance.rights-responsibilities",
+         "name": "Rights and responsibilities of citizens",
+         "priority": 1,
+         "provisional": true
+        }
+       ]
+      },
+      {
+       "id": "jhs3.social.development",
+       "name": "Social and Economic Development",
+       "provisional": true,
+       "topics": [
+        {
+         "id": "jhs3.social.development.population",
+         "name": "Population and development",
+         "priority": 1,
+         "provisional": true
+        },
+        {
+         "id": "jhs3.social.development.resources-economy",
+         "name": "Resources, entrepreneurship and the economy",
+         "priority": 2,
+         "provisional": true
+        }
+       ]
+      },
+      {
+       "id": "jhs3.social.history",
+       "name": "History and Identity",
+       "provisional": true,
+       "topics": [
+        {
+         "id": "jhs3.social.history.independence",
+         "name": "Colonial rule and Ghana's independence",
+         "priority": 1,
+         "provisional": true
+        },
+        {
+         "id": "jhs3.social.history.regional-cooperation",
+         "name": "Ghana, ECOWAS and the African Union",
+         "priority": 2,
+         "provisional": true
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "shs3",
+   "name": "SHS 3",
+   "level": "shs",
+   "exam": "WASSCE",
+   "curriculum": "SHS curriculum (from 2024) and the WASSCE core subjects",
+   "subjects": [
+    {
+     "id": "shs3.maths",
+     "name": "Core Mathematics",
+     "practice_subject": "core_mathematics_shs",
+     "sources": [
+      "waec_wassce",
+      "nacca_shs"
+     ],
+     "provisional": true,
+     "strands": [
+      {
+       "id": "shs3.maths.number",
+       "name": "Number and Numeration",
+       "provisional": true,
+       "topics": [
+        {
+         "id": "shs3.maths.number.number-bases",
+         "name": "Number bases",
+         "priority": 1,
+         "provisional": true
+        },
+        {
+         "id": "shs3.maths.number.indices-logarithms",
+         "name": "Indices and logarithms",
+         "priority": 1,
+         "provisional": true
+        },
+        {
+         "id": "shs3.maths.number.surds",
+         "name": "Surds",
+         "priority": 2,
+         "provisional": true
+        },
+        {
+         "id": "shs3.maths.number.sets",
+         "name": "Sets and Venn diagrams",
+         "priority": 1,
+         "provisional": true
+        },
+        {
+         "id": "shs3.maths.number.sequences",
+         "name": "Sequences: arithmetic and geometric progressions",
+         "priority": 2,
+         "provisional": true
+        },
+        {
+         "id": "shs3.maths.number.commercial-arithmetic",
+         "name": "Commercial arithmetic: interest, profit and loss",
+         "priority": 1,
+         "provisional": true
+        },
+        {
+         "id": "shs3.maths.number.modular-arithmetic",
+         "name": "Modular arithmetic",
+         "priority": 2,
+         "provisional": true
+        }
+       ]
+      },
+      {
+       "id": "shs3.maths.algebra",
+       "name": "Algebraic Processes",
+       "provisional": true,
+       "topics": [
+        {
+         "id": "shs3.maths.algebra.quadratic-equations",
+         "name": "Quadratic equations",
+         "priority": 1,
+         "provisional": true
+        },
+        {
+         "id": "shs3.maths.algebra.simultaneous-equations",
+         "name": "Simultaneous linear equations",
+         "priority": 1,
+         "provisional": true
+        },
+        {
+         "id": "shs3.maths.algebra.variation",
+         "name": "Variation",
+         "priority": 2,
+         "provisional": true
+        }
+       ]
+      },
+      {
+       "id": "shs3.maths.mensuration",
+       "name": "Mensuration",
+       "provisional": true,
+       "topics": [
+        {
+         "id": "shs3.maths.mensuration.sectors-arcs",
+         "name": "Arc length and area of a sector",
+         "priority": 1,
+         "provisional": true
+        },
+        {
+         "id": "shs3.maths.mensuration.solids",
+         "name": "Volume of cylinders and other solids",
+         "priority": 1,
+         "provisional": true
+        }
+       ]
+      },
+      {
+       "id": "shs3.maths.geometry",
+       "name": "Plane Geometry",
+       "provisional": true,
+       "topics": [
+        {
+         "id": "shs3.maths.geometry.polygons",
+         "name": "Angles in polygons",
+         "priority": 2,
+         "provisional": true
+        },
+        {
+         "id": "shs3.maths.geometry.circle-theorems",
+         "name": "Circle theorems",
+         "priority": 1,
+         "provisional": true
+        }
+       ]
+      },
+      {
+       "id": "shs3.maths.coordinate-geometry",
+       "name": "Coordinate Geometry",
+       "provisional": true,
+       "topics": [
+        {
+         "id": "shs3.maths.coordinate-geometry.gradient-distance",
+         "name": "Gradient, distance and midpoint",
+         "priority": 1,
+         "provisional": true
+        }
+       ]
+      },
+      {
+       "id": "shs3.maths.trigonometry",
+       "name": "Trigonometry",
+       "provisional": true,
+       "topics": [
+        {
+         "id": "shs3.maths.trigonometry.trig-ratios",
+         "name": "Trigonometric ratios",
+         "priority": 1,
+         "provisional": true
+        }
+       ]
+      },
+      {
+       "id": "shs3.maths.statistics",
+       "name": "Statistics and Probability",
+       "provisional": true,
+       "topics": [
+        {
+         "id": "shs3.maths.statistics.statistics",
+         "name": "Mean of grouped and frequency data",
+         "priority": 1,
+         "provisional": true
+        },
+        {
+         "id": "shs3.maths.statistics.probability",
+         "name": "Probability",
+         "priority": 1,
+         "provisional": true
+        }
+       ]
+      },
+      {
+       "id": "shs3.maths.vectors",
+       "name": "Vectors and Transformation",
+       "provisional": true,
+       "topics": [
+        {
+         "id": "shs3.maths.vectors.vectors",
+         "name": "Vectors and translation",
+         "priority": 2,
+         "provisional": true
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "shs3.english",
+     "name": "English Language",
+     "practice_subject": "english_shs",
+     "sources": [
+      "waec_wassce",
+      "nacca_shs"
+     ],
+     "provisional": true,
+     "strands": [
+      {
+       "id": "shs3.english.lexis-structure",
+       "name": "Lexis and Structure",
+       "provisional": true,
+       "topics": [
+        {
+         "id": "shs3.english.lexis-structure.vocabulary",
+         "name": "Vocabulary in context: synonyms and antonyms",
+         "priority": 1,
+         "provisional": true
+        },
+        {
+         "id": "shs3.english.lexis-structure.idioms",
+         "name": "Idioms and figurative expressions",
+         "priority": 1,
+         "provisional": true
+        },
+        {
+         "id": "shs3.english.lexis-structure.concord-tense",
+         "name": "Concord and tense",
+         "priority": 1,
+         "provisional": true
+        },
+        {
+         "id": "shs3.english.lexis-structure.clauses-sentences",
+         "name": "Clauses and sentence types",
+         "priority": 2,
+         "provisional": true
+        }
+       ]
+      },
+      {
+       "id": "shs3.english.comprehension-summary",
+       "name": "Comprehension and Summary",
+       "provisional": true,
+       "topics": [
+        {
+         "id": "shs3.english.comprehension-summary.comprehension",
+         "name": "Reading comprehension",
+         "priority": 1,
+         "provisional": true
+        },
+        {
+         "id": "shs3.english.comprehension-summary.summary",
+         "name": "Summary writing",
+         "priority": 1,
+         "provisional": true
+        }
+       ]
+      },
+      {
+       "id": "shs3.english.writing",
+       "name": "Essay Writing",
+       "provisional": true,
+       "topics": [
+        {
+         "id": "shs3.english.writing.essay-types",
+         "name": "Letters, speeches and articles",
+         "priority": 1,
+         "provisional": true
+        }
+       ]
+      },
+      {
+       "id": "shs3.english.orals",
+       "name": "Oral English",
+       "provisional": true,
+       "topics": [
+        {
+         "id": "shs3.english.orals.vowels-consonants",
+         "name": "Vowel and consonant sounds",
+         "priority": 2,
+         "provisional": true
+        },
+        {
+         "id": "shs3.english.orals.stress-intonation",
+         "name": "Word stress and intonation",
+         "priority": 2,
+         "provisional": true
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "shs3.science",
+     "name": "Integrated Science",
+     "practice_subject": "integrated_science_shs",
+     "sources": [
+      "waec_wassce",
+      "nacca_shs"
+     ],
+     "provisional": true,
+     "strands": [
+      {
+       "id": "shs3.science.diversity-of-matter",
+       "name": "Diversity of Matter",
+       "provisional": true,
+       "topics": [
+        {
+         "id": "shs3.science.diversity-of-matter.atomic-structure",
+         "name": "Atomic structure and the periodic table",
+         "priority": 1,
+         "provisional": true
+        },
+        {
+         "id": "shs3.science.diversity-of-matter.acids-bases-salts",
+         "name": "Acids, bases and salts",
+         "priority": 1,
+         "provisional": true
+        },
+        {
+         "id": "shs3.science.diversity-of-matter.cells",
+         "name": "Cells and their functions",
+         "priority": 1,
+         "provisional": true
+        }
+       ]
+      },
+      {
+       "id": "shs3.science.cycles",
+       "name": "Cycles",
+       "provisional": true,
+       "topics": [
+        {
+         "id": "shs3.science.cycles.reproduction-genetics",
+         "name": "Reproduction, growth and heredity",
+         "priority": 2,
+         "provisional": true
+        },
+        {
+         "id": "shs3.science.cycles.crop-production",
+         "name": "Soil and crop production",
+         "priority": 2,
+         "provisional": true
+        }
+       ]
+      },
+      {
+       "id": "shs3.science.systems",
+       "name": "Systems",
+       "provisional": true,
+       "topics": [
+        {
+         "id": "shs3.science.systems.human-systems",
+         "name": "Digestive, respiratory and circulatory systems",
+         "priority": 1,
+         "provisional": true
+        },
+        {
+         "id": "shs3.science.systems.ecology",
+         "name": "Ecology and ecosystems",
+         "priority": 2,
+         "provisional": true
+        }
+       ]
+      },
+      {
+       "id": "shs3.science.energy",
+       "name": "Energy",
+       "provisional": true,
+       "topics": [
+        {
+         "id": "shs3.science.energy.electricity",
+         "name": "Electricity and electronics",
+         "priority": 1,
+         "provisional": true
+        },
+        {
+         "id": "shs3.science.energy.energy-conversion",
+         "name": "Forms of energy and conversion",
+         "priority": 2,
+         "provisional": true
+        },
+        {
+         "id": "shs3.science.energy.force-motion",
+         "name": "Force, motion and work",
+         "priority": 1,
+         "provisional": true
+        }
+       ]
+      },
+      {
+       "id": "shs3.science.interactions",
+       "name": "Interactions of Matter",
+       "provisional": true,
+       "topics": [
+        {
+         "id": "shs3.science.interactions.health-environment",
+         "name": "Disease, health and the environment",
+         "priority": 2,
+         "provisional": true
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "shs3.social",
+     "name": "Social Studies",
+     "practice_subject": "social_studies_shs",
+     "sources": [
+      "waec_wassce",
+      "nacca_shs"
+     ],
+     "provisional": true,
+     "strands": [
+      {
+       "id": "shs3.social.environment",
+       "name": "Environment",
+       "provisional": true,
+       "topics": [
+        {
+         "id": "shs3.social.environment.environment-development",
+         "name": "The environment and sustainable development",
+         "priority": 1,
+         "provisional": true
+        }
+       ]
+      },
+      {
+       "id": "shs3.social.governance",
+       "name": "Governance, Politics and Stability",
+       "provisional": true,
+       "topics": [
+        {
+         "id": "shs3.social.governance.constitution-rule-of-law",
+         "name": "Constitutional rule, democracy and the rule of law",
+         "priority": 1,
+         "provisional": true
+        },
+        {
+         "id": "shs3.social.governance.human-rights",
+         "name": "Human rights and citizenship",
+         "priority": 1,
+         "provisional": true
+        },
+        {
+         "id": "shs3.social.governance.leadership",
+         "name": "Leadership and followership",
+         "priority": 2,
+         "provisional": true
+        }
+       ]
+      },
+      {
+       "id": "shs3.social.development",
+       "name": "Social and Economic Development",
+       "provisional": true,
+       "topics": [
+        {
+         "id": "shs3.social.development.self-identity-socialisation",
+         "name": "Self-identity and socialisation",
+         "priority": 2,
+         "provisional": true
+        },
+        {
+         "id": "shs3.social.development.population-development",
+         "name": "Population and national development",
+         "priority": 1,
+         "provisional": true
+        },
+        {
+         "id": "shs3.social.development.resources-finance",
+         "name": "Resource use, entrepreneurship and financial institutions",
+         "priority": 2,
+         "provisional": true
+        },
+        {
+         "id": "shs3.social.development.science-technology",
+         "name": "Science, technology and development",
+         "priority": 3,
+         "provisional": true
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

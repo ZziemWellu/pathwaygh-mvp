@@ -8,6 +8,7 @@ import { useLanguage } from '../../contexts/LanguageContext';
 import { useGamificationNotify } from '../../contexts/GamificationNotifyContext';
 import { CircleCheckIcon, CirclePlayIcon, FileTextIcon, PartyPopperIcon, TriangleAlertIcon } from 'lucide-react';
 import Button from '../../components/ui/Button';
+import ReportProblem from '../../components/common/ReportProblem';
 
 const LessonView = () => {
   const { t } = useLanguage();
@@ -71,6 +72,12 @@ const LessonView = () => {
 
       <h2 style={{ color: 'var(--primary)', margin: '12px 0 16px 0' }}>{lesson.title}</h2>
 
+      {lesson.is_draft && (
+        <p role="note" style={{ margin: '0 0 16px 0', padding: '10px 14px', background: 'var(--warning-bg)', borderRadius: '8px', fontSize: '0.9375rem' }}>
+          <TriangleAlertIcon className="icon-inline" size="1em" aria-hidden="true" /> A teacher hasn&apos;t checked this yet. If something looks wrong, ask your teacher or report it below.
+        </p>
+      )}
+
       {lesson.lesson_type === 'video' ? (
         hasPlayableVideo ? (
           <div style={{ position: 'relative', paddingTop: '56.25%', borderRadius: '12px', overflow: 'hidden', background: '#000' }}>
@@ -103,6 +110,10 @@ const LessonView = () => {
 
       {lesson.description && <p style={{ color: 'var(--text-muted)', margin: '16px 0' }}>{lesson.description}</p>}
 
+      {lesson.attribution && (
+        <p style={{ color: 'var(--text-subtle)', fontSize: '0.875rem', margin: '8px 0' }}>Adapted from: {lesson.attribution}</p>
+      )}
+
       <div style={{ marginTop: '20px', display: 'flex', alignItems: 'center', gap: '12px' }}>
         {lesson.watched ? (
           <span style={{ color: 'var(--primary)', fontWeight: 'bold' }}><CircleCheckIcon className="icon-inline" size="1em" aria-hidden="true" /> {lesson.lesson_type === 'text' ? t('learnCompleted') : t('learnWatched')}</span>
@@ -122,6 +133,8 @@ const LessonView = () => {
       {lesson.has_exercises && (
         <ExerciseSection lessonId={lessonId} exercises={lesson.exercises} bestScore={lesson.best_score} />
       )}
+
+      <ReportProblem key={lesson.id} itemType="lesson" itemId={lesson.id} />
     </div>
   );
 };

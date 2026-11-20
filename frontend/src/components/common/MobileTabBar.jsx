@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { LogOut, Menu, X } from 'lucide-react';
+import { ClipboardCheck, LogOut, Menu, X } from 'lucide-react';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { useModalA11y } from '../../hooks/useModalA11y';
 import LanguageSwitcher from '../LanguageSwitcher';
@@ -105,6 +105,19 @@ const MobileTabBar = ({ user, onLogout }) => {
                   </li>
                 );
               })}
+              {(user?.is_admin || user?.is_contributor) && (
+                <li>
+                  <button
+                    type="button"
+                    className={`mobile-sheet__item${pathname === '/content' ? ' is-active' : ''}`}
+                    aria-current={pathname === '/content' ? 'page' : undefined}
+                    onClick={() => go('/content')}
+                  >
+                    <ClipboardCheck size={20} aria-hidden="true" />
+                    Content tools
+                  </button>
+                </li>
+              )}
             </ul>
             <div className="mobile-sheet__footer">
               <LanguageSwitcher style={{ fontSize: '0.9375rem', padding: '8px 10px' }} />

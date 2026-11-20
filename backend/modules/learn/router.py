@@ -11,6 +11,7 @@ from sqlalchemy import or_
 from sqlalchemy.orm import Session
 
 from core.database import get_db
+from core.drafts import course_is_shown, is_draft, shown_to, visible_lessons
 from core.levels import STUDENT_LEVELS
 from core.security import get_current_user, get_current_user_optional
 from models.course import Course, Exercise, Lesson
@@ -37,6 +38,10 @@ def _lesson_out(lesson: Lesson, watched_lesson_ids: set) -> dict:
         "content": lesson.content,
         "has_exercises": len(lesson.exercises) > 0,
         "watched": lesson.id in watched_lesson_ids,
+        # A draft hasn't been checked by a teacher; the page says so.
+        "review_status": lesson.review_status,
+        "is_draft": is_draft(lesson.review_status),
+        "attribution": lesson.attribution,
     }
 
 
@@ -45,8 +50,8 @@ def _exercise_out(exercise: Exercise) -> dict:
     return {"id": exercise.id, "question": exercise.question, "options": exercise.options}
 
 
-def _course_out(course: Course, enrolled_ids: set, watched_ids: frozenset = frozenset()) -> dict:
-    lessons = sorted(course.lessons, key=lambda lesson: lesson.order_index)
+def _course_out(course: Course, enrolled_ids: set, watched_ids: frozenset = frozenset(), user: Optional[User] = None) -> dict:
+    lessons = visible_lessons(course, user)
     completed = sum(1 for lesson in lessons if lesson.id in watched_ids)
     next_lesson = next((lesson for lesson in lessons if lesson.id not in watched_ids), None)
     # Total running time only when every lesson has a duration - a partial
@@ -60,6 +65,7 @@ def _course_out(course: Course, enrolled_ids: set, watched_ids: frozenset = froz
         "level": course.level,
         "country": course.country,
         "lesson_count": len(lessons),
+        "is_draft": is_draft(course.review_status),
         "enrolled": course.id in enrolled_ids,
         "duration_minutes": total_minutes,
         "lessons_completed": completed,
@@ -89,6 +95,13 @@ def _enrolled_course_ids(db: Session, user: Optional[User]) -> set:
 def _sees_every_course(user: Optional[User]) -> bool:
     # Anonymous visitors browse the public catalogue; staff manage all of it.
     return user is None or user.is_admin or user.is_school_admin
+
+
+def _require_shown(user: Optional[User], course: Course, lesson: Optional[Lesson] = None) -> None:
+    """Drafts are hidden from students unless SERVE_DRAFT_QUESTIONS=1 (see
+    core/drafts.py). Hidden content reads as missing, not forbidden."""
+    if not course_is_shown(course, user) or (lesson is not None and not shown_to(lesson.review_status, user)):
+        raise HTTPException(status_code=404, detail="Lesson not found" if lesson is not None else "Course not found")
 
 
 def _require_course_access(db: Session, user: Optional[User], course: Course) -> None:
@@ -145,7 +158,7 @@ def get_courses(
 
     enrolled_ids = _enrolled_course_ids(db, current_user)
     watched_ids = frozenset(_watched_lesson_ids(db, current_user))
-    return [_course_out(c, enrolled_ids, watched_ids) for c in query.all()]
+    return [_course_out(c, enrolled_ids, watched_ids, current_user) for c in query.all() if course_is_shown(c, current_user)]
 
 
 @router.get("/enrolled")
@@ -153,7 +166,7 @@ def get_enrolled_courses(db: Session = Depends(get_db), current_user: User = Dep
     enrolled_ids = _enrolled_course_ids(db, current_user)
     courses = db.query(Course).filter(Course.id.in_(enrolled_ids)).all() if enrolled_ids else []
     watched_ids = frozenset(_watched_lesson_ids(db, current_user))
-    return [_course_out(c, enrolled_ids, watched_ids) for c in courses]
+    return [_course_out(c, enrolled_ids, watched_ids, current_user) for c in courses if course_is_shown(c, current_user)]
 
 
 @router.get("/courses/{course_slug}")
@@ -165,13 +178,14 @@ def get_course(
     course = db.query(Course).filter(Course.slug == course_slug).first()
     if not course:
         raise HTTPException(status_code=404, detail="Course not found")
+    _require_shown(current_user, course)
     _require_course_access(db, current_user, course)
 
     watched_ids = _watched_lesson_ids(db, current_user)
     enrolled_ids = _enrolled_course_ids(db, current_user)
     return {
-        **_course_out(course, enrolled_ids, frozenset(watched_ids)),
-        "lessons": [_lesson_out(lesson, watched_ids) for lesson in course.lessons],
+        **_course_out(course, enrolled_ids, frozenset(watched_ids), current_user),
+        "lessons": [_lesson_out(lesson, watched_ids) for lesson in visible_lessons(course, current_user)],
     }
 
 
@@ -180,6 +194,7 @@ def enroll_in_course(course_slug: str, db: Session = Depends(get_db), current_us
     course = db.query(Course).filter(Course.slug == course_slug).first()
     if not course:
         raise HTTPException(status_code=404, detail="Course not found")
+    _require_shown(current_user, course)
     _require_course_access(db, current_user, course)
 
     existing = db.query(Enrollment).filter(Enrollment.user_id == current_user.id, Enrollment.course_id == course.id).first()
@@ -199,6 +214,7 @@ def get_lesson(
     lesson = db.query(Lesson).filter(Lesson.slug == lesson_slug).first()
     if not lesson:
         raise HTTPException(status_code=404, detail="Lesson not found")
+    _require_shown(current_user, lesson.course, lesson)
     _require_course_access(db, current_user, lesson.course)
     watched_ids = _watched_lesson_ids(db, current_user)
     out = _lesson_out(lesson, watched_ids)
@@ -232,6 +248,7 @@ def submit_exercises(
     lesson = db.query(Lesson).filter(Lesson.slug == lesson_slug).first()
     if not lesson or not lesson.exercises:
         raise HTTPException(status_code=404, detail="Lesson or exercises not found")
+    _require_shown(current_user, lesson.course, lesson)
 
     correct_count = 0
     results = []
@@ -281,6 +298,7 @@ def update_lesson_progress(
     lesson = db.query(Lesson).filter(Lesson.slug == lesson_slug).first()
     if not lesson:
         raise HTTPException(status_code=404, detail="Lesson not found")
+    _require_shown(current_user, lesson.course, lesson)
 
     progress = (
         db.query(LessonProgress)
@@ -306,7 +324,7 @@ def update_lesson_progress(
     # Only as this lesson finishes the course, so the congratulations show once.
     course_completed = False
     if is_new_watch:
-        lesson_ids = {course_lesson.id for course_lesson in lesson.course.lessons}
+        lesson_ids = {course_lesson.id for course_lesson in visible_lessons(lesson.course, current_user)}
         course_completed = lesson_ids <= _watched_lesson_ids(db, current_user)
 
     return {

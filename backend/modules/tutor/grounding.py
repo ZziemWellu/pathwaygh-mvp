@@ -17,6 +17,7 @@ from typing import Optional
 from sqlalchemy.orm import Session
 
 from models.course import Lesson
+from core.drafts import shown_to
 from modules.practice.mastery import load_questions
 
 MAX_LESSON_CONTENT_CHARS = 2000
@@ -27,7 +28,8 @@ _WORD_RE = re.compile(r"[a-z0-9]+")
 
 def _lesson_grounding(db: Session, lesson_id: str) -> Optional[str]:
     lesson = db.query(Lesson).filter(Lesson.slug == lesson_id).first()
-    if not lesson or not lesson.content:
+    # A draft lesson only grounds the tutor where students may read it.
+    if not lesson or not lesson.content or not shown_to(lesson.review_status, None):
         return None
     return f'Lesson content for "{lesson.title}":\n{lesson.content[:MAX_LESSON_CONTENT_CHARS]}'
 
@@ -36,8 +38,8 @@ def _keywords(text: str) -> set:
     return {w for w in _WORD_RE.findall(text.lower()) if len(w) >= 3}
 
 
-def _subject_grounding(subject_id: str, message: str) -> Optional[str]:
-    data = load_questions()
+def _subject_grounding(db: Session, subject_id: str, message: str) -> Optional[str]:
+    data = load_questions(db)
     subject = next((s for s in data.get("subjects", []) if s["id"] == subject_id), None)
     if not subject:
         return None
@@ -79,6 +81,6 @@ def build_grounding_context(
             return grounding
 
     if subject_id:
-        return _subject_grounding(subject_id, message)
+        return _subject_grounding(db, subject_id, message)
 
     return None

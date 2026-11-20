@@ -13,6 +13,7 @@ schedule, so a student only ever sees "unlocked" the moment they
 actually did the thing.
 """
 
+from core.drafts import course_is_shown, visible_lessons
 from typing import Callable, Dict
 
 from sqlalchemy.orm import Session
@@ -60,7 +61,8 @@ def _course_complete(db: Session, user: User, profile: GamificationProfile) -> b
     if not watched:
         return False
     courses = db.query(Course).join(Enrollment, Enrollment.course_id == Course.id).filter(Enrollment.user_id == user.id)
-    return any(course.lessons and {lesson.id for lesson in course.lessons} <= watched for course in courses)
+    lesson_sets = ({lesson.id for lesson in visible_lessons(course, user)} for course in courses if course_is_shown(course, user))
+    return any(lessons and lessons <= watched for lessons in lesson_sets)
 
 
 def _wordsmith(db: Session, user: User, profile: GamificationProfile) -> bool:

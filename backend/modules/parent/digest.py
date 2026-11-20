@@ -40,7 +40,7 @@ def build_digest_text(db: Session, user: User) -> Optional[str]:
         .all()
     )
     if weak_masteries:
-        topic_names = topic_names_by_id()
+        topic_names = topic_names_by_id(db)
         names = [topic_names.get(m.topic_id, m.topic_id) for m in weak_masteries]
         lines.append(f"- Could use more practice on: {', '.join(names)}")
 
