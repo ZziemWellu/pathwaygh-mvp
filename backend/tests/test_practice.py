@@ -90,7 +90,8 @@ def test_subjects_default_to_the_signed_in_students_country(client):
     gh = register_user(client, email="gh_student@test.com", country="GH")
     response = client.get("/api/practice/subjects", headers={"Authorization": f"Bearer {gh['token']}"})
     subjects = response.json()["subjects"]
-    assert {s["id"] for s in subjects} == {"mathematics", "english", "science"}
+    # A JHS student (the default level here); Social Studies arrived with the JHS 3 drafts.
+    assert {s["id"] for s in subjects} == {"mathematics", "english", "science", "social_studies"}
     names = [s["name"] for s in subjects]
     assert len(names) == len(set(names)), f"duplicate subject names shown: {names}"
 
@@ -107,7 +108,8 @@ def test_explicit_country_query_still_overrides_the_default(client, auth_headers
 
 def test_anonymous_subjects_listing_is_unchanged(client):
     response = client.get("/api/practice/subjects")
-    assert len(response.json()["subjects"]) == 21
+    # 21, plus JHS and SHS Social Studies.
+    assert len(response.json()["subjects"]) == 23
 
 
 # --- mixed quick quiz + per-subject mastery ------------------------------
